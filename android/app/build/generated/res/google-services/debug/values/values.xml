@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">436345431576-vvujm6a1v150ome2j07nkep3subobv2j.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">436345431576</string>
+    <string name="google_api_key" translatable="false">AIzaSyA_f7dPegP1xqEb_d_Q4pMCCYHtTydFV-4</string>
+    <string name="google_app_id" translatable="false">1:436345431576:android:9838678a852c8f9c27456d</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyA_f7dPegP1xqEb_d_Q4pMCCYHtTydFV-4</string>
+    <string name="google_storage_bucket" translatable="false">nextup-ccc80.appspot.com</string>
+    <string name="project_id" translatable="false">nextup-ccc80</string>
+</resources>

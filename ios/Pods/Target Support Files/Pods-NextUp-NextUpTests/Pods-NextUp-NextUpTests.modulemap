@@ -1,0 +1,6 @@
+module Pods_NextUp_NextUpTests {
+  umbrella header "Pods-NextUp-NextUpTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

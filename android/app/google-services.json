@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "436345431576",
+    "project_id": "nextup-ccc80",
+    "storage_bucket": "nextup-ccc80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436345431576:android:9838678a852c8f9c27456d",
+        "android_client_info": {
+          "package_name": "com.nextup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436345431576-vvujm6a1v150ome2j07nkep3subobv2j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_f7dPegP1xqEb_d_Q4pMCCYHtTydFV-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436345431576-vvujm6a1v150ome2j07nkep3subobv2j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "436345431576-357tani4vf0nu8v4it1mpmllsjvmfcmr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.nextup"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

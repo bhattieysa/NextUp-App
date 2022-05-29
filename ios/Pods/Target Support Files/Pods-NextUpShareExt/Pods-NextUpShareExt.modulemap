@@ -1,0 +1,6 @@
+module Pods_NextUpShareExt {
+  umbrella header "Pods-NextUpShareExt-umbrella.h"
+
+  export *
+  module * { export * }
+}

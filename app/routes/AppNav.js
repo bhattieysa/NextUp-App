@@ -1,0 +1,109 @@
+import React from 'react';
+import { View, Image } from 'react-native';
+import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
+import Navigation from '../lib/Navigation';
+import { HomeStack, CalenderStack, ExploreStack, MyStandingStack, ProStack, MessageStack } from './index';
+import { Colors, Layout, CommonStyles } from '../constants';
+
+import { connect } from 'react-redux';
+import { color } from 'react-native-reanimated';
+
+let home = require('../Images/homeNew.png');
+// let Explore = require('../Images/Search_tab.png');
+let Explore = require('../Images/explore_tab_icon.png');
+// let Calender = require('../Images/Calender.png');
+let MyStanding = require('../Images/Standing.png');
+let Pro = require('../Images/Pro_tab.png');
+let message = require('../Images/tab_message_icon.png');
+
+let wide = Layout.width;
+// const AppTabBar = (props) => (
+//   <BottomTabBar
+//     {...props}
+//     onTabPress={({ route }) => {
+
+//       // props.screenProps.Action();
+
+//     }}
+//   />
+// );
+
+function renderTabBarIcon(focused, iconSource) {
+  return (
+    <View style={CommonStyles.tabBarItemContainer}>
+      <Image
+        source={iconSource}
+        resizeMode={'contain'}
+        style={[
+          {
+            top: 2,
+            height: wide * 0.06,
+            width: wide * 0.06,
+            tintColor: Colors.fontColorGray
+          },
+          focused && { tintColor: Colors.light },
+        ]}
+      />
+    </View>
+  );
+}
+
+
+const TabNavigator = createBottomTabNavigator(
+  {
+    Home: HomeStack,
+    Explore: ExploreStack,
+    // Calender: CalenderStack,
+    Message: MessageStack,
+    MyStanding: MyStandingStack,
+    Pro: ProStack
+  },
+  {
+    defaultNavigationOptions: ({ navigation, screenProps }) => ({
+      tabBarIcon: ({ focused }) => {
+        const { routeName } = navigation.state;
+        switch (routeName) {
+          case 'Home':
+            icon = renderTabBarIcon(focused, home);
+            break;
+          case 'Explore':
+            icon = renderTabBarIcon(focused, Explore);
+            break;
+          // case 'Calender':
+          //   icon = renderTabBarIcon(focused, Calender);
+          //   break;
+          case 'Message':
+            icon = renderTabBarIcon(focused, message);
+            break;
+          case 'MyStanding':
+            icon = renderTabBarIcon(focused, MyStanding);
+            break;
+          case 'Pro':
+            icon = renderTabBarIcon(focused, Pro);
+            break;
+
+          default:
+            console.log("re")
+          // icon = renderTabBarIcon(focused, user);
+        }
+        return icon;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: Colors.light,
+      inactiveTintColor: Colors.fontGray,
+      showLabel: true,
+      style: {
+        backgroundColor: Colors.base,
+        height: 60
+        // borderTopWidth: 0
+      },
+      labelStyle: {
+        // top: 0
+      }
+    },
+    // tabBarComponent: (props) => <AppTabBar {...props} />,
+  },
+);
+
+export default TabNavigator;
