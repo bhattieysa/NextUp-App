@@ -18,6 +18,9 @@ import {
   ON_BOARD_REQUEST,
   ON_BOARD_SUCCESS,
   ON_BOARD_FAILURE,
+  ON_BOARD_PLAYER_POSITION_REQUEST,
+  ON_BOARD_PLAYER_POSITION_REQUEST_SUCCESS,
+  ON_BOARD_PLAYER_POSITION_REQUEST_FAILURE,
   OTP_REQUEST,
   OTP_FAILURE,
   OTP_VERIFY_REQUEST,
@@ -263,6 +266,44 @@ export function onBoardAPI(userId, params, cb) {
         debugger
         console.log(error)
         return dispatch(OnBoardFailure(error));
+      });
+  };
+}
+
+function OnBoardPlayerPositionRequest() {
+  return {
+    type: ON_BOARD_PLAYER_POSITION_REQUEST
+
+  };
+}
+
+function OnBoardPlayerPositionFailure(message) {
+  return {
+    type: ON_BOARD_PLAYER_POSITION_REQUEST_FAILURE,
+    error: message,
+  };
+}
+
+export function onBoardPlayerPositionAPI(cb) {
+  return (dispatch, getState) => {
+    dispatch(OnBoardPlayerPositionRequest());
+    return axios
+      .get(AppURLs.positions)
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+
+          cb(data);
+          
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        console.log(error)
+        return dispatch(OnBoardPlayerPositionFailure(error));
       });
   };
 }

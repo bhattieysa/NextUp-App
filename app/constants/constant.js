@@ -57,6 +57,7 @@ export const AppURLs = {
 
   //new design api
   coachRoles: 'admin/list?type=TEAM_COACH_ROLES',
+  positions: 'admin/list?type=POSITIONS',
   checkSubscription: '/player/roadToPro/',
   teamRoles: 'team/roles/',
   inviteCoach: 'team/invite/coach',
