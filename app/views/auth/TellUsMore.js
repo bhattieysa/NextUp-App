@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, ScrollView, TextInput, Platform } from 'react-native';
+import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, ScrollView, TextInput, Platform, FlatList, ImageBackground } from 'react-native';
 import {
   Layout,
   Colors,
@@ -28,6 +28,7 @@ import { StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import StatesListModal from './StatesListModal';
+import DatePicker from 'react-native-modern-datepicker';
 
 const years = ["2019", "2020", "2021", "2022"]
 
@@ -49,22 +50,24 @@ class TellUsMore extends Component {
       isbtnEnable: UserModel.fname !== undefined && UserModel.lname !== undefined &&
         UserModel.dob !== undefined && UserModel.aboutMe !== undefined ? true : false,
       strSelectedMode: UserModel.selectedUserType !== undefined ? UserModel.selectedUserType : 'player',
-      strSelectedPosition: UserModel.selectedSportPosition !== undefined ? UserModel.selectedSportPosition : 'defender',
+      strSelectedPosition: UserModel.selectedSportPosition !== undefined ? UserModel.selectedSportPosition : 0,
       isDatePickerVisible: false,
       openStatesModal: false,
-      positions: []
+      positions: [],
+      showYearPicker: false,
+      pickerDate: new Date()
     };
     this.inputs = {};
   }
   componentDidMount() {
-    this.props.dispatch(onBoardPlayerPositionAPI(data => this.state.positions = data.values));
+    this.props.dispatch(onBoardPlayerPositionAPI(data => this.setState({ ...this.state, positions: data[0].values })));
   }
   checkForButtonEnable = (key) => {
     const { fname,
       lname,
       dob,
       email,
-      aboutMe, strSelectedMode, strSelectedPosition, city, state, school, classof } = this.state;
+      aboutMe, strSelectedMode } = this.state;
 
 
     if (strSelectedMode === 'coach') {
@@ -183,7 +186,7 @@ class TellUsMore extends Component {
       dob,
       email,
       strSelectedPosition,
-      aboutMe, strSelectedMode, isbtnEnable } = this.state;
+      aboutMe, strSelectedMode, isbtnEnable, positions } = this.state;
     if (isbtnEnable) {
 
       if (
@@ -193,7 +196,7 @@ class TellUsMore extends Component {
         UserModel.aboutMe !== aboutMe ||
         UserModel.selectedUserType !== strSelectedMode ||
         UserModel.email !== email ||
-        UserModel.selectedSportPosition !== strSelectedPosition
+        UserModel.selectedSportPosition !== positions[strSelectedPosition]
       ) {
         this.onBoardInfo()
       } else {
@@ -212,7 +215,7 @@ class TellUsMore extends Component {
       strSelectedPosition,
       // dob,
       aboutMe,
-      strSelectedMode } = this.state;
+      strSelectedMode, positions, pickerDate } = this.state;
     getObject('UserId').then((obj) => {
 
       let params = {
@@ -226,7 +229,7 @@ class TellUsMore extends Component {
           state: state,
           name: school,
           classOff: classof,
-          typeOfPlayer: strSelectedPosition
+          typeOfPlayer: positions[strSelectedPosition]
         },
         "roleList": [
           `ROLE_${strSelectedMode.toUpperCase()}`
@@ -250,7 +253,7 @@ class TellUsMore extends Component {
               state: state,
               school: school,
               classof: classof,
-              selectedSportPosition: strSelectedPosition,
+              selectedSportPosition: positions[strSelectedPosition],
               // dob: dob,
               aboutMe: aboutMe,
               profileUrl: UserModel.profileUrl,
@@ -268,8 +271,8 @@ class TellUsMore extends Component {
             UserModel.city = city
             UserModel.state = state
             UserModel.school = school
-            UserModel.classof = classof
-            UserModel.selectedSportPosition = strSelectedPosition
+            UserModel.classof = pickerDate
+            UserModel.selectedSportPosition = positions[strSelectedPosition]
             UserModel.aboutMe = aboutMe
             UserModel.selectedUserType = strSelectedMode
 
@@ -312,9 +315,74 @@ class TellUsMore extends Component {
       openStatesModal: false
     });
   }
+
+  onValueChange = (date) => {
+    this.setState({
+      classof: date.split(' ')[0]
+    }, () => {
+      this.checkForButtonEnable('classof');
+    })
+    this.setState({
+      ...this.state,
+      showYearPicker: false
+    });
+  }
+
+  showPicker = () => {
+    this.setState({ ...this.state, showYearPicker: !this.state.showYearPicker });
+  }
+
+  rowItem = (item, index) => {
+    const { strSelectedPosition } = this.state;
+    console.log(item, index);
+    return (
+      <TouchableOpacity activeOpacity={1} style={{
+        width: wide * 0.24,
+        borderWidth: 3, borderRadius: 10,
+        marginRight: 12,
+        borderColor: strSelectedPosition === index ? Colors.light : Colors.newGrayFontColor
+      }}
+        onPress={() => {
+          this.setState({ strSelectedPosition: index }, () => {
+            this.checkForButtonEnable()
+          })
+
+        }
+        }
+      >
+        <Image resizeMode={'contain'} style={{
+          alignSelf: 'center',
+          marginTop: wide * 0.1,
+          height: wide * 0.15, width: wide * 0.15,
+          tintColor: strSelectedPosition === index ?
+            Colors.light : Colors.newGrayFontColor
+        }} source={require('../../Images/basketball.png')} />
+        <Text style={{
+          color: strSelectedPosition === index ? Colors.light : Colors.newGrayFontColor, alignSelf: 'center',
+          fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
+        }}>{item}</Text>
+        {
+          strSelectedPosition === index ?
+            <Image style={{
+              position: 'absolute',
+              right: wide * 0.02,
+              top: wide * 0.02,
+              width: 20,
+              height: 20
+
+            }} source={require('../../Images/tick.png')} />
+            :
+            null
+        }
+
+      </TouchableOpacity>
+    );
+  }
   
   render() {
-    const { isbtnEnable, strSelectedMode, strSelectedPosition, fname,
+    const { isbtnEnable,
+      strSelectedMode,
+      fname,
       lname,
       classof,
       dob,
@@ -322,9 +390,12 @@ class TellUsMore extends Component {
       city,
       school,
       email,
-      aboutMe, isDatePickerVisible, openStatesModal, positions } = this.state;
-
-      console.log(positions, 'data');
+      aboutMe,
+      isDatePickerVisible,
+      openStatesModal,
+      positions,
+      showYearPicker,
+    } = this.state;
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -523,8 +594,6 @@ class TellUsMore extends Component {
                                 }
                             </TouchableOpacity> */}
             </View>
-
-
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60 }}>
 
               <AnimatedInput
@@ -599,15 +668,13 @@ class TellUsMore extends Component {
               null
             }
 
-
-
             {/* End Email ID */}
-
 
             {/* City & State Field */}
 
             {
-              strSelectedMode === 'player' ? <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
+              strSelectedMode === 'player' ?
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
                 <AnimatedInput
                   placeholder="CITY"
                   onChangeText={(e) => this.setTextofFields('city', e)}
@@ -634,10 +701,24 @@ class TellUsMore extends Component {
                     onChangeText={(e) => this.setTextofFields('state', e)}
                     value={state}
                     disabled={true}
+                    sufix={
+                      <Image
+                        style={{
+                          width: 7,
+                          height: 7,
+                          position: 'absolute',
+                          top: 5,
+                          right: 7
+                        }}
+                        source={require('../../Images/dropDownIconNew.png')}
+                      />
+                    }
                     styleInput={{
                       fontFamily: Fonts.Bold,
                       color: Colors.light,
-                      fontSize: 16, lineHeight: 18
+                      fontSize: 16,
+                      lineHeight: 18,
+                      position: 'relative'
                     }}
                     styleLabel={{
                       fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
@@ -664,10 +745,7 @@ class TellUsMore extends Component {
 
             {/* End City & State Field */}
 
-
             {/* School & Class of */}
-
-
 
             {
               strSelectedMode === 'player' ? <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
@@ -697,83 +775,38 @@ class TellUsMore extends Component {
 
                 {/* Add picker here */}
 
-                <View>
-
-                  {
-                    classof !== "" ? <Text style={{
-                      fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                      fontSize: 12,
-                      position: "relative",
-                      top: -20
-                    }}>CLASS OF</Text> : null
-                  }
-
-
-
-
-                  <SelectDropdown
-                    data={years}
-                    onSelect={(selectedItem, index) => {
-                      console.log(selectedItem, index)
-                      this.setState({
-                        classof: selectedItem
-                      }, () => {
-                        this.checkForButtonEnable('classof');
-                      })
-                    }}
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                      // text represented after item is selected
-                      // if data array is an array of objects then return selectedItem.property to render after item is selected
-                      return selectedItem
-                    }}
-                    rowTextForSelection={(item, index) => {
-                      // text represented for each item in dropdown
-                      // if data array is an array of objects then return item.property to represent item in dropdown
-                      return item
-                    }}
-
-                    buttonStyle={{
-                      backgroundColor: "transparent",
-                      borderBottomWidth: 1.5,
-                      borderBottomColor: Colors.borderColor,
-                      position: "relative",
-                      top: classof !== "" ? -23 : -7,
-                      width: wide * 0.4
-                    }}
-
-
-                    buttonTextStyle={
-                      classof !== "" ? {
-                        fontFamily: Fonts.Bold,
-                        color: Colors.light,
-                        fontSize: 16, lineHeight: 18,
-                        textAlign: "left",
+                <TouchableOpacity onPress={() => this.showPicker()} style={{ width: '45.5%', position: 'relative' }}>
+                  <View style={{ textAlign: 'left' }}>
+                    {
+                      classof !== "" ? <Text style={{
+                        fontFamily: Fonts.Bold, color: Colors.white_08,
+                        fontSize: 12,
                         position: "relative",
-                        left: 15
-                      }
-                        :
-                        {
-                          color: Colors.grey,
-                          fontSize: 16,
-                          textAlign: "left",
-                          position: "relative",
-                          left: 15
-                        }}
-                    defaultButtonText="CLASS OF"
-                  />
-                </View>
-
-
+                        top: -20
+                      }}>CLASS OF</Text> : <Text style={{
+                        fontFamily: Fonts.Bold,
+                        color: Colors.overlayWhite,
+                        fontSize: 15,
+                        position: "relative",
+                        top: 14
+                      }}>CLASS OF</Text>
+                    }
+                    <Image
+                      style={{
+                        width: 7,
+                        height: 7,
+                        position: 'absolute',
+                        top: 20,
+                        right: 7
+                      }}
+                      source={require('../../Images/dropDownIconNew.png')}
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
                 :
                 null
             }
-
-
-
-
-
-
             {
               strSelectedMode === 'coach' ? <View style={{ marginTop: 27 }}>
                 <Text style={{
@@ -786,8 +819,6 @@ class TellUsMore extends Component {
                 }}>{aboutMe.trim().length}/266</Text>
 
                 <TextInput
-                  //valid={() => isValidEmail(email)}
-                  // errorText="Error"
                   onChangeText={(e) => this.setTextofFields('aboutMe', e)}
                   value={aboutMe}
                   style={{
@@ -818,192 +849,17 @@ class TellUsMore extends Component {
 
             {/* Sport Position */}
             {
-              strSelectedMode === 'player' ? <View style={{
-                width: wide * 0.8,
-                height: wide * 0.4,
-                marginTop: wide * 0.04,
-                flexDirection: 'row',
-              }}>
-
-                <ScrollView
-                  horizontal={true}
-                >
-                  <TouchableOpacity activeOpacity={1} style={{
-                    width: wide * 0.24,
-                    borderWidth: 3, borderRadius: 10,
-                    marginHorizontal: 10,
-                    borderColor: strSelectedPosition === 'defender' ? Colors.light : Colors.newGrayFontColor
-                  }}
-                    onPress={() => {
-
-                      this.setState({ strSelectedPosition: 'defender' }, () => {
-                        this.checkForButtonEnable()
-                      })
-
-                    }
-                    }
-                  >
-                    <Image resizeMode={'contain'} style={{
-                      alignSelf: 'center',
-                      marginTop: wide * 0.1,
-                      height: wide * 0.15, width: wide * 0.15,
-                      tintColor: strSelectedPosition === 'defender' ?
-                        Colors.light : Colors.newGrayFontColor
-                    }} source={require('../../Images/basketball.png')} />
-                    <Text style={{
-                      color: strSelectedPosition === 'defender' ? Colors.light : Colors.newGrayFontColor, alignSelf: 'center',
-                      fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
-                    }}>DEFENDER</Text>
-                    {
-                      strSelectedPosition === 'defender' ?
-                        <Image style={{
-                          position: 'absolute',
-                          right: wide * 0.02,
-                          top: wide * 0.02,
-                          width: 20,
-                          height: 20
-
-                        }} source={require('../../Images/tick.png')} />
-                        :
-                        null
-                    }
-
-                  </TouchableOpacity>
-
-                  <TouchableOpacity activeOpacity={1} style={{
-                    width: wide * 0.24,
-                    borderWidth: 3, borderRadius: 10,
-                    marginHorizontal: 10,
-                    borderColor: strSelectedPosition === 'shooter' ? Colors.light : Colors.newGrayFontColor
-                  }}
-                    onPress={() => {
-
-                      this.setState({ strSelectedPosition: 'shooter' }, () => {
-                        this.checkForButtonEnable()
-                      })
-
-                    }
-                    }
-                  >
-                    <Image resizeMode={'contain'} style={{
-                      alignSelf: 'center',
-                      marginTop: wide * 0.1,
-                      height: wide * 0.15, width: wide * 0.15,
-                      tintColor: strSelectedPosition === 'shooter' ?
-                        Colors.light : Colors.newGrayFontColor
-                    }} source={require('../../Images/basketball.png')} />
-                    <Text style={{
-                      color: strSelectedPosition === 'shooter' ? Colors.light : Colors.newGrayFontColor, alignSelf: 'center',
-                      fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
-                    }}>SHOOTER</Text>
-                    {
-                      strSelectedPosition === 'shooter' ?
-                        <Image style={{
-                          position: 'absolute',
-                          right: wide * 0.02,
-                          top: wide * 0.02,
-                          width: 20,
-                          height: 20
-
-                        }} source={require('../../Images/tick.png')} />
-                        :
-                        null
-                    }
-
-                  </TouchableOpacity>
-
-                  <TouchableOpacity activeOpacity={1} style={{
-                    width: wide * 0.24,
-                    borderWidth: 3, borderRadius: 10,
-                    marginHorizontal: 10,
-                    borderColor: strSelectedPosition === 'forward' ? Colors.light : Colors.newGrayFontColor
-                  }}
-                    onPress={() => {
-
-                      this.setState({ strSelectedPosition: 'forward' }, () => {
-                        this.checkForButtonEnable()
-                      })
-
-                    }
-                    }
-                  >
-                    <Image resizeMode={'contain'} style={{
-                      alignSelf: 'center',
-                      marginTop: wide * 0.1,
-                      height: wide * 0.15, width: wide * 0.15,
-                      tintColor: strSelectedPosition === 'forward' ?
-                        Colors.light : Colors.newGrayFontColor
-                    }} source={require('../../Images/basketball.png')} />
-                    <Text style={{
-                      color: strSelectedPosition === 'forward' ? Colors.light : Colors.newGrayFontColor, alignSelf: 'center',
-                      fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
-                    }}>FORWARD</Text>
-                    {
-                      strSelectedPosition === 'forward' ?
-                        <Image style={{
-                          position: 'absolute',
-                          right: wide * 0.02,
-                          top: wide * 0.02,
-                          width: 20,
-                          height: 20
-
-                        }} source={require('../../Images/tick.png')} />
-                        :
-                        null
-                    }
-
-                  </TouchableOpacity>
-
-
-                  <TouchableOpacity activeOpacity={1} style={{
-                    width: wide * 0.24,
-                    borderWidth: 3, borderRadius: 10,
-                    marginHorizontal: 10,
-                    borderColor: strSelectedPosition === 'center' ? Colors.light : Colors.newGrayFontColor
-                  }}
-                    onPress={() => {
-
-                      this.setState({ strSelectedPosition: 'center' }, () => {
-                        this.checkForButtonEnable()
-                      })
-
-                    }
-                    }
-                  >
-                    <Image resizeMode={'contain'} style={{
-                      alignSelf: 'center',
-                      marginTop: wide * 0.1,
-                      height: wide * 0.15, width: wide * 0.15,
-                      tintColor: strSelectedPosition === 'center' ?
-                        Colors.light : Colors.newGrayFontColor
-                    }} source={require('../../Images/basketball.png')} />
-                    <Text style={{
-                      color: strSelectedPosition === 'center' ? Colors.light : Colors.newGrayFontColor, alignSelf: 'center',
-                      fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
-                    }}>CENTER</Text>
-                    {
-                      strSelectedPosition === 'center' ?
-                        <Image style={{
-                          position: 'absolute',
-                          right: wide * 0.02,
-                          top: wide * 0.02,
-                          width: 20,
-                          height: 20
-
-                        }} source={require('../../Images/tick.png')} />
-                        :
-                        null
-                    }
-
-                  </TouchableOpacity>
-
-
-                </ScrollView>
-
-
-
-
-              </View>
+              strSelectedMode === 'player' ? 
+              
+              <FlatList
+                data={positions}
+                keyExtractor={item => item}
+                renderItem={({item, index}) => this.rowItem(item, index)}
+                horizontal
+                contentContainerStyle={{
+                  marginTop: 25
+                }}
+              />
                 :
                 null
             }
@@ -1051,6 +907,20 @@ class TellUsMore extends Component {
           onCancel={() => this.setState({ isDatePickerVisible: false })}
           maximumDate={moment.now()}
         />
+
+        {showYearPicker && (
+          <DatePicker
+            mode="monthYear"
+            selectorStartingYear={1900}
+            onMonthYearChange={selectedDate => this.onValueChange(selectedDate)}
+            options={{
+              backgroundColor: Colors.base,
+              textDefaultColor: Colors.white_08,
+              textHeaderColor: Colors.white_08,
+              borderColor: Colors.white_08,
+            }}
+          />
+        )}
       </SafeAreaView>
     );
   }

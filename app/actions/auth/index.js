@@ -245,6 +245,7 @@ function OnBoardFailure(message) {
 
 export function onBoardAPI(userId, params, cb) {
   debugger
+  console.log(params, '');
   return (dispatch, getState) => {
     dispatch(OnBoardRequest());
     return axios
