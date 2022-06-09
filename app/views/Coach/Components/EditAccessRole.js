@@ -16,17 +16,12 @@ function EditAccessRole({ showModalProps = false, onHideModalProps }) {
         "Game Support"
     ]);
 
-    // useEffect(() => {
-    //     setShowModal(showModalProps);
-    // }, [showModalProps]);
-
     const renderRoleList = (item) => {
         return (
             <TouchableOpacity
                 style={{
                     flex: 1, justifyContent: 'center', alignItems: 'center',
                     height: 50, marginTop: 10,
-                    // borderBottomWidth: 1, borderBottomColor: Colors.newGrayFontColor
                 }}
                 onPress={() => {
                     // onHideModalProps(false);

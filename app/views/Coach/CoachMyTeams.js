@@ -3,6 +3,9 @@ import {
     View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, FlatList,
     StyleSheet, Alert, Platform, Modal, Touchable, ImageBackground, Dimensions
 } from 'react-native';
+
+import { TouchableOpacity as TouchableOp } from 'react-native-gesture-handler';
+
 import {
     Layout,
     Colors,
@@ -26,7 +29,8 @@ import {
     removeMultiplePlayerToTeam,
     getCoachRoles,
     getCoachTeamRoles,
-    checkSubscription
+    checkSubscription,
+    removeCoachRole
 } from '../../actions/home';
 import FastImage from 'react-native-fast-image';
 import AnimatedInput from '../../Helpers/react-native-animated-input';
@@ -56,6 +60,8 @@ import StatisticalOverview from './Components/StatisticalOverview';
 import GamePlanCard from './Components/GamePlanCard';
 import TeamStats from './Components/TeamStats';
 import EditAccessRole from './Components/EditAccessRole';
+import StatPlanCard from './Components/StatPlanCard';
+import RoleMenuModal from './Components/RoleMenuModal';
 
 
 let wide = Layout.width;
@@ -64,9 +70,12 @@ let isSelectShow = false;
 
 class MyTeams extends Component {
     static navigationOptions = { header: null };
+
     constructor(props) {
         super(props);
         this.state = {
+            showRoleMenuModal: false,
+            role_id: "",
             openUserRoleEdit: "",
             loading: false,
             selectedIndex: 0,
@@ -113,6 +122,51 @@ class MyTeams extends Component {
         };
     }
 
+    // for roles
+    showRoleMenuModal(id) {
+
+        console.log("coach id is ", id);
+
+        this.setState({
+            role_id: id,
+            showRoleMenuModal: true
+        })
+    }
+
+    hideRoleMenuModal() {
+        this.setState({
+            role_id: "",
+            showRoleMenuModal: false
+        })
+    }
+
+    removeCoachFromRole(coachId) {
+        //need to confirm from the api.
+
+        const { coachTeam } = this.props.Home;
+
+        const teamId = coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId;
+
+        console.log("Coach id is ", coachId, " and team id is ", teamId);
+
+        if (!teamId) {
+            Alert.alert("Error", "Team Id not found!");
+            return false;
+        }
+
+        this.props.dispatch(removeCoachRole(teamId, coachId, (res) => {
+            if (res) {
+                console.log("Coach removed successfully!");
+                Alert.alert("Success", "Coach Removed Successfully!");
+            }
+        }))
+
+
+    }
+
+    //end roles
+
+
     onHideRoleEdit() {
         this.setState({
             showRoleEdit: false
@@ -134,6 +188,7 @@ class MyTeams extends Component {
     componentWillUnmount() {
         this.setState({ isAddTeam: false })
     }
+
     getInitialData = (isfromAdd) => {
         getObject('UserId').then((obj) => {
             this.setState({ loading: true, selectedKpi: [] }, () => {
@@ -184,8 +239,9 @@ class MyTeams extends Component {
                                     console.log("End else team");
 
                                     this._filterTeamSeasonWise();
-                                    // this.filterBarChartData(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStatsTabDto);
-                                    // this._callPlayerTabApi(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId);
+                                    this.filterBarChartData(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStatsTabDto);
+                                    this._filterGameStatBarData();
+                                    this._callPlayerTabApi(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId);
 
                                 })
 
@@ -346,9 +402,39 @@ class MyTeams extends Component {
         // this.setState({ loading: false });
     }
 
+    // coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStatsTabDto
 
     _filterGameStatBarData = () => {
+
+        // const { coachTeam } = this.state;
+        const { coachTeam } = this.props.Home
+
+        var arr = []
+        if (Object.keys(coachTeam).length !== 0) {
+            const statObj = coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStats;
+
+            console.log("Filter game tab data working new ", statObj);
+
+            for (const key in statObj) {
+                arr.push({
+                    x: key,
+                    y: parseFloat(statObj[key])
+                })
+            }
+        }
+
+        console.log("Filter game tab data working new arr ", arr);
+
+        this.setState({ gameStatBarData: arr, loading: false, removeLoading: false })
+    }
+
+
+    _filterGameStatBarDataOld = () => {
+
         const { gameTabData } = this.state;
+
+        console.log("Filter game tab data working ", gameTabData);
+
         var arr = []
         if (Object.keys(gameTabData).length !== 0) {
             const statObj = gameTabData?.teamStats;
@@ -488,16 +574,22 @@ class MyTeams extends Component {
 
         // Alert.alert("Dropdown selected", `Value is ${dropDownSelectedVal}`)
 
+
+
         getObject('UserId').then((obj) => {
             this.props.dispatch(getGameListForTeam(teamId, obj, dropDownSelectedVal, (res, resData) => {
                 // setTimeout(() => {
                 if (res) {
                     debugger
-                    console.log("---resssss", resData);
+                    console.log("---resssssgame", resData);
                     this.setState({
                         gameTabData: resData,
-                    }, () => this._filterPieChartGamesData())
+                    }, () => {
+                        this._filterPieChartGamesData();
+                        // this._filterGameStatBarData();
+                    })
                 }
+
                 // }, 500);
 
             }))
@@ -1360,7 +1452,7 @@ class MyTeams extends Component {
     _renderUserRole = ({ item, index }) => {
 
         return (
-            <View style={{ marginBottom: wide * 0.03, zIndex: 1 }}>
+            <View style={{ marginBottom: wide * 0.03 }}>
 
 
 
@@ -1411,79 +1503,17 @@ class MyTeams extends Component {
                         {/* </View> */}
                     </View>
 
-                    <MenuProvider>
-                        <Menu
-                            renderer={renderers.SlideInMenu}
-                            // opened={true}
-                            onBackdropPress={() => this.setState({
-                                openUserRoleEdit: ""
-                            })}
-                            onSelect={value => {
-
-                                if (value === 1) {
-                                    Alert.alert("Remove", JSON.stringify(item));
-                                }
-
-                                if (value === 2) {
-                                    // Alert.alert("Edit Access", "Edit Acces scalled")
-                                    this.setState({
-                                        showRoleEdit: true
-                                    })
-
-                                    // this.state.showRoleEdit
-                                }
-
-                            }}
+                    <TouchableOpacity onPress={() => this.showRoleMenuModal(item.coachId)}>
+                        <Image
+                            source={require("../../Images/ellipses-v.png")}
                             style={{
-                                backgroundColor: "red",
-                                width: 0,
-                                alignSelf: "flex-end",
-                                zIndex: 100
+                                marginTop: 10,
+                                marginRight: 20
                             }}
 
-
-                        >
-                            <MenuTrigger>
-
-                                <Image
-                                    source={require("../../Images/ellipses-v.png")}
-                                    style={{
-                                        marginTop: 40,
-                                        width: wide * 0.04, height: wide * 0.04, right: 30,
-                                        justifyContent: 'center', alignItems: 'center',
-                                    }}
-
-                                    resizeMode={'contain'}
-                                />
-
-
-                            </MenuTrigger>
-                            <MenuOptions customStyles={{
-
-                                optionsContainer: {
-                                    backgroundColor: Colors.darkshade,
-                                    borderRadius: 10,
-                                    marginTop: 10,
-                                    marginRight: 10,
-                                    zIndex: 100,
-                                    paddingLeft: 10,
-                                    paddingTop: 10
-                                },
-
-                            }}>
-                                <MenuOption value={1}>
-                                    <Text style={{ color: Colors.lightshade }}>Remove</Text>
-                                </MenuOption>
-                                <MenuOption value={2}>
-                                    <Text style={{ color: Colors.lightshade }}>Edit Access</Text>
-                                </MenuOption>
-                                <MenuOption value={3}>
-                                    <Text style={{ color: Colors.lightshade }}>Send Message</Text>
-                                </MenuOption>
-                            </MenuOptions>
-                        </Menu>
-                    </MenuProvider>
-
+                            resizeMode={'contain'}
+                        />
+                    </TouchableOpacity>
 
 
 
@@ -1814,13 +1844,19 @@ class MyTeams extends Component {
 
     _handleTabPress = (tabIndx, tabNm, teamId) => {
 
+        console.log(`Tab Index: ${tabIndx}, Tab Name: ${tabNm}, Team ID: ${teamId}`);
+
         this.setState({ selectedTabIndex: tabIndx, selectedTab: tabNm, selectedPlayerIndex: [], selectedPlayer: [] }, () => {
 
             console.log("Current tab is ", tabNm);
 
             if (tabNm === 'Games') {
-                // this._callGameTabApi(teamId)
                 this._callGameTabApi(teamId);
+            }
+
+            if (tabNm === 'Stats') {
+                this.filterBarChartData();
+                this._filterGameStatBarData();
             }
 
         })
@@ -1829,11 +1865,12 @@ class MyTeams extends Component {
     _renderTabs = (item, index) => {
         const { coachTeam } = this.props.Home
         return (
-            <TouchableOpacity style={{
+            <TouchableOp style={{
                 height: wide * 0.12,
                 width: wide * 0.25,
                 justifyContent: 'center',
                 alignItems: 'center',
+
                 // backgroundColor: 'green'
             }}
                 activeOpacity={1}
@@ -1858,7 +1895,7 @@ class MyTeams extends Component {
 
                 </View>
 
-            </TouchableOpacity>
+            </TouchableOp>
 
         );
     };
@@ -2302,78 +2339,7 @@ class MyTeams extends Component {
                                                 {this.state.selectedTab === 'Stats' ?
                                                     <>
 
-                                                        <View style={{
-                                                            marginTop: 25,
-                                                            borderRadius: 10,
-                                                        }}>
-                                                            <TouchableOpacity activeOpacity={true} onPress={() => Navigation.navigate("CoachRoadToPro")}>
-                                                                <ImageBackground
-                                                                    source={require('../../Images/plan_bk_1.png')}
-                                                                    style={{
-                                                                        width: Dimensions.get("window").width * 0.87,
-                                                                        minHeight: 125,
-                                                                        alignSelf: "center",
-                                                                        flexDirection: "column"
-                                                                    }}
-                                                                    imageStyle={{
-                                                                        borderRadius: 10
-                                                                    }}
-                                                                >
-
-                                                                    <View style={{
-                                                                        flexDirection: "row"
-                                                                    }}>
-
-                                                                        <View style={{
-                                                                            flex: 3
-                                                                        }}>
-                                                                            <Text style={{
-                                                                                fontWeight: "bold",
-                                                                                fontSize: 20,
-                                                                                paddingLeft: 15,
-                                                                                paddingTop: 20
-                                                                            }}>Advanced Statistics</Text>
-                                                                        </View>
-
-                                                                        <View style={{
-                                                                            flex: 1,
-                                                                            paddingTop: 20
-                                                                        }}>
-                                                                            <Text style={{
-                                                                                fontStyle: "italic",
-                                                                                textAlign: "right",
-                                                                                fontSize: 12
-                                                                            }}>Get Premium</Text>
-                                                                        </View>
-
-                                                                        <View style={{
-                                                                            flex: 1,
-                                                                            paddingRight: 15,
-                                                                            paddingTop: 20
-                                                                        }}>
-                                                                            <Text style={{
-                                                                                textAlign: "right",
-                                                                                fontWeight: "bold",
-                                                                                fontSize: 20
-                                                                            }}>$50</Text>
-                                                                        </View>
-
-                                                                    </View>
-
-                                                                    <View style={{
-                                                                        marginTop: 10,
-                                                                        paddingHorizontal: 15,
-
-                                                                    }}>
-                                                                        <Text style={{
-                                                                            textAlign: "justify"
-                                                                        }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the </Text>
-                                                                    </View>
-
-                                                                </ImageBackground>
-                                                            </TouchableOpacity>
-                                                        </View>
-
+                                                        <StatPlanCard bannerInfo={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.bannerInfo} premium={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.premiumPurchased} />
 
                                                         {this.state.isPlayerStatShow ?
                                                             <>
@@ -2384,9 +2350,7 @@ class MyTeams extends Component {
                                                                     <View
                                                                         style={{
                                                                             flexDirection: 'row',
-                                                                            // justifyContent: 'space-between', 
                                                                             alignItems: 'center',
-                                                                            // backgroundColor: 'green',
                                                                             marginTop: 25,
                                                                             width: '75%',
                                                                             marginHorizontal: wide * 0.055
@@ -2489,6 +2453,31 @@ class MyTeams extends Component {
 
                                                                     </View> : null
                                                                 }
+
+
+                                                                {this.state.gameStatBarData.length > 0 ?
+                                                                    <View style={{ marginTop: 25, }}>
+                                                                        <Title data={'Team Stats'} />
+                                                                        <View style={{
+                                                                            // height: wide * 0.8,
+                                                                            justifyContent: 'center',
+                                                                            alignItems: 'center',
+                                                                            marginTop: 14,
+                                                                            marginHorizontal: 24,
+                                                                            // backgroundColor: 'green',
+                                                                            // flex: 1,
+                                                                            // display: 'flex'
+
+                                                                        }}>
+                                                                            <GameStats barData1={this.state.gameStatBarData} />
+                                                                        </View>
+                                                                    </View>
+
+
+                                                                    : null
+                                                                }
+
+
                                                             </>
 
                                                             :
@@ -2619,8 +2608,9 @@ class MyTeams extends Component {
                                                 {this.state.selectedTab === 'Roles' ?
                                                     <View style={{ flex: 1, }}>
 
-                                                        <EditAccessRole showModalProps={this.state.showRoleEdit} onHideModalProps={() => this.onHideRoleEdit()} />
+                                                        <RoleMenuModal show={this.state.showRoleMenuModal} hideModal={() => this.hideRoleMenuModal()} id={this.state.role_id} removeCoach={(id) => this.removeCoachFromRole(id)} />
 
+                                                        <EditAccessRole showModalProps={this.state.showRoleEdit} onHideModalProps={() => this.onHideRoleEdit()} />
 
                                                         <View style={{
                                                             flexDirection: 'row',

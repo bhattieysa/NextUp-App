@@ -119,8 +119,11 @@ class AddPhotoId extends Component {
         } else {
             if (UserModel.selectedUserType === 'player') {
                 Navigation.navigate('Home')
+                // Navigation.navigate('RoadToPro', { type: 'Player' })
+
             } else {
                 Navigation.navigate('TrainerHome')
+                // Navigation.navigate('RoadToPro', { type: 'Trainer' })
             }
         }
 

@@ -13,6 +13,20 @@ const LoginStack = createStackNavigator(
 
 
         },
+
+        RoadToPro: {
+            getScreen: () => require('../views/auth/RoadToPro').default,
+        },
+
+        RoadToProPlan: {
+            getScreen: () => require('../views/auth/RoadToProPlan').default,
+        },
+
+        RoadToProLevel: {
+            getScreen: () => require('../views/auth/RoadToProLevel').default,
+        },
+
+
         Login: {
             getScreen: () => require('../views/auth/login').default,
         },

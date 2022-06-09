@@ -901,6 +901,41 @@ export function getCoachTeamRoles(obj, ownerId, cb) {
 }
 
 
+//remove coach 
+
+export function removeCoachRole(teamId, coachId, cb) {
+  return (dispatch, getState) => {
+
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.removeCoachRole + teamId + "/" + coachId)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+
+          //data.currentLevelState = 1//line to comment
+          //cb(true, data)
+          // getState().entities.homePlayer.teamRoles = data;
+          dispatch(getCoachTeamRoles(teamId, coachId));
+
+          dispatch(myStandingSuccess()), cb(true);
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+
+//end remove coach
+
 //get coach roles
 export function getCoachRoles(obj, cb) {
   return (dispatch, getState) => {
@@ -1000,13 +1035,13 @@ export function inviteCoachRole(data, cb) {
 
 
 //invite coach
-export function getRoadToProDetail(cb) {
+export function getRoadToProDetail(type = "COACH", cb) {
   return (dispatch, getState) => {
 
     dispatch(myStandingRequest());
     //162367717958303 //162330894799504 //162643359596706
     return axios
-      .get(AppURLs.roadToPro)//'162522113111002'
+      .get(type === "COACH" ? AppURLs.coachRoadToPro : AppURLs.roadToPro)//'162522113111002'
       .then((response) => {
         debugger
         if (response.status == 200 && response.data?.data !== null) {
@@ -1079,11 +1114,15 @@ export function getNewCoachTeam(obj, cb) {
               data.teamTabInfoDtoList[i].teamStats = statResponseData.teamStats;
               data.teamTabInfoDtoList[i].teamStatsTabDto = statResponseData.teamStatsTabDto;
               data.teamTabInfoDtoList[i].seasonType = statResponseData.seasonType;
+              data.teamTabInfoDtoList[i].bannerInfo = statResponseData.bannerInfo;
+              data.teamTabInfoDtoList[i].premiumPurchased = statResponseData.premiumPurchased;
 
               //now populate the stats
 
             }
           }
+
+          console.log("Team data is ", JSON.stringify(data));
 
           getState().entities.homePlayer.coachTeam = data;
 

@@ -42,7 +42,7 @@ class RoadToPro extends Component {
 
         this.setState({ loading: true })
 
-        this.props.dispatch(getRoadToProDetail((res) => {
+        this.props.dispatch(getRoadToProDetail("COACH", (res) => {
 
             console.log("Data response is ", res);
 
@@ -182,7 +182,7 @@ class RoadToPro extends Component {
                                 <Text style={{
                                     alignSelf: 'center', color: Colors.light,
                                     fontFamily: Fonts.Bold,
-                                }}>View Plans</Text>
+                                }}>Subscribe</Text>
                             </TouchableOpacity>
 
 
