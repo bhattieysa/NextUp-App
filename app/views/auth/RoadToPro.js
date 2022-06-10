@@ -42,7 +42,7 @@ class RoadToPro extends Component {
 
         this.setState({ loading: true })
 
-        this.props.dispatch(getRoadToProDetail((res) => {
+        this.props.dispatch(getRoadToProDetail("PLAYER", (res) => {
 
             console.log("Data response is ", res);
 
@@ -176,6 +176,7 @@ class RoadToPro extends Component {
                                     justifyContent: 'center', marginTop: 20,
                                 }} onPress={() => {
                                     // this.actionContinue()
+                                    Navigation.navigate("RoadToProLevel")
                                 }}>
                                 <Text style={{
                                     alignSelf: 'center', color: Colors.light,
