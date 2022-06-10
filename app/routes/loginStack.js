@@ -16,8 +16,11 @@ const LoginStack = createStackNavigator(
         Login: {
             getScreen: () => require('../views/auth/login').default,
         },
-        TellUsMore: {
-            getScreen: () => require('../views/auth/TellUsMore').default,
+        CardsList: {
+            getScreen: () => require('../views/auth/CardsList').default,
+        },
+        AddCard: {
+            getScreen: () => require('../views/auth/AddCard').default,
         },
         UploadPhoto: {
             getScreen: () => require('../views/auth/UploadPhoto').default,
