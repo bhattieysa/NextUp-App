@@ -2131,6 +2131,8 @@ id month_navigation_bar
 id month_navigation_fragment_toggle
 id month_navigation_next
 id month_navigation_previous
+id month_picker
+id month_picker_dialog
 id month_title
 id mtrl_calendar_day_selector_frame
 id mtrl_calendar_days_of_week
@@ -2162,6 +2164,7 @@ id normal
 id notification_background
 id notification_main_column
 id notification_main_column_container
+id number_spinners
 id off
 id on
 id open_graph
@@ -2316,6 +2319,7 @@ id wrapper_controls
 id wrapper_reset_rotate
 id wrapper_rotate_by_angle
 id wrapper_states
+id year_picker
 integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
 integer app_bar_elevation_anim_duration
@@ -2460,6 +2464,8 @@ layout notification_template_media
 layout notification_template_media_custom
 layout notification_template_part_chronometer
 layout notification_template_part_time
+layout picker_list_view
+layout picker_list_view_dark
 layout redbox_item_frame
 layout redbox_item_title
 layout redbox_view
@@ -2964,9 +2970,11 @@ style CardView_Dark
 style CardView_Light
 style ClockTimePickerDialog
 style ClockTimePickerStyle
+style DarkStyle
 style DialogAnimationFade
 style DialogAnimationSlide
 style EmptyTheme
+style LightStyle
 style MaterialAlertDialog_MaterialComponents
 style MaterialAlertDialog_MaterialComponents_Body_Text
 style MaterialAlertDialog_MaterialComponents_Picker_Date_Calendar
@@ -2991,6 +2999,7 @@ style MessengerButtonText_Blue_Small
 style MessengerButtonText_White
 style MessengerButtonText_White_Large
 style MessengerButtonText_White_Small
+style Picker
 style Platform_AppCompat
 style Platform_AppCompat_Light
 style Platform_MaterialComponents

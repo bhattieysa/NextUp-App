@@ -53,6 +53,8 @@ import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-maps
 import com.airbnb.android.react.maps.MapsPackage;
+// react-native-month-year-picker
+import com.gusparis.monthpicker.RNMonthPickerPackage;
 // react-native-orientation-locker
 import org.wonday.orientation.OrientationPackage;
 // react-native-permissions
@@ -145,6 +147,7 @@ public class PackageList {
       new PickerPackage(),
       new LinearGradientPackage(),
       new MapsPackage(),
+      new RNMonthPickerPackage(),
       new OrientationPackage(),
       new RNPermissionsPackage(),
       new ReactNativePushNotificationPackage(),

@@ -1,7 +1,8 @@
-#Wed Jun 08 12:14:47 IST 2022
+#Sat Jun 11 14:17:41 IST 2022
 path.4=classes_1.dex
 path.3=classes_0.dex
 path.2=classes2.dex
+renamed.38=classes39.dex
 path.1=classes.dex
 renamed.37=classes38.dex
 path.8=classes_13.dex
@@ -23,6 +24,7 @@ path.35=classes_8.dex
 path.32=classes_5.dex
 path.9=classes_14.dex
 path.33=classes_6.dex
+path.38=classes_34.dex
 path.36=classes_9.dex
 path.37=classes2.dex
 renamed.29=classes30.dex
@@ -80,6 +82,7 @@ path.27=classes_30.dex
 path.28=classes_31.dex
 path.25=classes_29.dex
 path.26=classes_3.dex
+base.38=/Users/divesh/Documents/Projects/doja-enterprises/NextUpApp/android/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_34.dex
 base.37=/Users/divesh/Documents/Projects/doja-enterprises/NextUpApp/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes2.dex
 base.36=/Users/divesh/Documents/Projects/doja-enterprises/NextUpApp/android/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_9.dex
 base.4=/Users/divesh/Documents/Projects/doja-enterprises/NextUpApp/android/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_1.dex

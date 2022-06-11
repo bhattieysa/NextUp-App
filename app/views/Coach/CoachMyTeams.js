@@ -2462,8 +2462,8 @@ class MyTeams extends Component {
                                                                             // height: wide * 0.8,
                                                                             justifyContent: 'center',
                                                                             alignItems: 'center',
-                                                                            marginTop: 14,
-                                                                            marginHorizontal: 24,
+                                                                            // marginTop: 14,
+                                                                            // marginHorizontal: 10,
                                                                             // backgroundColor: 'green',
                                                                             // flex: 1,
                                                                             // display: 'flex'
@@ -2626,13 +2626,13 @@ class MyTeams extends Component {
                                                                 fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
                                                                 marginTop: 1.5
                                                             }}> {"Admin"}</Text>
-                                                            <Text style={{
+                                                            {/* <Text style={{
                                                                 color: Colors.pendingInviteTxtColor, fontSize: 10,
                                                                 fontFamily: Fonts.SemiBoldItalic,
                                                                 lineHeight: 12,
                                                                 paddingTop: 3, paddingRight: 10,
                                                                 paddingBottom: 3, paddingLeft: 3,
-                                                            }} >Pending Invitation</Text>
+                                                            }} >Pending Invitation</Text> */}
                                                         </View>
 
 
@@ -2644,8 +2644,47 @@ class MyTeams extends Component {
                                                             }}
                                                             data={teamRoles.adminRoleList}
                                                             renderItem={(item, index) => this._renderUserRole(item, index)}
-                                                        // stickyHeaderIndices={[0]}
                                                         />
+
+
+                                                        {/* For the game support */}
+
+                                                        <View style={{
+                                                            flexDirection: 'row',
+                                                            height: 24,
+                                                            marginTop: 15, justifyContent: 'space-between',
+                                                            backgroundColor: Colors.myTeamPlayerListLabel,
+                                                            alignItems: 'center',
+                                                            zIndex: 1
+
+                                                        }}>
+                                                            <Text style={{
+                                                                color: Colors.light, fontSize: 14, lineHeight: 16,
+                                                                fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
+                                                                marginTop: 1.5
+                                                            }}> {"Game Support"}</Text>
+                                                            {/* <Text style={{
+                                                                color: Colors.pendingInviteTxtColor, fontSize: 10,
+                                                                fontFamily: Fonts.SemiBoldItalic,
+                                                                lineHeight: 12,
+                                                                paddingTop: 3, paddingRight: 10,
+                                                                paddingBottom: 3, paddingLeft: 3,
+                                                            }} >Pending Invitation</Text> */}
+                                                        </View>
+
+
+                                                        <FlatList
+                                                            style={{
+                                                                marginTop: 10,
+                                                                // backgroundColor: 'red',
+                                                                flex: 1
+                                                            }}
+                                                            data={teamRoles.stackLoggers}
+                                                            renderItem={(item, index) => this._renderUserRole(item, index)}
+                                                        />
+
+                                                        {/* End Game Support */}
+
 
                                                         <View style={{
                                                             // marginHorizontal: 20,
@@ -3670,7 +3709,7 @@ export const GameStats = ({ barData1 }) => {
                 height={barData1.length <= 2 ? 100 : barData1.length <= 3 ? 200 : barData1.length <= 5 ? 250 :
                     barData1.length <= 10 ? 400 : barData1.length <= 15 ? 550 : barData1.length <= 18 ? 650 : 750}
 
-                padding={{ left: 50, right: 40, bottom: 30, top: 5 }}
+                // padding={{ left: 50, right: 40, bottom: 30, top: 5 }}
                 domainPadding={{ x: 10, y: 20, }}
             // minDomain={{ x: 10, y: 10 }}
             >

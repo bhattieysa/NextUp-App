@@ -886,6 +886,9 @@ export function getCoachTeamRoles(obj, ownerId, cb) {
 
           //data.currentLevelState = 1//line to comment
           //cb(true, data)
+
+          console.log("Team Roles: ", JSON.stringify(data));
+
           getState().entities.homePlayer.teamRoles = data;
           dispatch(myStandingSuccess()), cb(true);
         } else {
