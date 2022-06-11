@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, Modal, ScrollView, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, Modal, ScrollView, Dimensions, SafeAreaView } from 'react-native';
 import { Colors } from '../../constants';
 
 export default class StatesListModal extends Component {
@@ -164,71 +164,71 @@ export default class StatesListModal extends Component {
       <Modal
         visible={openModal}
       >
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: 10,
-            backgroundColor: Colors.base
-          }}
-        >
-          <Text style={{ color: Colors.white_08, fontSize: 20 }}>Choose States</Text>
-          <TouchableOpacity
+        <SafeAreaView style={{ backgroundColor: Colors.base }}>
+          <View
             style={{
-              position: 'absolute',
-              right: 20,
-              top: 10
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingTop: 10,
             }}
-            onPress={() => onClose()}
           >
-            <View>
-              <Text
-                style={{
-                  color: Colors.white_08,
-                  fontSize: 20,
-                  fontWeight: '600'
-                }}
-              >X</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            height: '100%',
-            width: '100%',
-            backgroundColor: Colors.base
-          }}
-        >
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-          >
-            <View
+            <Text style={{ color: Colors.white_08, fontSize: 20 }}>Choose States</Text>
+            <TouchableOpacity
               style={{
-                width: '100%',
-                padding: 20,
+                position: 'absolute',
+                right: 20,
+                top: 10
               }}
+              onPress={() => onClose()}
             >
-              {this.state.stateCodes.map(el => (
-                <TouchableOpacity onPress={() => onStateChoose(el.abbr)}>
-                  <View
-                    style={{
-                      padding: 10,
-                      borderBottomWidth: 0.5,
-                      borderBottomColor: Colors.white_08
-                    }}
-                  >
-                    <Text
+              <View>
+                <Text
+                  style={{
+                    color: Colors.white_08,
+                    fontSize: 20,
+                    fontWeight: '600'
+                  }}
+                >X</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              height: '98%',
+              width: '100%',
+            }}
+          >
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+            >
+              <View
+                style={{
+                  width: '100%',
+                  padding: 20,
+                }}
+              >
+                {this.state.stateCodes.map(el => (
+                  <TouchableOpacity onPress={() => onStateChoose(el.abbr)}>
+                    <View
                       style={{
-                        color: Colors.white_08
+                        padding: 10,
+                        borderBottomWidth: 0.5,
+                        borderBottomColor: Colors.white_08
                       }}
-                    >{el.abbr}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
+                    >
+                      <Text
+                        style={{
+                          color: Colors.white_08
+                        }}
+                      >{el.abbr}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+        </SafeAreaView>
       </Modal>
     );
   }

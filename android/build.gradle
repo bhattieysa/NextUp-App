@@ -2,10 +2,10 @@
 
 buildscript {
     ext {
-      buildToolsVersion = "30"
+      buildToolsVersion = "31"
         minSdkVersion = 21
-        compileSdkVersion = 30
-        targetSdkVersion = 30
+        compileSdkVersion = 31
+        targetSdkVersion = 31
         supportLibVersion = "27.1.0"
         playServicesVersion = "17.0.0" // or find latest version
         androidMapsUtilsVersion = "0.5+"
@@ -13,7 +13,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        // jcenter()
+         jcenter()
     }
     dependencies {
         // classpath('com.android.tools.build:gradle:3.4.0')

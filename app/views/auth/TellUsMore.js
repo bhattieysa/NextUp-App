@@ -28,9 +28,10 @@ import { StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import StatesListModal from './StatesListModal';
-import DatePicker from 'react-native-modern-datepicker';
+import YearSelectionModal from './YearSelection'
+// import DatePicker from 'react-native-modern-datepicker';
 
-const years = ["2019", "2020", "2021", "2022"]
+// const years = ["2019", "2020", "2021", "2022"]
 
 let wide = Layout.width;
 class TellUsMore extends Component {
@@ -54,8 +55,9 @@ class TellUsMore extends Component {
       isDatePickerVisible: false,
       openStatesModal: false,
       positions: [],
-      showYearPicker: false,
-      pickerDate: new Date()
+      pickerDate: new Date(),
+      years: [],
+      showYearPicker: false
     };
     this.inputs = {};
   }
@@ -63,11 +65,13 @@ class TellUsMore extends Component {
     this.props.dispatch(onBoardPlayerPositionAPI(data => this.setState({ ...this.state, positions: data[0].values })));
   }
   checkForButtonEnable = (key) => {
-    const { fname,
+    const {
+      fname,
       lname,
-      dob,
       email,
-      aboutMe, strSelectedMode } = this.state;
+      aboutMe,
+      strSelectedMode
+    } = this.state;
 
 
     if (strSelectedMode === 'coach') {
@@ -98,27 +102,6 @@ class TellUsMore extends Component {
         return
       }
     }
-
-
-    // if (strSelectedMode === 'coach' && aboutMe.trim() === '') {
-    //     this.setState({ isbtnEnable: false })
-    //     return
-    // }
-
-    // if (fname.trim() && lname.trim()) {
-    //     if (strSelectedMode === 'player') {
-    //         if (dob !== 'SELECT DATE') {
-    //             this.setState({ isbtnEnable: true })
-    //         } else {
-    //             this.setState({ isbtnEnable: false })
-    //         }
-    //     } else {
-    //         this.setState({ isbtnEnable: true })
-    //     }
-    //     //this.setState({ isbtnEnable: true })
-    // } else {
-    //     this.setState({ isbtnEnable: false })
-    // }
   }
   setTextofFields = (frm, txt) => {
 
@@ -205,7 +188,8 @@ class TellUsMore extends Component {
     }
   }
   onBoardInfo = () => {
-    const { fname,
+    const {
+      fname,
       lname,
       email,
       city,
@@ -213,9 +197,11 @@ class TellUsMore extends Component {
       school,
       classof,
       strSelectedPosition,
-      // dob,
       aboutMe,
-      strSelectedMode, positions, pickerDate } = this.state;
+      strSelectedMode,
+      positions,
+      pickerDate
+    } = this.state;
     getObject('UserId').then((obj) => {
 
       let params = {
@@ -237,6 +223,8 @@ class TellUsMore extends Component {
         "parentApprovalRequired": !UserModel.isAdult
       }
 
+      console.log(params);
+
       this.setState({ loading: true }, () => {
         this.props.dispatch(onBoardAPI(obj, params, (res, resData) => {
 
@@ -254,7 +242,6 @@ class TellUsMore extends Component {
               school: school,
               classof: classof,
               selectedSportPosition: positions[strSelectedPosition],
-              // dob: dob,
               aboutMe: aboutMe,
               profileUrl: UserModel.profileUrl,
               photoIdUrl: UserModel.photoIdUrl,
@@ -266,7 +253,6 @@ class TellUsMore extends Component {
             }
             UserModel.fname = fname
             UserModel.lname = lname
-            // UserModel.dob = dob
             UserModel.email = email
             UserModel.city = city
             UserModel.state = state
@@ -315,26 +301,41 @@ class TellUsMore extends Component {
       openStatesModal: false
     });
   }
-
-  onValueChange = (date) => {
+  
+  onYearChoose = year => {
     this.setState({
-      classof: date.split(' ')[0]
-    }, () => {
-      this.checkForButtonEnable('classof');
-    })
+      ...this.state,
+      classof: year.toString(),
+      showYearPicker: false,
+    });
+  }
+
+  onYearClose = () => {
     this.setState({
       ...this.state,
       showYearPicker: false
     });
   }
 
+  onValueChange = (date) => {
+    const splitDate = date.split(' ')[0]
+    this.setState({
+      ...this.state,
+      classof: splitDate,
+    }, () => {
+      this.checkForButtonEnable('classof');
+    })
+  }
+
   showPicker = () => {
-    this.setState({ ...this.state, showYearPicker: !this.state.showYearPicker });
+    this.setState({
+      ...this.state,
+      showYearPicker: true
+    })
   }
 
   rowItem = (item, index) => {
     const { strSelectedPosition } = this.state;
-    console.log(item, index);
     return (
       <TouchableOpacity activeOpacity={1} style={{
         width: wide * 0.24,
@@ -378,14 +379,14 @@ class TellUsMore extends Component {
       </TouchableOpacity>
     );
   }
-  
+
   render() {
-    const { isbtnEnable,
+    const {
+      isbtnEnable,
       strSelectedMode,
       fname,
       lname,
       classof,
-      dob,
       state,
       city,
       school,
@@ -394,7 +395,7 @@ class TellUsMore extends Component {
       isDatePickerVisible,
       openStatesModal,
       positions,
-      showYearPicker,
+      showYearPicker
     } = this.state;
 
     return (
@@ -707,7 +708,12 @@ class TellUsMore extends Component {
                           width: 7,
                           height: 7,
                           position: 'absolute',
-                          top: 5,
+                          top:
+                            Platform.OS === "android"
+                              ? 5
+                              : state != ""
+                              ? 30
+                              : 5,
                           right: 7
                         }}
                         source={require('../../Images/dropDownIconNew.png')}
@@ -775,38 +781,57 @@ class TellUsMore extends Component {
 
                 {/* Add picker here */}
 
-                <TouchableOpacity onPress={() => this.showPicker()} style={{ width: '45.5%', position: 'relative' }}>
-                  <View style={{ textAlign: 'left' }}>
-                    {
-                      classof !== "" ? <Text style={{
-                        fontFamily: Fonts.Bold, color: Colors.white_08,
-                        fontSize: 12,
-                        position: "relative",
-                        top: -20
-                      }}>CLASS OF</Text> : <Text style={{
-                        fontFamily: Fonts.Bold,
-                        color: Colors.overlayWhite,
-                        fontSize: 15,
-                        position: "relative",
-                        top: 14
-                      }}>CLASS OF</Text>
+                <TouchableOpacity onPress={() => this.showPicker()}>
+                  <AnimatedInput
+                    placeholder="CLASS OF"
+                    value={classof}
+                    disabled={true}
+                    sufix={
+                      <Image
+                        style={{
+                          width: 7,
+                          height: 7,
+                          position: 'absolute',
+                          top:
+                            Platform.OS === "android"
+                              ? 5
+                              : classof != ""
+                              ? 30
+                              : 5,
+                          right: 7
+                        }}
+                        source={require('../../Images/dropDownIconNew.png')}
+                      />
                     }
-                    <Image
-                      style={{
-                        width: 7,
-                        height: 7,
-                        position: 'absolute',
-                        top: 20,
-                        right: 7
-                      }}
-                      source={require('../../Images/dropDownIconNew.png')}
-                    />
-                  </View>
+                    styleInput={{
+                      fontFamily: Fonts.Bold,
+                      color: Colors.light,
+                      fontSize: 16,
+                      lineHeight: 18,
+                      position: 'relative'
+                    }}
+                    styleLabel={{
+                      fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                      fontSize: 12,
+                    }}
+                    styleBodyContent={{
+                      borderBottomWidth: 1.5,
+                      borderBottomColor: Colors.borderColor,
+                      width: wide * 0.4
+                    }}
+                  // isAutoFocus={true}
+                  // multiline
+                  />
                 </TouchableOpacity>
               </View>
                 :
                 null
             }
+            <YearSelectionModal
+              openModal={showYearPicker}
+              onYearChoose={(e) => this.onYearChoose(e)}
+              onClose={() => this.onYearClose()}
+            />
             {
               strSelectedMode === 'coach' ? <View style={{ marginTop: 27 }}>
                 <Text style={{
@@ -849,15 +874,14 @@ class TellUsMore extends Component {
 
             {/* Sport Position */}
             {
-              strSelectedMode === 'player' ? 
-              
+              strSelectedMode === 'player' ?
               <FlatList
                 data={positions}
                 keyExtractor={item => item}
                 renderItem={({item, index}) => this.rowItem(item, index)}
                 horizontal
                 contentContainerStyle={{
-                  marginTop: 25
+                  marginVertical: 25
                 }}
               />
                 :
@@ -907,20 +931,6 @@ class TellUsMore extends Component {
           onCancel={() => this.setState({ isDatePickerVisible: false })}
           maximumDate={moment.now()}
         />
-
-        {showYearPicker && (
-          <DatePicker
-            mode="monthYear"
-            selectorStartingYear={1900}
-            onMonthYearChange={selectedDate => this.onValueChange(selectedDate)}
-            options={{
-              backgroundColor: Colors.base,
-              textDefaultColor: Colors.white_08,
-              textHeaderColor: Colors.white_08,
-              borderColor: Colors.white_08,
-            }}
-          />
-        )}
       </SafeAreaView>
     );
   }
