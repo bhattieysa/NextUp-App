@@ -2462,8 +2462,8 @@ class MyTeams extends Component {
                                                                             // height: wide * 0.8,
                                                                             justifyContent: 'center',
                                                                             alignItems: 'center',
-                                                                            marginTop: 14,
-                                                                            marginHorizontal: 24,
+                                                                            // marginTop: 14,
+                                                                            // marginHorizontal: 10,
                                                                             // backgroundColor: 'green',
                                                                             // flex: 1,
                                                                             // display: 'flex'
@@ -2627,12 +2627,12 @@ class MyTeams extends Component {
                                                                 marginTop: 1.5
                                                             }}> {"Admin"}</Text>
                                                             {/* <Text style={{
-                                                          color: Colors.pendingInviteTxtColor, fontSize: 10,
-                                                          fontFamily: Fonts.SemiBoldItalic,
-                                                          lineHeight: 12,
-                                                          paddingTop: 3, paddingRight: 10,
-                                                          paddingBottom: 3, paddingLeft: 3,
-                                                      }} >Pending Invitation</Text> */}
+                                                                color: Colors.pendingInviteTxtColor, fontSize: 10,
+                                                                fontFamily: Fonts.SemiBoldItalic,
+                                                                lineHeight: 12,
+                                                                paddingTop: 3, paddingRight: 10,
+                                                                paddingBottom: 3, paddingLeft: 3,
+                                                            }} >Pending Invitation</Text> */}
                                                         </View>
 
 
@@ -2664,12 +2664,12 @@ class MyTeams extends Component {
                                                                 marginTop: 1.5
                                                             }}> {"Game Support"}</Text>
                                                             {/* <Text style={{
-                                                          color: Colors.pendingInviteTxtColor, fontSize: 10,
-                                                          fontFamily: Fonts.SemiBoldItalic,
-                                                          lineHeight: 12,
-                                                          paddingTop: 3, paddingRight: 10,
-                                                          paddingBottom: 3, paddingLeft: 3,
-                                                      }} >Pending Invitation</Text> */}
+                                                                color: Colors.pendingInviteTxtColor, fontSize: 10,
+                                                                fontFamily: Fonts.SemiBoldItalic,
+                                                                lineHeight: 12,
+                                                                paddingTop: 3, paddingRight: 10,
+                                                                paddingBottom: 3, paddingLeft: 3,
+                                                            }} >Pending Invitation</Text> */}
                                                         </View>
 
 
@@ -2935,14 +2935,9 @@ class MyTeams extends Component {
 
                                                             {/* Team Stats */}
 
-                                                            {
-                                                                this.state.gameTabData && this.state.gameTabData.recentGamesInfoList && this.state.gameTabData.recentGamesInfoList.map((game, index) => (
-                                                                    <TeamStats key={`game-${index}`} data={game} />
-                                                                ))
-                                                            }
+                                                            <TeamStats />
 
-
-
+                                                            <TeamStats />
 
                                                             {/* End Team Stats */}
 
@@ -2987,7 +2982,27 @@ class MyTeams extends Component {
                                                                 : null
                                                             }
 
+                                                            {this.state.gameStatBarData.length > 0 ?
+                                                                <View style={{ marginTop: 25, }}>
+                                                                    <Title data={'Game Stats'} />
+                                                                    <View style={{
+                                                                        // height: wide * 0.8,
+                                                                        justifyContent: 'center',
+                                                                        alignItems: 'center',
+                                                                        marginTop: 14,
+                                                                        marginHorizontal: 24,
+                                                                        // backgroundColor: 'green',
+                                                                        // flex: 1,
+                                                                        // display: 'flex'
 
+                                                                    }}>
+                                                                        <GameStats barData1={this.state.gameStatBarData} />
+                                                                    </View>
+                                                                </View>
+
+
+                                                                : null
+                                                            }
 
                                                         </>
 

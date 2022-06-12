@@ -39,42 +39,44 @@ class RoadToProUpgrade extends Component {
 
         console.log("The screen focus working")
 
-        // getObject('UserId').then((obj) => {
-        //     this.setState({ loading: true }, () => {
+        getObject('UserId').then((obj) => {
+            this.setState({ loading: true }, () => {
 
-        //     })
+                this.props.dispatch(getSubscriptionInfoById(obj, (res) => {
+                    if (res) {
+                        const { roadToProData } = this.props.Home;
+                        const params = this.props.navigation.state.params;
 
-        // })
+                        if (roadToProData && !roadToProData.roadToPro) {
+                            this.setState({
+                                loading: false
+                            });
 
-        this.props.dispatch(getSubscriptionInfoById("165201669334602", (res) => {
-            if (res) {
-                const { roadToProData } = this.props.Home;
-                const params = this.props.navigation.state.params;
+                            let packageList = roadToProData.packagesList;
 
-                if (roadToProData && !roadToProData.roadToPro) {
-                    this.setState({
-                        loading: false
-                    });
+                            console.log("packagelist ", packageList);
 
-                    let packageList = roadToProData.packagesList;
+                            Navigation.navigate("RoadToProPlan", { packageList, type: params.type });
+                            return false;
+                        }
 
-                    console.log("packagelist ", packageList);
+                        if (roadToProData.subscriptionLevelInfoList !== null || roadToProData.planId !== null) {
+                            this.setState({ arrLevels: roadToProData.subscriptionLevelInfoList.length });
+                        }
+                        this.setState({
+                            loading: false,
+                            selectedIndex: this.props.Home.roadToProData?.currentLevelState !== undefined ?
+                                this.props.Home.roadToProData?.currentLevelState : 0
+                        })
+                    }
 
-                    Navigation.navigate("RoadToProPlan", { packageList, type: params.type });
-                    return false;
-                }
+                }))
 
-                if (roadToProData.subscriptionLevelInfoList !== null || roadToProData.planId !== null) {
-                    this.setState({ arrLevels: roadToProData.subscriptionLevelInfoList.length });
-                }
-                this.setState({
-                    loading: false,
-                    selectedIndex: this.props.Home.roadToProData?.currentLevelState !== undefined ?
-                        this.props.Home.roadToProData?.currentLevelState : 0
-                })
-            }
+            })
 
-        }))
+        })
+
+
 
     }
 

@@ -1,14 +1,16 @@
 import React from 'react'
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Dimensions } from 'react-native';
 import { Title } from '../../../components/common/titleLabel';
 import { Colors } from '../../../constants';
+import moment from 'moment';
 
-function TeamStats() {
+function TeamStats({ data }) {
     return (
 
         <View style={{ marginTop: 30 }}>
 
-            <Title data={"Saturday, 1st July 2020"} />
+            {/* <Title data={"Saturday, 1st July 2020"} /> */}
+            <Title data={moment.unix(data.playedDate).format("dddd, Do MMMM YYYY")} />
 
             <View style={{ flex: 1 }}>
                 <View style={{
@@ -36,16 +38,16 @@ function TeamStats() {
                                     fontWeight: 'bold',
                                     color: '#ffffff',
                                     fontSize: 15,
-                                }}>K</Text>
+                                }}>{Array.from(data.defenderName)[0].toUpperCase()}</Text>
 
                             </View>
-                            <View style={{ marginLeft: 5, marginTop: 5, color: '#ffffff', }}>
+                            <View style={{ marginLeft: 10, marginTop: 12, color: '#ffffff', }}>
                                 <Text style={{ fontSize: 12, fontWeight: "bold", color: Colors.lightshade, }}>
-                                    Kalumet
+                                    {data.defenderName}
                                 </Text>
-                                <Text style={{ fontSize: 10, color: '#85ADFF', }}>
+                                {/* <Text style={{ fontSize: 10, color: '#85ADFF', }}>
                                     Copper King
-                                </Text>
+                                </Text> */}
                             </View>
                         </View>
                     </View>
@@ -65,13 +67,13 @@ function TeamStats() {
                     <View>
                         <View style={{ flex: 3, flexDirection: 'row' }}>
 
-                            <View style={{ marginLeft: 5, marginTop: 5, color: '#ffffff', marginRight: 10 }}>
+                            <View style={{ marginLeft: 5, marginTop: 12, color: '#ffffff', marginRight: 10 }}>
                                 <Text style={{ fontSize: 12, fontWeight: "bold", color: Colors.lightshade, }}>
-                                    Divine Child
+                                    {data.challengerName}
                                 </Text>
-                                <Text style={{ fontSize: 10, color: '#FF5E5E', }}>
+                                {/* <Text style={{ fontSize: 10, color: '#FF5E5E', }}>
                                     Falcons
-                                </Text>
+                                </Text> */}
                             </View>
                             <View style={{
                                 width: 40,
@@ -85,7 +87,7 @@ function TeamStats() {
                                     fontWeight: 'bold',
                                     color: '#ffffff',
                                     fontSize: 15,
-                                }}>K</Text>
+                                }}>{Array.from(data.challengerName)[0].toUpperCase()}</Text>
 
                             </View>
                         </View>
@@ -95,32 +97,39 @@ function TeamStats() {
 
 
                     <View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: 10 }}>
-                        <Text style={{ color: '#ffffff', }}>Team</Text>
+                        <View style={{
+                            width: Dimensions.get("screen").width * 0.2
+                        }}>
+                            <Text style={{ color: '#ffffff', }}>Team</Text>
+                        </View>
 
-                        <ScrollView scrollEnabled={true} horizontal={true} style={{ marginLeft: 50 }}>
-                            <Text style={{ color: "#ffffff" }}> 1 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 2 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 3 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 4 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 5 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 6 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 7 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 8 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 9 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 10 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 2 </Text>
 
+                        <ScrollView scrollEnabled={true} horizontal={true}>
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> 1 </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> 2 </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> 3 </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> 4 </Text>
+
+                            </View>
                         </ScrollView>
-
-
-
-
-
-
-
-
-
-
                     </View>
 
 
@@ -132,20 +141,35 @@ function TeamStats() {
 
 
                     <View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: 10 }}>
-                        <Text style={{ color: '#85ADFF', fontWeight: "bold" }}>Coper King</Text>
+                        <View style={{
+                            width: Dimensions.get("screen").width * 0.2
+                        }}>
+                            <Text style={{ color: '#85ADFF', fontWeight: "bold" }}>{data.defenderName}</Text>
+                        </View>
 
-                        <ScrollView scrollEnabled={true} horizontal={true} style={{ marginLeft: 10 }}>
-                            <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> 1 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 2 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 3 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 4 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 5 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 6 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 7 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 8 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 9 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 10 </Text>
-                            <Text style={{ color: "#85ADFF", marginLeft: 30, fontWeight: "bold" }}> 2 </Text>
+                        <ScrollView scrollEnabled={true} horizontal={true}>
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.QUARTER_1} </Text>
+                            </View>
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.QUARTER_2} </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.QUARTER_3} </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.Final} </Text>
+                            </View>
 
                         </ScrollView>
                     </View>
@@ -155,32 +179,40 @@ function TeamStats() {
 
 
                     <View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: 10 }}>
-                        <Text style={{ color: '#ffffff', }}>Falcon</Text>
 
-                        <ScrollView scrollEnabled={true} horizontal={true} style={{ marginLeft: 45 }}>
-                            <Text style={{ color: "#ffffff" }}> 1 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 2 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 3 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 4 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 5 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 6 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 7 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 8 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 9 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 10 </Text>
-                            <Text style={{ color: "#ffffff", marginLeft: 30 }}> 2 </Text>
+                        <View style={{
+                            width: Dimensions.get("screen").width * 0.2
+                        }}>
+                            <Text style={{ color: '#ffffff', }}>{data.challengerName}</Text>
+                        </View>
 
+
+
+                        <ScrollView scrollEnabled={true} horizontal={true}>
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> {data?.challengerQuarterInfo?.QUARTER_1} </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> {data?.challengerQuarterInfo?.QUARTER_2} </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> {data?.challengerQuarterInfo?.QUARTER_3} </Text>
+                            </View>
+
+                            <View style={{
+                                width: Dimensions.get("screen").width * 0.2
+                            }}>
+                                <Text style={{ color: "#ffffff" }}> {data?.challengerQuarterInfo?.Final} </Text>
+                            </View>
                         </ScrollView>
-
-
-
-
-
-
-
-
-
-
                     </View>
 
 
