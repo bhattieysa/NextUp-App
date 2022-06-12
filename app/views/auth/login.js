@@ -124,14 +124,18 @@ class Login extends Component {
               console.log("Login RESPP--", resData);
               debugger
               if (res) {
+
                 this.setState({ loading: false })
                 if (resData.typeOfUser === null) {
+                  console.log("First if matched");
                   Navigation.navigate('TellUsMore')
                 }
                 if (resData.onBoardingDone === false) {
+                  console.log("Second if matched");
                   Navigation.navigate('TellUsMore')
                 } else {
                   debugger
+                  console.log("Else part");
                   if (resData.parentApprovalRequired === false) {
                     onBoardData.selectedUserType = resData.typeOfUser.toLowerCase()
                     onBoardData.isAdult = !resData.parentApprovalRequired

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, ScrollView, TextInput, Platform, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, ScrollView, TextInput, Platform, Dimensions, Alert } from 'react-native';
 import {
     Layout,
     Colors,
@@ -42,7 +42,14 @@ class RoadToPro extends Component {
 
         this.setState({ loading: true })
 
-        this.props.dispatch(getRoadToProDetail("PLAYER", (res) => {
+        const params = this.props.navigation.state.params;
+
+        if (!params) {
+            Alert.alert("Error", "Type not found!");
+            return false;
+        }
+
+        this.props.dispatch(getRoadToProDetail(params.type === "Player" ? "PLAYER" : "COACH", (res) => {
 
             console.log("Data response is ", res);
 
@@ -56,6 +63,8 @@ class RoadToPro extends Component {
 
 
     render() {
+
+        const params = this.props.navigation.state.params;
 
         const { roadToProInfo } = this.props.Home;
 
@@ -176,7 +185,7 @@ class RoadToPro extends Component {
                                     justifyContent: 'center', marginTop: 20,
                                 }} onPress={() => {
                                     // this.actionContinue()
-                                    Navigation.navigate("RoadToProLevel")
+                                    Navigation.navigate("RoadToProLevel", { type: params.type })
                                 }}>
                                 <Text style={{
                                     alignSelf: 'center', color: Colors.light,
@@ -185,9 +194,18 @@ class RoadToPro extends Component {
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity style={{
-                                marginTop: 10
-                            }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (params.type === "Player") {
+                                        Navigation.navigate("Home");
+                                    }
+                                    else {
+                                        Navigation.navigate("TrainerHome");
+                                    }
+                                }}
+                                style={{
+                                    marginTop: 10
+                                }}>
                                 <Text style={{
                                     color: Colors.light,
                                     textAlign: "center"

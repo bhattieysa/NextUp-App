@@ -46,6 +46,7 @@ class RoadToProPlan extends Component {
 
     render() {
 
+        const params = this.props.navigation.state.params;
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -54,7 +55,9 @@ class RoadToProPlan extends Component {
                     this.state.loading ? <AppLoader visible={this.state.loading} /> : null
                 }
 
-
+                {/* <Text style={{
+                    color: Colors.lightshade
+                }}>params are {JSON.stringify(params)}</Text> */}
 
 
 
@@ -101,78 +104,101 @@ class RoadToProPlan extends Component {
 
                         </View>
 
+                        {
+                            params && params.packageList && params.packageList.map((pkg, index) => (
+                                <View key={`package-${index}`} style={{
+                                    marginTop: 25,
+                                    borderRadius: 10,
+                                }}>
+                                    <ImageBackground
+                                        source={require('../../Images/plan_bk_1.png')}
+                                        style={{
+                                            width: Dimensions.get("window").width * 0.87,
+                                            minHeight: 125,
+                                            alignSelf: "center",
+                                            flexDirection: "column"
+                                        }}
+                                        imageStyle={{
+                                            borderRadius: 10
+                                        }}
+                                    >
 
-                        <View style={{
-                            marginTop: 25,
-                            borderRadius: 10,
+                                        <View style={{
+                                            flexDirection: "row"
+                                        }}>
+
+                                            <View style={{
+                                                flex: 2
+                                            }}>
+                                                <Text style={{
+                                                    fontWeight: "bold",
+                                                    fontSize: 20,
+                                                    paddingLeft: 15,
+                                                    paddingTop: 20
+                                                }}>{pkg.title}</Text>
+                                            </View>
+
+                                            <View style={{
+                                                flex: 1,
+                                                paddingTop: 20
+                                            }}>
+                                                <Text style={{
+                                                    fontStyle: "italic",
+                                                    textAlign: "right"
+                                                }}>Pay per week</Text>
+                                            </View>
+
+                                            <View style={{
+                                                flex: 1,
+                                                paddingRight: 15,
+                                                paddingTop: 20
+                                            }}>
+                                                <Text style={{
+                                                    textAlign: "right",
+                                                    fontWeight: "bold",
+                                                    fontSize: 20
+                                                }}>${pkg.price}</Text>
+                                            </View>
+
+                                        </View>
+
+                                        <View style={{
+                                            marginTop: 10,
+                                            paddingHorizontal: 15,
+
+                                        }}>
+                                            <Text style={{
+                                                textAlign: "justify"
+                                            }}>{pkg.description}</Text>
+                                        </View>
+
+                                    </ImageBackground>
+                                </View>
+
+                            ))
+                        }
+
+                        <TouchableOpacity onPress={() => {
+
+                            console.log("TYpe is ", params.type);
+
+                            if (params.type === "Player") {
+                                Navigation.navigate("Home")
+                            }
+                            else {
+                                Navigation.navigate("TrainerHome")
+                            }
                         }}>
-                            <ImageBackground
-                                source={require('../../Images/plan_bk_1.png')}
-                                style={{
-                                    width: Dimensions.get("window").width * 0.87,
-                                    minHeight: 125,
-                                    alignSelf: "center",
-                                    flexDirection: "column"
-                                }}
-                                imageStyle={{
-                                    borderRadius: 10
-                                }}
-                            >
-
-                                <View style={{
-                                    flexDirection: "row"
-                                }}>
-
-                                    <View style={{
-                                        flex: 2
-                                    }}>
-                                        <Text style={{
-                                            fontWeight: "bold",
-                                            fontSize: 20,
-                                            paddingLeft: 15,
-                                            paddingTop: 20
-                                        }}>Starter Pack</Text>
-                                    </View>
-
-                                    <View style={{
-                                        flex: 1,
-                                        paddingTop: 20
-                                    }}>
-                                        <Text style={{
-                                            fontStyle: "italic",
-                                            textAlign: "right"
-                                        }}>Pay per week</Text>
-                                    </View>
-
-                                    <View style={{
-                                        flex: 1,
-                                        paddingRight: 15,
-                                        paddingTop: 20
-                                    }}>
-                                        <Text style={{
-                                            textAlign: "right",
-                                            fontWeight: "bold",
-                                            fontSize: 20
-                                        }}>$50</Text>
-                                    </View>
-
-                                </View>
-
-                                <View style={{
-                                    marginTop: 10,
-                                    paddingHorizontal: 15,
-
-                                }}>
-                                    <Text style={{
-                                        textAlign: "justify"
-                                    }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the </Text>
-                                </View>
-
-                            </ImageBackground>
-                        </View>
+                            <Text style={{
+                                marginTop: 20,
+                                textAlign: "center",
+                                color: Colors.lightshade,
+                                fontSize: 16
+                            }}>Skip</Text>
+                        </TouchableOpacity>
 
 
-                        <View style={{
+                        {/* <View style={{
                             marginTop: 20,
                             borderRadius: 10,
 
@@ -240,7 +266,7 @@ class RoadToProPlan extends Component {
                                 </View>
 
                             </ImageBackground>
-                        </View>
+                        </View> */}
 
 
 

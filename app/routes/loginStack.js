@@ -14,6 +14,11 @@ const LoginStack = createStackNavigator(
 
         },
 
+        TellUsMore: {
+            getScreen: () => require('../views/auth/TellUsMore').default,
+        },
+
+
         RoadToPro: {
             getScreen: () => require('../views/auth/RoadToPro').default,
         },
@@ -26,16 +31,19 @@ const LoginStack = createStackNavigator(
             getScreen: () => require('../views/auth/RoadToProLevel').default,
         },
 
+        RoadToProUpgrade: {
+            getScreen: () => require('../views/auth/RoadToProUpgrade').default,
+        },
 
         Login: {
             getScreen: () => require('../views/auth/login').default,
         },
-        CardsList: {
-            getScreen: () => require('../views/auth/CardsList').default,
-        },
-        AddCard: {
-            getScreen: () => require('../views/auth/AddCard').default,
-        },
+        // CardsList: {
+        //     getScreen: () => require('../views/auth/CardsList').default,
+        // },
+        // AddCard: {
+        //     getScreen: () => require('../views/auth/AddCard').default,
+        // },
         UploadPhoto: {
             getScreen: () => require('../views/auth/UploadPhoto').default,
         },

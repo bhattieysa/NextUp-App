@@ -1649,10 +1649,10 @@ class Home extends Component {
                                 fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16,
                               }}>
                                 {/* {Object.keys(pgs)[0].toUpperCase()} */}
-                                {Object.keys(dashboardData?.pgs)[0].toUpperCase()}
+                                {Object.keys(dashboardData?.pgs).length > 0 ? Object.keys(dashboardData?.pgs)[0].toUpperCase() : ""}
                               </Text>
                               <Text style={{ color: Colors.light, fontFamily: Fonts.Bold, fontSize: 24, lineHeight: 24 }}>
-                                {Object.values(dashboardData?.pgs)[0]}
+                                {Object.values(dashboardData?.pgs).length > 0 ? Object.values(dashboardData?.pgs)[0] : ""}
                                 {/* {Object.values(pgs)[0]} */}
                               </Text>
                             </View>
@@ -1664,11 +1664,11 @@ class Home extends Component {
                                 color: Colors.newGrayFontColor,
                                 fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16,
                               }}>
-                                {Object.keys(dashboardData?.pgs)[1].toUpperCase()}
+                                {Object.values(dashboardData?.pgs).length > 1 ? Object.keys(dashboardData?.pgs)[1].toUpperCase() : ""}
                                 {/* {Object.keys(pgs)[1].toUpperCase()} */}
                               </Text>
                               <Text style={{ color: Colors.light, fontFamily: Fonts.Bold, fontSize: 24, lineHeight: 24 }}>
-                                {Object.values(dashboardData?.pgs)[1]}
+                                {Object.values(dashboardData?.pgs).length > 1 ? Object.values(dashboardData?.pgs)[1] : ""}
                                 {/* {Object.values(pgs)[1]} */}
                               </Text>
                             </View>
@@ -1679,11 +1679,11 @@ class Home extends Component {
                                 color: Colors.newGrayFontColor,
                                 fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16,
                               }}>
-                                {Object.keys(dashboardData?.pgs)[2].toUpperCase()}
+                                {Object.values(dashboardData?.pgs).length > 2 ? Object.keys(dashboardData?.pgs)[2].toUpperCase() : ""}
                                 {/* {Object.keys(pgs)[2].toUpperCase()} */}
                               </Text>
                               <Text style={{ color: Colors.light, fontFamily: Fonts.Bold, fontSize: 24, lineHeight: 24 }}>
-                                {Object.values(dashboardData?.pgs)[2]}
+                                {Object.values(dashboardData?.pgs).length > 2 ? Object.values(dashboardData?.pgs)[2] : ""}
                                 {/* {Object.values(pgs)[2]} */}
                               </Text>
                             </View>

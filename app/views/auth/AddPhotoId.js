@@ -118,12 +118,12 @@ class AddPhotoId extends Component {
             this.uploadImage()
         } else {
             if (UserModel.selectedUserType === 'player') {
-                Navigation.navigate('Home')
-                // Navigation.navigate('RoadToPro', { type: 'Player' })
+                // Navigation.navigate('Home')
+                Navigation.navigate('RoadToPro', { type: 'Player' })
 
             } else {
-                Navigation.navigate('TrainerHome')
-                // Navigation.navigate('RoadToPro', { type: 'Trainer' })
+                // Navigation.navigate('TrainerHome')
+                Navigation.navigate('RoadToPro', { type: 'Trainer' })
             }
         }
 
@@ -160,12 +160,14 @@ class AddPhotoId extends Component {
                             this.setState({ loading: false })
                             if (UserModel.selectedUserType === 'player') {
                                 setTimeout(() => {
-                                    Navigation.navigate('Home')
+                                    // Navigation.navigate('Home')
+                                    Navigation.navigate('RoadToPro', { type: 'Player' })
                                 }, 500);
 
                             } else {
                                 setTimeout(() => {
-                                    Navigation.navigate('TrainerHome')
+                                    // Navigation.navigate('TrainerHome')
+                                    Navigation.navigate('RoadToPro', { type: 'Trainer' })
                                 }, 500);
 
                             }
@@ -295,9 +297,11 @@ class AddPhotoId extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     if (UserModel.selectedUserType === 'player') {
-                        Navigation.navigate('Home')
+                        Navigation.navigate('RoadToPro', { type: 'Player' })
+                        // Navigation.navigate('Home')
                     } else {
-                        Navigation.navigate('TrainerHome')
+                        Navigation.navigate('RoadToPro', { type: 'Trainer' })
+                        // Navigation.navigate('TrainerHome')
                     }
                 }}>
                     <Text style={{

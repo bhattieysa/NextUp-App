@@ -84,6 +84,7 @@ class RoadToProLevel extends Component {
 
     render() {
 
+        const params = this.props.navigation.state.params;
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -140,7 +141,7 @@ class RoadToProLevel extends Component {
                                 position: "absolute",
                                 bottom: 20
                             }} onPress={() => {
-                                Navigation.navigate('RoadToProPlan')
+                                Navigation.navigate('RoadToProUpgrade', { type: params.type })
                             }}>
                             <Text style={{
                                 alignSelf: 'center', color: Colors.light,
