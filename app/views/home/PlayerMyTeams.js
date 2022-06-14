@@ -192,6 +192,9 @@ class MyTeams extends Component {
     getInitialData = (isfromAdd) => {
         getObject('UserId').then((obj) => {
             this.setState({ loading: true, selectedKpi: [] }, () => {
+
+                console.log("Object is ", obj);
+
                 this.props.dispatch(getNewCoachTeam(obj, (res) => {
                     if (res) {
                         const { coachTeam } = this.props.Home

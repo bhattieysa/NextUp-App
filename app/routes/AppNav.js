@@ -4,7 +4,7 @@ import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import Navigation from '../lib/Navigation';
 import { HomeStack, CalenderStack, ExploreStack, MyStandingStack, ProStack, MessageStack } from './index';
 import { Colors, Layout, CommonStyles } from '../constants';
-
+import PlayerMyTeamStack from './PlayerMyTeamStack';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
@@ -15,6 +15,7 @@ let Explore = require('../Images/explore_tab_icon.png');
 let MyStanding = require('../Images/Standing.png');
 let Pro = require('../Images/Pro_tab.png');
 let message = require('../Images/tab_message_icon.png');
+let myTeam = require('../Images/Standing.png');
 
 let wide = Layout.width;
 // const AppTabBar = (props) => (
@@ -56,7 +57,8 @@ const TabNavigator = createBottomTabNavigator(
     // Calender: CalenderStack,
     Message: MessageStack,
     MyStanding: MyStandingStack,
-    Pro: ProStack
+    Pro: ProStack,
+    MyTeam: PlayerMyTeamStack
   },
   {
     defaultNavigationOptions: ({ navigation, screenProps }) => ({

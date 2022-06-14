@@ -1071,6 +1071,71 @@ export function getRoadToProDetail(type = "COACH", cb) {
 }
 
 
+//get states list
+export function getStates(cb) {
+  return (dispatch, getState) => {
+
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.states)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          debugger
+          //data.currentLevelState = 1//line to comment
+          //cb(true, data)
+
+          getState().entities.states = data;
+          console.log("state data is ", data);
+          dispatch(myStandingSuccess()), cb(true, data);
+        } else {
+          dispatch(myStandingFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+// get year list
+export function getYears(cb) {
+  return (dispatch, getState) => {
+
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.years)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          debugger
+          //data.currentLevelState = 1//line to comment
+          //cb(true, data)
+
+          getState().entities.years = data;
+          console.log("year data is ", data);
+          dispatch(myStandingSuccess()), cb(true, data);
+        } else {
+          dispatch(myStandingFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
 
 
 // New design team

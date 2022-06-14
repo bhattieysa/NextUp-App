@@ -128,11 +128,17 @@ class Login extends Component {
                 this.setState({ loading: false })
                 if (resData.typeOfUser === null) {
                   console.log("First if matched");
-                  Navigation.navigate('TellUsMore')
+                  Navigation.navigate('TellUsMore', {
+                    state: "",
+                    year: ""
+                  })
                 }
                 if (resData.onBoardingDone === false) {
                   console.log("Second if matched");
-                  Navigation.navigate('TellUsMore')
+                  Navigation.navigate('TellUsMore', {
+                    state: "",
+                    year: ""
+                  })
                 } else {
                   debugger
                   console.log("Else part");

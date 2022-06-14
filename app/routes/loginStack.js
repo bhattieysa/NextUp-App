@@ -5,6 +5,8 @@ const LoginStack = createStackNavigator(
     {
         WelcomeScreen: {
             getScreen: () => require('../views/auth/WelcomeScreen').default,
+            // getScreen: () => require('../views/auth/State').default,
+            // getScreen: () => require('../views/auth/Year').default,
             // getScreen: () => require('../views/auth/WelcomeScreen').default,
             // getScreen: () => require('../views/auth/TellUsMore').default,
             // getScreen: () => require('../views/auth/RoadToPro').default,
@@ -12,6 +14,14 @@ const LoginStack = createStackNavigator(
             // getScreen: () => require('../views/Coach/CoachInviteNew').default,
 
 
+        },
+
+        State: {
+            getScreen: () => require('../views/auth/State').default,
+        },
+
+        Year: {
+            getScreen: () => require('../views/auth/Year').default,
         },
 
         TellUsMore: {

@@ -63,7 +63,39 @@ class TellUsMore extends Component {
   }
   componentDidMount() {
     this.props.dispatch(onBoardPlayerPositionAPI(data => this.setState({ ...this.state, positions: data[0].values })));
+    console.log("Did mount called ");
+
+    // this.props.navigation.addListener('didFocus', this.setTheState);
+
   }
+
+  componentDidUpdate(prevProps) {
+    console.log("Did focus called");
+
+    if (prevProps !== this.props) {
+      if (this.props?.navigation?.state?.params?.state) {
+        console.log("Did focus called state found, ", this.props.navigation?.state?.params?.state);
+
+        this.setTextofFields('state', this.props.navigation?.state?.params?.state);
+        // this.setState({
+        //   state: this.props.navigation?.state?.params?.state
+        // }, () => {
+        //   return false;
+        // })
+      }
+
+      if (this.props?.navigation?.state?.params?.year) {
+        console.log("Did focus called year found");
+        // this.setTextofFields('classof', this.props.navigation.state.params.year);
+        this.setState({
+          classof: this.props.navigation.state.params.year
+        })
+      }
+
+    }
+  }
+
+
   checkForButtonEnable = (key) => {
     const {
       fname,
@@ -301,7 +333,7 @@ class TellUsMore extends Component {
       openStatesModal: false
     });
   }
-  
+
   onYearChoose = year => {
     this.setState({
       ...this.state,
@@ -380,6 +412,12 @@ class TellUsMore extends Component {
     );
   }
 
+
+
+
+
+
+
   render() {
     const {
       isbtnEnable,
@@ -397,6 +435,13 @@ class TellUsMore extends Component {
       positions,
       showYearPicker
     } = this.state;
+
+    const navParams = this.props.navigation.state.params;
+
+    // if (navParams && navParams.state) {
+    //   console.log("navparams working");
+    //   this.setTextofFields('state', navParams.state);
+    // }
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -675,56 +720,15 @@ class TellUsMore extends Component {
 
             {
               strSelectedMode === 'player' ?
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
-                <AnimatedInput
-                  placeholder="CITY"
-                  onChangeText={(e) => this.setTextofFields('city', e)}
-                  value={city}
-                  styleInput={{
-                    fontFamily: Fonts.Bold,
-                    color: Colors.light,
-                    fontSize: 16, lineHeight: 18
-                  }}
-                  styleLabel={{
-                    fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                    fontSize: 12,
-                  }}
-                  styleBodyContent={{
-                    borderBottomWidth: 1.5,
-                    borderBottomColor: Colors.borderColor,
-                    width: wide * 0.4
-                  }}
-                />
-
-                <TouchableOpacity onPress={() => this.openModal()}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
                   <AnimatedInput
-                    placeholder="STATE"
-                    onChangeText={(e) => this.setTextofFields('state', e)}
-                    value={state}
-                    disabled={true}
-                    sufix={
-                      <Image
-                        style={{
-                          width: 7,
-                          height: 7,
-                          position: 'absolute',
-                          top:
-                            Platform.OS === "android"
-                              ? 5
-                              : state != ""
-                              ? 30
-                              : 5,
-                          right: 7
-                        }}
-                        source={require('../../Images/dropDownIconNew.png')}
-                      />
-                    }
+                    placeholder="CITY"
+                    onChangeText={(e) => this.setTextofFields('city', e)}
+                    value={city}
                     styleInput={{
                       fontFamily: Fonts.Bold,
                       color: Colors.light,
-                      fontSize: 16,
-                      lineHeight: 18,
-                      position: 'relative'
+                      fontSize: 16, lineHeight: 18
                     }}
                     styleLabel={{
                       fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
@@ -735,11 +739,60 @@ class TellUsMore extends Component {
                       borderBottomColor: Colors.borderColor,
                       width: wide * 0.4
                     }}
-                  // isAutoFocus={true}
-                  // multiline
                   />
-                </TouchableOpacity>
-              </View>
+
+                  {/* <Text style={{ color: Colors.lightshade }}>Params: {JSON.stringify(navParams)}</Text> */}
+
+                  <TouchableOpacity onPress={() => Navigation.navigate("State")}>
+
+                    <AnimatedInput
+                      disabled={this.state.state !== "" ? true : false}
+                      pointerEvents="none"
+                      placeholder="STATE"
+                      onChangeText={(e) => this.setTextofFields('state', e)}
+                      value={state}
+                      onFocus={() => {
+                        Navigation.navigate("State")
+                      }}
+                      sufix={
+                        <Image
+                          style={{
+                            width: 7,
+                            height: 7,
+                            position: 'absolute',
+                            top:
+                              Platform.OS === "android"
+                                ? 5
+                                : state != ""
+                                  ? 30
+                                  : 5,
+                            right: 7
+                          }}
+                          source={require('../../Images/dropDownIconNew.png')}
+                        />
+                      }
+                      styleInput={{
+                        fontFamily: Fonts.Bold,
+                        color: Colors.light,
+                        fontSize: 16,
+                        lineHeight: 18,
+                        position: 'relative'
+                      }}
+                      styleLabel={{
+                        fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                        fontSize: 12
+                      }}
+                      styleBodyContent={{
+                        borderBottomWidth: 1.5,
+                        borderBottomColor: Colors.borderColor,
+                        width: wide * 0.4
+                      }}
+                    // isAutoFocus={true}
+                    // multiline
+                    />
+
+                  </TouchableOpacity>
+                </View>
                 :
                 null
             }
@@ -781,11 +834,12 @@ class TellUsMore extends Component {
 
                 {/* Add picker here */}
 
-                <TouchableOpacity onPress={() => this.showPicker()}>
+                <TouchableOpacity onPress={() => Navigation.navigate("Year")}>
                   <AnimatedInput
+                    disabled={this.state.classof !== "" ? true : false}
                     placeholder="CLASS OF"
                     value={classof}
-                    disabled={true}
+                    onFocus={() => Navigation.navigate("Year")}
                     sufix={
                       <Image
                         style={{
@@ -796,8 +850,8 @@ class TellUsMore extends Component {
                             Platform.OS === "android"
                               ? 5
                               : classof != ""
-                              ? 30
-                              : 5,
+                                ? 30
+                                : 5,
                           right: 7
                         }}
                         source={require('../../Images/dropDownIconNew.png')}
@@ -875,15 +929,15 @@ class TellUsMore extends Component {
             {/* Sport Position */}
             {
               strSelectedMode === 'player' ?
-              <FlatList
-                data={positions}
-                keyExtractor={item => item}
-                renderItem={({item, index}) => this.rowItem(item, index)}
-                horizontal
-                contentContainerStyle={{
-                  marginVertical: 25
-                }}
-              />
+                <FlatList
+                  data={positions}
+                  keyExtractor={item => item}
+                  renderItem={({ item, index }) => this.rowItem(item, index)}
+                  horizontal
+                  contentContainerStyle={{
+                    marginVertical: 25
+                  }}
+                />
                 :
                 null
             }

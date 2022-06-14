@@ -62,6 +62,8 @@ export const AppURLs = {
   teamRoles: 'team/roles/',
   removeCoachRole: 'team/remove/member/role/',
   inviteCoach: 'team/invite/coach',
+  states: 'admin/list/states',
+  years: 'admin/list/years',
   roadToPro: 'admin/list?type=ROAD_TO_PRO',
   coachRoadToPro: 'admin/list?type=COACH',
   coachNewTeam: 'coach/team/',
