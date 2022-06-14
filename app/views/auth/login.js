@@ -80,6 +80,7 @@ class Login extends Component {
     this.setState({ loading: true }, () => {
       backend.handleLoginWithEmailAndPass(email, password, (status, userInfo) => {
         console.log("UserInfo---FCB", userInfo)
+        console.log("User Status is ", status);
         if (status) {
           let onBoardData = {
             selectedUserType: UserModel.selectedUserType,

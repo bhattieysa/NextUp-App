@@ -58,7 +58,7 @@ const TabNavigator = createBottomTabNavigator(
     Message: MessageStack,
     MyStanding: MyStandingStack,
     Pro: ProStack,
-    MyTeam: PlayerMyTeamStack
+    // MyTeam: PlayerMyTeamStack
   },
   {
     defaultNavigationOptions: ({ navigation, screenProps }) => ({

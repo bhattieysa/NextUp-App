@@ -871,6 +871,38 @@ export function getCoachTeam(obj, cb) {
 }
 
 
+//get player team
+export function getPlayerTeam(obj, cb) {
+  return (dispatch, getState) => {
+
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.playerNewTeam + obj)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+
+          //data.currentLevelState = 1//line to comment
+          //cb(true, data)
+          getState().entities.homePlayer.coachTeam = data;
+          dispatch(myStandingSuccess()), cb(true);
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+
+
+
 //get coach roles
 export function getCoachTeamRoles(obj, ownerId, cb) {
   return (dispatch, getState) => {
@@ -1213,6 +1245,83 @@ export function getNewCoachTeam(obj, cb) {
   };
 }
 
+//get new player team
+export function getNewPlayerTeam(obj, cb) {
+  return (dispatch, getState) => {
+
+    console.log("Coach team request url ", AppURLs.playerNewTeam + obj);
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+
+    return axios
+      .get(AppURLs.playerNewTeam + obj)//'162522113111002'
+      .then(async (response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          debugger
+          //data.currentLevelState = 1//line to comment
+
+          console.log("Player team data is ", getState().entities.homePlayer.coachTeam);
+
+          // bind stats
+          if (data.teamTabInfoDtoList && Array.isArray(data.teamTabInfoDtoList)) {
+            console.log("in for loop");
+            for (let i = 0; i < data.teamTabInfoDtoList.length; i++) {
+              console.log("for loop working");
+              let teamId = data.teamTabInfoDtoList[i].teamId;
+              let ownerId = obj;
+              // dispatch(getTeamStats(getState().entities.homePlayer.coachTeam.teamTabInfoDtoList[i].teamId, obj, getState().entities.homePlayer.coachTeam.seasonLists.length > 0 ? getState().entities.homePlayer.coachTeam.seasonLists[0] : null));
+              let requestURL = `${AppURLs.playerTeamStats}${teamId}/${ownerId}`;
+
+              if (data.seasonLists && data.seasonLists.length > 0) {
+                requestURL += `?season=${data.seasonLists[0]}`;
+              }
+
+              let statResponse = await axios.get(requestURL);
+              let statResponseData = statResponse.data.data;
+
+              data.teamTabInfoDtoList[i].statsSummary = statResponseData.statsSummary;
+              data.teamTabInfoDtoList[i].teamPositionsList = statResponseData.teamPositionsList;
+              data.teamTabInfoDtoList[i].kpi = statResponseData.kpi;
+              data.teamTabInfoDtoList[i].teamStats = statResponseData.teamStats;
+              data.teamTabInfoDtoList[i].teamStatsTabDto = statResponseData.teamStatsTabDto;
+              data.teamTabInfoDtoList[i].seasonType = statResponseData.seasonType;
+              data.teamTabInfoDtoList[i].bannerInfo = statResponseData.bannerInfo;
+              data.teamTabInfoDtoList[i].premiumPurchased = statResponseData.premiumPurchased;
+
+              //now populate the stats
+
+            }
+          }
+
+          console.log("Team data is ", JSON.stringify(data));
+
+          getState().entities.homePlayer.coachTeam = data;
+
+
+          //end stats
+
+
+          dispatch(myStandingSuccess()), cb(true);
+          cb(true, data)
+
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+
+
+
 //get the team stats
 export function getTeamStats(teamId, ownerId, season = null, cb) {
   return (dispatch, getState) => {
@@ -1324,6 +1433,46 @@ export function getPlayerListForTeam(obj, season, cb) {
   };
 }
 
+
+//get player list for player login
+export function getPlayerListForTeamPlayer(obj, season, cb) {
+  let url = '';
+  console.log("season is ", season)
+  if (season == null) {
+    url = AppURLs.playerTeamTabPlayerList + obj;
+  } else {
+    url = AppURLs.playerTeamTabPlayerList + obj + `?season=${season}`;
+  }
+
+  console.log("URL is: ", url);
+
+  return (dispatch, getState) => {
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(url)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+          console.log("player data ", data);
+          //data.currentLevelState = 1//line to comment
+          // cb(true)
+          getState().entities.homePlayer.coachTeamPlayer = data;
+          dispatch(myStandingSuccess()), cb(true);
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+
 // new design my team game tab
 export function getGameListForTeam(teamId, usrId, season, cb) {
   const now = Date.now();
@@ -1361,6 +1510,47 @@ export function getGameListForTeam(teamId, usrId, season, cb) {
       });
   };
 }
+
+//get game list for players
+export function getPlayerGameListForTeam(teamId, usrId, season, cb) {
+  const now = Date.now();
+  // const ses = "2013-2014"
+  let url = '';
+  if (season == null) {
+    url = AppURLs.playerTeamTabGameList + teamId + '/' + usrId + '/' + Date.now();
+  } else {
+    url = AppURLs.playerTeamTabGameList + teamId + '/' + usrId + '/' + Date.now() + `?season=${season}`;
+  }
+
+  return (dispatch, getState) => {
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(url) //'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+          console.log("PLAYER GAME DATA: ", data);
+          //data.currentLevelState = 1//line to comment
+          // getState().entities.homePlayer.coachTeamGames = data;
+          // cb(true)
+          dispatch(myStandingSuccess());
+          cb(true, data);
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+
+
 
 //coachPlayers
 export function getCoachPlayers(obj, cb) {

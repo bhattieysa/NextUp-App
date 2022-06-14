@@ -13,6 +13,11 @@ const MyStandingStack = createStackNavigator(
         MyTeam: {
             getScreen: () => require('../views/home/MyTeam').default,
         },
+
+        PlayerMyTeams: {
+            getScreen: () => require('../views/home/PlayerMyTeams').default,
+        },
+
         // TrainerPlan: {
         //     getScreen: () => require('../views/home/TrainerPlan').default,
 

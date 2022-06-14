@@ -24,13 +24,16 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import { getObject } from '../../middleware';
 import {
-    getCoachTeam, createNewTeam, removePlayerToTeam,
-    getNewCoachTeam, getPlayerListForTeam, getGameListForTeam, getUserInfo,
+    createNewTeam, removePlayerToTeam,
+    getUserInfo,
     removeMultiplePlayerToTeam,
     getCoachRoles,
     getCoachTeamRoles,
     checkSubscription,
-    removeCoachRole
+    removeCoachRole,
+    getPlayerListForTeamPlayer,
+    getNewPlayerTeam,
+    getPlayerGameListForTeam
 } from '../../actions/home';
 import FastImage from 'react-native-fast-image';
 import AnimatedInput from '../../Helpers/react-native-animated-input';
@@ -83,7 +86,7 @@ class MyTeams extends Component {
             avatar: "",
             teamName: '',
             removeLoading: false,
-            tabs: [{ id: 1, tab_nm: 'Players' }, { id: 2, tab_nm: 'Games' }, { id: 3, tab_nm: 'Stats' }, { id: 4, tab_nm: 'Roles' }],
+            tabs: [{ id: 1, tab_nm: 'Players' }, { id: 2, tab_nm: 'Games' }, { id: 3, tab_nm: 'Stats' }],
             selectedTab: "Players",
             selectedTabIndex: 0,
             selectedPlayer: [],
@@ -195,7 +198,14 @@ class MyTeams extends Component {
 
                 console.log("Object is ", obj);
 
-                this.props.dispatch(getNewCoachTeam(obj, (res) => {
+                const teamId = this.props?.navigation?.state?.params.teamId;
+
+                if (!teamId) {
+                    Alert.alert("Team not found!");
+                    return false;
+                }
+
+                this.props.dispatch(getNewPlayerTeam(teamId, (res) => {
                     if (res) {
                         const { coachTeam } = this.props.Home
                         console.log("TeammmRespp", coachTeam);
@@ -493,7 +503,7 @@ class MyTeams extends Component {
         console.log("Player call", isSessionDropShow)
         // var season = dropDownSelectedVal;
         if (isSessionDropShow == true) {
-            this.props.dispatch(getPlayerListForTeam(teamId, dropDownSelectedVal, (res) => {
+            this.props.dispatch(getPlayerListForTeamPlayer(teamId, dropDownSelectedVal, (res) => {
                 // setTimeout(() => {
                 if (res) {
                     const { coachTeamPlayer } = this.props.Home
@@ -506,7 +516,7 @@ class MyTeams extends Component {
 
             }))
         } else {
-            this.props.dispatch(getPlayerListForTeam(teamId, "2021-2022", (res) => {
+            this.props.dispatch(getPlayerListForTeamPlayer(teamId, "2021-2022", (res) => {
                 // setTimeout(() => {
                 if (res) {
                     const { coachTeamPlayer } = this.props.Home
@@ -580,7 +590,7 @@ class MyTeams extends Component {
 
 
         getObject('UserId').then((obj) => {
-            this.props.dispatch(getGameListForTeam(teamId, obj, dropDownSelectedVal, (res, resData) => {
+            this.props.dispatch(getPlayerGameListForTeam(teamId, obj, dropDownSelectedVal, (res, resData) => {
                 // setTimeout(() => {
                 if (res) {
                     debugger
@@ -905,7 +915,8 @@ class MyTeams extends Component {
                                             {/* </View> */}
                                         </TouchableOpacity>
                                         {this.state.selectedPlayerIndex.includes(index) ?
-                                            <TouchableOpacity style={{
+                                            <View>
+                                                {/* <TouchableOpacity style={{
                                                 width: 30, height: 30, borderRadius: 30 / 2,
                                                 backgroundColor: Colors.btnBg,
                                                 right: 30,
@@ -922,9 +933,11 @@ class MyTeams extends Component {
                                                     }}
                                                     resizeMode={'contain'}
                                                 />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
+                                            </View>
                                             :
-                                            <TouchableOpacity style={{
+                                            <View>
+                                                {/* <TouchableOpacity style={{
                                                 width: 30, height: 30, borderRadius: 30 / 2,
                                                 backgroundColor: Colors.teamTabSelectedCheckBg,
                                                 right: 30,
@@ -941,7 +954,8 @@ class MyTeams extends Component {
                                                     }}
                                                     resizeMode={'contain'}
                                                 />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
+                                            </View>
 
                                         }
 
@@ -1029,7 +1043,8 @@ class MyTeams extends Component {
                                             {/* </View> */}
                                         </TouchableOpacity>
                                         {this.state.selectedPlayerIndex.includes(index) ?
-                                            <TouchableOpacity style={{
+                                            <View>
+                                                {/* <TouchableOpacity style={{
                                                 width: 30, height: 30, borderRadius: 30 / 2,
                                                 backgroundColor: Colors.btnBg,
                                                 right: 30,
@@ -1046,9 +1061,11 @@ class MyTeams extends Component {
                                                     }}
                                                     resizeMode={'contain'}
                                                 />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
+                                            </View>
                                             :
-                                            <TouchableOpacity style={{
+                                            <View>
+                                                {/* <TouchableOpacity style={{
                                                 width: 30, height: 30, borderRadius: 30 / 2,
                                                 backgroundColor: Colors.teamTabSelectedCheckBg,
                                                 right: 30,
@@ -1065,7 +1082,8 @@ class MyTeams extends Component {
                                                     }}
                                                     resizeMode={'contain'}
                                                 />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
+                                            </View>
 
                                         }
 
@@ -1184,7 +1202,8 @@ class MyTeams extends Component {
                                         </TouchableOpacity>
 
                                         {this.state.selectedPlayerIndex.includes(index) ?
-                                            <TouchableOpacity style={{
+                                            <View>
+                                                {/* <TouchableOpacity style={{
                                                 width: 30, height: 30, borderRadius: 30 / 2,
                                                 backgroundColor: Colors.btnBg,
                                                 right: 30,
@@ -1198,9 +1217,11 @@ class MyTeams extends Component {
                                                     style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.light }}
                                                     resizeMode={'contain'}
                                                 />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
+                                            </View>
                                             :
-                                            <TouchableOpacity style={{
+                                            <View>
+                                                {/* <TouchableOpacity style={{
                                                 width: 30, height: 30, borderRadius: 30 / 2,
                                                 backgroundColor: Colors.teamTabSelectedCheckBg,
                                                 right: 30,
@@ -1214,7 +1235,8 @@ class MyTeams extends Component {
                                                     style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.teamTabPlayerCardBorder, }}
                                                     resizeMode={'contain'}
                                                 />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
+                                            </View>
 
                                         }
 
@@ -1258,13 +1280,13 @@ class MyTeams extends Component {
                                             fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
                                             marginTop: 1.5
                                         }}> {item.playingPosition}</Text>
-                                        <Text style={{
+                                        {/* <Text style={{
                                             color: Colors.pendingInviteTxtColor, fontSize: 10,
                                             fontFamily: Fonts.SemiBoldItalic,
                                             lineHeight: 12,
                                             paddingTop: 3, paddingRight: 10,
                                             paddingBottom: 3, paddingLeft: 3,
-                                        }} >Pending Invitation</Text>
+                                        }} >Pending Invitation</Text> */}
                                     </View>
                                     {/* <View style={{ marginTop: wide * 0.03, borderWidth: 1, borderColor: Colors.teamTabPlayerCardBorder }}></View> */}
 
@@ -1345,7 +1367,8 @@ class MyTeams extends Component {
                                         </TouchableOpacity>
 
                                         {this.state.selectedPlayerIndex.includes(index) ?
-                                            <TouchableOpacity style={{
+                                            <View>
+                                                {/* <TouchableOpacity style={{
                                                 width: 30, height: 30, borderRadius: 30 / 2,
                                                 backgroundColor: Colors.btnBg,
                                                 right: 30,
@@ -1359,23 +1382,26 @@ class MyTeams extends Component {
                                                     style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.light }}
                                                     resizeMode={'contain'}
                                                 />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
+                                            </View>
                                             :
-                                            <TouchableOpacity style={{
-                                                width: 30, height: 30, borderRadius: 30 / 2,
-                                                backgroundColor: Colors.teamTabSelectedCheckBg,
-                                                right: 30,
-                                                justifyContent: 'center', alignItems: 'center'
-                                            }}
-                                                onPress={() => this._handleSelectPlayer(item, index)}
-                                                activeOpacity={1}
-                                            >
-                                                <Image
-                                                    source={require("../../Images/check_Icon.png")}
-                                                    style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.teamTabPlayerCardBorder, }}
-                                                    resizeMode={'contain'}
-                                                />
-                                            </TouchableOpacity>
+                                            <View>
+                                                {/* <TouchableOpacity style={{
+                                                    width: 30, height: 30, borderRadius: 30 / 2,
+                                                    backgroundColor: Colors.teamTabSelectedCheckBg,
+                                                    right: 30,
+                                                    justifyContent: 'center', alignItems: 'center'
+                                                }}
+                                                    onPress={() => this._handleSelectPlayer(item, index)}
+                                                    activeOpacity={1}
+                                                >
+                                                    <Image
+                                                        source={require("../../Images/check_Icon.png")}
+                                                        style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.teamTabPlayerCardBorder, }}
+                                                        resizeMode={'contain'}
+                                                    />
+                                                </TouchableOpacity> */}
+                                            </View>
 
                                         }
 
@@ -1424,7 +1450,7 @@ class MyTeams extends Component {
                         {/* <View style={{ marginTop: wide * 0.03, borderWidth: 1, borderColor: Colors.teamTabPlayerCardBorder }}></View> */}
                         <View style={{ alignItems: 'center', marginTop: 12 }}>
 
-                            <TouchableOpacity onPress={() =>
+                            {/* <TouchableOpacity onPress={() =>
                                 Navigation.navigate('CoachAddPlayer',
                                     { playerDetails: item, teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex] })}
                                 style={{
@@ -1437,10 +1463,8 @@ class MyTeams extends Component {
                                     color: Colors.light, fontSize: 36, lineHeight: 42,
                                     fontFamily: Fonts.Bold, marginTop: 5,
                                 }}>+</Text>
-                                {/* <Image style={{ width: '100%', height: '100%', borderRadius: (wide * 0.2) / 2 }}
-            // resizeMode={'contain'}
-            source={require('../../Images/avatar.png')} /> */}
-                            </TouchableOpacity>
+                               
+                            </TouchableOpacity> */}
                         </View>
                         {/* <Text style={{
                             color: Colors.light, fontSize: 12, fontFamily: Fonts.SemiBold, textAlign: 'center', marginTop: 5,
@@ -2113,6 +2137,23 @@ class MyTeams extends Component {
                 {/* loading == null ? <></> : */}
 
 
+                <View style={{ marginHorizontal: 20, backgroundColor: Colors.base, }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+                        <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
+                            <Image style={{
+                                width: wide * 0.08, height: wide * 0.08,
+                                borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
+                            }} source={require('../../Images/back_ico.png')} />
+                        </TouchableOpacity>
+                        <Text style={{
+                            color: Colors.light, fontSize: 16,
+                            fontFamily: Fonts.Bold, lineHeight: 24,
+                            marginHorizontal: 10
+                        }}>
+                            Team
+                        </Text>
+                    </View>
+                </View>
                 {/* <Text style={{ color: Colors.lightshade }}>{JSON.stringify(this.props.Home)}</Text> */}
 
                 <AppLoader visible={loading} />
@@ -2218,6 +2259,9 @@ class MyTeams extends Component {
                                         }} source={require('../../Images/dropDownIconNew.png')}
                                     />
                                 </TouchableOpacity>
+
+
+
                                 {/* <DropDown
                                                 dropData={coachTeam?.seasonList}
                                                 onSelectionChange={(val) =>
@@ -2276,7 +2320,7 @@ class MyTeams extends Component {
                                         }
                                     </View>
 
-                                    {this.state.isAddTeam === false && this.state.teamDetailsArr.length > 0 ?
+                                    {/* {this.state.isAddTeam === false && this.state.teamDetailsArr.length > 0 ?
                                         <TouchableOpacity style={{
                                             width: 40,
                                             height: 40,
@@ -2304,9 +2348,9 @@ class MyTeams extends Component {
                                                 fontFamily: Fonts.Regular,
                                                 marginTop: 5,
                                             }}>Add</Text>
-                                        </TouchableOpacity >
+                                        </TouchableOpacity>
                                         : null
-                                    }
+                                    } */}
                                 </View>
 
                                 {
@@ -2342,7 +2386,7 @@ class MyTeams extends Component {
                                                 {this.state.selectedTab === 'Stats' ?
                                                     <>
 
-                                                        <StatPlanCard bannerInfo={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.bannerInfo} premium={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.premiumPurchased} />
+                                                        {/* <StatPlanCard bannerInfo={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.bannerInfo} premium={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.premiumPurchased} /> */}
 
                                                         {this.state.isPlayerStatShow ?
                                                             <>
@@ -2932,15 +2976,17 @@ class MyTeams extends Component {
 
                                                             {/* Game Plan Card */}
 
-                                                            <GamePlanCard premium={this.state.gameTabData && this.state.gameTabData.premiumPurchased} bannerInfo={this.state.gameTabData && this.state.gameTabData.bannerInfo} />
+                                                            {/* <GamePlanCard premium={this.state.gameTabData && this.state.gameTabData.premiumPurchased} bannerInfo={this.state.gameTabData && this.state.gameTabData.bannerInfo} /> */}
 
                                                             {/* End Game Plan Card */}
 
                                                             {/* Team Stats */}
 
-                                                            <TeamStats />
-
-                                                            <TeamStats />
+                                                            {
+                                                                this.state.gameTabData && this.state.gameTabData.recentGamesInfoList && this.state.gameTabData.recentGamesInfoList.map((game, index) => (
+                                                                    <TeamStats key={`game-${index}`} data={game} />
+                                                                ))
+                                                            }
 
                                                             {/* End Team Stats */}
 

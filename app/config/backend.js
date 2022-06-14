@@ -185,14 +185,17 @@ class Backend {
         auth()
             .createUserWithEmailAndPassword(email, pass)
             .then((e) => {
+                console.log("Creating user: ", e);
                 cb(true, e)
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
 
                     auth().signInWithEmailAndPassword(email, pass).then((e) => {
+                        console.log("Logging userr: ", e);
                         cb(true, e)
                     }).catch(error => {
+                        console.log("Logging error: ", error);
                         cb(false, error.userInfo.message)
                     })
 
@@ -201,6 +204,7 @@ class Backend {
                 }
 
                 if (error.code === 'auth/invalid-email') {
+                    console.log("Invalid email: ", error);
                     cb(false, error.userInfo.message)
 
                 }

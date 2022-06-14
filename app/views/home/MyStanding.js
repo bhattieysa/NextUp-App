@@ -435,61 +435,69 @@ class MyStanding extends Component {
 
     _renderLeadingTeam = (item, index) => {
         return (
-            <View style={{
-                flexDirection: 'row',
-                // alignItems: 'center',
-                width: wide * 0.36,
-                marginLeft: wide * 0.015,
-                // justifyContent: 'center'
-
-            }}>
-                <View style={{}}>
-                    <Text style={{
-                        color: Colors.light, fontSize: 54,
-                        fontFamily: Fonts.Bold,
-                        lineHeight: 60,
-
-                        marginLeft: wide * 0.01,
-                        marginTop: wide * 0.01,
-                    }}>{item.item.rank}</Text>
-                </View>
+            <TouchableOpacity
+                onPress={() => {
+                    console.log(`Team Id ${item.item.teamId} clicked`);
+                    Navigation.navigate("PlayerMyTeams", { teamId: "165225962766807" })
+                }}
+            >
                 <View style={{
-                    alignItems: 'center',
-                    // marginTop: wide * 0.01,
-                    marginLeft: wide * 0.03,
+                    flexDirection: 'row',
+                    // alignItems: 'center',
+                    width: wide * 0.36,
+                    marginLeft: wide * 0.015,
+                    // justifyContent: 'center'
+
                 }}>
-                    <View style={{
-                        width: wide * 0.16, height: wide * 0.16,
-                        // marginTop: 8,
-                        // marginLeft: wide * 0.01,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: wide * 0.16 / 2,
-                        borderWidth: 3,
-                        borderColor: Colors.newGrayFontColor,
-                    }}>
-                        {/* edit by keshav */}
-                        {item.item.logoUrl != null ?
-                            <FastImage style={{ width: '94%', height: '94%', borderRadius: wide * 0.16 / 2, }}
-                                // resizeMode={'contain'}
-                                source={{ uri: item.item.logoUrl }} />
-                            :
-                            null
-                        }
+                    {/* <Text style={{ color: Colors.lightshade }}>{JSON.stringify(item.item.teamId)}</Text> */}
+                    <View style={{}}>
+                        <Text style={{
+                            color: Colors.light, fontSize: 54,
+                            fontFamily: Fonts.Bold,
+                            lineHeight: 60,
+
+                            marginLeft: wide * 0.01,
+                            marginTop: wide * 0.01,
+                        }}>{item.item.rank}</Text>
                     </View>
+                    <View style={{
+                        alignItems: 'center',
+                        // marginTop: wide * 0.01,
+                        marginLeft: wide * 0.03,
+                    }}>
+                        <View style={{
+                            width: wide * 0.16, height: wide * 0.16,
+                            // marginTop: 8,
+                            // marginLeft: wide * 0.01,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: wide * 0.16 / 2,
+                            borderWidth: 3,
+                            borderColor: Colors.newGrayFontColor,
+                        }}>
+                            {/* edit by keshav */}
+                            {item.item.logoUrl != null ?
+                                <FastImage style={{ width: '94%', height: '94%', borderRadius: wide * 0.16 / 2, }}
+                                    // resizeMode={'contain'}
+                                    source={{ uri: item.item.logoUrl }} />
+                                :
+                                null
+                            }
+                        </View>
 
 
-                    <View style={{ marginTop: wide * 0.012 }}>
-                        <Text numberOfLines={2} style={{
-                            color: Colors.light, fontSize: 16, fontFamily: Fonts.Bold,
-                            lineHeight: 18
-                        }}>{item.item.name}</Text>
+                        <View style={{ marginTop: wide * 0.012 }}>
+                            <Text numberOfLines={2} style={{
+                                color: Colors.light, fontSize: 16, fontFamily: Fonts.Bold,
+                                lineHeight: 18
+                            }}>{item.item.name}</Text>
+
+                        </View>
 
                     </View>
 
                 </View>
-
-            </View>
+            </TouchableOpacity>
         )
     }
 
