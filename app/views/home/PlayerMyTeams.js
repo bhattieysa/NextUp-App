@@ -895,7 +895,7 @@ class MyTeams extends Component {
                                                     lineHeight: 20, fontFamily: Fonts.Medium,
                                                 }}>#{item.ranking}| {item.playerCategory} </Text> */}
 
-                                                <TouchableOpacity style={{
+                                                {/* <TouchableOpacity style={{
                                                     flexDirection: 'row',
                                                     paddingTop: 5,
                                                     backgroundColor: Colors.dropDownBackGround,
@@ -910,7 +910,7 @@ class MyTeams extends Component {
                                                         color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
                                                         marginBottom: 2
                                                     }}>Click to Compare</Text>
-                                                </TouchableOpacity>
+                                                </TouchableOpacity> */}
                                             </View>
                                             {/* </View> */}
                                         </TouchableOpacity>
@@ -1023,7 +1023,7 @@ class MyTeams extends Component {
                                                     lineHeight: 20, fontFamily: Fonts.Medium,
                                                 }}>#{item.ranking}| {item.playerCategory} </Text> */}
 
-                                                <TouchableOpacity style={{
+                                                {/* <TouchableOpacity style={{
                                                     flexDirection: 'row',
                                                     paddingTop: 5,
                                                     backgroundColor: Colors.dropDownBackGround,
@@ -1038,7 +1038,7 @@ class MyTeams extends Component {
                                                         color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
                                                         marginBottom: 2
                                                     }}>Click to Compare</Text>
-                                                </TouchableOpacity>
+                                                </TouchableOpacity> */}
                                             </View>
                                             {/* </View> */}
                                         </TouchableOpacity>
@@ -1181,7 +1181,7 @@ class MyTeams extends Component {
                                                     lineHeight: 20, fontFamily: Fonts.Medium,
                                                 }}>#{item.ranking}| {item.playerCategory} </Text> */}
 
-                                                <TouchableOpacity style={{
+                                                {/* <TouchableOpacity style={{
                                                     flexDirection: 'row',
                                                     paddingTop: 5,
                                                     backgroundColor: Colors.dropDownBackGround,
@@ -1196,7 +1196,7 @@ class MyTeams extends Component {
                                                         color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
                                                         marginBottom: 2
                                                     }}>Click to Compare</Text>
-                                                </TouchableOpacity>
+                                                </TouchableOpacity> */}
                                             </View>
                                             {/* </View> */}
                                         </TouchableOpacity>
@@ -1346,7 +1346,7 @@ class MyTeams extends Component {
                                                     lineHeight: 20, fontFamily: Fonts.Medium,
                                                 }}>#{item.ranking}| {item.playerCategory} </Text> */}
 
-                                                <TouchableOpacity style={{
+                                                {/* <TouchableOpacity style={{
                                                     flexDirection: 'row',
                                                     paddingTop: 5,
                                                     backgroundColor: Colors.dropDownBackGround,
@@ -1361,7 +1361,7 @@ class MyTeams extends Component {
                                                         color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
                                                         marginBottom: 2
                                                     }}>Click to Compare</Text>
-                                                </TouchableOpacity>
+                                                </TouchableOpacity> */}
                                             </View>
                                             {/* </View> */}
                                         </TouchableOpacity>
