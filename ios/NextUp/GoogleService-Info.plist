@@ -3,36 +3,32 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>436345431576-357tani4vf0nu8v4it1mpmllsjvmfcmr.apps.googleusercontent.com</string>
+	<string>537714754431-ee89nel2s61999a4m1nsh4e11lelmcsr.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.436345431576-357tani4vf0nu8v4it1mpmllsjvmfcmr</string>
+	<string>com.googleusercontent.apps.537714754431-ee89nel2s61999a4m1nsh4e11lelmcsr</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBfWHYKjwM500YNHSZu8sVIu6x4Jca3BV0</string>
+	<string>AIzaSyCd3F1SOUdFVSs0iHcvKpOpF4UJPK9RojM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>436345431576</string>
+	<string>537714754431</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.app.nextup</string>
+	<string>com.ftc.app.nextup</string>
 	<key>PROJECT_ID</key>
-	<string>nextup-ccc80</string>
+	<string>nextup-350411</string>
 	<key>STORAGE_BUCKET</key>
-	<string>nextup-ccc80.appspot.com</string>
+	<string>nextup-350411.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:436345431576:ios:7f0636896200bb4527456d</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>NextUp requires location services to get your current location to show on map</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>NextUp requires location services to get your current location to show on map</string>
+	<string>1:537714754431:ios:392ec5f92463cf1793904a</string>
 </dict>
 </plist>
