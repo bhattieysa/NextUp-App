@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 export const characterLimit = {
   password: 7,
 };
-export const API_ROOT = 'http://35.184.198.142:8085/v1/';
+export const API_ROOT = 'https://dev-api.nextupapp.co/v1/';
 
 
 export const AppURLs = {
