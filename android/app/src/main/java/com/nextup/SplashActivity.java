@@ -1,5 +1,5 @@
 
-package com.nextup;
+package com.ftc.app.nextup;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;

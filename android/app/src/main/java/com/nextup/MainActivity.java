@@ -1,4 +1,4 @@
-package com.nextup;
+package com.ftc.app.nextup;
 
 import com.facebook.react.ReactActivity;
 //import org.devio.rn.splashscreen.SplashScreen;

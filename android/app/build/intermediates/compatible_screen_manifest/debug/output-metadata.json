@@ -4,7 +4,7 @@
     "type": "COMPATIBLE_SCREEN_MANIFEST",
     "kind": "Directory"
   },
-  "applicationId": "com.nextup",
+  "applicationId": "com.ftc.app.nextup",
   "variantName": "debug",
   "elements": []
 }

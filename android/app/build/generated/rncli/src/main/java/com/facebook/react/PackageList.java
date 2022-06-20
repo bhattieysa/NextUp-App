@@ -49,6 +49,8 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.reactnative.googlefit.GoogleFitPackage;
 // react-native-image-crop-picker
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+// @stripe/stripe-react-native
+import com.reactnativestripesdk.StripeSdkPackage;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-maps
@@ -143,8 +145,9 @@ public class PackageList {
       new FastImageViewPackage(),
       new FBSDKPackage(),
       new RNGestureHandlerPackage(),
-      new GoogleFitPackage(com.nextup.BuildConfig.APPLICATION_ID),
+      new GoogleFitPackage(com.ftc.app.nextup.BuildConfig.APPLICATION_ID),
       new PickerPackage(),
+      new StripeSdkPackage(),
       new LinearGradientPackage(),
       new MapsPackage(),
       new RNMonthPickerPackage(),

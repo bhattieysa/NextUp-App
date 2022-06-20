@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/divesh/Documents/Projects/doja-enterprises/NextUpApp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v18/values-v18.xml",
+            "outputFile": "/Users/paly/Documents/Nextup/NextUpApp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "/Users/divesh/.gradle/caches/transforms-2/files-2.1/655dc37091b53a1d451eef0026f359d4/appcompat-1.1.0/res/values-v18/values-v18.xml",
+                    "source": "/Users/paly/.gradle/caches/transforms-2/files-2.1/d37ed708d9be0a5207f7c8120e338abf/appcompat-1.4.1/res/values-v18/values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

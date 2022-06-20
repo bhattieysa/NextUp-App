@@ -1,15 +1,15 @@
 com/nextup/MainApplication.java
- com.nextup.MainApplication
- com.nextup.MainApplication$1
+ com.ftc.app.nextup.MainApplication
+ com.ftc.app.nextup.MainApplication$1
 com/nextup/MainActivity.java
- com.nextup.MainActivity
+ com.ftc.app.nextup.MainActivity
+com/ftc/app/nextup/BuildConfig.java
+ com.ftc.app.nextup.BuildConfig
 com/nextup/SplashActivity.java
- com.nextup.SplashActivity
+ com.ftc.app.nextup.SplashActivity
 com/nextup/ReactNativeFlipper.java
- com.nextup.ReactNativeFlipper
- com.nextup.ReactNativeFlipper$1
- com.nextup.ReactNativeFlipper$1$1
-com/nextup/BuildConfig.java
- com.nextup.BuildConfig
+ com.ftc.app.nextup.ReactNativeFlipper
+ com.ftc.app.nextup.ReactNativeFlipper$1
+ com.ftc.app.nextup.ReactNativeFlipper$1$1
 com/facebook/react/PackageList.java
  com.facebook.react.PackageList
