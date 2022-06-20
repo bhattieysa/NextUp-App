@@ -2,3 +2,4 @@ node_modules
 .history/*
 ios/Pods/*
 android/app/build/*
+ios/NextUp.xcworkspace/xcuserdata/*
