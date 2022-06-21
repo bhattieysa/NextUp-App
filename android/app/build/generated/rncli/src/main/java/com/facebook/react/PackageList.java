@@ -45,8 +45,6 @@ import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-// react-native-google-fit
-import com.reactnative.googlefit.GoogleFitPackage;
 // react-native-image-crop-picker
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 // @stripe/stripe-react-native
@@ -145,7 +143,6 @@ public class PackageList {
       new FastImageViewPackage(),
       new FBSDKPackage(),
       new RNGestureHandlerPackage(),
-      new GoogleFitPackage(com.ftc.app.nextup.BuildConfig.APPLICATION_ID),
       new PickerPackage(),
       new StripeSdkPackage(),
       new LinearGradientPackage(),

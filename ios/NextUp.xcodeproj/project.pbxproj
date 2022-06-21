@@ -23,7 +23,6 @@
 		4B76C490276382500002C2D2 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B76C48E276382500002C2D2 /* MainInterface.storyboard */; };
 		4B76C494276382500002C2D2 /* NextUpShareExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4B76C48A276382500002C2D2 /* NextUpShareExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4B9D93D127671D1A005186AB /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D93D027671D1A005186AB /* ShareViewController.swift */; };
-		4BCEC74C2681B4CF007713D7 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCEC74B2681B4CF007713D7 /* HealthKit.framework */; };
 		4BEE0EFE26C4F5EA0034C4C3 /* Splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BEE0EFD26C4F5EA0034C4C3 /* Splash.png */; };
 		6DB86BA6941E4142A05D1BB6 /* noah-regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 774F92AF83CC4F1DA1691951 /* noah-regular.otf */; };
 		7658FBD69797EBBC00C420F9 /* libPods-NextUp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA0A20B0B0657C1C65501C /* libPods-NextUp.a */; };
@@ -167,7 +166,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BCEC74C2681B4CF007713D7 /* HealthKit.framework in Frameworks */,
 				7658FBD69797EBBC00C420F9 /* libPods-NextUp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
