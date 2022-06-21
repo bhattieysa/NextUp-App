@@ -5,7 +5,6 @@
 #import <React/RCTRootView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 //#import <GoogleMaps/GoogleMaps.h>
-#import "RCTAppleHealthKit.h"
 #import <RNShareMenu/ShareMenuManager.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
@@ -60,7 +59,6 @@ static void InitializeFlipper(UIApplication *application) {
 //  [GMSServices provideAPIKey:@"AIzaSyD_pnQSbq-XF4yeiXF1MG9TS8HyNVpS6_4"];
   [[FBSDKApplicationDelegate sharedInstance] application:application
                             didFinishLaunchingWithOptions:launchOptions];
-  [[RCTAppleHealthKit new] initializeBackgroundObservers:bridge];
   
   
   UIStoryboard *sb = [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil];

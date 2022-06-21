@@ -16,11 +16,6 @@ import { isNotch } from '../../utils/deviceInfo';
 import { myStandingFeed, updateHealthInfo } from '../../actions/home';
 import { getObject } from '../../middleware';
 
-import AppleHealthKit, {
-    HealthValue,
-    HealthKitPermissions,
-} from 'react-native-health'
-import GoogleFit, { Scopes } from 'react-native-google-fit'
 import FastImage from 'react-native-fast-image';
 import { Title } from '../../components/common/titleLabel';
 // import { GameStats } from '../Coach/CoachMyTeams';
@@ -30,12 +25,6 @@ import {
     VictoryGroup, VictoryBar, VictoryAxis,
 } from 'victory-native';
 
-const permissions = {
-    permissions: {
-        read: [AppleHealthKit.Constants.Permissions.Weight, AppleHealthKit.Constants.Permissions.Height],
-        // write: [AppleHealthKit.Constants.Permissions.Height],
-    },
-}
 const options = {
     scopes: [
         Scopes.FITNESS_ACTIVITY_READ,
@@ -86,113 +75,8 @@ class MyStanding extends Component {
         this.props.navigation.addListener('didFocus', this.onScreenFocus)
     }
 
-    getDataFromGoogleFit = (isApiCall) => {
-        GoogleFit.authorize(options)
-            .then(authResult => {
-                if (authResult.success) {
-                    const opt = {
-                        unit: "pound", // required; default 'kg'
-                        startDate: "2017-01-01T00:00:17.971Z", // required
-                        endDate: new Date().toISOString(), // required
-                        bucketUnit: "DAY", // optional - default "DAY". Valid values: "NANOSECOND" | "MICROSECOND" | "MILLISECOND" | "SECOND" | "MINUTE" | "HOUR" | "DAY"
-                        bucketInterval: 1, // optional - default 1. 
-                        ascending: false // optional; default false
-                    };
-                    const opt1 = {
-                        startDate: "2017-01-01T00:00:17.971Z", // required
-                        endDate: new Date().toISOString(), // required
-                    };
-                    GoogleFit.getWeightSamples(opt).then((results) => {
-                        // console.log('weightA' + res)
-                        GoogleFit.getHeightSamples(opt1).then((res) => {
-                            this.props.dispatch(updateHealthInfo(obj, {
-                                "Height": res?.value != null && res?.value != undefined ? res?.value.toFixed(2) : 0,
-                                "Weight": results?.value.toFixed(2)
-                            }, (res, resData) => {
-                                if (isApiCall) {
-                                    getObject('UserId').then((obj) => {
-                                        this.setState({ loading: true }, () => {
-                                            this.props.dispatch(myStandingFeed(obj, (res) => {
+    
 
-                                            }))
-                                        })
-
-                                    })
-                                }
-
-                            }))
-                        });
-                    });
-
-                } else {
-                    //access denied
-                    alert("Please grant permission to access your health info.")
-                }
-            })
-            .catch(() => {
-                //error
-                alert("Something went wrong!")
-            })
-    }
-    getDataFromAppleHealth = (isApiCall) => {
-        AppleHealthKit.initHealthKit(permissions, (error) => {
-            /* Called after we receive a response from the system */
-
-            if (error) {
-                console.log('[ERROR] Cannot grant permissions!')
-                alert("Please grant permission to access your health info.")
-            }
-
-            /* Can now read or write to HealthKit */
-
-
-            AppleHealthKit.getLatestWeight({
-                unit: 'pound',
-            }, (err, results) => {
-
-                AppleHealthKit.getLatestHeight({
-                    unit: 'meter',
-                }, (err, res) => {
-                    debugger
-                    if (err) {
-                        // console.log('error getting latest height: ', err)
-                        // alert("Something went wrong. Can't fetch your height and weight values") edited by keshav
-                    }
-                    getObject('UserId').then((obj) => {
-
-                        this.props.dispatch(updateHealthInfo(obj, {
-                            "Height": res?.value != null && res?.value != undefined ? res?.value.toFixed(2) : 0,
-                            "Weight": results?.value.toFixed(2)
-                        }, (res, resData) => {
-                            if (isApiCall) {
-                                getObject('UserId').then((obj) => {
-                                    this.setState({ loading: true }, () => {
-                                        this.props.dispatch(myStandingFeed(obj, (res) => {
-                                            this.setState({ loading: false }, () => {
-
-
-                                            })
-
-                                        }))
-                                    })
-
-                                })
-                            }
-                        }))
-                    })
-
-
-                    // console.log(res.value)
-                })
-                if (err) {
-                    // alert("Something went wrong. Can't fetch your height and weight values") edited by keshav
-
-                }
-                //console.log(results.value)
-            })
-
-        })
-    }
     onScreenFocus = () => {
         getObject('UserId').then((obj) => {
             this.setState({ loading: true }, () => {
