@@ -215,6 +215,7 @@ export function leaderBoardFeed(userId, obj, cb) {
         debugger
         if (response.status == 200 && response.data?.data !== null) {
           let data = response.data.data
+          console.log("Data From Lederboard", data)
 
           //cb(true, data)
           getState().entities.homePlayer.leaderBoardData = data;
