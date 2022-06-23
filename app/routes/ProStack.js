@@ -4,7 +4,7 @@ import { defaultNavigationOptions } from '../utils/navigation';
 const ProStack = createStackNavigator(
     {
         RoadToPro_3: {
-            getScreen: () => require('../views/home/RoadToProStack/RoadToPro').default,
+            getScreen: () => require('../views/home/RoadToProStack/RoadToProUpgrade').default,
         },
 
         PlayerRoadToProPlan: {
@@ -105,10 +105,10 @@ ProStack.navigationOptions = ({ navigation }) => {
             navigation.state.routes[i].routeName == "PostView" ||
             navigation.state.routes[i].routeName == "CoachAssignedTrainner" ||
             navigation.state.routes[i].routeName == "Compare" ||
-            navigation.state.routes[i].routeName == "RoadToPro_3" ||
-            navigation.state.routes[i].routeName == "PlayerRoadToProPlan" ||
+            // navigation.state.routes[i].routeName == "RoadToPro_3" ||
+            // navigation.state.routes[i].routeName == "PlayerRoadToProPlan" ||
             navigation.state.routes[i].routeName == "PlayerRoadToProLevel" ||
-            navigation.state.routes[i].routeName == "PlayerRoadToProUpgrade" ||
+            // navigation.state.routes[i].routeName == "PlayerRoadToProUpgrade" ||
             navigation.state.routes[i].routeName == "UploadVideoOfChallenge") {
             tabBarVisible = false;
         } else {

@@ -25,14 +25,14 @@
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
-        <!-- Added to check if Chrome is installed for browser-based payment authentication (e.g. 3DS1). -->
-        <package android:name="com.android.chrome" /> <!-- Needs to be explicitly declared on Android R+ -->
-        <package android:name="com.google.android.apps.maps" /> <!-- Added to check the default browser that will host the AuthFlow. -->
+        <!-- Added to check the default browser that will host the AuthFlow. -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
 
             <data android:scheme="http" />
-        </intent>
+        </intent> <!-- Added to check if Chrome is installed for browser-based payment authentication (e.g. 3DS1). -->
+        <package android:name="com.android.chrome" /> <!-- Needs to be explicitly declared on Android R+ -->
+        <package android:name="com.google.android.apps.maps" />
     </queries>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Required by older versions of Google Play services to create IID tokens -->
@@ -221,6 +221,122 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.stripe.android.financialconnections.FinancialConnectionsSheetRedirectActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Accepts success and cancel URIs that begin with "stripe-auth://link-accounts” -->
+                <data
+                    android:host="link-accounts"
+                    android:path="/com.ftc.app.nextup/success"
+                    android:scheme="stripe-auth" />
+                <data
+                    android:host="link-accounts"
+                    android:path="/com.ftc.app.nextup/cancel"
+                    android:scheme="stripe-auth" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.stripe.android.financialconnections.FinancialConnectionsSheetActivity"
+            android:exported="false"
+            android:theme="@style/StripeDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.paymentsheet.PaymentSheetActivity"
+            android:exported="false"
+            android:theme="@style/StripePaymentSheetDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.paymentsheet.PaymentOptionsActivity"
+            android:exported="false"
+            android:theme="@style/StripePaymentSheetDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.link.LinkActivity"
+            android:exported="false"
+            android:label="@string/link" />
+        <activity
+            android:name="com.stripe.android.ui.core.cardscan.CardScanActivity"
+            android:exported="false"
+            android:theme="@style/StripePaymentSheetDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.view.AddPaymentMethodActivity"
+            android:exported="false"
+            android:theme="@style/StripeDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.view.PaymentMethodsActivity"
+            android:exported="false"
+            android:theme="@style/StripeDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.view.PaymentFlowActivity"
+            android:exported="false"
+            android:theme="@style/StripeDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.view.PaymentAuthWebViewActivity"
+            android:exported="false"
+            android:theme="@style/StripeDefaultTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.stripe.android.view.PaymentRelayActivity"
+            android:exported="false"
+            android:theme="@style/StripeTransparentTheme" />
+        <!--
+        Set android:launchMode="singleTop" so that the StripeBrowserLauncherActivity instance that
+        launched the browser Activity will also handle the return URL deep link.
+        -->
+        <activity
+            android:name="com.stripe.android.payments.StripeBrowserLauncherActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/StripeTransparentTheme" />
+        <activity
+            android:name="com.stripe.android.payments.StripeBrowserProxyReturnActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/StripeTransparentTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Must match `DefaultReturnUrl#value`. -->
+                <data
+                    android:host="payment_return_url"
+                    android:path="/com.ftc.app.nextup"
+                    android:scheme="stripesdk" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.stripe.android.payments.core.authentication.threeds2.Stripe3ds2TransactionActivity"
+            android:exported="false"
+            android:theme="@style/StripeDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.googlepaylauncher.StripeGooglePayActivity"
+            android:exported="false"
+            android:theme="@style/StripeGooglePayDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.googlepaylauncher.GooglePayLauncherActivity"
+            android:exported="false"
+            android:theme="@style/StripeGooglePayDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncherActivity"
+            android:exported="false"
+            android:theme="@style/StripeGooglePayDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.payments.paymentlauncher.PaymentLauncherConfirmationActivity"
+            android:exported="false"
+            android:theme="@style/PayLauncherDefaultTheme" />
+        <activity
+            android:name="com.stripe.android.payments.bankaccount.ui.CollectBankAccountActivity"
+            android:exported="false"
+            android:theme="@style/StripeTransparentTheme" />
+        <activity
+            android:name="com.stripe.android.stripe3ds2.views.ChallengeActivity"
+            android:exported="false"
+            android:theme="@style/Stripe3DS2Theme" />
+        <activity
             android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
             android:excludeFromRecents="true"
             android:exported="false"
@@ -314,94 +430,6 @@
         </service>
 
         <activity
-            android:name="com.stripe.android.paymentsheet.PaymentSheetActivity"
-            android:exported="false"
-            android:theme="@style/StripePaymentSheetDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.paymentsheet.PaymentOptionsActivity"
-            android:exported="false"
-            android:theme="@style/StripePaymentSheetDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.link.LinkActivity"
-            android:exported="false"
-            android:label="@string/link" />
-        <activity
-            android:name="com.stripe.android.ui.core.cardscan.CardScanActivity"
-            android:exported="false"
-            android:theme="@style/StripePaymentSheetDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.view.AddPaymentMethodActivity"
-            android:exported="false"
-            android:theme="@style/StripeDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.view.PaymentMethodsActivity"
-            android:exported="false"
-            android:theme="@style/StripeDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.view.PaymentFlowActivity"
-            android:exported="false"
-            android:theme="@style/StripeDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.view.PaymentAuthWebViewActivity"
-            android:exported="false"
-            android:theme="@style/StripeDefaultTheme"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="com.stripe.android.view.PaymentRelayActivity"
-            android:exported="false"
-            android:theme="@style/StripeTransparentTheme" />
-        <!--
-        Set android:launchMode="singleTop" so that the StripeBrowserLauncherActivity instance that
-        launched the browser Activity will also handle the return URL deep link.
-        -->
-        <activity
-            android:name="com.stripe.android.payments.StripeBrowserLauncherActivity"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:theme="@style/StripeTransparentTheme" />
-        <activity
-            android:name="com.stripe.android.payments.StripeBrowserProxyReturnActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/StripeTransparentTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Must match `DefaultReturnUrl#value`. -->
-                <data
-                    android:host="payment_return_url"
-                    android:path="/com.ftc.app.nextup"
-                    android:scheme="stripesdk" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.stripe.android.payments.core.authentication.threeds2.Stripe3ds2TransactionActivity"
-            android:exported="false"
-            android:theme="@style/StripeDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.googlepaylauncher.StripeGooglePayActivity"
-            android:exported="false"
-            android:theme="@style/StripeGooglePayDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.googlepaylauncher.GooglePayLauncherActivity"
-            android:exported="false"
-            android:theme="@style/StripeGooglePayDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncherActivity"
-            android:exported="false"
-            android:theme="@style/StripeGooglePayDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.payments.paymentlauncher.PaymentLauncherConfirmationActivity"
-            android:exported="false"
-            android:theme="@style/PayLauncherDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.payments.bankaccount.ui.CollectBankAccountActivity"
-            android:exported="false"
-            android:theme="@style/StripeTransparentTheme" />
-        <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -461,36 +489,6 @@
                 <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name="com.stripe.android.financialconnections.FinancialConnectionsSheetRedirectActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Accepts success and cancel URIs that begin with "stripe-auth://link-accounts” -->
-                <data
-                    android:host="link-accounts"
-                    android:path="/com.ftc.app.nextup/success"
-                    android:scheme="stripe-auth" />
-                <data
-                    android:host="link-accounts"
-                    android:path="/com.ftc.app.nextup/cancel"
-                    android:scheme="stripe-auth" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.stripe.android.financialconnections.FinancialConnectionsSheetActivity"
-            android:exported="false"
-            android:theme="@style/StripeDefaultTheme" />
-        <activity
-            android:name="com.stripe.android.stripe3ds2.views.ChallengeActivity"
-            android:exported="false"
-            android:theme="@style/Stripe3DS2Theme" />
-
         <receiver
             android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
             android:enabled="true"
@@ -527,12 +525,6 @@
             android:name="androidx.startup.InitializationProvider"
             android:authorities="com.ftc.app.nextup.androidx-startup"
             android:exported="false" >
-            <meta-data
-                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-                android:value="androidx.startup" />
-            <meta-data
-                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-                android:value="androidx.startup" />
             <meta-data
                 android:name="androidx.profileinstaller.ProfileInstallerInitializer"
                 android:value="androidx.startup" />

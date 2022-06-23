@@ -54,9 +54,9 @@ class RoadToProUpgrade extends Component {
 
                             let packageList = roadToProData.packagesList;
 
-                            console.log("packagelist ", packageList);
+                            console.log("packagelist2 ", JSON.stringify(roadToProData));
 
-                            Navigation.navigate("PlayerRoadToProPlan", { packageList, type: params.type });
+                            // Navigation.navigate("PlayerRoadToProPlan", { packageList, type: params.type });
                             return false;
                         }
 
@@ -418,6 +418,8 @@ class RoadToProUpgrade extends Component {
                                                 color={Colors.stars}
                                                 style={{ marginTop: wide * 0.07 }}
                                             />
+
+
                                             <View style={{ flexDirection: 'row' }}>
                                                 <Text style={{
                                                     fontSize: 12, lineHeight: 12,
@@ -443,7 +445,9 @@ class RoadToProUpgrade extends Component {
                                     </View>
                                     :
                                     <View style={{ alignItems: 'center' }}>
-                                        {roadToProData?.subscriptionLevelInfoList[0]?.levelDescription !== null ?
+
+
+                                        {roadToProData?.subscriptionLevelInfoList.length > 0 ?
                                             <View style={{
                                                 // marginTop: wide * 0.05,
                                                 width: '90%',
@@ -464,7 +468,7 @@ class RoadToProUpgrade extends Component {
                                                     marginTop: wide * 0.03,
                                                     // paddingRight: wide * 0.25
                                                 }}>
-
+                                                    {roadToProData?.subscriptionLevelInfoList[0]?.levelName}
                                                 </Text>
                                                 <Text style={{
                                                     color: Colors.light, fontSize: 12,
@@ -481,7 +485,8 @@ class RoadToProUpgrade extends Component {
 
                                             : null
                                         }
-                                        <TouchableOpacity
+
+                                        {roadToProData && roadToProData.roadToPro ? <TouchableOpacity
                                             // sds
                                             style={{
                                                 width: '85%', height: 45,
@@ -497,6 +502,13 @@ class RoadToProUpgrade extends Component {
                                                 fontFamily: Fonts.Bold, fontSize: 16
                                             }}>Start</Text>
                                         </TouchableOpacity>
+                                            :
+                                            null
+                                        }
+
+
+
+
                                     </View>
                                 }
 
@@ -507,45 +519,49 @@ class RoadToProUpgrade extends Component {
 
                                 />
 
-                                <TouchableOpacity
-                                    // sds
-                                    style={{
-                                        width: '85%', height: 45,
-                                        backgroundColor: Colors.btnBg,
-                                        alignSelf: 'center', borderRadius: 28,
-                                        justifyContent: 'center', marginTop: 30,
-                                        paddingHorizontal: 10, marginRight: 10,
-                                    }} onPress={() => {
-                                        console.log("Upgrade plan clicked");
-                                    }}>
-                                    <Text style={{
-                                        alignSelf: 'center', color: Colors.light,
-                                        fontFamily: Fonts.Bold, fontSize: 16
-                                    }}>Upgrade Plan</Text>
-                                </TouchableOpacity>
+                                {
+                                    roadToProData && !roadToProData.packagesList ? <>
+                                        <TouchableOpacity
+                                            // sds
+                                            style={{
+                                                width: '85%', height: 45,
+                                                backgroundColor: Colors.btnBg,
+                                                alignSelf: 'center', borderRadius: 28,
+                                                justifyContent: 'center', marginTop: 30,
+                                                paddingHorizontal: 10, marginRight: 10,
+                                                marginBottom: 10
+                                            }} onPress={() => {
+                                                this.cancelTheSubscription()
+                                            }}>
+                                            <Text style={{
+                                                alignSelf: 'center', color: Colors.light,
+                                                fontFamily: Fonts.Bold, fontSize: 16
+                                            }}>Cancel</Text>
+                                        </TouchableOpacity>
 
 
-                                <TouchableOpacity
-                                    style={{
-                                        marginTop: 15,
-                                        marginBottom: 20
-                                    }}
-                                    onPress={() => {
-                                        this.cancelTheSubscription()
-                                    }}
-                                >
-                                    <Text style={{
-                                        color: Colors.light,
-                                        fontSize: 16,
-                                        textAlign: "center",
-                                        //  lineHeight: 22,
-                                        fontFamily: Fonts.SemiBold,
-                                        // width: wide * 0.6
-                                    }}>
+                                    </>
+                                        :
+                                        <TouchableOpacity
 
-                                        Cancel Subscription
-                                    </Text>
-                                </TouchableOpacity>
+                                            style={{
+                                                width: '90%', height: 56,
+                                                backgroundColor: Colors.btnBg,
+                                                alignSelf: 'center', borderRadius: 28,
+                                                justifyContent: 'center', marginTop: 30, paddingHorizontal: 15,
+                                                position: "absolute",
+                                                bottom: 20
+                                            }} onPress={() => {
+                                                Navigation.navigate('PlayerRoadToProPlan', { type: "Player", packageList: roadToProData.packagesList })
+                                            }}>
+                                            <Text style={{
+                                                alignSelf: 'center', color: Colors.light,
+                                                fontFamily: Fonts.Bold, fontSize: 16
+                                            }}>Get Monthly Subscription</Text>
+                                        </TouchableOpacity>
+                                }
+
+
 
                             </View>
 

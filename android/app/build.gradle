@@ -121,6 +121,9 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
+
+    ndkVersion '24.0.8215888'
+
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -200,6 +203,12 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation ("androidx.appcompat:appcompat:1.3.1") {
+        version {
+            strictly '1.3.1'
+        }
+    }
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

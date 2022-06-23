@@ -4601,7 +4601,6 @@
 
         <item name="drawerArrowStyle">@style/Widget.AppCompat.DrawerArrowToggle</item>
 
-        <item name="checkedTextViewStyle">?android:attr/checkedTextViewStyle</item>
         <item name="checkboxStyle">@style/Widget.AppCompat.CompoundButton.CheckBox</item>
         <item name="radioButtonStyle">@style/Widget.AppCompat.CompoundButton.RadioButton</item>
         <item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>
@@ -9652,9 +9651,6 @@
          is scrollable. -->
     <attr format="reference" name="layout_scrollInterpolator"/>
   </declare-styleable>
-    <declare-styleable name="AppCompatEmojiHelper">
-
-    </declare-styleable>
     <declare-styleable name="AppCompatImageView">
         <attr name="android:src"/>
         <!-- Sets a drawable as the content of this ImageView. Allows the use of vector drawable
@@ -9795,8 +9791,6 @@
                  result to valid color values. Saturate(S + D) -->
             <enum name="add" value="16"/>
         </attr>
-        <!-- Display the emoji if emojicompat has this character for emoji not on the system -->
-        <attr format="boolean" name="emojiCompatEnabled"/>
     </declare-styleable>
     <declare-styleable name="AppCompatTheme">
 
@@ -10490,34 +10484,6 @@
         <attr format="enum" name="carousel_emptyViewsBehavior">
             <enum name="invisible" value="4"/>
             <enum name="gone" value="8"/>
-        </attr>
-    </declare-styleable>
-    <declare-styleable name="CheckedTextView">
-        <attr name="android:checkMark"/>
-        <!-- Compat attr to load backported drawable types -->
-        <attr format="reference" name="checkMarkCompat"/>
-        <!-- Tint to apply to the check mark drawable. -->
-        <attr format="color" name="checkMarkTint"/>
-
-        <!-- Blending mode used to apply the check mark tint. -->
-        <attr name="checkMarkTintMode">
-            <!-- The tint is drawn on top of the drawable.
-                 [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
-            <enum name="src_over" value="3"/>
-            <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
-                 color channels are thrown out. [Sa * Da, Sc * Da] -->
-            <enum name="src_in" value="5"/>
-            <!-- The tint is drawn above the drawable, but with the drawable’s alpha
-                 channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
-            <enum name="src_atop" value="9"/>
-            <!-- Multiplies the color and alpha channels of the drawable with those of
-                 the tint. [Sa * Da, Sc * Dc] -->
-            <enum name="multiply" value="14"/>
-            <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
-            <enum name="screen" value="15"/>
-            <!-- Combines the tint and icon color and alpha channels, clamping the
-                 result to valid color values. Saturate(S + D) -->
-            <enum name="add" value="16"/>
         </attr>
     </declare-styleable>
     <declare-styleable name="Chip">

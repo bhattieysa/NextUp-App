@@ -141,7 +141,7 @@ class RoadToProLevel extends Component {
                                 position: "absolute",
                                 bottom: 20
                             }} onPress={() => {
-                                Navigation.navigate('PlayerRoadToProUpgrade', { type: params.type })
+                                Navigation.navigate('PlayerRoadToProUpgrade', { type: "Player" })
                             }}>
                             <Text style={{
                                 alignSelf: 'center', color: Colors.light,
