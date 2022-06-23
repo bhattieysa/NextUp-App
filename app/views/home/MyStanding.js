@@ -25,14 +25,14 @@ import {
     VictoryGroup, VictoryBar, VictoryAxis,
 } from 'victory-native';
 
-const options = {
-    scopes: [
-        Scopes.FITNESS_ACTIVITY_READ,
-        Scopes.FITNESS_ACTIVITY_WRITE,
-        Scopes.FITNESS_BODY_READ,
-        Scopes.FITNESS_BODY_WRITE,
-    ],
-}
+// const options = {
+//     scopes: [
+//         Scopes.FITNESS_ACTIVITY_READ,
+//         Scopes.FITNESS_ACTIVITY_WRITE,
+//         Scopes.FITNESS_BODY_READ,
+//         Scopes.FITNESS_BODY_WRITE,
+//     ],
+// }
 let wide = Layout.width;
 
 const barChartData = [
