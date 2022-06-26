@@ -34,6 +34,7 @@ class RoadToProUpgrade extends Component {
         this.props.navigation.addListener('didFocus', this.onScreenFocus)
         // this.onScreenFocus();
 
+
     }
     onScreenFocus = () => {
 
@@ -41,6 +42,9 @@ class RoadToProUpgrade extends Component {
 
         getObject('UserId').then((obj) => {
             this.setState({ loading: true }, () => {
+
+                console.log("User ID is ", obj);
+                // this.props.dispatch(createSubscriptionForId(obj));
 
                 this.props.dispatch(getSubscriptionInfoById(obj, (res) => {
                     if (res) {
@@ -276,74 +280,6 @@ class RoadToProUpgrade extends Component {
 
 
             </TouchableOpacity>
-            // <TouchableOpacity
-            //     activeOpacity={1}
-            //     //onPress={() => this.setState({ selectedPlanIndex: 0 })}
-            //     style={[{
-            //         marginTop: wide * 0.03,
-            //         // height: wide * 0.23,
-            //         justifyContent: 'center'
-            //     }, item.index === 0 ?
-            //         {
-            //             borderWidth: 3, borderColor: Colors.greenVariant, borderRadius: 10
-            //         }
-            //         : item.index === 1 ?
-            //             {
-            //                 borderWidth: 1, borderColor: Colors.stars, borderRadius: 10
-            //             }
-            //             :
-            //             null
-            //     ]}>
-            //     <Image style={{
-            //         position: 'absolute', top: 0, bottom: 0, left: 0,
-            //         right: 0, width: '100%', height: '100%', borderBottomRightRadius: 25,
-            //         borderBottomLeftRadius: 10
-
-            //     }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} />
-
-            //     <View style={{ marginLeft: 15, flexDirection: 'row' }}>
-
-            //         <View style={{ flex: 1, justifyContent: 'center' }} >
-
-            //             <Text style={{
-            //                 color: item.index === 1 || item.index === 0 ? Colors.light : Colors.overlayWhite, fontSize: 20, lineHeight: 22,
-            //                 fontFamily: Fonts.SemiBold, width: wide * 0.4
-            //             }}>
-
-            //                 DRIBBLE CHALLENGE #1
-            //             </Text>
-            //         </View>
-
-            //         <View >
-            //             {
-            //                 item.index === 0 ?
-            //                     <Image style={{
-            //                         width: wide * 0.04, height: wide * 0.04, right: wide * 0.01,
-            //                         tintColor: Colors.greenVariant, alignSelf: 'flex-end', marginTop: 5, marginBottom: 10,
-            //                     }} resizeMode={'contain'}
-            //                         source={require('../../Images/tick_selected.png')} />
-            //                     : null
-            //             }
-            //             <Text style={{
-            //                 color: item.index === 1 || item.index === 0 ? Colors.fontGray : Colors.overlayWhite, fontSize: 12, lineHeight: 14,
-            //                 fontFamily: Fonts.SemiBoldItalic, paddingHorizontal: 15, textAlign: 'right', marginTop: item.index === 0 ? 0 : wide * 0.06
-            //             }}>
-
-            //                 Posted on:
-            //             </Text>
-            //             <Text style={{
-            //                 color: item.index === 1 || item.index === 0 ? Colors.light : Colors.overlayWhite, fontSize: 18, lineHeight: 20,
-            //                 fontFamily: Fonts.SemiBold, paddingHorizontal: 15, marginTop: wide * 0.01, marginBottom: wide * 0.06
-            //             }}>
-
-            //                 Dec 27, 2020
-            //             </Text>
-            //         </View>
-
-            //     </View>
-
-
-            // </TouchableOpacity>
         )
     }
 

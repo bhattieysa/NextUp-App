@@ -559,6 +559,9 @@ export function createSubscriptionForId(obj, cb) {
       .post(AppURLs.createSubs, obj)
       .then((response) => {
         debugger
+
+        console.log("challenge response--", response);
+
         if (response.status == 200 && response.data?.data !== null) {
           let data = response.data.data
           console.log("challenge response--", response);
@@ -572,6 +575,7 @@ export function createSubscriptionForId(obj, cb) {
       .catch((error) => {
         debugger
         cb(false)
+        console.log("challenge error", error);
         return dispatch(myStandingFailure(error));
       });
   };
