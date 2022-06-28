@@ -48,7 +48,8 @@ class LoadingView extends Component {
                   this.navigateUserToItsHome(obj.selectedUserType.toUpperCase())
                 } else {
                   if (obj.isSocialLogin !== undefined) {
-                    Navigation.navigate('TellUsMore');
+                    // Navigation.navigate('TellUsMore');
+                    Navigation.navigate('TellUsMoreIntro');
                   } else {
                     Navigation.navigate('AppLogin');
                   }
@@ -60,7 +61,8 @@ class LoadingView extends Component {
               this.navigateUserToItsHome(obj.selectedUserType.toUpperCase())
             }
           } else if (obj.isSocialLogin !== undefined && obj.isSocialLogin !== false) {
-            Navigation.navigate('TellUsMore');
+            // Navigation.navigate('TellUsMore');
+            Navigation.navigate('TellUsMoreIntro');
           } else {
             Navigation.navigate('AppLogin');
           }

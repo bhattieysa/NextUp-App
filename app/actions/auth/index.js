@@ -294,9 +294,7 @@ export function onBoardPlayerPositionAPI(cb) {
         debugger
         if (response.status == 200 && response.data?.data !== null) {
           let data = response.data.data
-
           cb(data);
-          
         } else {
           cb(false, response.data.message);
         }
@@ -469,6 +467,28 @@ export function Logout(userId, deviceToken, cb) {
         debugger
         console.log("Logout Error is ", error)
         return dispatch(RegisterFailure(error));
+      });
+  };
+}
+
+export function getPlayerStyle(cb) {
+  return (dispatch, getState) => {
+    dispatch(OnBoardPlayerPositionRequest());
+    return axios
+      .get(AppURLs.getPlayerCategory)
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+          cb(true, data);
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        console.log(error)
+        return dispatch(OnBoardPlayerPositionFailure(error));
       });
   };
 }

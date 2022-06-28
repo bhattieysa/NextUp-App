@@ -8,4 +8,6 @@ import App from './app/index';
 import { name as appName } from './app.json';
 //TextInput.defaultProps.selectionColor = 'white'
 console.disableYellowBox = true;
+// console.error = (error) => 
+
 AppRegistry.registerComponent(appName, () => App);

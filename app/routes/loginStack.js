@@ -28,6 +28,20 @@ const LoginStack = createStackNavigator(
             getScreen: () => require('../views/auth/TellUsMore').default,
         },
 
+        TellUsMoreIntro: {
+            getScreen: () => require('../views/auth/TellUSMoreIntro').default,
+        },
+
+        School: {
+            getScreen: () => require('../views/auth/SchoolList').default,
+        },
+        TeamList: {
+            getScreen: () => require('../views/auth/SelectTeam').default,
+        },
+
+        SelectPlayerCategory: {
+            getScreen: () => require('../views/auth/SelectPlayerStyle').default,
+        },
 
         RoadToPro: {
             getScreen: () => require('../views/auth/RoadToPro').default,

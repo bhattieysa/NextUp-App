@@ -110,7 +110,7 @@ function Year({ navigation }) {
                     {
                         yearList.map((st, index) => (
                             <TouchableOpacity key={`year-${index}`} style={{ marginTop: 15 }} onPress={() => {
-                                Navigation.navigate("TellUsMore", { year: st })
+                                Navigation.navigate("TellUsMoreIntro", { year: st })
                             }}>
                                 <Text style={{ color: Colors.lightshade, fontSize: 20 }}>{st}</Text>
                             </TouchableOpacity>

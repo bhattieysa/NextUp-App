@@ -78,6 +78,8 @@ export const AppURLs = {
   exploreSearch: 'search/',
   playerForShare: 'coach/list/players/share/',
   logOut: 'user/logout/',
+  getPlayerCategory: 'admin/list/player/category',
+  getSchoolOrTeam: 'admin/list/onboarding'
 
 
 };
@@ -116,7 +118,10 @@ export class UserModel {
       coachCertiUrl,
       fid,
       isSocialLogin,
-      isProfileUploaded
+      isProfileUploaded,
+      isBoy,
+      isGirl,
+      coachTeam
   }
 
 }

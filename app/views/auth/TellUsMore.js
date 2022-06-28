@@ -41,6 +41,7 @@ class TellUsMore extends Component {
       loading: false,
       fname: UserModel.fname !== undefined ? UserModel.fname : '',
       lname: UserModel.lname !== undefined ? UserModel.lname : '',
+      dob: UserModel.dob !== undefined ? UserModel.dob : 'SELECT DATE',
       email: UserModel.email !== undefined ? UserModel.email : '',
       city: UserModel.city !== undefined ? UserModel.city : '',
       state: UserModel.state !== undefined ? UserModel.state : '',
@@ -106,9 +107,10 @@ class TellUsMore extends Component {
     } = this.state;
 
 
-    if (strSelectedMode === 'coach') {
+    if (strSelectedMode.toLowerCase() === 'coach') {
       if (key === 'aboutMe') {
         if (aboutMe.length < 60) {
+          debugger
           this.setState({ isbtnEnable: false })
           return
         }
@@ -118,6 +120,7 @@ class TellUsMore extends Component {
           return
         }
         else {
+          debugger
           this.setState({ isbtnEnable: false });
           return
         }
@@ -136,9 +139,6 @@ class TellUsMore extends Component {
     }
   }
   setTextofFields = (frm, txt) => {
-
-
-
     switch (frm) {
       case 'fname':
         this.setState({ fname: txt }, () => {
@@ -201,19 +201,33 @@ class TellUsMore extends Component {
       dob,
       email,
       strSelectedPosition,
-      aboutMe, strSelectedMode, isbtnEnable, positions } = this.state;
+      aboutMe, strSelectedMode, isbtnEnable, positions, city, state, classof, school } = this.state;
     if (isbtnEnable) {
-
       if (
         UserModel.fname !== fname ||
         UserModel.lname !== lname ||
         // UserModel.dob !== dob ||
         UserModel.aboutMe !== aboutMe ||
         UserModel.selectedUserType !== strSelectedMode ||
-        UserModel.email !== email ||
-        UserModel.selectedSportPosition !== positions[strSelectedPosition]
+        UserModel.email !== email
+        // UserModel.selectedSportPosition !== positions[strSelectedPosition]
       ) {
-        this.onBoardInfo()
+        if (strSelectedMode.toLowerCase() == 'player') {
+          UserModel.fname = fname
+          UserModel.lname = lname
+          UserModel.email = email
+          UserModel.city = city
+          UserModel.state = state
+          UserModel.school = school
+          UserModel.classof = classof
+          // UserModel.selectedSportPosition = positions[strSelectedPosition]
+          UserModel.aboutMe = aboutMe
+          UserModel.selectedUserType = strSelectedMode
+          UserModel.dob = dob
+          Navigation.navigate('SelectPlayerCategory')
+        } else {
+          this.onBoardInfo()
+        }
       } else {
         Navigation.navigate('UploadPhoto')
       }
@@ -232,7 +246,8 @@ class TellUsMore extends Component {
       aboutMe,
       strSelectedMode,
       positions,
-      pickerDate
+      pickerDate,
+      dob
     } = this.state;
     getObject('UserId').then((obj) => {
 
@@ -242,12 +257,14 @@ class TellUsMore extends Component {
         "lastName": lname,
         "aboutMe": aboutMe,
         "email": email,
+        "dob": dob,
+        "onBoardingTeamName": UserModel.coachTeam, //when coach selected
         "schoolInfo": {
           city: city,
           state: state,
           name: school,
           classOff: classof,
-          typeOfPlayer: positions[strSelectedPosition]
+          // typeOfPlayer: positions[strSelectedPosition]
         },
         "roleList": [
           `ROLE_${strSelectedMode.toUpperCase()}`
@@ -259,8 +276,8 @@ class TellUsMore extends Component {
 
       this.setState({ loading: true }, () => {
         this.props.dispatch(onBoardAPI(obj, params, (res, resData) => {
-
           if (res) {
+            debugger
             let onBoardData = {
               selectedUserType: strSelectedMode,
               isAdult: UserModel.isAdult,
@@ -281,7 +298,8 @@ class TellUsMore extends Component {
               coachCertiUrl: UserModel.coachCertiUrl,
               fid: UserModel.fid,
               isSocialLogin: UserModel.isSocialLogin,
-              isProfileUploaded: UserModel.isProfileUploaded
+              isProfileUploaded: UserModel.isProfileUploaded,
+              dob: dob
             }
             UserModel.fname = fname
             UserModel.lname = lname
@@ -293,13 +311,16 @@ class TellUsMore extends Component {
             UserModel.selectedSportPosition = positions[strSelectedPosition]
             UserModel.aboutMe = aboutMe
             UserModel.selectedUserType = strSelectedMode
+            UserModel.dob = dob
 
             setObject('authData', onBoardData).then(() => {
+              debugger
               this.setState({ loading: false })
               Navigation.navigate('UploadPhoto')
             })
           }
           else {
+            debugger
             this.setState({ loading: false }, () => {
               setTimeout(() => {
                 showErrorAlert('Something went wrong!')
@@ -433,7 +454,8 @@ class TellUsMore extends Component {
       isDatePickerVisible,
       openStatesModal,
       positions,
-      showYearPicker
+      showYearPicker,
+      dob
     } = this.state;
 
     const navParams = this.props.navigation.state.params;
@@ -526,12 +548,13 @@ class TellUsMore extends Component {
 
             }}>
               <TouchableOpacity activeOpacity={1} style={{
-                width: wide * 0.24,
+                width: wide * 0.35,
+                height: wide * 0.44,
                 borderWidth: 3, borderRadius: 10,
-                borderColor: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor
+                // borderColor: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor
+                borderColor: Colors.light
               }}
                 onPress={() => {
-
                   this.setState({ strSelectedMode: 'player' }, () => {
                     this.checkForButtonEnable()
                   })
@@ -539,33 +562,38 @@ class TellUsMore extends Component {
                 }
                 }
               >
-                <Image resizeMode={'contain'} style={{
-                  alignSelf: 'center',
-                  marginTop: wide * 0.1,
-                  height: wide * 0.15, width: wide * 0.15,
-                  tintColor: strSelectedMode === 'player' ?
-                    Colors.light : Colors.newGrayFontColor
-                }} source={require('../../Images/player.png')} />
+                <Image resizeMode={'cover'} style={{
+                  // alignSelf: 'center',
+                  // marginTop: wide * 0.1,
+                  height: '100%',
+                  width: '100%',
+                  borderRadius: 10,
+                  // tintColor: strSelectedMode === 'player' ?
+                  //   Colors.light : Colors.newGrayFontColor
+                }} source={require('../../Images/onBoardPlayerImg.png')} />
                 <Text style={{
-                  color: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor, alignSelf: 'center',
+                  // color: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor, 
+                  color: Colors.light,
+                  alignSelf: 'center',
                   fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
-                }}>PLAYER</Text>
-                {
-                  strSelectedMode === 'player' ?
-                    <Image style={{
-                      position: 'absolute',
-                      right: wide * 0.02,
-                      top: wide * 0.02,
-                      width: 20,
-                      height: 20
+                }}>{strSelectedMode.toUpperCase()}</Text>
+                {/* {
+                  strSelectedMode === 'player' ? */}
+                <Image style={{
+                  position: 'absolute',
+                  right: wide * 0.02,
+                  top: wide * 0.02,
+                  width: 20,
+                  height: 20
 
-                    }} source={require('../../Images/tick.png')} />
-                    :
+                }} source={require('../../Images/tick.png')} />
+                {/* :
                     null
-                }
+                } */}
 
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1} style={{
+
+              {/* <TouchableOpacity activeOpacity={1} style={{
                 width: wide * 0.24, borderWidth: 3, borderRadius: 10,
                 marginHorizontal: 15,
                 borderColor: strSelectedMode === 'coach' ? Colors.light : Colors.newGrayFontColor,
@@ -600,7 +628,7 @@ class TellUsMore extends Component {
                     :
                     null
                 }
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               {/* <TouchableOpacity activeOpacity={1} style={{
                                 width: wide * 0.24,
@@ -640,7 +668,7 @@ class TellUsMore extends Component {
                                 }
                             </TouchableOpacity> */}
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: wide * 0.25 }}>
 
               <AnimatedInput
                 placeholder="FIRST NAME"
@@ -663,7 +691,6 @@ class TellUsMore extends Component {
               />
 
               <AnimatedInput
-
                 placeholder="LAST NAME"
                 onChangeText={(e) => this.setTextofFields('lname', e)}
                 value={lname}
@@ -684,9 +711,29 @@ class TellUsMore extends Component {
               />
             </View>
 
+            {
+              strSelectedMode === 'player' ?
+                <View style={{ marginTop: 20 }}>
+                  <Text style={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor, fontSize: 12 }}>DATE OF BIRTH</Text>
+                  <TouchableOpacity style={{
+                    marginTop: 15, borderBottomWidth: 1.5,
+                    borderBottomColor: Colors.borderColor,
+                  }} onPress={() => {
+                    this.setState({ isDatePickerVisible: true })
+                  }}>
+                    <Text style={{
+                      fontFamily: Fonts.Bold,
+                      paddingVertical: 10, color: dob === 'SELECT DATE' ? Colors.borderColor : Colors.light, fontSize: 16
+                    }}>{dob === 'SELECT DATE' ? dob : moment(dob).format('DD MMM YYYY')}</Text>
+                  </TouchableOpacity>
+                </View>
+                :
+                null
+            }
+
             {/* Email ID */}
 
-            {strSelectedMode === 'player' ? <View style={{ marginTop: 30 }}>
+            {/* {strSelectedMode === 'player' ? <View style={{ marginTop: 30 }}>
               <AnimatedInput
 
                 placeholder="EMAIL ID"
@@ -712,90 +759,92 @@ class TellUsMore extends Component {
             </View>
               :
               null
-            }
+            } */}
 
             {/* End Email ID */}
 
             {/* City & State Field */}
 
-            {
-              strSelectedMode === 'player' ?
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
-                  <AnimatedInput
-                    placeholder="CITY"
-                    onChangeText={(e) => this.setTextofFields('city', e)}
-                    value={city}
-                    styleInput={{
-                      fontFamily: Fonts.Bold,
-                      color: Colors.light,
-                      fontSize: 16, lineHeight: 18
-                    }}
-                    styleLabel={{
-                      fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                      fontSize: 12,
-                    }}
-                    styleBodyContent={{
-                      borderBottomWidth: 1.5,
-                      borderBottomColor: Colors.borderColor,
-                      width: wide * 0.4
-                    }}
-                  />
+            {/* {
+              strSelectedMode === 'player' ? */}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
+              <AnimatedInput
+                placeholder="CITY"
+                onChangeText={(e) => this.setTextofFields('city', e)}
+                value={city}
+                disabled
+                styleInput={{
+                  fontFamily: Fonts.Bold,
+                  color: Colors.light,
+                  fontSize: 16, lineHeight: 18
+                }}
+                styleLabel={{
+                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                  fontSize: 12,
+                }}
+                styleBodyContent={{
+                  borderBottomWidth: 1.5,
+                  borderBottomColor: Colors.borderColor,
+                  width: wide * 0.4
+                }}
+              />
 
-                  {/* <Text style={{ color: Colors.lightshade }}>Params: {JSON.stringify(navParams)}</Text> */}
+              {/* <Text style={{ color: Colors.lightshade }}>Params: {JSON.stringify(navParams)}</Text> */}
 
-                  <TouchableOpacity onPress={() => Navigation.navigate("State")}>
+              <View>
 
-                    <AnimatedInput
-                      disabled={this.state.state !== "" ? true : false}
-                      pointerEvents="none"
-                      placeholder="STATE"
-                      onChangeText={(e) => this.setTextofFields('state', e)}
-                      value={state}
-                      onFocus={() => {
-                        Navigation.navigate("State")
-                      }}
-                      sufix={
-                        <Image
-                          style={{
-                            width: 7,
-                            height: 7,
-                            position: 'absolute',
-                            top:
-                              Platform.OS === "android"
-                                ? 5
-                                : state != ""
-                                  ? 30
-                                  : 5,
-                            right: 7
-                          }}
-                          source={require('../../Images/dropDownIconNew.png')}
-                        />
-                      }
-                      styleInput={{
-                        fontFamily: Fonts.Bold,
-                        color: Colors.light,
-                        fontSize: 16,
-                        lineHeight: 18,
-                        position: 'relative'
-                      }}
-                      styleLabel={{
-                        fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                        fontSize: 12
-                      }}
-                      styleBodyContent={{
-                        borderBottomWidth: 1.5,
-                        borderBottomColor: Colors.borderColor,
-                        width: wide * 0.4
-                      }}
-                    // isAutoFocus={true}
-                    // multiline
-                    />
+                <AnimatedInput
+                  disabled={this.state.state !== "" ? true : false}
+                  pointerEvents="none"
+                  placeholder="STATE"
+                  onChangeText={(e) => this.setTextofFields('state', e)}
+                  value={state}
 
-                  </TouchableOpacity>
-                </View>
-                :
-                null
-            }
+                  // onFocus={() => {
+                  //   Navigation.navigate("State")
+                  // }}
+                  // sufix={
+                  //   <Image
+                  //     style={{
+                  //       width: 7,
+                  //       height: 7,
+                  //       position: 'absolute',
+                  //       top:
+                  //         Platform.OS === "android"
+                  //           ? 5
+                  //           : state != ""
+                  //             ? 30
+                  //             : 5,
+                  //       right: 7
+                  //     }}
+                  //     source={require('../../Images/dropDownIconNew.png')}
+                  //   />
+                  // }
+                  styleInput={{
+                    fontFamily: Fonts.Bold,
+                    color: Colors.light,
+                    fontSize: 16,
+                    lineHeight: 18,
+                    position: 'relative'
+                  }}
+                  styleLabel={{
+                    fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                    fontSize: 12
+                  }}
+                  styleBodyContent={{
+                    borderBottomWidth: 1.5,
+                    borderBottomColor: Colors.borderColor,
+                    width: wide * 0.4
+                  }}
+                // isAutoFocus={true}
+                // multiline
+                />
+
+              </View>
+            </View>
+            {/* :
+                 null
+             } */}
             <StatesListModal
               openModal={openStatesModal}
               onStateChoose={(e) => this.onStateChoose(e)}
@@ -806,8 +855,8 @@ class TellUsMore extends Component {
 
             {/* School & Class of */}
 
-            {
-              strSelectedMode === 'player' ? <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+            {/* {strSelectedMode === 'player' ? 
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
 
                 <View>
                   <AnimatedInput
@@ -828,11 +877,9 @@ class TellUsMore extends Component {
                       borderBottomColor: Colors.borderColor,
                       width: wide * 0.4
                     }}
-                  // isAutoFocus={true}
                   />
                 </View>
 
-                {/* Add picker here */}
 
                 <TouchableOpacity onPress={() => Navigation.navigate("Year")}>
                   <AnimatedInput
@@ -873,21 +920,20 @@ class TellUsMore extends Component {
                       borderBottomColor: Colors.borderColor,
                       width: wide * 0.4
                     }}
-                  // isAutoFocus={true}
-                  // multiline
+                
                   />
                 </TouchableOpacity>
               </View>
                 :
                 null
-            }
+            } */}
             <YearSelectionModal
               openModal={showYearPicker}
               onYearChoose={(e) => this.onYearChoose(e)}
               onClose={() => this.onYearClose()}
             />
             {
-              strSelectedMode === 'coach' ? <View style={{ marginTop: 27 }}>
+              strSelectedMode.toLowerCase() === 'coach' ? <View style={{ marginTop: 27 }}>
                 <Text style={{
                   fontFamily: Fonts.Bold,
                   color: Colors.newGrayFontColor, fontSize: 12, position: 'absolute', left: 0,
@@ -927,7 +973,7 @@ class TellUsMore extends Component {
 
 
             {/* Sport Position */}
-            {
+            {/* {
               strSelectedMode === 'player' ?
                 <FlatList
                   data={positions}
@@ -940,7 +986,7 @@ class TellUsMore extends Component {
                 />
                 :
                 null
-            }
+            } */}
 
             {/* End Sport Position */}
 

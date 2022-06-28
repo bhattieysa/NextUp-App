@@ -11,7 +11,7 @@ import { Colors } from '../constants';
 
 class AppLoader extends React.Component {
   render() {
-    const { onRequestClose, type } = this.props;
+    const { onRequestClose, type, visible } = this.props;
     return (
       <Modal
         animated

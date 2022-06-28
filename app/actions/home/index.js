@@ -2084,3 +2084,58 @@ export function getChallengeDataWithPlayerDtls(id, planID, cb) {
 }
 
 
+export function getSchoolOrTeamList(city, state_name, type, cb) {
+  return (dispatch, getState) => {
+    debugger
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(`${AppURLs.getSchoolOrTeam}?city=${city}&&state=${state_name}&&type=${type}`)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          dispatch(myStandingSuccess()), cb(true, data);
+        } else {
+          dispatch(myStandingFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+export function getCities(state_name, cb) {
+  return (dispatch, getState) => {
+
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(`${AppURLs.states}?state=${state_name}`)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          debugger
+
+          dispatch(myStandingSuccess()), cb(true, data);
+        } else {
+          dispatch(myStandingFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+

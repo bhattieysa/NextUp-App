@@ -45,6 +45,7 @@ export const Colors = {
   compareRankColor: '#8B8D94',
   myTeamPlayerListLabel: '#313235',
   recentGameCardColor: '#23262F',
-
+  togelBackground: '#85ADFF',
+  togelCircleColor: '#181A20'
 
 };
