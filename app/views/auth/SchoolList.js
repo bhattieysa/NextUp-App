@@ -99,9 +99,10 @@ function SchoolList(props) {
 
   }, [school_search]);
 
-  const getCityData = () => {
-    if (state_selected) {
-      dispatch(getCities(state_selected, (res, city_dt) => {
+  const getCityData = (stat) => {
+    if (stat) {
+      debugger
+      dispatch(getCities(stat, (res, city_dt) => {
         if (res) {
           setCity(city_dt);
           setCityList(city_dt);
@@ -110,9 +111,10 @@ function SchoolList(props) {
     }
   }
 
-  const getSchoolData = () => {
+  const getSchoolData = (city) => {
     if (state_selected) {
-      dispatch(getSchoolOrTeamList(city_selected, state_selected, "SCHOOL", (res, school_dt) => {
+      debugger
+      dispatch(getSchoolOrTeamList(city, state_selected, "SCHOOL", (res, school_dt) => {
         if (res) {
           // setLoading(false)
           setSchool(school_dt)
@@ -179,7 +181,7 @@ function SchoolList(props) {
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         enableOnAndroid={true}
-        style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
+        style={{ marginTop: wide * 0.03, marginBottom: wide * 0.05 }}
         bounces={false}
       >
 
@@ -374,6 +376,7 @@ function SchoolList(props) {
             <ScrollView
               showsHorizontalScrollIndicator={false}
               bounces={false}
+              contentContainerStyle={{ marginBottom: wide * 0.05 }}
             >
               <View
                 style={{
@@ -383,10 +386,16 @@ function SchoolList(props) {
               >
                 {stateList.map(el => (
                   <TouchableOpacity onPress={() => {
+
+                    // if (res) {
                     setSelectedState(el)
                     setSelectedCity('')
-                    getCityData()
+                    getCityData(el)
                     setStateModal(false)
+
+
+                    // 
+                    // 
                   }}>
                     <View
                       style={{
@@ -468,6 +477,7 @@ function SchoolList(props) {
             <ScrollView
               showsHorizontalScrollIndicator={false}
               bounces={false}
+              contentContainerStyle={{ marginBottom: wide * 0.05 }}
             >
               <View
                 style={{
@@ -478,7 +488,7 @@ function SchoolList(props) {
                 {cityList.map(el => (
                   <TouchableOpacity onPress={() => {
                     setSelectedCity(el)
-                    getSchoolData()
+                    getSchoolData(el)
                     setCityModal(false)
                   }}>
                     <View

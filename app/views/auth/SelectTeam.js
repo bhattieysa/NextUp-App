@@ -99,9 +99,9 @@ function TeamList(props) {
 
   }, [team_search]);
 
-  const getCityData = () => {
-    if (state_selected) {
-      dispatch(getCities(state_selected, (res, city_dt) => {
+  const getCityData = (stat) => {
+    if (stat) {
+      dispatch(getCities(stat, (res, city_dt) => {
         if (res) {
           setCity(city_dt);
           setCityList(city_dt);
@@ -110,9 +110,9 @@ function TeamList(props) {
     }
   }
 
-  const getTeamData = () => {
-    if (state_selected) {
-      dispatch(getSchoolOrTeamList(city_selected, state_selected, "TEAM", (res, team_dt) => {
+  const getTeamData = (city) => {
+    if (city) {
+      dispatch(getSchoolOrTeamList(city, state_selected, "TEAM", (res, team_dt) => {
         if (res) {
           // setLoading(false)
           setTeam(team_dt)
@@ -373,6 +373,7 @@ function TeamList(props) {
             <ScrollView
               showsHorizontalScrollIndicator={false}
               bounces={false}
+              contentContainerStyle={{ marginBottom: wide * 0.05 }}
             >
               <View
                 style={{
@@ -383,8 +384,9 @@ function TeamList(props) {
                 {stateList.map(el => (
                   <TouchableOpacity onPress={() => {
                     setSelectedState(el)
+                    setTeamList([])
                     setSelectedCity('')
-                    getCityData()
+                    getCityData(el)
                     setStateModal(false)
                   }}>
                     <View
@@ -467,6 +469,7 @@ function TeamList(props) {
             <ScrollView
               showsHorizontalScrollIndicator={false}
               bounces={false}
+              contentContainerStyle={{ marginBottom: wide * 0.05 }}
             >
               <View
                 style={{
@@ -477,7 +480,7 @@ function TeamList(props) {
                 {cityList.map(el => (
                   <TouchableOpacity onPress={() => {
                     setSelectedCity(el)
-                    getTeamData()
+                    getTeamData(el)
                     setCityModal(false)
                   }}>
                     <View

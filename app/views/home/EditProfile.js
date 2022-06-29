@@ -73,8 +73,10 @@ class EditProfile extends Component {
         getObject('UserId').then((obj) => {
             this.setState({ loading: true }, () => {
                 this.props.dispatch(getUserInfo(obj, (res, resData) => {
+                    debugger
                     console.log(resData)
                     if (res) {
+                        debugger
                         console.log("ressss", resData);
                         if (resData?.typeOfUser == 'COACH') {
                             this.setState({

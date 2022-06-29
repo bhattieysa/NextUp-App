@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, ScrollView, TextInput, Platform, Dimensions, Alert } from 'react-native';
+import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, ScrollView, TextInput, Platform, Dimensions, Alert, StatusBar } from 'react-native';
 import {
-    Layout,
-    Colors,
-    Fonts,
+  Layout,
+  Colors,
+  Fonts,
 } from '../../constants';
 
 import Navigation from '../../lib/Navigation';
@@ -30,56 +30,38 @@ import MoVideoPlayer from 'react-native-mo-video-player';
 
 let wide = Layout.width;
 class RoadToPro extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            videoPlay: false
-        };
-        this.inputs = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      videoPlay: false
+    };
+    this.inputs = {};
+  }
+  componentDidMount() {
+    this.setState({ loading: true })
+    const params = this.props.navigation.state.params;
+    if (!params) {
+      Alert.alert("Error", "Type not found!");
+      return false;
     }
-    componentDidMount() {
+    this.props.dispatch(getRoadToProDetail(params.type === "Player" ? "PLAYER" : "COACH", (res) => {
+      console.log("Data response is ", res);
+      this.setState({
+        loading: false
+      })
+    }))
+  }
 
-        this.setState({ loading: true })
+  render() {
+    const params = this.props.navigation.state.params;
+    const { roadToProInfo } = this.props.Home;
 
-        const params = this.props.navigation.state.params;
+    return (
 
-        if (!params) {
-            Alert.alert("Error", "Type not found!");
-            return false;
-        }
+      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
 
-        this.props.dispatch(getRoadToProDetail(params.type === "Player" ? "PLAYER" : "COACH", (res) => {
-
-            console.log("Data response is ", res);
-
-            this.setState({
-                loading: false
-            })
-
-        }))
-    }
-
-
-
-    render() {
-
-        const params = this.props.navigation.state.params;
-
-        const { roadToProInfo } = this.props.Home;
-
-        return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-
-                {
-                    this.state.loading ? <AppLoader visible={this.state.loading} /> : null
-                }
-
-
-
-
-
-                <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
+        {/* <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
                         <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
                             <Image style={{
@@ -95,44 +77,53 @@ class RoadToPro extends Component {
                             Road To Pro
                         </Text>
                     </View>
-                </View>
-
-                <KeyboardAwareScrollView
-                    showsVerticalScrollIndicator={false}
-                    enableOnAndroid={true}
-                    style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
-                    bounces={false}
-                >
+                </View> */}
 
 
-                    <View style={{
-                        flexDirection: "column"
-                    }}>
-
-                        <View style={{
-                            alignItems: "center",
-                            borderBottomColor: Colors.grey,
-                            borderBottomWidth: 1.5
-                        }}>
-
-                            {
-                                roadToProInfo && roadToProInfo.mediaUrl ? <MoVideoPlayer
-                                    source={{
-                                        uri: roadToProInfo.mediaUrl.videoUrl
-                                    }}
-                                    style={{
-                                        width: Dimensions.get("screen").width,
-                                        height: Dimensions.get("screen").height * 0.4,
-                                    }}
-                                    poster={roadToProInfo.mediaUrl.thumbnailUrl}
-                                    autoPlay={false}
-                                />
-                                    : null
-                            }
+        {
+          this.state.loading == true ? <AppLoader visible={this.state.loading} />
 
 
 
-                            {/* {
+            :
+
+            < KeyboardAwareScrollView
+              showsVerticalScrollIndicator={false}
+              enableOnAndroid={true}
+              style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
+              bounces={false}
+            >
+
+
+              <View style={{
+                flexDirection: "column"
+              }}>
+
+                <View style={{
+                  alignItems: "center",
+                  borderBottomColor: Colors.grey,
+                  borderBottomWidth: 1.5,
+                }}>
+
+                  {
+                    roadToProInfo && roadToProInfo.mediaUrl ? <MoVideoPlayer
+                      source={{
+                        uri: roadToProInfo.mediaUrl.videoUrl
+                      }}
+                      style={{
+                        width: Dimensions.get("screen").width,
+                        height: Dimensions.get("screen").height * 0.6,
+
+                      }}
+                      poster={roadToProInfo.mediaUrl.thumbnailUrl}
+                      autoPlay={true}
+                    />
+                      : null
+                  }
+
+
+
+                  {/* {
                                 this.state.videoPlay ? <MoVideoPlayer
                                     source={roadToProInfo && roadToProInfo.mediaUrl}
                                     style={{ width: Dimensions.get("screen").width, height: 500, }}
@@ -160,111 +151,115 @@ class RoadToPro extends Component {
 
 
 
-                        </View>
+                </View>
 
-                        <View
-                            style={{
-                                paddingHorizontal: 30
-                            }}
-                        >
-                            <Text style={{
-                                color: Colors.lightshade,
-                                textAlign: "justify",
-                                marginTop: 20
-                            }}>
-                                {roadToProInfo && roadToProInfo.description}
-                            </Text>
+                <View
+                  style={{
+                    paddingHorizontal: 30
+                  }}
+                >
+                  <Text style={{
+                    color: Colors.lightshade,
+                    textAlign: "justify",
+                    marginTop: 20
+                  }}>
+                    {roadToProInfo && roadToProInfo.description}
+                  </Text>
+                </View>
+
+                <View style={{ marginTop: wide * 0.25, }}>
+                  <TouchableOpacity
+                    key={true}
+                    style={{
+                      width: wide * 0.8, height: 48,
+                      backgroundColor: Colors.btnBg,
+                      alignSelf: 'center', borderRadius: 24, opacity: 1.0,
+                      justifyContent: 'center', marginTop: 20,
+                    }} onPress={() => {
+                      // this.actionContinue()
+                      Navigation.navigate("Pro", { type: params.type })
+                    }}>
+                    <Text style={{
+                      alignSelf: 'center', color: Colors.light,
+                      fontFamily: Fonts.Bold,
+                    }}>Continue</Text>
+                  </TouchableOpacity>
 
 
-                            <TouchableOpacity
-                                key={true}
-                                style={{
-                                    width: wide * 0.8, height: 48,
-                                    backgroundColor: Colors.btnBg,
-                                    alignSelf: 'center', borderRadius: 24, opacity: 1.0,
-                                    justifyContent: 'center', marginTop: 20,
-                                }} onPress={() => {
-                                    // this.actionContinue()
-                                    Navigation.navigate("RoadToProLevel", { type: params.type })
-                                }}>
-                                <Text style={{
-                                    alignSelf: 'center', color: Colors.light,
-                                    fontFamily: Fonts.Bold,
-                                }}>View Plans</Text>
-                            </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (params.type === "Player") {
+                        Navigation.navigate("Home");
+                      }
+                      else {
+                        Navigation.navigate("TrainerHome");
+                      }
+                    }}
+                    style={{
+                      marginTop: 10
+                    }}>
+                    <Text style={{
+                      color: Colors.light,
+                      textAlign: "center"
+                    }}>
+                      Skip
+                    </Text>
+                  </TouchableOpacity>
+                </View>
 
 
-                            <TouchableOpacity
-                                onPress={() => {
-                                    if (params.type === "Player") {
-                                        Navigation.navigate("Home");
-                                    }
-                                    else {
-                                        Navigation.navigate("TrainerHome");
-                                    }
-                                }}
-                                style={{
-                                    marginTop: 10
-                                }}>
-                                <Text style={{
-                                    color: Colors.light,
-                                    textAlign: "center"
-                                }}>
-                                    Skip
-                                </Text>
-                            </TouchableOpacity>
-
-                        </View>
-
-                        {/* <Image
+                {/* <Image
                             source={require('../../Images/RoadToProVideo.png')}
                         /> */}
-                    </View>
+              </View>
 
 
 
-                    {/* </ScrollView> */}
+              {/* </ScrollView> */}
 
-                </KeyboardAwareScrollView>
-                {/* </KeyboardAvoidingView> */}
-
-
+            </KeyboardAwareScrollView>
+        }
 
 
-            </SafeAreaView>
-        );
-    }
+        {/* </KeyboardAvoidingView> */}
+
+
+
+
+      </SafeAreaView >
+    );
+  }
 }
 
 function mapStateToProps(state) {
-    const { entities } = state;
-    return {
-        authReducer: state.authReducer,
-        User: entities.user,
-        Home: entities.homePlayer
-    };
+  const { entities } = state;
+  return {
+    authReducer: state.authReducer,
+    User: entities.user,
+    Home: entities.homePlayer
+  };
 }
 
 
 const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 16,
-        paddingVertical: 0,
-        paddingHorizontal: 10,
-        fontFamily: Fonts.Bold,
-        borderRadius: 4,
-        color: Colors.light,
-        paddingRight: 0, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 0,
-        fontFamily: Fonts.Bold,
-        borderRadius: 8,
-        color: Colors.light,
-        paddingRight: 0, // to ensure the text is never behind the icon
-    },
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 0,
+    paddingHorizontal: 10,
+    fontFamily: Fonts.Bold,
+    borderRadius: 4,
+    color: Colors.light,
+    paddingRight: 0, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 0,
+    fontFamily: Fonts.Bold,
+    borderRadius: 8,
+    color: Colors.light,
+    paddingRight: 0, // to ensure the text is never behind the icon
+  },
 });
 
 

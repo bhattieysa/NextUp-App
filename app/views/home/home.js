@@ -708,11 +708,11 @@ class Home extends Component {
   }
 
   handleShare = (item) => {
-    // debugger
-    if (!item) {
+    debugger
+    if (item?.data == null || !item) {
       return;
     }
-    // debugger
+    debugger
     const { mimeType, data, extraData } = item;
     this.setState({ sharedData: data, sharedMimeType: mimeType, sharedExtraData: extraData });
     SHOW_SHARE_SCREEN.show = true;
@@ -1567,7 +1567,7 @@ class Home extends Component {
                               // marginTop: 24, borderRadius: wide * 0.03, borderWidth: 4, borderColor: Colors.borderColor
                             }}
                             source={{
-                              uri: dashboardData.profilePictureUrl + '&width=200&height=200',
+                              uri: dashboardData?.profilePictureUrl,
                               priority: FastImage.priority.high,
                             }}
                             // onLoadEnd={() => this.setState({ randNum: Math.random() })}

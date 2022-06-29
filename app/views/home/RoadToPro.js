@@ -110,7 +110,7 @@ class RoadToPro extends Component {
                                                 height: Dimensions.get("screen").height * 0.4,
                                             }}
                                             poster={roadToProInfo.mediaUrl.thumbnailUrl}
-                                            autoPlay={false}
+                                            autoPlay={true}
                                         />
                                             : null
                                     }

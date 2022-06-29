@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, FlatList, Alert } from 'react-native';
+import {
+    View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, FlatList, Alert,
+    ScrollView
+} from 'react-native';
 import {
     Layout,
     Colors,
@@ -318,12 +321,48 @@ class RoadToProUpgrade extends Component {
                 </View>
                 :
                 <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
+                    {roadToProData && !roadToProData.packagesList ?
+                        <View style={{
+                            width: '90%', justifyContent: 'flex-end', flexDirection: 'row',
+                            alignSelf: 'center', alignItems: "center",
+                        }}>
+                            <TouchableOpacity
+                                style={{
+                                    width: '30%', height: 40,
+                                    // backgroundColor: Colors.btnBg,
+                                    borderRadius: 10,
+                                    borderWidth: 2,
+                                    borderColor: Colors.compareFirstPlayerBorder,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexDirection: 'row',
+                                    marginTop: wide * 0.02,
+                                    marginRight: wide * 0.02,
+                                    marginBottom: wide * 0.01
+                                }} onPress={() => {
+                                    this.cancelTheSubscription()
+                                }}>
+                                <Text style={{
+                                    color: Colors.light,
+                                    fontFamily: Fonts.Bold, fontSize: 16
+                                }}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+
+
+
+                        :
+                        <></>
+
+                    }
                     {roadToProData.subscriptionLevelInfoList !== null || roadToProData.planId !== null ?
-                        <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+                        <ScrollView bounces={false} style={{ marginBottom: wide * 0.06, }} contentContainerStyle={{ flex: 1 }}>
+
+                            {/* <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}> */}
                             <AppLoader visible={this.state.loading} />
                             <View style={{ flex: 1, backgroundColor: Colors.base }} >
 
-                                <View style={{ marginTop: wide * 0.02, marginBottom: wide * 0.02 }}>
+                                <View style={{ marginTop: wide * 0.01, marginBottom: wide * 0.02 }}>
                                     <FlatList
                                         style={{ overflow: 'visible' }}
                                         data={roadToProData?.subscriptionLevelInfoList}
@@ -455,53 +494,57 @@ class RoadToProUpgrade extends Component {
 
                                 />
 
-                                {
-                                    roadToProData && !roadToProData.packagesList ? <>
-                                        <TouchableOpacity
-                                            // sds
-                                            style={{
-                                                width: '85%', height: 45,
-                                                backgroundColor: Colors.btnBg,
-                                                alignSelf: 'center', borderRadius: 28,
-                                                justifyContent: 'center', marginTop: 30,
-                                                paddingHorizontal: 10, marginRight: 10,
-                                                marginBottom: 10
-                                            }} onPress={() => {
-                                                this.cancelTheSubscription()
-                                            }}>
-                                            <Text style={{
-                                                alignSelf: 'center', color: Colors.light,
-                                                fontFamily: Fonts.Bold, fontSize: 16
-                                            }}>Cancel</Text>
-                                        </TouchableOpacity>
+                                {roadToProData && !roadToProData.packagesList ? <>
+                                    {/* <TouchableOpacity
+                                        // sds
+                                        style={{
+                                            width: '85%', height: 45,
+                                            backgroundColor: Colors.btnBg,
+                                            alignSelf: 'center', borderRadius: 28,
+                                            justifyContent: 'center', marginTop: 30,
+                                            paddingHorizontal: 10, marginRight: 10,
+                                            marginBottom: 10
+                                        }}
+                                    onPress={() => {
+                                        this.cancelTheSubscription()
+                                    }}
+                                    >
+                                        <Text style={{
+                                            alignSelf: 'center', color: Colors.light,
+                                            fontFamily: Fonts.Bold, fontSize: 16
+                                        }}>Cancel</Text>
+                                    </TouchableOpacity> */}
 
 
-                                    </>
-                                        :
-                                        <TouchableOpacity
+                                </>
+                                    :
+                                    <TouchableOpacity
 
-                                            style={{
-                                                width: '90%', height: 56,
-                                                backgroundColor: Colors.btnBg,
-                                                alignSelf: 'center', borderRadius: 28,
-                                                justifyContent: 'center', marginTop: 30, paddingHorizontal: 15,
-                                                position: "absolute",
-                                                bottom: 20
-                                            }} onPress={() => {
-                                                Navigation.navigate('PlayerRoadToProPlan', { type: "Player", packageList: roadToProData.packagesList })
-                                            }}>
-                                            <Text style={{
-                                                alignSelf: 'center', color: Colors.light,
-                                                fontFamily: Fonts.Bold, fontSize: 16
-                                            }}>Get Monthly Subscription</Text>
-                                        </TouchableOpacity>
+                                        style={{
+                                            width: '90%', height: 56,
+                                            backgroundColor: Colors.btnBg,
+                                            alignSelf: 'center', borderRadius: 28,
+                                            justifyContent: 'center', marginTop: 30, paddingHorizontal: 15,
+                                            position: "absolute",
+                                            bottom: 20,
+                                            // top: 50
+                                        }} onPress={() => {
+                                            Navigation.navigate('PlayerRoadToProPlan', { type: "Player", packageList: roadToProData.packagesList })
+                                        }}>
+                                        <Text style={{
+                                            alignSelf: 'center', color: Colors.light,
+                                            fontFamily: Fonts.Bold, fontSize: 16
+                                        }}>Get Monthly Subscription</Text>
+                                    </TouchableOpacity>
                                 }
 
 
 
                             </View>
 
-                        </KeyboardAvoidingView>
+
+                            {/* </KeyboardAvoidingView> */}
+                        </ScrollView>
                         :
 
                         <></>

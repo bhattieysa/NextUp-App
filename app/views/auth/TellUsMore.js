@@ -170,6 +170,7 @@ class TellUsMore extends Component {
         break;
 
       case 'dob':
+        debugger
         this.setState({ isDatePickerVisible: false, dob: txt }, () => {
           this.checkForButtonEnable(frm)
         })
@@ -203,16 +204,18 @@ class TellUsMore extends Component {
       strSelectedPosition,
       aboutMe, strSelectedMode, isbtnEnable, positions, city, state, classof, school } = this.state;
     if (isbtnEnable) {
+      debugger
       if (
         UserModel.fname !== fname ||
         UserModel.lname !== lname ||
         // UserModel.dob !== dob ||
         UserModel.aboutMe !== aboutMe ||
         UserModel.selectedUserType !== strSelectedMode ||
-        UserModel.email !== email
-        // UserModel.selectedSportPosition !== positions[strSelectedPosition]
+        UserModel.email !== email ||
+        UserModel.selectedSportPosition == undefined
       ) {
         if (strSelectedMode.toLowerCase() == 'player') {
+          debugger
           UserModel.fname = fname
           UserModel.lname = lname
           UserModel.email = email
@@ -226,6 +229,7 @@ class TellUsMore extends Component {
           UserModel.dob = dob
           Navigation.navigate('SelectPlayerCategory')
         } else {
+          debugger
           this.onBoardInfo()
         }
       } else {
@@ -272,8 +276,8 @@ class TellUsMore extends Component {
         "parentApprovalRequired": !UserModel.isAdult
       }
 
-      console.log(params);
-
+      console.log("onBoardDataCoach", params);
+      debugger
       this.setState({ loading: true }, () => {
         this.props.dispatch(onBoardAPI(obj, params, (res, resData) => {
           if (res) {
@@ -724,7 +728,7 @@ class TellUsMore extends Component {
                     <Text style={{
                       fontFamily: Fonts.Bold,
                       paddingVertical: 10, color: dob === 'SELECT DATE' ? Colors.borderColor : Colors.light, fontSize: 16
-                    }}>{dob === 'SELECT DATE' ? dob : moment(dob).format('DD MMM YYYY')}</Text>
+                    }}>{dob === 'SELECT DATE' ? dob : moment(dob).format('MM/DD/YYYY')}</Text>
                   </TouchableOpacity>
                 </View>
                 :

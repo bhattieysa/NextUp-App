@@ -92,7 +92,8 @@ class RoadToProPlan extends Component {
                     }}>
 
                         <View style={{
-                            paddingHorizontal: 30
+                            paddingHorizontal: 30,
+                            marginTop: wide * 0.04
                         }}>
 
                             <Text style={{
@@ -178,7 +179,7 @@ class RoadToProPlan extends Component {
                             ))
                         }
 
-                        <TouchableOpacity onPress={() => {
+                        {/* <TouchableOpacity onPress={() => {
 
                             console.log("TYpe is ", params.type);
 
@@ -195,7 +196,7 @@ class RoadToProPlan extends Component {
                                 color: Colors.lightshade,
                                 fontSize: 16
                             }}>Skip</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
 
                         {/* <View style={{

@@ -89,14 +89,18 @@ function Year({ navigation }) {
             >
 
                 <View style={{
-                    marginHorizontal: 20
+                    marginHorizontal: 20,
+                    marginHorizontal: 15,
+                    alignItems: 'center',
+                    marginTop: wide * 0.04,
+                    marginBottom: wide * 0.04
                 }}>
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, { width: '90%', }]}
                         onChangeText={(text) => setSearch(text)}
                         value={search}
                         placeholder="Search Year"
-                        placeholderTextColor={Colors.lightshade}
+                        placeholderTextColor={Colors.newGrayFontColor}
                         keyboardType="numeric"
                     />
                 </View>
@@ -136,11 +140,18 @@ export default Year
 
 const styles = StyleSheet.create({
     input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        borderColor: Colors.lightshade,
-        color: Colors.lightshade,
+        // height: 40,
+        // margin: 12,
+        // borderWidth: 1,
+        // padding: 10,
+        // borderColor: Colors.lightshade,
+        // color: Colors.lightshade,
+
+        borderWidth: 2,
+        borderColor: Colors.newGrayFontColor,
+        fontFamily: Fonts.Bold, height: 45,
+        // width: '90%',
+        paddingLeft: 10, paddingRight: wide * 0.1,
+        borderRadius: 5, color: Colors.light, fontSize: 16
     },
 });

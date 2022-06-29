@@ -83,19 +83,20 @@ class PlayerCategoryStyle extends Component {
     getObject('UserId').then((obj) => {
 
       let params = {
-        "typeOfUser": UserModel.selectedUserType,
+        "typeOfUser": UserModel.selectedUserType.toUpperCase(),
         "firstName": UserModel.fname,
         "lastName": UserModel.lname,
         "aboutMe": UserModel.aboutMe,
         "email": UserModel.email,
-        "dob": UserModel.dob,
+        "dob": moment(UserModel.dob).format('MM/DD/YYYY'),
         "onBoardingTeamName": UserModel.coachTeam, //when coach selected
+        "typeOfPlayer": selectedPlayerCategory.name,
         "schoolInfo": {
           city: UserModel.city,
           state: UserModel.state,
           name: UserModel.school,
           classOff: UserModel.classof,
-          typeOfPlayer: selectedPlayerCategory.name
+          typeOfPlayer: selectedPlayerCategory.name,
         },
         "roleList": [
           `ROLE_${UserModel.selectedUserType.toUpperCase()}`
@@ -103,7 +104,8 @@ class PlayerCategoryStyle extends Component {
         "parentApprovalRequired": !UserModel.isAdult
       }
 
-      console.log(params);
+      console.log("onBoardDataa Player", params);
+      debugger
 
       this.setState({ loading: true }, () => {
         this.props.dispatch(onBoardAPI(obj, params, (res, resData) => {

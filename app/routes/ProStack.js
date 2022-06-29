@@ -106,7 +106,7 @@ ProStack.navigationOptions = ({ navigation }) => {
             navigation.state.routes[i].routeName == "CoachAssignedTrainner" ||
             navigation.state.routes[i].routeName == "Compare" ||
             // navigation.state.routes[i].routeName == "RoadToPro_3" ||
-            // navigation.state.routes[i].routeName == "PlayerRoadToProPlan" ||
+            navigation.state.routes[i].routeName == "PlayerRoadToProPlan" ||
             navigation.state.routes[i].routeName == "PlayerRoadToProLevel" ||
             // navigation.state.routes[i].routeName == "PlayerRoadToProUpgrade" ||
             navigation.state.routes[i].routeName == "UploadVideoOfChallenge") {

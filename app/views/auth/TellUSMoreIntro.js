@@ -518,8 +518,8 @@ class TellUsMoreIntro extends Component {
                       placeholder="SCHOOL"
                       onChangeText={(e) => this.setTextofFields('school', e)}
                       value={school.name}
-                      // onFocus={() => Navigation.navigate("School")}
-                      disabled
+                      onFocus={() => Navigation.navigate("School")}
+                      disabled={school !== "" && school != undefined ? true : false}
                       sufix={
                         <Image
                           style={{
@@ -559,7 +559,7 @@ class TellUsMoreIntro extends Component {
 
                   <TouchableOpacity onPress={() => Navigation.navigate("Year")}>
                     <AnimatedInput
-                      disabled={this.state.classof !== "" ? true : false}
+                      disabled={classof !== "" && classof != undefined ? true : false}
                       placeholder="CLASS OF"
                       value={classof}
                       onFocus={() => Navigation.navigate("Year")}
@@ -608,7 +608,8 @@ class TellUsMoreIntro extends Component {
                     placeholder="SELECT TEAM"
                     onChangeText={(e) => this.setTextofFields('team', e)}
                     value={coachTeam.name}
-                    disabled
+                    onFocus={() => Navigation.navigate("TeamList")}
+                    disabled={coachTeam !== "" && coachTeam != undefined ? true : false}
                     sufix={
                       <Image
                         style={{
