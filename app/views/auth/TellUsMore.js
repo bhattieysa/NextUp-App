@@ -273,8 +273,10 @@ class TellUsMore extends Component {
         "roleList": [
           `ROLE_${strSelectedMode.toUpperCase()}`
         ],
-        "parentApprovalRequired": !UserModel.isAdult
+        // "parentApprovalRequired": !UserModel.isAdult
       }
+
+      debugger
 
       console.log("onBoardDataCoach", params);
       debugger
@@ -294,7 +296,7 @@ class TellUsMore extends Component {
               state: state,
               school: school,
               classof: classof,
-              selectedSportPosition: positions[strSelectedPosition],
+              // selectedSportPosition: positions[strSelectedPosition],
               aboutMe: aboutMe,
               profileUrl: UserModel.profileUrl,
               photoIdUrl: UserModel.photoIdUrl,
@@ -312,10 +314,12 @@ class TellUsMore extends Component {
             UserModel.state = state
             UserModel.school = school
             UserModel.classof = pickerDate
-            UserModel.selectedSportPosition = positions[strSelectedPosition]
+            // UserModel.selectedSportPosition = positions[strSelectedPosition]
             UserModel.aboutMe = aboutMe
             UserModel.selectedUserType = strSelectedMode
             UserModel.dob = dob
+
+            debugger
 
             setObject('authData', onBoardData).then(() => {
               debugger

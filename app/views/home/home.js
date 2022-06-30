@@ -709,13 +709,16 @@ class Home extends Component {
 
   handleShare = (item) => {
     debugger
-    if (item?.data == null || !item) {
+    if (item?.data == null || item?.data.length <= 0 || !item) {
+      debugger
       return;
+    } else {
+      debugger
+      const { mimeType, data, extraData } = item;
+      this.setState({ sharedData: data, sharedMimeType: mimeType, sharedExtraData: extraData });
+      SHOW_SHARE_SCREEN.show = true;
     }
-    debugger
-    const { mimeType, data, extraData } = item;
-    this.setState({ sharedData: data, sharedMimeType: mimeType, sharedExtraData: extraData });
-    SHOW_SHARE_SCREEN.show = true;
+
   }
 
   componentDidMount() {
@@ -952,7 +955,6 @@ class Home extends Component {
         isBarShow = true;
         for (let key in bar1) {
           arr1.push({ x: key, y: parseFloat(bar1[key]) })
-
         }
       }
       console.log("----a-a-a", arr1);
@@ -1893,13 +1895,16 @@ class Home extends Component {
                                 // width: '95%',
                                 // height: wide * 0.98, top: wide * 0.08, left: wide * 0.02,
                                 // borderRadius: 20,
-                                // backgroundColor: Colors.ractangelCardColor,
+                                // backgroundColor: 'red',
                                 justifyContent: "center",
                                 alignItems: 'center',
-                                marginTop: 35,
+                                marginTop: 25,
                                 flex: 1
                               }}>
-                                <Title data={'Comparison'} />
+                                {this.state.isBarLblShow ?
+                                  <Title data={'Comparison'} />
+                                  : <></>
+                                }
                                 {/* <Text style={{
                           color: Colors.light, fontSize: 24, lineHeight: 20,
                           fontFamily: Fonts.Bold, position: 'absolute', top: 0, left: 0,
@@ -2291,13 +2296,17 @@ export const MyPlayerStats = ({ barData1, barData2, }) => {
                 // cornerRadius={6}
                 style={{
                   data: {
-                    fill: '#4F5155',
+                    // fill: '#4F5155',
+                    fill: '#D8A433',
                   },
                   labels: {
-                    fill: '#D8A433'
+                    fill: '#D8A433',
+                    fontSize: 16
                   }
+
                 }}
-                barWidth={10}
+
+                barWidth={12}
 
               // labelComponent={<VictoryLabel dx={10}
               //     style={{ fill: 'red', padding: 20 }} />
@@ -2319,15 +2328,17 @@ export const MyPlayerStats = ({ barData1, barData2, }) => {
                 // cornerRadius={6}
                 style={{
                   data: {
-                    fill: '#D8A433',
+                    // fill: '#D8A433',
+                    fill: '#4F5155',
                     // marginRight: 40
                   },
                   labels: {
-                    fill: '#D8A433'
+                    fill: '#D8A433',
+                    fontSize: 16
                   }
 
                 }}
-                barWidth={10}
+                barWidth={12}
               // labelComponent={<VictoryLabel dx={10}
               //     style={{ fill: 'red', padding: 20 }} />
               // }

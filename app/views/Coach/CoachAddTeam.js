@@ -120,7 +120,8 @@ class CoachAddTeam extends Component {
                             "name": teamName,
                             "coachId": obj,
                             "teamLogo": uploadedUrl,
-                            "seasonType": "2020-21"
+                            "seasonType": "2020-21",
+                            "ownerId": obj,
                         }, (res) => {
 
                             console.log("res2 ", res);

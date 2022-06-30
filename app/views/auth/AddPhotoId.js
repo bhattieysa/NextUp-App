@@ -117,7 +117,7 @@ class AddPhotoId extends Component {
         if (UserModel.photoIdUrl !== avatar) {
             this.uploadImage()
         } else {
-            if (UserModel.selectedUserType === 'player') {
+            if (UserModel.selectedUserType.toLowerCase() === 'player') {
                 // Navigation.navigate('Home')
                 Navigation.navigate('RoadToPro', { type: 'Player' })
 
@@ -158,13 +158,14 @@ class AddPhotoId extends Component {
                         setObject('authData', onBoardData).then(() => {
 
                             this.setState({ loading: false })
-                            if (UserModel.selectedUserType === 'player') {
+                            if (UserModel.selectedUserType.toLowerCase() === 'player') {
                                 setTimeout(() => {
                                     // Navigation.navigate('Home')
                                     Navigation.navigate('RoadToPro', { type: 'Player' })
                                 }, 500);
 
                             } else {
+
                                 setTimeout(() => {
                                     // Navigation.navigate('TrainerHome')
                                     Navigation.navigate('RoadToPro', { type: 'Trainer' })

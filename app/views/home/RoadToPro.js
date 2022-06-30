@@ -63,8 +63,9 @@ class RoadToPro extends Component {
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
 
                 {
-                    this.state.loading ? <AppLoader visible={this.state.loading} /> : <View>
-                        <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
+                    this.state.loading ? <AppLoader visible={this.state.loading} /> :
+                        <View>
+                            {/* <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
                                 <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
                                     <Image style={{
@@ -80,44 +81,44 @@ class RoadToPro extends Component {
                                     Road To Pro
                                 </Text>
                             </View>
-                        </View>
+                        </View> */}
 
-                        <KeyboardAwareScrollView
-                            showsVerticalScrollIndicator={false}
-                            enableOnAndroid={true}
-                            style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
-                            bounces={false}
-                        >
+                            <KeyboardAwareScrollView
+                                showsVerticalScrollIndicator={false}
+                                enableOnAndroid={true}
+                                style={{ marginTop: wide * 0.01, marginBottom: wide * 0.01, }}
+                                bounces={false}
+                            >
 
-
-                            <View style={{
-                                flexDirection: "column"
-                            }}>
 
                                 <View style={{
-                                    alignItems: "center",
-                                    borderBottomColor: Colors.grey,
-                                    borderBottomWidth: 1.5
+                                    flexDirection: "column"
                                 }}>
 
-                                    {
-                                        roadToProInfo && roadToProInfo.mediaUrl ? <MoVideoPlayer
-                                            source={{
-                                                uri: roadToProInfo.mediaUrl.videoUrl
-                                            }}
-                                            style={{
-                                                width: Dimensions.get("screen").width,
-                                                height: Dimensions.get("screen").height * 0.4,
-                                            }}
-                                            poster={roadToProInfo.mediaUrl.thumbnailUrl}
-                                            autoPlay={true}
-                                        />
-                                            : null
-                                    }
+                                    <View style={{
+                                        alignItems: "center",
+                                        borderBottomColor: Colors.grey,
+                                        borderBottomWidth: 1.5
+                                    }}>
+
+                                        {
+                                            roadToProInfo && roadToProInfo.mediaUrl ? <MoVideoPlayer
+                                                source={{
+                                                    uri: roadToProInfo.mediaUrl.videoUrl
+                                                }}
+                                                style={{
+                                                    width: Dimensions.get("screen").width,
+                                                    height: Dimensions.get("screen").height * 0.6,
+                                                }}
+                                                poster={roadToProInfo.mediaUrl.thumbnailUrl}
+                                                autoPlay={true}
+                                            />
+                                                : null
+                                        }
 
 
 
-                                    {/* {
+                                        {/* {
                                 this.state.videoPlay ? <MoVideoPlayer
                                     source={roadToProInfo && roadToProInfo.mediaUrl}
                                     style={{ width: Dimensions.get("screen").width, height: 500, }}
@@ -145,22 +146,31 @@ class RoadToPro extends Component {
 
 
 
+                                    </View>
+
+                                    <View
+                                        style={{
+                                            paddingHorizontal: 30,
+                                        }}
+                                    >
+                                        <Text style={{
+                                            color: Colors.lightshade,
+                                            textAlign: "justify",
+                                            marginTop: 20
+                                        }}>
+                                            {roadToProInfo && roadToProInfo.description}
+                                        </Text>
+                                    </View>
+
+                                    {/* <Image
+                            source={require('../../Images/RoadToProVideo.png')}
+                        /> */}
                                 </View>
+                                <View style={{
+                                    width: '90%', alignSelf: 'center',
+                                    marginTop: wide * 0.15,
 
-                                <View
-                                    style={{
-                                        paddingHorizontal: 30
-                                    }}
-                                >
-                                    <Text style={{
-                                        color: Colors.lightshade,
-                                        textAlign: "justify",
-                                        marginTop: 20
-                                    }}>
-                                        {roadToProInfo && roadToProInfo.description}
-                                    </Text>
-
-
+                                }}>
                                     <TouchableOpacity
                                         key={true}
                                         style={{
@@ -194,20 +204,14 @@ class RoadToPro extends Component {
                                             Skip
                                         </Text>
                                     </TouchableOpacity>
-
                                 </View>
 
-                                {/* <Image
-                            source={require('../../Images/RoadToProVideo.png')}
-                        /> */}
-                            </View>
 
 
+                                {/* </ScrollView> */}
 
-                            {/* </ScrollView> */}
-
-                        </KeyboardAwareScrollView>
-                    </View>
+                            </KeyboardAwareScrollView>
+                        </View>
 
                 }
 

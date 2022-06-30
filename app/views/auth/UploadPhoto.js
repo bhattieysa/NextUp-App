@@ -124,9 +124,9 @@ class UploadPhoto extends Component {
 
         } else {
 
-            if (UserModel.selectedUserType === 'coach') {
+            if (UserModel.selectedUserType.toLowerCase() === 'coach') {
                 Navigation.navigate('AddPhotoIdCoach')
-            } else if (UserModel.selectedUserType === 'player' && UserModel.isAdult == false) {
+            } else if (UserModel.selectedUserType.toLowerCase() === 'player' && UserModel.isAdult == false) {
                 Navigation.navigate('ParentEmail')
             } else {
                 Navigation.navigate('AddPhotoId')
@@ -284,9 +284,9 @@ class UploadPhoto extends Component {
                     <Text style={{ alignSelf: 'center', color: Colors.light, fontFamily: Fonts.Bold, }}>Continue</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
-                    if (UserModel.selectedUserType === 'coach') {
+                    if (UserModel.selectedUserType.toLowerCase() === 'coach') {
                         Navigation.navigate('AddPhotoIdCoach')
-                    } else if (UserModel.selectedUserType === 'player' && UserModel.isAdult == false) {
+                    } else if (UserModel.selectedUserType.toLowerCase() === 'player' && UserModel.isAdult == false) {
                         Navigation.navigate('ParentEmail')
                     } else {
                         Navigation.navigate('AddPhotoId')
