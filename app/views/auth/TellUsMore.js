@@ -108,23 +108,35 @@ class TellUsMore extends Component {
 
 
     if (strSelectedMode.toLowerCase() === 'coach') {
-      if (key === 'aboutMe') {
+      debugger
+      // if (key === 'aboutMe') {
+      // if (aboutMe.length > 60) {
+      //   debugger
+      //   this.setState({ isbtnEnable: false })
+      //   return
+      // } else {
+      //   debugger
+      //   this.setState({ isbtnEnable: true });
+      //   return
+      // }
+      // } 
+      // else {
+
+      if (aboutMe.trim() !== '' && fname.trim() !== '' && lname.trim() !== '') {
+        debugger
         if (aboutMe.length < 60) {
-          debugger
           this.setState({ isbtnEnable: false })
           return
-        }
-
-        if (aboutMe.trim() !== '' && fname.trim() !== '' && lname.trim() !== '') {
+        } else {
+          debugger
           this.setState({ isbtnEnable: true });
           return
         }
-        else {
-          debugger
-          this.setState({ isbtnEnable: false });
-          return
-        }
+      } else {
+        this.setState({ isbtnEnable: false });
+        return
       }
+      // }
     }
 
     if (strSelectedMode === 'player') {

@@ -34,6 +34,7 @@ import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { Card } from '../../components/common/DashBoardCard';
 import { Title } from '../../components/common/titleLabel';
 import { barData, radarData, radarKpi } from '../../constants/chartData'
+import { EmptyBarChart } from './Components/EmptyPieChart'
 
 let wide = Layout.width;
 var pageNum = 1

@@ -14,16 +14,19 @@ function GamePlanCard({ premium = false, bannerInfo = null }) {
         marginBottom: 30
       }}>
         <Text style={{ color: Colors.lightshade, fontSize: 20, fontWeight: "bold" }}>{bannerInfo && bannerInfo.title}</Text>
-        <Text style={{ color: Colors.lightshade, marginTop: 15 }}>
-          {
+        <View style={{ width: '95%' }}>
+          <Text style={{ color: Colors.lightshade, marginTop: 15, textAlign: 'justify' }}>
+            {bannerInfo?.description}
+            {/* {
             bannerInfo && bannerInfo.description && bannerInfo.description.split("/").map((desc) => (
 
               <Text style={{ color: Colors.lightshade }}>{desc}</Text>
 
             ))
-          }
+          } */}
 
-        </Text>
+          </Text>
+        </View>
 
       </View>
     )
@@ -40,8 +43,8 @@ function GamePlanCard({ premium = false, bannerInfo = null }) {
       <ImageBackground
         source={require('../../../Images/plan_bk_1.png')}
         style={{
-          width: Dimensions.get("window").width * 0.87,
-          minHeight: 125,
+          width: Dimensions.get("window").width * 0.9,
+          // minHeight: 150,
           alignSelf: "center",
           flexDirection: "column"
         }}
@@ -51,59 +54,60 @@ function GamePlanCard({ premium = false, bannerInfo = null }) {
       >
 
         <View style={{
-          flexDirection: "row"
+          flexDirection: "row",
+          justifyContent: 'space-between',
         }}>
 
-          <View style={{
-            flex: 2
-          }}>
+          <View>
             <Text style={{
               fontWeight: "bold",
               fontSize: 20,
               paddingLeft: 15,
-              paddingTop: 20
+              paddingTop: 15
             }}>{bannerInfo && bannerInfo.title}</Text>
           </View>
 
-          <View style={{
-            flex: 1,
-            paddingTop: 20
-          }}>
-            <Text style={{
-              fontStyle: "italic",
-              textAlign: "right",
-              marginTop: 5
-            }}>Get Premium</Text>
+          <View style={{ width: '50%', alignItems: 'center' }}>
+            <View style={{
+              paddingTop: 10,
+              // backgroundColor: 'green'
+            }}>
+              <Text style={{
+                fontStyle: "italic",
+              }}>Get Premium</Text>
+            </View>
+
+            <View style={{
+            }}>
+              <Text style={{
+                fontWeight: "bold",
+                fontSize: 20
+              }}>{bannerInfo && bannerInfo.price}</Text>
+            </View>
           </View>
 
-          <View style={{
-            flex: 1 / 2,
-            paddingRight: 15,
-            paddingTop: 20
-          }}>
-            <Text style={{
-              textAlign: "right",
-              fontWeight: "bold",
-              fontSize: 20
-            }}>{bannerInfo && bannerInfo.price}</Text>
-          </View>
 
         </View>
 
         <View style={{
           marginTop: 10,
-          paddingHorizontal: 15,
+          marginBottom: 10,
+          // paddingHorizontal: 15,
+          // backgroundColor: 'red',
+          width: '95%',
+          alignSelf: 'center'
 
-        }}>
+        }}
+        >
+          <Text style={{ textAlign: 'justify' }}>{bannerInfo?.description}</Text>
 
-
-          {
+          {/* {
             bannerInfo && bannerInfo.description && bannerInfo.description.split("/").map((desc) => (
 
-              <Text style={{ textAlign: "left" }}>{desc}</Text>
+              <Text style={{ textAlign: '' }}>{desc}</Text>
 
             ))
-          }
+          } */}
 
 
         </View>

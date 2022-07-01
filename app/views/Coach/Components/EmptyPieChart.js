@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
-import { VictoryAxis, VictoryChart, VictoryPie } from 'victory-native';
+import {
+  VictoryAxis, VictoryBar, VictoryChart,
+  VictoryGroup, VictoryLabel, VictoryPie
+} from 'victory-native';
 import { Colors, Fonts, Layout } from '../../../constants';
 import Navigation from '../../../lib/Navigation';
 
@@ -154,4 +157,81 @@ function EmptyPieChart({ }) {
   )
 }
 
-export default EmptyPieChart
+
+function EmptyBarChart({ kpi }) {
+
+  const [barData, setBarData] = useState([])
+
+  useEffect(() => {
+    debugger
+    let arr = [];
+    kpi.map((key, index) => {
+      arr.push({ x: key, y: 1 })
+    })
+    setBarData(arr);
+  }, [])
+
+  return (
+
+    <View style={{
+      marginHorizontal: wide * 0.05,
+      alignItems: 'center',
+      marginTop: -wide * 0.03,
+    }}>
+
+      {barData.length > 0 ?
+
+        <VictoryChart
+          width={340}
+          height={barData.length <= 2 ? 100 : barData.length <= 3 ? 200 : barData.length <= 5 ? 250 :
+            barData.length <= 8 ? 310 :
+              barData.length <= 10 ? 400 : barData.length <= 15 ? 550 : barData.length <= 18 ? 650 : 750}
+
+          domainPadding={{ x: 10, y: 20, }}
+        >
+          <VictoryGroup
+            colorScale={'qualitative'}
+          >
+            <VictoryBar
+              horizontal
+              data={barData}
+
+              labels={({ datum }) => `${0}`}
+              labelComponent={<VictoryLabel dy={0} dx={8} style={{
+                fill: '#D8A433', fontSize: 16,
+              }} />}
+              style={{
+                data: {
+                  fill: '#4F5155',
+                }
+              }}
+              barWidth={12}
+
+            />
+
+          </VictoryGroup>
+          <VictoryAxis
+            offsetX={40}
+            style={{
+              tickLabels: {
+                fill: Colors.light, fontSize: 12, lineHeight: 16,
+                fontFamily: Fonts.Bold
+              },
+              axis: { stroke: Colors.base, }
+            }}
+
+          />
+        </VictoryChart>
+        : <></>
+      }
+
+    </View>
+
+  )
+}
+
+
+
+
+
+export { EmptyPieChart, EmptyBarChart }

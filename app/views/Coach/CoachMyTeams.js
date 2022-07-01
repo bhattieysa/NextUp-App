@@ -40,14 +40,14 @@ import {
   VictoryGroup, VictoryArea, VictoryBar, VictoryAxis,
   VictoryPie,
 } from 'victory-native';
-import moment from 'moment'
+import moment, { isDuration } from 'moment'
 import SelectDropdown from 'react-native-select-dropdown';
 import { SenderRecevrModel } from '../../constants/constant';
 import { sendBulkMessage } from '../../actions/chat';
 import { BlurView } from "@react-native-community/blur";
 import { Title } from '../../components/common/titleLabel';
 import { showErrorAlert } from '../../utils/info';
-import EmptyPieChart from './Components/EmptyPieChart';
+import { EmptyPieChart, EmptyBarChart } from './Components/EmptyPieChart';
 
 import {
   Menu,
@@ -336,8 +336,6 @@ class MyTeams extends Component {
     // this.filterBarChartData();
   }
 
-
-
   filterBarChartData = () => {
     debugger
     const { selectedKpi, defaultKpi } = this.state;
@@ -479,34 +477,44 @@ class MyTeams extends Component {
     debugger
     if (isSessionDropShow == true) {
       debugger
-      this.props.dispatch(getPlayerListForTeam(teamId, dropDownSelectedVal, (res) => {
-        // setTimeout(() => {
-        if (res) {
-          debugger
-          const { coachTeamPlayer } = this.props.Home
-          console.log("--->>>", coachTeamPlayer);
-          this._callGameTabApi(teamId);
-          this._callRoleTabApi(teamId);
-          // this._checkForSubscription();
-        }
-        // }, );
+      this.setState({ loading: true }, () => {
+        this.props.dispatch(getPlayerListForTeam(teamId, dropDownSelectedVal, (res) => {
+          // setTimeout(() => {
+          if (res) {
+            debugger
+            const { coachTeamPlayer } = this.props.Home
+            console.log("--->>>", coachTeamPlayer);
+            this.setState({ loading: false })
+            // this._callGameTabApi(teamId);
+            // this._callRoleTabApi(teamId);
+            // this._checkForSubscription();
+          }
+          // }, );
 
-      }))
+        }))
+      })
+
     } else {
       debugger
-      this.props.dispatch(getPlayerListForTeam(teamId, "2020-2021", (res) => {
-        // setTimeout(() => {
-        if (res) {
-          debugger
-          const { coachTeamPlayer } = this.props.Home
-          console.log("--->>>", coachTeamPlayer);
-          this._callGameTabApi(teamId);
-          this._callRoleTabApi(teamId);
-          this._checkForSubscription();
-        }
-        // }, );
+      this.setState({ loading: true }, () => {
+        this.props.dispatch(getPlayerListForTeam(teamId, "2020-2021", (res) => {
+          // setTimeout(() => {
+          if (res) {
+            debugger
+            const { coachTeamPlayer } = this.props.Home
+            console.log("--->>>", coachTeamPlayer);
+            this.setState({ loading: false }, () => {
+              this._checkForSubscription();
+            })
+            // this._callGameTabApi(teamId);
+            // this._callRoleTabApi(teamId);
+          }
+          // }, );
 
-      }))
+        }))
+
+      })
+
     }
     // this.setState({ loading: true }, () => {
 
@@ -519,9 +527,7 @@ class MyTeams extends Component {
 
       this.props.dispatch(checkSubscription(obj, (res) => {
         if (res) {
-
           console.log("Subscription info is ", res);
-
         }
         else {
           console.log(res);
@@ -536,23 +542,23 @@ class MyTeams extends Component {
   //role tab api
   _callRoleTabApi = (teamId) => {
     debugger
-    getObject('UserId').then(obj => {
-      this.props.dispatch(getCoachTeamRoles(teamId, obj, (res) => {
-        if (res) {
-          debugger
-          const { teamRoles } = this.props.Home
-          console.log("team roles --->>>", teamRoles);
-          // this._callGameTabApi(teamId);
-        }
-      }))
+    this.setState({ loading: true }, () => {
+      getObject('UserId').then(obj => {
+        this.props.dispatch(getCoachTeamRoles(teamId, obj, (res) => {
+          if (res) {
+            debugger
+            const { teamRoles } = this.props.Home
+            console.log("team roles --->>>", teamRoles);
+            this.setState({ loading: false })
+            // this._callGameTabApi(teamId);
+          }
+        }))
 
-    }).catch(error => {
-      Alert.alert("Error", error.message);
+      }).catch(error => {
+        Alert.alert("Error", error.message);
+      })
+
     })
-
-
-
-
   }
 
 
@@ -563,24 +569,28 @@ class MyTeams extends Component {
 
     // Alert.alert("Dropdown selected", `Value is ${dropDownSelectedVal}`)
     debugger
-    getObject('UserId').then((obj) => {
-      this.props.dispatch(getGameListForTeam(teamId, obj, dropDownSelectedVal, (res, resData) => {
-        // setTimeout(() => {
-        if (res) {
-          debugger
-          console.log("---resssssgame", resData);
-          this.setState({
-            gameTabData: resData,
-          }, () => {
-            this._filterPieChartGamesData();
-            // this._filterGameStatBarData();
-          })
-        }
+    this.setState({ loading: true }, () => {
+      getObject('UserId').then((obj) => {
+        this.props.dispatch(getGameListForTeam(teamId, obj, dropDownSelectedVal, (res, resData) => {
+          // setTimeout(() => {
+          if (res) {
+            debugger
+            console.log("---resssssgame", resData);
+            this.setState({
+              gameTabData: resData,
+              loading: false
+            }, () => {
+              this._filterPieChartGamesData();
+              // this._filterGameStatBarData();
+            })
+          }
 
-        // }, 500);
+          // }, 500);
 
-      }))
+        }))
+      })
     })
+
   }
 
   _handleSelectPlayer = (item, index) => {
@@ -1831,16 +1841,21 @@ class MyTeams extends Component {
 
   _handleTabPress = (tabIndx, tabNm, teamId) => {
     console.log(`Tab Index: ${tabIndx}, Tab Name: ${tabNm}, Team ID: ${teamId}`);
-
     this.setState({ selectedTabIndex: tabIndx, selectedTab: tabNm, selectedPlayerIndex: [], selectedPlayer: [] }, () => {
       console.log("Current tab is ", tabNm);
-
       if (tabNm === 'Games') {
         this._callGameTabApi(teamId);
       }
       if (tabNm === 'Stats') {
+        this.getInitialData(false);
         this.filterBarChartData();
-        this._filterGameStatBarData();
+        // this._filterGameStatBarData();
+      }
+      if (tabNm === 'Roles') {
+        this._callRoleTabApi(teamId);
+      }
+      if (tabNm === "Players") {
+        this._callPlayerTabApi(teamId);
       }
 
     })
@@ -1851,11 +1866,9 @@ class MyTeams extends Component {
     return (
       <TouchableOp style={{
         height: wide * 0.12,
-        width: wide * 0.25,
+        width: wide * 0.24,
         justifyContent: 'center',
         alignItems: 'center',
-
-        // backgroundColor: 'green'
       }}
         activeOpacity={1}
         onPress={() => this._handleTabPress(item.index, item.item.tab_nm, coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId)}
@@ -2463,7 +2476,24 @@ class MyTeams extends Component {
                                   </View>
 
 
-                                  : null
+                                  :
+                                  <View style={{ marginTop: 20, marginBottom: 10 }}>
+                                    <Title data={'Team Stats'} />
+                                    <View style={{
+                                      // height: wide * 0.8,
+                                      // justifyContent: 'center',
+                                      // alignItems: 'center',
+
+                                      marginHorizontal: 24,
+                                      // backgroundColor: 'green',
+                                      // flex: 1,
+                                      // display: 'flex'
+
+                                    }}>
+                                      <EmptyBarChart kpi={coachTeam?.teamTabInfoDtoList[0]?.kpi} />
+
+                                    </View>
+                                  </View>
                                 }
 
 

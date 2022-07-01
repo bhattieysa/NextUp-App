@@ -954,7 +954,7 @@ import { BlurView } from "@react-native-community/blur";
 import { Card } from '../../components/common/DashBoardCard'
 import NotifService from '../../utils/notificationService/service';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import EmptyPieChart from './Components/EmptyPieChart';
+import { EmptyPieChart } from './Components/EmptyPieChart';
 
 
 let wide = Layout.width;
