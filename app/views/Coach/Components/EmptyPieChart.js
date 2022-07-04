@@ -163,11 +163,20 @@ function EmptyBarChart({ kpi }) {
   const [barData, setBarData] = useState([])
 
   useEffect(() => {
+    console.log("empty bar chartttttttttt")
     debugger
     let arr = [];
-    kpi.map((key, index) => {
-      arr.push({ x: key, y: 1 })
-    })
+    if (kpi.length > 0) {
+      kpi.map((key, index) => {
+        arr.push({ x: key, y: 1 })
+      })
+    } else {
+      ["G", "FG", "PTS", "FG%", "STL", "2PT%"].map((key, index) => {
+        arr.push({ x: key, y: 1 })
+      })
+    }
+    debugger
+
     setBarData(arr);
   }, [])
 

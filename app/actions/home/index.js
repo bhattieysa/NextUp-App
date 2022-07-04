@@ -1209,9 +1209,11 @@ export function getNewCoachTeam(obj, cb) {
               if (data.seasonLists && data.seasonLists.length > 0) {
                 requestURL += `?season=${data.seasonLists[0]}`;
               }
+              debugger
 
               let statResponse = await axios.get(requestURL);
               let statResponseData = statResponse.data.data;
+              debugger
 
               data.teamTabInfoDtoList[i].statsSummary = statResponseData.statsSummary;
               data.teamTabInfoDtoList[i].teamPositionsList = statResponseData.teamPositionsList;
@@ -1231,11 +1233,9 @@ export function getNewCoachTeam(obj, cb) {
 
           getState().entities.homePlayer.coachTeam = data;
 
-
           //end stats
 
-
-          dispatch(myStandingSuccess()), cb(true);
+          dispatch(myStandingSuccess());
           cb(true, data)
 
         } else {
@@ -1693,7 +1693,7 @@ export function createNewTeam(obj, cb) {
   };
 }
 
-export function addPlayerToTeam(teamID, obje, cb) {
+export function addPlayerToTeam(teamID, obje, outerIndex, season, cb) {
   debugger
   // console.log("TeamID-->> ", userId, "  obj--->>", obje);
   return (dispatch, getState) => {
@@ -1701,7 +1701,8 @@ export function addPlayerToTeam(teamID, obje, cb) {
     dispatch(homeRequest());
     //162522113111002
     return axios
-      .post(AppURLs.addPlayerTo + teamID, obje)
+      // .post(AppURLs.addPlayerTo + teamID, obje)
+      .post(AppURLs.addPlayerTo + teamID + '/' + season + '/' + outerIndex, obje)
       .then((response) => {
         debugger
         if (response.status == 200 && response.data?.data !== null) {

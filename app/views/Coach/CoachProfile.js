@@ -1012,6 +1012,8 @@ class CoachProfile extends Component {
       showSessionModal: false,
       showTeamModal: false,
       isStatNull: false,
+      winStreak: null,
+      last_10: null,
 
     };
   }
@@ -1141,7 +1143,6 @@ class CoachProfile extends Component {
 
   onScreenFocus = () => {
     // this.getPlayers()
-
     debugger;
     getObject('UserId').then((obj) => {
       this.setState({ loading: true }, () => {
@@ -1220,37 +1221,48 @@ class CoachProfile extends Component {
       var tot = 0;
       var isTeamStatNull = false;
       debugger
+      var streak = null;
+      var lastMatch = null;
       console.log('teammmmDatata', teamStatarr.length)
       if (teamStatarr.length > 0) {
+        debugger
         teamStatarr.forEach(obj => {
-          if (obj.seasonList === dropDownSelectedVal) {
+          if (obj.seasonType === dropDownSelectedVal) {     //seasonList
+            debugger
             console.log('Filter calll')
-            if (obj.stats !== null) {
+            if (obj.statsSummary !== null) {            // obj.stats
               isTeamStatNull = false;
-              if (obj.stats.hasOwnProperty('wins')) {
-                arr.push(obj.stats.wins);
-                tot = tot + obj.stats.wins;
+              streak = obj.statsSummary.streak;
+              lastMatch = obj.statsSummary.lastMatches;
+              if (obj.statsSummary.hasOwnProperty('wins')) {
+                arr.push(obj.statsSummary.wins);
+
+                tot = tot + obj.statsSummary.wins;
               }
-              if (obj.stats.hasOwnProperty('loss')) {
-                arr.push(obj.stats.loss);
-                tot = tot + obj.stats.loss;
+              if (obj.statsSummary.hasOwnProperty('loss')) {
+                arr.push(obj.statsSummary.loss);
+                tot = tot + obj.statsSummary.loss;
               }
-              if (obj.stats.hasOwnProperty('draw')) {
-                arr.push(obj.stats.draw);
-                tot = tot + obj.stats.draw;
+              if (obj.statsSummary.hasOwnProperty('draw')) {
+                arr.push(obj.statsSummary.draw);
+                tot = tot + obj.statsSummary.draw;
               }
             }
             // teamArr.push(obj.teamName) teamDropDownData: teamArr,
           }
         });
       } else {
+        debugger
         arr.push(30);
         arr.push(30);
         arr.push(30);
         isTeamStatNull = true;
       }
-
-      this.setState({ pieChartData: arr, totalMatches: tot, isStatNull: isTeamStatNull })
+      debugger
+      this.setState({
+        pieChartData: arr, totalMatches: tot, isStatNull: isTeamStatNull, winStreak: streak,
+        last_10: lastMatch,
+      })
     }
 
     this.setState({ showSessionModal: false, showTeamModal: false, loading: false })
@@ -1592,7 +1604,7 @@ class CoachProfile extends Component {
     // debugger
     const { coachDash } = this.props.Home
     const { arrPlayers, pieChartData, teamDropDownData, sharedData,
-      sharedMimeType, dropDownSelectedVal, teamDropDownSelectedVal, isStatNull } = this.state
+      sharedMimeType, dropDownSelectedVal, teamDropDownSelectedVal, isStatNull, winStreak, last_10 } = this.state
     console.log("coach dashh", pieChartData);
     // console.log("teammInfooo--", coachDash.teamDetailInfo.length)
     // console.log('show----> ', pieChartData);
@@ -2549,9 +2561,44 @@ class CoachProfile extends Component {
                   <View style={{
                     justifyContent: 'flex-end',
                     width: '100%', height: '25%', flexDirection: 'row',
-                    // backgroundColor: 'red'
                     // bottom: 10
                   }}>
+                    <View style={{
+                      flexDirection: 'row',
+                      width: '55%',
+                      justifyContent: 'space-around',
+                      marginRight: wide * 0.06,
+                      // alignItems: 'center'
+                    }}>
+                      <View style={{
+                        height: '60%',
+                        alignItems: "center", justifyContent: 'space-between'
+                      }}>
+                        <Text style={{
+                          color: Colors.newGrayFontColor, fontSize: 12, lineHeight: 16,
+                          fontFamily: Fonts.Bold,
+                        }}>Streak</Text>
+
+                        <Text style={{
+                          color: Colors.light, fontSize: 16, lineHeight: 18,
+                          fontFamily: Fonts.Bold,
+                        }}>{winStreak != null ? winStreak : '_'}</Text>
+                      </View>
+                      <View style={{
+                        height: '60%',
+                        alignItems: "center", justifyContent: 'space-between'
+                      }}>
+                        <Text style={{
+                          color: Colors.newGrayFontColor, fontSize: 12, lineHeight: 16,
+                          fontFamily: Fonts.Bold,
+                        }}>Last 10</Text>
+                        <Text style={{
+                          color: Colors.light, fontSize: 16, lineHeight: 18,
+                          fontFamily: Fonts.Bold,
+                        }}>{last_10 != null ? last_10 : '_'}</Text>
+                      </View>
+                    </View>
+
                     <View>
                       {pieChartData !== undefined && pieChartData.length > 0 ?
                         <>

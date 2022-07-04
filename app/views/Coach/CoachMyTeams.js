@@ -89,6 +89,7 @@ class MyTeams extends Component {
       selectedTabIndex: 0,
       selectedPlayer: [],
       selectedPlayerIndex: [],
+      selectedPlayerInnerIndex: [],
       selectedPlayerArr: [],
       showSessionDropDown: false,
       // playerList: {},
@@ -243,6 +244,8 @@ class MyTeams extends Component {
 
             }
 
+          } else {
+            this.setState({ loading: false })
           }
 
 
@@ -271,13 +274,13 @@ class MyTeams extends Component {
     debugger
     console.log('arrr11111111', isSesDropShow);
     var selectedKpiArr = [];
-    selectedKpiArr.push(coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0])
+    // selectedKpiArr.push(coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0])
     // this.state.selectedKpi.push(coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0]);
     this.setState({
       teamDetailsArr: coachTeam?.teamTabInfoDtoList,
       showSessionDropDown: false,
       selectedTeamStats: statsObj,
-      defaultKpi: coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0],
+      // defaultKpi: coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0],
       selectedKpi: selectedKpiArr,
       isSessionDropShow: isSesDropShow
     }, () => {
@@ -497,7 +500,7 @@ class MyTeams extends Component {
     } else {
       debugger
       this.setState({ loading: true }, () => {
-        this.props.dispatch(getPlayerListForTeam(teamId, "2020-2021", (res) => {
+        this.props.dispatch(getPlayerListForTeam(teamId, "2020-21", (res) => {
           // setTimeout(() => {
           if (res) {
             debugger
@@ -593,6 +596,7 @@ class MyTeams extends Component {
 
   }
 
+  //old method not in use now
   _handleSelectPlayer = (item, index) => {
     debugger;
     console.log("item--->>", item, index);
@@ -625,6 +629,51 @@ class MyTeams extends Component {
       });
     } else {
       this.state.selectedPlayerIndex.push(index);
+      this.state.selectedPlayer.push(item.playerId);
+      this.state.selectedPlayerArr.push(item);
+      this.setState({ loading: false });
+    }
+
+  }
+
+  _handleNewSelectPlayer = (item, index, innerIndx) => {
+    debugger;
+    console.log("item--->>", item, index);
+    // this.setState({ loading: true });
+    if (this.state.selectedPlayerIndex.length > 0) {
+      debugger
+      var indxArr = this.state.selectedPlayerIndex;
+      var plyrArr = this.state.selectedPlayer;
+      var playrItmArr = this.state.selectedPlayerArr;
+      debugger
+      if (indxArr.includes(`${index}_${innerIndx}`)) {
+        debugger
+        indxArr = indxArr.filter((obj) => {
+          return obj !== `${index}_${innerIndx}`;
+        });
+        plyrArr = plyrArr.filter((obj) => {
+          return obj !== item.playerId;
+        });
+        playrItmArr = playrItmArr.filter((obj) => {
+          return obj.playerId !== item.playerId;
+        })
+      } else {
+        debugger
+        indxArr.push(`${index}_${innerIndx}`);
+        plyrArr.push(item.playerId)
+        playrItmArr.push(item);
+      }
+      if (indxArr.length == 0) {
+        this.setState({ isDeSelect: false })
+      }
+      this.setState({
+        selectedPlayer: plyrArr, selectedPlayerIndex: indxArr,
+        selectedPlayerArr: playrItmArr, loading: false
+      });
+    } else {
+      debugger
+      var indxStr = `${index}_${innerIndx}`
+      this.state.selectedPlayerIndex.push(indxStr);
       this.state.selectedPlayer.push(item.playerId);
       this.state.selectedPlayerArr.push(item);
       this.setState({ loading: false });
@@ -804,7 +853,7 @@ class MyTeams extends Component {
   }
 
   _renderTeam = ({ item, index }) => {
-    // console.log("--->>teammmmmmm", item)
+    console.log("--->>teammmmmmm", item)
     debugger
     const { coachTeam } = this.props.Home
     const { selectedIndex, selectedPlayerIndex, selectedPlayer, playerCatSelectedVal } = this.state;
@@ -1443,6 +1492,782 @@ class MyTeams extends Component {
 
           </View>
         </View >
+    );
+  };
+
+  _renderNewTeam = ({ item, index }) => {
+    console.log("--->>teammmmmmm_Newwww", item)
+    debugger
+    const { coachTeam } = this.props.Home
+    const { selectedIndex, selectedPlayerIndex, selectedPlayer, playerCatSelectedVal, selectedPlayerInnerIndex } = this.state;
+    if (item.playerId !== null) {
+      isSelectShow = true;
+    }
+    // console.log("--->>teammmmmmm", selectedPlayerIndex, selectedPlayer)
+    // console.log(coachTeam);
+    return (
+      <>
+        {item.teamPlayersInfoList.map((itm, indx, arry) => {
+          return (
+            itm.playerId !== null ?
+              itm.accepted == true ?
+                <>
+                  {playerCatSelectedVal !== 'All Players' ?
+                    playerCatSelectedVal === itm.playerCategory ?
+                      <View style={{ marginBottom: wide * 0.03, flex: 1 }}>
+                        {/* <Image style={{
+                            position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%'
+                        }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} /> */}
+                        {indx == 0 ?
+                          <View style={{
+                            flexDirection: 'row', marginTop: 5,
+                            marginTop: 15, height: 24,
+                            backgroundColor: Colors.myTeamPlayerListLabel,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+
+                          }}>
+                            <Text style={{
+                              color: Colors.light, fontSize: 14, fontFamily: Fonts.Bold,
+                              marginHorizontal: wide * 0.04, lineHeight: 16,
+                              marginTop: 1.5
+                            }}> {itm.playingPosition}</Text>
+
+                          </View>
+                          : <></>
+                        }
+                        {/* <View style={{ marginTop: wide * 0.03, borderWidth: 1, borderColor: Colors.teamTabPlayerCardBorder }}></View> */}
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+
+                          <TouchableOpacity style={{
+                            borderWidth: 3,
+                            borderColor: Colors.borderColor,
+                            width: wide * 0.2, height: wide * 0.2,
+                            borderRadius: (wide * 0.2) / 2, marginLeft: wide * 0.05, marginTop: 15,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }} onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}>
+                            <FastImage style={{
+                              width: '96%', height: '96%', borderRadius: (wide * 0.2) / 2,
+                              alignSelf: 'center'
+                            }}
+                              // resizeMode={'contain'}
+                              source={{ uri: itm.profilePictureUrl }} />
+                          </TouchableOpacity>
+
+                          <TouchableOpacity style={{
+                            marginHorizontal: wide * 0.04,
+                            flex: 1, marginTop: 0
+                          }} onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}>
+                            {/* <View > */}
+                            <View style={{
+                              flexDirection: 'column',
+
+                              width: '90%'
+                            }}>
+                              <Text style={{
+                                color: Colors.light, fontSize: 20,
+                                lineHeight: 26, fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>{itm.firstName} {itm.lastName}</Text>
+
+                              {/* <Text style={{
+                                                    color: Colors.light, fontSize: 14,
+                                                    lineHeight: 20, fontFamily: Fonts.Medium,
+                                                }}>#{item.ranking}| {item.playerCategory} </Text> */}
+
+                              <TouchableOpacity style={{
+                                flexDirection: 'row',
+                                paddingTop: 5,
+                                backgroundColor: Colors.dropDownBackGround,
+                                top: wide * 0.03, width: wide * 0.32, height: wide * 0.07,
+                                borderRadius: wide * 0.012, alignItems: 'center', justifyContent: 'center'
+                              }}
+                                onPress={() => Navigation.navigate('Compare', itm)}
+                              // onPress={() => this.removePlayerFromPosition(item)}
+                              >
+
+                                <Text style={{
+                                  color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
+                                  marginBottom: 2
+                                }}>Click to Compare</Text>
+                              </TouchableOpacity>
+                            </View>
+                            {/* </View> */}
+                          </TouchableOpacity>
+                          {this.state.selectedPlayerIndex.includes(`${index}_${indx}`) ?
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.btnBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{
+                                  width: wide * 0.04, height: wide * 0.04,
+                                  tintColor: Colors.light
+                                }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.teamTabSelectedCheckBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{
+                                  width: wide * 0.04, height: wide * 0.04,
+                                  tintColor: Colors.teamTabPlayerCardBorder,
+                                }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+
+                          }
+
+
+                        </View>
+
+                        {/* add plus button */}
+                        {indx == arry.length - 1 ?
+                          <View style={{ alignItems: 'center', marginTop: wide * 0.07 }}>
+
+                            <TouchableOpacity onPress={() =>
+                              Navigation.navigate('CoachAddPlayer',
+                                {
+                                  playerDetails: item,
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                })}
+                              style={{
+                                width: 63, height: 63,
+                                borderRadius: 63 / 2, borderWidth: 2,
+                                borderColor: Colors.teamTabPlayerCardBorder, marginTop: 5,
+                                justifyContent: 'center', alignItems: 'center',
+                              }}>
+                              <Text style={{
+                                color: Colors.light, fontSize: 36, lineHeight: 42,
+                                fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>+</Text>
+
+                            </TouchableOpacity>
+                          </View>
+                          : <></>
+                        }
+
+                      </View>
+                      : null
+                    :
+                    <>
+                      <View style={{ marginBottom: wide * 0.03, flex: 1 }}>
+                        {/* <Image style={{
+                            position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%'
+                        }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} /> */}
+
+                        {indx == 0 ?
+                          <View style={{
+                            flexDirection: 'row',
+                            marginTop: 15, height: 24,
+                            backgroundColor: Colors.myTeamPlayerListLabel,
+                            alignItems: 'center',
+
+                          }}>
+                            <Text style={{
+                              color: Colors.light, fontSize: 14, fontFamily: Fonts.Bold,
+                              marginHorizontal: wide * 0.04, lineHeight: 16,
+                              marginTop: 1.5
+                            }}> {itm.playingPosition}</Text>
+
+                          </View>
+                          : <></>
+                        }
+                        {/* <View style={{ marginTop: wide * 0.03, borderWidth: 1, borderColor: Colors.teamTabPlayerCardBorder }}></View> */}
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+
+                          <TouchableOpacity style={{
+                            borderWidth: 3,
+                            borderColor: Colors.borderColor,
+                            width: wide * 0.2, height: wide * 0.2,
+                            borderRadius: (wide * 0.2) / 2, marginLeft: wide * 0.05, marginTop: 15,
+                            justifyContent: 'center', alignItems: 'center'
+                          }} onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}>
+                            <FastImage style={{
+                              width: '96%', height: '96%', borderRadius: (wide * 0.2) / 2,
+                              alignSelf: 'center'
+                            }}
+                              // resizeMode={'contain'}
+                              source={{ uri: itm.profilePictureUrl }} />
+                          </TouchableOpacity>
+
+                          <TouchableOpacity style={{
+                            marginHorizontal: wide * 0.04,
+                            flex: 1, marginTop: 0
+                          }} onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}>
+                            {/* <View > */}
+                            <View style={{
+                              flexDirection: 'column',
+
+                              width: '90%'
+                            }}>
+                              <Text style={{
+                                color: Colors.light, fontSize: 20,
+                                lineHeight: 26, fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>{itm.firstName} {itm.lastName}</Text>
+
+                              {/* <Text style={{
+                                                    color: Colors.light, fontSize: 14,
+                                                    lineHeight: 20, fontFamily: Fonts.Medium,
+                                                }}>#{item.ranking}| {item.playerCategory} </Text> */}
+
+                              <TouchableOpacity style={{
+                                flexDirection: 'row',
+                                paddingTop: 5,
+                                backgroundColor: Colors.dropDownBackGround,
+                                top: wide * 0.03, width: wide * 0.32, height: wide * 0.07,
+                                borderRadius: wide * 0.012, alignItems: 'center', justifyContent: 'center'
+                              }}
+                                onPress={() => Navigation.navigate('Compare', itm)}
+                              // onPress={() => this.removePlayerFromPosition(item)}
+                              >
+
+                                <Text style={{
+                                  color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
+                                  marginBottom: 2
+                                }}>Click to Compare</Text>
+                              </TouchableOpacity>
+                            </View>
+                            {/* </View> */}
+                          </TouchableOpacity>
+                          {this.state.selectedPlayerIndex.includes(`${index}_${indx}`) ?
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.btnBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{
+                                  width: wide * 0.04, height: wide * 0.04,
+                                  tintColor: Colors.light
+                                }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.teamTabSelectedCheckBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{
+                                  width: wide * 0.04, height: wide * 0.04,
+                                  tintColor: Colors.teamTabPlayerCardBorder,
+                                }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+
+                          }
+
+
+                        </View>
+
+                        {/* add plus button */}
+                        {indx == arry.length - 1 ?
+                          <View style={{ alignItems: 'center', marginTop: wide * 0.07 }}>
+
+                            <TouchableOpacity onPress={() =>
+                              Navigation.navigate('CoachAddPlayer',
+                                {
+                                  playerDetails: item,
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                })}
+                              style={{
+                                width: 63, height: 63,
+                                borderRadius: 63 / 2, borderWidth: 2,
+                                borderColor: Colors.teamTabPlayerCardBorder, marginTop: 5,
+                                justifyContent: 'center', alignItems: 'center',
+                              }}>
+                              <Text style={{
+                                color: Colors.light, fontSize: 36, lineHeight: 42,
+                                fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>+</Text>
+
+                            </TouchableOpacity>
+                          </View>
+                          : <></>
+                        }
+
+                      </View>
+                    </>
+                  }
+                </>
+
+                :
+                <>
+                  {playerCatSelectedVal !== 'All Players' ?
+                    playerCatSelectedVal === itm.playerCategory ?
+
+                      <View style={{ marginBottom: wide * 0.03, }}>
+                        {/* <Image style={{
+                            position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%'
+                        }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} /> */}
+
+                        {indx == 0 ?
+                          <View style={{
+                            flexDirection: 'row',
+                            height: 24,
+                            marginTop: 15, justifyContent: 'space-between',
+                            backgroundColor: Colors.myTeamPlayerListLabel,
+                            alignItems: 'center',
+
+
+                          }}>
+                            <Text style={{
+                              color: Colors.light, fontSize: 14, lineHeight: 16,
+                              fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
+                              marginTop: 1.5
+                            }}> {itm.playingPosition}</Text>
+                            <Text style={{
+                              color: Colors.pendingInviteTxtColor, fontSize: 10,
+                              fontFamily: Fonts.SemiBoldItalic,
+                              lineHeight: 12,
+                              paddingTop: 3, paddingRight: 10,
+                              paddingBottom: 3, paddingLeft: 3,
+                            }} >ADMIN</Text>
+                          </View>
+                          : <></>
+                        }
+                        {/* <View style={{ marginTop: wide * 0.03, borderWidth: 1, borderColor: Colors.teamTabPlayerCardBorder }}></View> */}
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+
+                          <TouchableOpacity style={{
+                            borderWidth: 3,
+                            borderColor: Colors.borderColor,
+                            width: wide * 0.2, height: wide * 0.2,
+                            borderRadius: (wide * 0.2) / 2, marginLeft: wide * 0.05, marginTop: 15,
+                            justifyContent: 'center', alignItems: 'center'
+                          }} onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}>
+                            <FastImage style={{
+                              width: '96%', height: '96%',
+                              borderRadius: (wide * 0.2) / 2,
+                              alignSelf: 'center'
+                            }}
+                              // resizeMode={'contain'}
+                              source={{ uri: itm.profilePictureUrl }} />
+                          </TouchableOpacity>
+
+                          <TouchableOpacity style={{
+                            marginHorizontal: wide * 0.04,
+                            flex: 1, marginTop: 0
+                          }} onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}>
+                            {/* <View > */}
+                            <View style={{
+                              flexDirection: 'column',
+
+                              width: '90%'
+                            }}>
+
+                              {/* <TouchableOpacity style={{
+                                            backgroundColor: '#C33131',
+                                            borderRadius: wide * 0.01, width: wide * 0.3,
+                                            justifyContent: 'center', alignItems: 'center', marginTop: 20
+                                        }}>
+                                             <Image source={require('../../Images/get_direction.png')} style={{
+                                            width: 15, height: 15, marginLeft: 15
+                                        }} /> 
+                                            <Text style={{
+                                                color: Colors.light, fontSize: 10, fontFamily: Fonts.SemiBoldItalic,
+                                                lineHeight: 12, paddingTop: 3, paddingRight: 3,
+                                                paddingBottom: 3, paddingLeft: 3,
+                                            }} >Pending Invitation</Text>
+                                        </TouchableOpacity>*/}
+                              <Text style={{
+                                color: Colors.light, fontSize: 20,
+                                lineHeight: 26, fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>{itm.firstName} {itm.lastName}</Text>
+
+                              {/* <Text style={{
+                                                    color: Colors.light, fontSize: 14,
+                                                    lineHeight: 20, fontFamily: Fonts.Medium,
+                                                }}>#{item.ranking}| {item.playerCategory} </Text> */}
+
+                              <TouchableOpacity style={{
+                                flexDirection: 'row',
+                                paddingTop: 5,
+                                backgroundColor: Colors.dropDownBackGround,
+                                top: wide * 0.03, width: wide * 0.32, height: wide * 0.07,
+                                borderRadius: wide * 0.012, alignItems: 'center', justifyContent: 'center'
+                              }}
+                                // onPress={() => this.removePlayerFromPosition(item)}
+                                onPress={() => Navigation.navigate('Compare', itm)}
+                              >
+
+                                <Text style={{
+                                  color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
+                                  marginBottom: 2
+                                }}>Click to Compare</Text>
+                              </TouchableOpacity>
+                            </View>
+                            {/* </View> */}
+                          </TouchableOpacity>
+
+                          {this.state.selectedPlayerIndex.includes(`${index}_${indx}`) ?
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.btnBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.light }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.teamTabSelectedCheckBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.teamTabPlayerCardBorder, }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+
+                          }
+
+
+                          {/* <TouchableOpacity style={{
+                                width: wide * 0.12, height: wide * 0.12, borderRadius: (wide * 0.12) / 2,
+                                backgroundColor: Colors.teamTabSelectedCheckBg, right: 10,
+                                justifyContent: 'center', alignItems: 'center'
+                            }}
+                                onPress={() => this._handleSelectPlayer(item)}
+                                activeOpacity={1}
+                            >
+                                <Image
+                                    source={require("../../Images/check_Icon.png")}
+                                    style={{ width: wide * 0.06, height: wide * 0.06, tintColor: Colors.teamTabPlayerCardBorder }}
+                                    resizeMode={'contain'}
+                                />
+                            </TouchableOpacity> */}
+
+                        </View>
+
+                        {/* add plus button  */}
+
+                        {indx == arry.length - 1 ?
+                          <View style={{ alignItems: 'center', marginTop: wide * 0.07 }}>
+
+                            <TouchableOpacity onPress={() =>
+                              Navigation.navigate('CoachAddPlayer',
+                                {
+                                  playerDetails: item,
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                })}
+                              style={{
+                                width: 63, height: 63,
+                                borderRadius: 63 / 2, borderWidth: 2,
+                                borderColor: Colors.teamTabPlayerCardBorder, marginTop: 5,
+                                justifyContent: 'center', alignItems: 'center',
+                              }}>
+                              <Text style={{
+                                color: Colors.light, fontSize: 36, lineHeight: 42,
+                                fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>+</Text>
+
+                            </TouchableOpacity>
+                          </View>
+                          : <></>
+                        }
+
+                      </View>
+                      :
+                      <></>
+                    :
+                    <>
+                      <View style={{ marginBottom: wide * 0.03, }}>
+                        {/* <Image style={{
+                            position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%'
+                        }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} /> */}
+
+                        {indx == 0 ?
+                          <View style={{
+                            flexDirection: 'row',
+                            height: 24,
+                            marginTop: 15, justifyContent: 'space-between',
+                            backgroundColor: Colors.myTeamPlayerListLabel,
+                            alignItems: 'center',
+
+                          }}>
+                            <Text style={{
+                              color: Colors.light, fontSize: 14, lineHeight: 16,
+                              fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
+                              marginTop: 1.5
+                            }}> {itm.playingPosition}</Text>
+                            <Text style={{
+                              color: Colors.pendingInviteTxtColor, fontSize: 10,
+                              fontFamily: Fonts.SemiBoldItalic,
+                              lineHeight: 12,
+                              paddingTop: 3, paddingRight: 10,
+                              paddingBottom: 3, paddingLeft: 3,
+                            }} >Pending Invitation</Text>
+                          </View>
+                          : <></>
+                        }
+                        {/* <View style={{ marginTop: wide * 0.03, borderWidth: 1, borderColor: Colors.teamTabPlayerCardBorder }}></View> */}
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+
+                          <TouchableOpacity style={{
+                            borderWidth: 3,
+                            borderColor: Colors.borderColor,
+                            width: wide * 0.2, height: wide * 0.2,
+                            borderRadius: wide * 0.2 / 2,
+                            marginLeft: wide * 0.05, marginTop: 15,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                            onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}
+                          >
+                            <FastImage style={{
+                              width: '96%', height: '96%',
+                              borderRadius: wide * 0.2 / 2,
+                              alignSelf: 'center'
+                            }}
+                              // resizeMode={'cover'}
+                              source={{ uri: itm.profilePictureUrl }} />
+                          </TouchableOpacity>
+
+                          <TouchableOpacity style={{
+                            marginHorizontal: wide * 0.04,
+                            flex: 1, marginTop: 0
+                          }} onPress={() => Navigation.navigate('PlayerProfile', { playerId: itm.playerId })}>
+                            {/* <View > */}
+                            <View style={{
+                              flexDirection: 'column',
+                              width: '90%'
+                            }}>
+
+                              {/* <TouchableOpacity style={{
+                                            backgroundColor: '#C33131',
+                                            borderRadius: wide * 0.01, width: wide * 0.3,
+                                            justifyContent: 'center', alignItems: 'center', marginTop: 20
+                                        }}>
+                                             <Image source={require('../../Images/get_direction.png')} style={{
+                                            width: 15, height: 15, marginLeft: 15
+                                        }} /> 
+                                            <Text style={{
+                                                color: Colors.light, fontSize: 10, fontFamily: Fonts.SemiBoldItalic,
+                                                lineHeight: 12, paddingTop: 3, paddingRight: 3,
+                                                paddingBottom: 3, paddingLeft: 3,
+                                            }} >Pending Invitation</Text>
+                                        </TouchableOpacity>*/}
+                              <Text style={{
+                                color: Colors.light, fontSize: 20,
+                                lineHeight: 26, fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>{itm.firstName} {itm.lastName}</Text>
+
+                              {/* <Text style={{
+                                                    color: Colors.light, fontSize: 14,
+                                                    lineHeight: 20, fontFamily: Fonts.Medium,
+                                                }}>#{item.ranking}| {item.playerCategory} </Text> */}
+
+                              <TouchableOpacity style={{
+                                flexDirection: 'row',
+                                paddingTop: 5,
+                                backgroundColor: Colors.dropDownBackGround,
+                                top: wide * 0.03, width: wide * 0.32, height: wide * 0.07,
+                                borderRadius: wide * 0.012, alignItems: 'center', justifyContent: 'center'
+                              }}
+                                // onPress={() => this.removePlayerFromPosition(item)}
+                                onPress={() => Navigation.navigate('Compare', item)}
+                              >
+
+                                <Text style={{
+                                  color: Colors.light, fontSize: 14, fontFamily: Fonts.Medium,
+                                  marginBottom: 2
+                                }}>Click to Compare</Text>
+                              </TouchableOpacity>
+                            </View>
+                            {/* </View> */}
+                          </TouchableOpacity>
+
+                          {this.state.selectedPlayerIndex.includes(`${index}_${indx}`) ?
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.btnBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.light }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity style={{
+                              width: 30, height: 30, borderRadius: 30 / 2,
+                              backgroundColor: Colors.teamTabSelectedCheckBg,
+                              right: 30,
+                              justifyContent: 'center', alignItems: 'center'
+                            }}
+                              onPress={() => this._handleNewSelectPlayer(itm, index, indx)}
+                              activeOpacity={1}
+                            >
+                              <Image
+                                source={require("../../Images/check_Icon.png")}
+                                style={{ width: wide * 0.04, height: wide * 0.04, tintColor: Colors.teamTabPlayerCardBorder, }}
+                                resizeMode={'contain'}
+                              />
+                            </TouchableOpacity>
+
+                          }
+
+
+                          {/* <TouchableOpacity style={{
+                                width: wide * 0.12, height: wide * 0.12, borderRadius: (wide * 0.12) / 2,
+                                backgroundColor: Colors.teamTabSelectedCheckBg, right: 10,
+                                justifyContent: 'center', alignItems: 'center'
+                            }}
+                                onPress={() => this._handleSelectPlayer(item)}
+                                activeOpacity={1}
+                            >
+                                <Image
+                                    source={require("../../Images/check_Icon.png")}
+                                    style={{ width: wide * 0.06, height: wide * 0.06, tintColor: Colors.teamTabPlayerCardBorder }}
+                                    resizeMode={'contain'}
+                                />
+                            </TouchableOpacity> */}
+
+                        </View>
+
+                        {/* add plus button */}
+                        {indx == arry.length - 1 ?
+                          <View style={{ alignItems: 'center', marginTop: wide * 0.07 }}>
+
+                            <TouchableOpacity onPress={() =>
+                              Navigation.navigate('CoachAddPlayer',
+                                {
+                                  playerDetails: item,
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                })}
+                              style={{
+                                width: 63, height: 63,
+                                borderRadius: 63 / 2, borderWidth: 2,
+                                borderColor: Colors.teamTabPlayerCardBorder, marginTop: 5,
+                                justifyContent: 'center', alignItems: 'center',
+                              }}>
+                              <Text style={{
+                                color: Colors.light, fontSize: 36, lineHeight: 42,
+                                fontFamily: Fonts.Bold, marginTop: 5,
+                              }}>+</Text>
+
+                            </TouchableOpacity>
+                          </View>
+                          : <></>
+                        }
+
+                      </View>
+                    </>
+                  }
+                </>
+
+              : <View style={{ marginBottom: wide * 0.03 }}>
+                {/* <Image style={{
+                        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%'
+                    }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} /> */}
+                <View style={{ paddingBottom: wide * 0.02 }}>
+                  {indx == 0 ?
+                    <View style={{
+                      flexDirection: 'row',
+                      height: 24,
+                      // marginleft: 15, 
+                      marginTop: 15,
+                      alignItems: 'center',
+                      backgroundColor: Colors.myTeamPlayerListLabel,
+                      // justifyContent: 'center'
+                    }}>
+                      <Text style={{
+                        color: Colors.light, fontSize: 14, lineHeight: 16,
+                        fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
+                        marginTop: 1.5
+                      }}> {itm.playingPosition}</Text>
+                    </View>
+                    : <></>
+                  }
+                  {/* <View style={{ marginTop: wide * 0.03, borderWidth: 1, borderColor: Colors.teamTabPlayerCardBorder }}></View> */}
+                  <View style={{ alignItems: 'center', marginTop: 12 }}>
+
+                    <TouchableOpacity onPress={() =>
+                      Navigation.navigate('CoachAddPlayer',
+                        {
+                          playerDetails: item,
+                          teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                        })}
+                      style={{
+                        width: 63, height: 63,
+                        borderRadius: 63 / 2, borderWidth: 2,
+                        borderColor: Colors.teamTabPlayerCardBorder, marginTop: 5,
+                        justifyContent: 'center', alignItems: 'center',
+                      }}>
+                      <Text style={{
+                        color: Colors.light, fontSize: 36, lineHeight: 42,
+                        fontFamily: Fonts.Bold, marginTop: 5,
+                      }}>+</Text>
+                      {/* <Image style={{ width: '100%', height: '100%', borderRadius: (wide * 0.2) / 2 }}
+            // resizeMode={'contain'}
+            source={require('../../Images/avatar.png')} /> */}
+                    </TouchableOpacity>
+                  </View>
+                  {/* <Text style={{
+                            color: Colors.light, fontSize: 12, fontFamily: Fonts.SemiBold, textAlign: 'center', marginTop: 5,
+
+                        }}>Add Player</Text> */}
+
+                </View>
+              </View >
+          )
+        })}
+
+      </>
     );
   };
 
@@ -2100,7 +2925,7 @@ class MyTeams extends Component {
       loading, isAddTeam, isMsgSendEnable, isSessionDropShow } = this.state;
     // const countries = ["Egypt", "Canada", "Australia", "Ireland"]
     console.log("Coach team", this.state.teamDetailsArr);
-    // debugger
+    debugger
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
         {/* <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onPress={() => this.setState({ showStatModal: false })}> */}
@@ -2462,9 +3287,9 @@ class MyTeams extends Component {
                                     <Title data={'Team Stats'} />
                                     <View style={{
                                       // height: wide * 0.8,
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
-                                      marginTop: 14,
+                                      // justifyContent: 'center',
+                                      // alignItems: 'center',
+                                      marginTop: 10,
                                       marginHorizontal: 24,
                                       // backgroundColor: 'green',
                                       // flex: 1,
@@ -2536,7 +3361,7 @@ class MyTeams extends Component {
                               justifyContent: 'space-between',
                               // backgroundColor: 'red',
                             }}>
-                              <TouchableOpacity
+                              {/* <TouchableOpacity
                                 style={{
                                   flexDirection: 'row',
                                   alignItems: 'center',
@@ -2558,8 +3383,8 @@ class MyTeams extends Component {
                                     width: wide * 0.035, height: wide * 0.025,
                                     marginHorizontal: wide * 0.02,
                                   }} source={require('../../Images/dropDownIconNew.png')} />
-                              </TouchableOpacity>
-                              {isSelectShow ?
+                              </TouchableOpacity> */}
+                              {/* {isSelectShow ?
                                 <>
                                   {this.state.isDeSelect === false ?
                                     <TouchableOpacity
@@ -2599,7 +3424,7 @@ class MyTeams extends Component {
                                   }
                                 </>
                                 : null
-                              }
+                              } */}
 
 
                             </View>
@@ -2610,8 +3435,10 @@ class MyTeams extends Component {
                                 // backgroundColor: 'red',
                                 flex: 1
                               }}
-                              data={coachTeamPlayer.teamPlayersInfoList}
-                              renderItem={(item, index) => this._renderTeam(item, index)}
+                              // data={coachTeamPlayer.teamPlayersInfoList}
+                              data={coachTeamPlayer?.teamPlayerInfoWithCategoryList}
+                              // renderItem={(item, index) => this._renderTeam(item, index)}
+                              renderItem={(item, index) => this._renderNewTeam(item, index)}
                             // stickyHeaderIndices={[0]}
                             />
 
@@ -3712,14 +4539,14 @@ export const MyTeamTabStats = ({ barData1, barData2, selectedKpiLength }) => {
 export const GameStats = ({ barData1 }) => {
   // console.log("----sjsjks", barData1)
   return (
-    <>
+    <View style={{}}>
       <VictoryChart
         width={350}
         height={barData1.length <= 2 ? 100 : barData1.length <= 3 ? 200 : barData1.length <= 5 ? 250 :
           barData1.length <= 10 ? 400 : barData1.length <= 15 ? 550 : barData1.length <= 18 ? 650 : 750}
 
         // padding={{ left: 50, right: 40, bottom: 30, top: 5 }}
-        domainPadding={{ x: 10, y: 20, }}
+        domainPadding={{ x: 20, y: 0, }}
       // minDomain={{ x: 10, y: 10 }}
       >
         <VictoryGroup
@@ -3742,7 +4569,7 @@ export const GameStats = ({ barData1 }) => {
               },
 
             }}
-            barWidth={10}
+            barWidth={12}
 
           />
 
@@ -3760,7 +4587,7 @@ export const GameStats = ({ barData1 }) => {
 
         />
       </VictoryChart>
-    </>
+    </View>
 
   )
 

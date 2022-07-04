@@ -49,6 +49,9 @@ const CoachMyTeamStack = createStackNavigator(
         GamesRecentTab: {
             getScreen: () => require('../views/home/GamesRecentTab').default,
         },
+        InvitePlayerToTeam: {
+            getScreen: () => require('../views/Coach/InvitePlayerToTeam').default,
+        },
     },
     {
         defaultNavigationOptions,

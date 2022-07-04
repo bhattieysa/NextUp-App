@@ -1927,7 +1927,6 @@ class Home extends Component {
                                     <MyPlayerStats barData1={this.state.bar1_Data} barData2={this.state.bar2_Data} />
                                     : null
                                   }
-
                                 </View>
 
                                 {/* </View> */}
