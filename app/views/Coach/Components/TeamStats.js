@@ -20,7 +20,6 @@ function TeamStats({ data }) {
                     paddingHorizontal: 10,
                     backgroundColor: '#23262F',
                     borderRadius: 10,
-                    borderWidth: 1,
                     justifyContent: 'space-between',
                     flexDirection: 'row'
                 }}>

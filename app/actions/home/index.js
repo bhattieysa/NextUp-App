@@ -159,9 +159,10 @@ export function myStandingFeed(userId, cb) {
   return (dispatch, getState) => {
 
     dispatch(myStandingRequest());
-    //162367717958303 //162330894799504
+    // test data user id :-   165573908635603
     return axios
-      .get(AppURLs.myStanding + userId)
+      // .get(AppURLs.myStanding + userId)
+      .get(AppURLs.myStanding + 165573908635603)
       .then((response) => {
         debugger
         if (response.status == 200 && response.data?.data !== null) {
@@ -763,6 +764,31 @@ export function getPlayerMoreNew(userId, pageNum, selectedSort, sortOrder, cb) {
   };
 }
 
+// Player more with new api with pagination
+export function getMoreRecentGames(userId, cb) {
+  const now = Date.now();
+  return (dispatch, getState) => {
+    debugger;
+    dispatch(myStandingRequest());
+    //Test Data player id : - 165573908635603
+    return axios
+      // .get(AppURLs.getMoreRecentGames + userId )
+      .get(AppURLs.getMoreRecentGames + 165573908635603)
+      .then((response) => {
+        if (response.status == 200 && response.data?.data !== null) {
+          dispatch(myStandingSuccess()), cb(true, response.data.data);
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false, 'Something went wrong!')
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
 // Team more with new api with pagination
 export function getTeamMoreNew(userId, pageNum, selectedSort, sortOrder, cb) {
   const now = Date.now();
@@ -1256,10 +1282,11 @@ export function getNewPlayerTeam(obj, cb) {
 
     console.log("Coach team request url ", AppURLs.playerNewTeam + obj);
     dispatch(myStandingRequest());
-    //162367717958303 //162330894799504 //162643359596706
+    // test data user id : - 165573908635603
 
     return axios
-      .get(AppURLs.playerNewTeam + obj)//'162522113111002'
+      // .get(AppURLs.playerNewTeam + obj)
+      .get(AppURLs.playerNewTeam + 165573908635603)
       .then(async (response) => {
         debugger
         if (response.status == 200 && response.data?.data !== null) {
@@ -1520,11 +1547,14 @@ export function getGameListForTeam(teamId, usrId, season, cb) {
 export function getPlayerGameListForTeam(teamId, usrId, season, cb) {
   const now = Date.now();
   // const ses = "2013-2014"
+  // test data user id :-   165573908635603
   let url = '';
   if (season == null) {
-    url = AppURLs.playerTeamTabGameList + teamId + '/' + usrId + '/' + Date.now();
+    // url = AppURLs.playerTeamTabGameList + teamId + '/' + usrId + '/' + Date.now();
+    url = AppURLs.playerTeamTabGameList + teamId + '/' + 165573908635603 + '/' + Date.now();
   } else {
-    url = AppURLs.playerTeamTabGameList + teamId + '/' + usrId + '/' + Date.now() + `?season=${season}`;
+    // url = AppURLs.playerTeamTabGameList + teamId + '/' + usrId + '/' + Date.now() + `?season=${season}`;
+    url = AppURLs.playerTeamTabGameList + teamId + '/' + 165573908635603 + '/' + Date.now() + `?season=${season}`;
   }
 
   return (dispatch, getState) => {
@@ -1697,12 +1727,39 @@ export function addPlayerToTeam(teamID, obje, outerIndex, season, cb) {
   debugger
   // console.log("TeamID-->> ", userId, "  obj--->>", obje);
   return (dispatch, getState) => {
-
     dispatch(homeRequest());
     //162522113111002
     return axios
       // .post(AppURLs.addPlayerTo + teamID, obje)
       .post(AppURLs.addPlayerTo + teamID + '/' + season + '/' + outerIndex, obje)
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+
+          //cb(true, data)
+
+          dispatch(homeSuccess()), cb(true, data);
+        } else {
+          cb(false, []);//response.data.message
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false, [])
+        return dispatch(homeFailure(error));
+      });
+  };
+}
+
+export function invitePlayerToTeam(teamID, obje, cb) {
+  debugger
+  // console.log("TeamID-->> ", userId, "  obj--->>", obje);
+  return (dispatch, getState) => {
+    dispatch(homeRequest());
+    //162522113111002
+    return axios
+      .post(AppURLs.sendPlayerInvitation + teamID, obje)
       .then((response) => {
         debugger
         if (response.status == 200 && response.data?.data !== null) {
@@ -1751,13 +1808,13 @@ export function removePlayerToTeam(teamid, ind, cb) {
   };
 }
 
-export function removeMultiplePlayerToTeam(teamid, playerIndxArr, cb) {
+export function removeMultiplePlayerToTeam(teamid, season, playerIndxArr, cb) {
   debugger
   return (dispatch, getState) => {
     dispatch(homeRequest());
     //162522113111002
     return axios
-      .post(AppURLs.removePlayerTo + teamid, playerIndxArr)
+      .post(AppURLs.removePlayerTo + teamid + '/' + season, playerIndxArr)
       .then((response) => {
         debugger
         if (response.status == 200 && response.data?.data !== null) {

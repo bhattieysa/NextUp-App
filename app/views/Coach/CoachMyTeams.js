@@ -89,7 +89,7 @@ class MyTeams extends Component {
       selectedTabIndex: 0,
       selectedPlayer: [],
       selectedPlayerIndex: [],
-      selectedPlayerInnerIndex: [],
+      // selectedPlayerInnerIndex: [],
       selectedPlayerArr: [],
       showSessionDropDown: false,
       // playerList: {},
@@ -699,7 +699,6 @@ class MyTeams extends Component {
                 this.state.selectedPlayerArr.push(obj);
               }
             }
-
           }
         })
         this.setState({ loading: false, isDeSelect: true })
@@ -819,6 +818,7 @@ class MyTeams extends Component {
     ///team/remove/team/members/163040178673005/3
     const { coachTeam } = this.props.Home
     const { selectedIndex } = this.state;
+    debugger
 
     Alert.alert(
       'Alert',
@@ -827,18 +827,20 @@ class MyTeams extends Component {
         {
           text: 'OK', onPress: () => {
             this.setState({ removeLoading: true }, () => {
-              this.props.dispatch(removeMultiplePlayerToTeam(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId, playerArr, (res, data) => {
-                if (res) {
-                  this.setState({
-                    selectedPlayer: [],
-                    selectedPlayerIndex: [],
-                    selectedPlayerArr: []
-                  }, () => {
-                    this.getInitialData(false)
-                  })
+              this.props.dispatch(removeMultiplePlayerToTeam(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId,
+                coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.seasonType,
+                playerArr, (res, data) => {
+                  if (res) {
+                    this.setState({
+                      selectedPlayer: [],
+                      selectedPlayerIndex: [],
+                      selectedPlayerArr: []
+                    }, () => {
+                      this.getInitialData(false)
+                    })
 
-                }
-              }))
+                  }
+                }))
             })
           }
         },
@@ -2874,11 +2876,22 @@ class MyTeams extends Component {
     }
   }
   _handleRemovePlayer = () => {
-    const { selectedPlayerArr } = this.state;
+    const { selectedPlayerArr, selectedPlayerIndex } = this.state;
     const removeIndxArr = [];
-    selectedPlayerArr.forEach((item, index) => {
-      removeIndxArr.push(item.index);
+    debugger
+    selectedPlayerIndex.forEach((item, index) => {
+      var str = item.split('_');
+      var obj = {
+        "positionIndex": str[0],
+        "playerIndex": str[1]
+      }
+      removeIndxArr.push(obj);
     })
+
+    // selectedPlayerArr.forEach((item, index) => {
+    //   removeIndxArr.push(item.index);
+    // })
+    debugger
     console.log('challe----', removeIndxArr);
     // this.removePlayerFromPosition(indx)   single player move
     this.removeMultiPlayerFromPosition(removeIndxArr);
@@ -3299,8 +3312,6 @@ class MyTeams extends Component {
                                       <GameStats barData1={this.state.gameStatBarData} />
                                     </View>
                                   </View>
-
-
                                   :
                                   <View style={{ marginTop: 20, marginBottom: 10 }}>
                                     <Title data={'Team Stats'} />

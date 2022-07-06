@@ -79,7 +79,9 @@ export const AppURLs = {
   playerForShare: 'coach/list/players/share/',
   logOut: 'user/logout/',
   getPlayerCategory: 'admin/list/player/category',
-  getSchoolOrTeam: 'admin/list/onboarding'
+  getSchoolOrTeam: 'admin/list/onboarding',
+  sendPlayerInvitation: 'team/invite/player/',
+  getMoreRecentGames: 'player/more/game/list/',
 
 
 };

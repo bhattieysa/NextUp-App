@@ -1001,7 +1001,7 @@ class CoachPlayerProfileView extends Component {
                             </>
                           }
                           <>
-                            {this.state.bar1_Data.length > 0 && this.state.bar2_Data.length > 0 ?
+                            {this.state.bar1_Data.length > 0 || this.state.bar2_Data.length > 0 ?
                               <>
                                 {this.state.showBar === true ?
                                   <View style={{
@@ -1104,7 +1104,7 @@ class CoachPlayerProfileView extends Component {
 
                                   </View>
                                   :
-                                  <Text style={{ fontSize: 18, color: Colors.light }}>Elseeeeeeee</Text>
+                                  <></>
                                 }
                               </>
                               :
@@ -1113,8 +1113,8 @@ class CoachPlayerProfileView extends Component {
                             }
                           </>
                         </>
-
-                        : null}
+                        : null
+                      }
                       {this.state.selectedTab === 'Challenges' ?
                         <View style={{ flex: 1, alignItems: 'center', }}>
 

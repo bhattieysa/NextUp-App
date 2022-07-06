@@ -14,10 +14,9 @@ import { connect } from 'react-redux';
 
 import ImagePicker from 'react-native-image-crop-picker';
 import { getObject } from '../../middleware';
-import { createNewTeam } from '../../actions/home';
+import { invitePlayerToTeam } from '../../actions/home';
 import FastImage from 'react-native-fast-image';
 import AnimatedInput from '../../Helpers/react-native-animated-input';
-import { uploadPhoto } from '../../actions/auth';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import KeyBoardDismissHandler from '../../components/common/KeyBoardDismissHandler';
 import { Title } from '../../components/common/titleLabel';
@@ -51,60 +50,40 @@ class InvitePlayer extends Component {
 
 
   actionInvite = () => {
+    const { fullname, email, contactNumber, } = this.state;
+    var outerIndex = this.props.navigation.state.params.playerDetails?.teamPlayersInfoList[0]?.index;
+    var season = this.props.navigation.state.params.teamDetails?.seasonType;
+    var teamId = this.props.navigation.state.params.teamDetails?.teamId;
 
-    const { teamName, avatar } = this.state;
-    debugger
-    if (teamName.length == 0 || avatar.length == 0) {
-      alert('Please enter name/logo to add the team.')
-      return
+    var objec = {
+      "fullName": fullname,
+      "emailId": email,
+      "contactNumber": contactNumber,
+      "sharedLink": "nextup.com",
+      "seasonName": season,
+      "positionIndex": outerIndex,
+      "teamPositionIndex": this.props.navigation.state.params.playerDetails.teamPlayersInfoList.length,
     }
+
     debugger
     this.setState({ loading: true }, () => {
-      getObject('UserId').then((obj) => {
+      this.props.dispatch(invitePlayerToTeam(teamId, objec, (res, resData) => {
+        if (res) {
+          this.setState({ loading: false }, () => {
+            setTimeout(() => {
+              Navigation.back();
+            }, 200);
+          })
+        }
+        else {
+          this.setState({ loading: false }, () => {
+            setTimeout(() => {
+              showErrorAlert('Something went wrong!')
+            }, 500);
+          })
 
-        console.log("res0 ", obj);
-
-        this.props.dispatch(uploadPhoto(avatar, obj, 'team', 'TEAM_LOGO', (res, uploadedUrl) => {
-          debugger
-
-          console.log("res1 ", res);
-
-          if (res) {
-
-            debugger
-            console.log("creating new team");
-            this.props.dispatch(createNewTeam({
-              "name": teamName,
-              "coachId": obj,
-              "teamLogo": uploadedUrl,
-              "seasonType": "2020-21",
-              "ownerId": obj,
-            }, (res) => {
-
-              console.log("res2 ", res);
-
-              if (res) {
-                debugger
-                this.setState({ loading: false }, () => {
-                  setTimeout(() => {
-                    Navigation.back();
-                  }, 200);
-                })
-
-
-              }
-            }))
-          }
-          else {
-            this.setState({ loading: false }, () => {
-              setTimeout(() => {
-                showErrorAlert('Something went wrong!')
-              }, 500);
-            })
-
-          }
-        }))
-      })
+        }
+      }))
     })
   }
 
@@ -112,8 +91,8 @@ class InvitePlayer extends Component {
 
 
   handleBtnEnable = () => {
-    const { avatar, teamName } = this.state
-    if (avatar.length !== 0 && teamName.length !== 0) {
+    const { fullname, email, contactNumber } = this.state
+    if (fullname !== '' && email !== '' && contactNumber !== '') {
       this.setState({ isbtnEnable: true })
     } else {
       this.setState({ isbtnEnable: false })
@@ -121,7 +100,7 @@ class InvitePlayer extends Component {
   }
 
   render() {
-    const { teamName, avatar, isbtnEnable } = this.state;
+    const { fullname, email, contactNumber, isbtnEnable } = this.state;
     return (
 
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -139,7 +118,7 @@ class InvitePlayer extends Component {
               <View style={{
                 // backgroundColor: 'green',
                 marginHorizontal: 35,
-                marginTop: 20,
+                marginTop: 40,
                 marginBottom: wide * 0.03,
               }}>
                 <AnimatedInput
@@ -147,7 +126,7 @@ class InvitePlayer extends Component {
                   onChangeText={(e) => this.setState({ fullname: e }, () => {
                     this.handleBtnEnable();
                   })}
-                  value={teamName}
+                  value={fullname}
                   styleInput={{
                     fontFamily: Fonts.Bold,
                     color: Colors.light,
@@ -174,7 +153,7 @@ class InvitePlayer extends Component {
                   onChangeText={(e) => this.setState({ email: e }, () => {
                     this.handleBtnEnable();
                   })}
-                  value={teamName}
+                  value={email}
                   styleInput={{
                     fontFamily: Fonts.Bold,
                     color: Colors.light,
@@ -201,7 +180,7 @@ class InvitePlayer extends Component {
                   onChangeText={(e) => this.setState({ contactNumber: e }, () => {
                     this.handleBtnEnable();
                   })}
-                  value={teamName}
+                  value={contactNumber}
                   styleInput={{
                     fontFamily: Fonts.Bold,
                     color: Colors.light,
@@ -213,36 +192,37 @@ class InvitePlayer extends Component {
                     borderBottomColor: Colors.borderColor,
                     width: wide * 0.8
                   }}
+                  keyboardType={'numeric'}
+
                 />
 
               </View>
               {/* <AppLoader visible={this.state.loading} /> */}
 
             </View>
-
+            <TouchableOpacity
+              key={isbtnEnable}
+              activeOpacity={0.3}
+              style={{
+                width: wide * 0.8, height: 48,
+                backgroundColor: Colors.btnBg,
+                alignSelf: 'center', borderRadius: 24,
+                justifyContent: 'center',
+                opacity: isbtnEnable === false ? 0.3 : 1.0,
+                marginTop: 20,
+              }} onPress={() => {
+                if (isbtnEnable) {
+                  this.actionInvite()
+                }
+              }}>
+              <Text style={{
+                alignSelf: 'center', color: Colors.light,
+                fontFamily: Fonts.Bold,
+              }}>Send Invitation</Text>
+            </TouchableOpacity>
             {/* <AppLoader visible={this.state.removeLoading} /> */}
           </KeyboardAvoidingView>
-          <TouchableOpacity
-            key={isbtnEnable}
-            activeOpacity={0.3}
-            style={{
-              width: wide * 0.8, height: 48,
-              backgroundColor: Colors.btnBg,
-              alignSelf: 'center', borderRadius: 24,
-              justifyContent: 'center',
-              opacity: isbtnEnable === false ? 0.3 : 1.0,
-              marginBottom: 50,
-              // marginTop: 20,
-            }} onPress={() => {
-              if (isbtnEnable) {
-                this.actionInvite()
-              }
-            }}>
-            <Text style={{
-              alignSelf: 'center', color: Colors.light,
-              fontFamily: Fonts.Bold,
-            }}>Done</Text>
-          </TouchableOpacity>
+
         </KeyBoardDismissHandler>
       </SafeAreaView >
 

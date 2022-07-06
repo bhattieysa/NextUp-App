@@ -639,6 +639,7 @@ import { Title } from '../../components/common/titleLabel';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import NotifService from '../../utils/notificationService/service';
 import ShareMenu from 'react-native-share-menu';
+import { EmptyBarChart } from '../Coach/Components/EmptyPieChart';
 
 let wide = Layout.width;
 var pageNum = 1
@@ -1389,7 +1390,8 @@ class Home extends Component {
 
 
     // }
-    console.log("Home Dash:- ", dashboardData);
+    console.log("Home Dash:- ", this.state.bar1_Data.length, "  ", this.state.bar2_Data.length);
+    debugger
 
     let content = dashboardData.length === 0 ?
       <View style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -1890,121 +1892,118 @@ class Home extends Component {
                               </View>
                               : null
                             }
-                            {this.state.showBar === true ?
-                              <View style={{
-                                // width: '95%',
-                                // height: wide * 0.98, top: wide * 0.08, left: wide * 0.02,
-                                // borderRadius: 20,
-                                // backgroundColor: 'red',
-                                justifyContent: "center",
-                                alignItems: 'center',
-                                marginTop: 25,
-                                flex: 1
-                              }}>
-                                {this.state.isBarLblShow ?
-                                  <Title data={'Comparison'} />
-                                  : <></>
-                                }
-                                {/* <Text style={{
-                          color: Colors.light, fontSize: 24, lineHeight: 20,
-                          fontFamily: Fonts.Bold, position: 'absolute', top: 0, left: 0,
-                          padding: wide * 0.04
-                        }}>Comparison</Text> */}
-                                {/* 
-                        {/* <View style={{
-                      width: '90%', flexDirection: 'row',
-                      marginTop: wide * 0.12,
-                    }}> */}
+                            {this.state.bar1_Data.length > 0 && this.state.bar2_Data.length > 0 ?
+                              <>
+                                <Text style={{ color: 'white', alignItems: 'center', marginTop: 20 }}>This is statttt</Text>
 
-                                <View style={{
-                                  width: '90%',
-                                  justifyContent: 'center',
-                                  marginTop: wide * 0.03,
-                                  alignItems: 'center',
-                                  // backgroundColor: 'green',
-                                }}>
-                                  {this.state.showBar === true ?
-                                    <MyPlayerStats barData1={this.state.bar1_Data} barData2={this.state.bar2_Data} />
-                                    : null
-                                  }
-                                </View>
-
-                                {/* </View> */}
-
-                                <View style={{
-                                  // backgroundColor: 'green',
-                                  width: '80%',
-                                  alignItems: 'center',
-                                  marginHorizontal: 20,
-                                  marginTop: 20,
-                                  marginBottom: 10,
-                                  // backgroundColor: 'red',
+                                {this.state.showBar === true ?
+                                  <View style={{
+                                    justifyContent: "center",
+                                    alignItems: 'center',
+                                    marginTop: 25,
+                                    flex: 1
+                                  }}>
+                                    {this.state.isBarLblShow ?
+                                      <Title data={'Comparison'} />
+                                      : <></>
+                                    }
 
 
-                                }}>
-                                  {this.state.isBarLblShow ?
                                     <View style={{
-                                      marginTop: 10, flexDirection: 'row', alignItems: 'center',
-                                      justifyContent: 'space-between', //backgroundColor: 'red',
-                                      height: 18
+                                      width: '90%',
+                                      justifyContent: 'center',
+                                      marginTop: wide * 0.03,
+                                      alignItems: 'center',
+                                      // backgroundColor: 'green',
                                     }}>
-                                      <View style={{
-                                        // marginTop: 10,
-                                        //  width: wide * 0.4,
-                                        flexDirection: 'row',
-
-                                        justifyContent: 'space-between', alignItems: 'center'
-                                      }}>
-                                        <View style={{ width: 28, height: 6, backgroundColor: '#4F5155' }}></View>
-                                        <Text style={{
-                                          color: Colors.light, fontSize: 12, lineHeight: 12,
-                                          fontFamily: Fonts.Bold, marginLeft: 12
-                                        }}>Player Excluded</Text>
-                                      </View>
-                                      <View style={{
-                                        // marginTop: 30,
-                                        // width: wide * 0.4,
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-around', alignItems: 'center', marginLeft: 20
-                                      }}>
-                                        <View style={{ width: 28, height: 6, backgroundColor: Colors.compareBar }}></View>
-                                        <Text style={{
-                                          color: Colors.compareBar, fontSize: 12, lineHeight: 12,
-                                          fontFamily: Fonts.Bold, marginLeft: 12
-                                        }}>Player Included</Text>
-                                      </View>
+                                      {this.state.showBar === true ?
+                                        <MyPlayerStats barData1={this.state.bar1_Data} barData2={this.state.bar2_Data} />
+                                        : null
+                                      }
                                     </View>
-                                    : <></>
-                                  }
-                                  <View style={{ marginTop: 15, height: 12 }}>
-                                    <Text style={{
-                                      color: Colors.compareBar, fontSize: 14, lineHeight: 16,
-                                      fontFamily: Fonts.Bold, //marginLeft: 12
+
+                                    {/* </View> */}
+
+                                    <View style={{
+                                      // backgroundColor: 'green',
+                                      width: '80%',
+                                      alignItems: 'center',
+                                      marginHorizontal: 20,
+                                      marginTop: 20,
+                                      marginBottom: 10,
+                                      // backgroundColor: 'red',
+
+
                                     }}>
-                                      {dashboardData?.userBarGraphComparisonDto?.comparisonRemark}
-                                    </Text>
+                                      {this.state.isBarLblShow ?
+                                        <View style={{
+                                          marginTop: 10, flexDirection: 'row', alignItems: 'center',
+                                          justifyContent: 'space-between', //backgroundColor: 'red',
+                                          height: 18
+                                        }}>
+                                          <View style={{
+                                            // marginTop: 10,
+                                            //  width: wide * 0.4,
+                                            flexDirection: 'row',
+
+                                            justifyContent: 'space-between', alignItems: 'center'
+                                          }}>
+                                            <View style={{ width: 28, height: 6, backgroundColor: '#4F5155' }}></View>
+                                            <Text style={{
+                                              color: Colors.light, fontSize: 12, lineHeight: 12,
+                                              fontFamily: Fonts.Bold, marginLeft: 12
+                                            }}>Player Excluded</Text>
+                                          </View>
+                                          <View style={{
+                                            // marginTop: 30,
+                                            // width: wide * 0.4,
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-around', alignItems: 'center', marginLeft: 20
+                                          }}>
+                                            <View style={{ width: 28, height: 6, backgroundColor: Colors.compareBar }}></View>
+                                            <Text style={{
+                                              color: Colors.compareBar, fontSize: 12, lineHeight: 12,
+                                              fontFamily: Fonts.Bold, marginLeft: 12
+                                            }}>Player Included</Text>
+                                          </View>
+                                        </View>
+                                        : <></>
+                                      }
+                                      <View style={{ marginTop: 15, height: 12 }}>
+                                        <Text style={{
+                                          color: Colors.compareBar, fontSize: 14, lineHeight: 16,
+                                          fontFamily: Fonts.Bold, //marginLeft: 12
+                                        }}>
+                                          {dashboardData?.userBarGraphComparisonDto?.comparisonRemark}
+                                        </Text>
+
+                                      </View>
+                                      {this.state.playerId !== null ?
+                                        <TouchableOpacity style={{
+                                          backgroundColor: Colors.btnBg,
+                                          width: 140, height: 30, borderRadius: 5,
+                                          justifyContent: 'center', alignItems: 'center',
+                                          marginTop: 18,
+                                          marginBottom: wide * 0.04,
+                                        }}
+                                          onPress={() => Navigation.navigate('Compare', dashboardData)}
+                                        >
+                                          <Text style={{ color: Colors.light, fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16, }}>Add to Compare</Text>
+                                        </TouchableOpacity>
+                                        : null}
+
+                                    </View>
+
 
                                   </View>
-                                  {this.state.playerId !== null ?
-                                    <TouchableOpacity style={{
-                                      backgroundColor: Colors.btnBg,
-                                      width: 140, height: 30, borderRadius: 5,
-                                      justifyContent: 'center', alignItems: 'center',
-                                      marginTop: 18,
-                                      marginBottom: wide * 0.04,
-                                    }}
-                                      onPress={() => Navigation.navigate('Compare', dashboardData)}
-                                    >
-                                      <Text style={{ color: Colors.light, fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16, }}>Add to Compare</Text>
-                                    </TouchableOpacity>
-                                    : null}
-
-                                </View>
-
-
-                              </View>
-                              : null
+                                  : null
+                                }
+                              </>
+                              :
+                              <Text style={{ color: 'white', alignItems: 'center', marginTop: 20 }}>This is statttt</Text>
+                              // <EmptyBarChart kpi={dashboardData?.userBarGraphComparisonDto?.kpi != null ? dashboardData?.userBarGraphComparisonDto?.kpi : []} />
                             }
+
                           </>
                         : null}
                       {this.state.selectedTab === 'Challenges' ?

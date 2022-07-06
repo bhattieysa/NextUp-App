@@ -16,6 +16,7 @@ const AnimatedInput = ({
   styleError,
   styleContent,
   styleBodyContent,
+  keyboardType,
   // isAutoFocus,
   ...others
 }) => {
@@ -151,6 +152,7 @@ const AnimatedInput = ({
                 style={[styles.input, styleInput]}
                 //onEndEditing={() => onBlur()}
                 textAlignVertical={'top'}
+                keyboardType={keyboardType}
               />
             </View>
           )}
