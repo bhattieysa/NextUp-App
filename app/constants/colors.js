@@ -46,6 +46,14 @@ export const Colors = {
   myTeamPlayerListLabel: '#313235',
   recentGameCardColor: '#23262F',
   togelBackground: '#85ADFF',
-  togelCircleColor: '#181A20'
+  togelCircleColor: '#181A20',
+  lightBlue: '#85ADFF',
+  lightRed: '#FF5E5E',
+  darkRed: '#CE1141',
+  lightDark: '#23262F',
+  lightGray: '#363A47',
+  darkGray: '#32353E',//used for btn bg on playing screen
+  darkYellow: '#FDB927',
+  lightGreen: "#74C896"
 
 };

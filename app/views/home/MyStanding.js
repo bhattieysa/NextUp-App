@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, ScrollView, Text, SafeAreaView, Image, KeyboardAvoidingView, FlatList, Platform } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Text, SafeAreaView, Image, KeyboardAvoidingView, FlatList, Platform, Modal } from 'react-native';
 import {
   Layout,
   Colors,
@@ -25,6 +25,10 @@ import {
   VictoryGroup, VictoryBar, VictoryAxis,
 } from 'victory-native';
 import TeamStats from './Components/TeamStats';
+import QuickBoxScoreTable from '../../components/common/QuickBoxScoreTable';
+import { BlurView } from '@react-native-community/blur';
+import SideBySideBarGraph from '../../components/common/SideBySideBar';
+
 
 // const options = {
 //     scopes: [
@@ -35,6 +39,7 @@ import TeamStats from './Components/TeamStats';
 //     ],
 // }
 let wide = Layout.width;
+let high = Layout.height;
 
 const barChartData = [
   { "x": "FG%", "y": 50.0 },
@@ -68,15 +73,19 @@ class MyStanding extends Component {
       loading: false, selectedIndex: 0,
       arrLevels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 11, 11, 11, 11],
       userStatBarData: [],
-
+      statTabelData: null,
+      sideBySideBarData: null,
+      showFirstSeasonDrop: false,
+      showSecondSeasonDrop: false,
+      firstDropSelectedVal: null,
+      secondDropSelectedVal: null,
+      seasonList: null
     };
   }
 
   componentDidMount() {
     this.props.navigation.addListener('didFocus', this.onScreenFocus)
   }
-
-
 
   onScreenFocus = () => {
     getObject('UserId').then((obj) => {
@@ -86,9 +95,20 @@ class MyStanding extends Component {
           if (res) {
             const { myStandingData } = this.props.Home
 
-
+            var arr = []
+            var seasonArr = []
+            myStandingData.standingSeasonInfo?.statsForSeasonList.forEach((item, index) => {
+              var obj = item?.seasonStats;
+              seasonArr.push(item.season)
+              arr.push({ ...obj, id: "#" + index })
+            })
+            this.setState({
+              statTabelData: arr, seasonList: seasonArr,
+              firstDropSelectedVal: seasonArr[0], secondDropSelectedVal: seasonArr[1]
+            }, () => {
+              this._filterUserStatBarData(myStandingData?.userKpi);
+            })
             // console.log('Mystandddd', myStandingData);
-            this._filterUserStatBarData(myStandingData?.userKpi);
             //Health info need to check
             // if (myStandingData?.healthInfo != null || myStandingData?.healthInfo != undefined) {
             //     if (Platform.OS === 'ios') {
@@ -123,7 +143,34 @@ class MyStanding extends Component {
       }
     }
     console.log("barStattt", arr);
-    this.setState({ userStatBarData: arr, loading: false })
+    this.setState({ userStatBarData: arr, loading: false }, () => {
+      this._filterSideBySideChartData();
+    })
+  }
+
+  _filterSideBySideChartData = () => {
+    const { myStandingData } = this.props.Home
+    const { firstDropSelectedVal, secondDropSelectedVal } = this.state;
+    if (firstDropSelectedVal != null && secondDropSelectedVal != null) {
+      var statsArr = myStandingData.standingSeasonInfo?.statsForSeasonList;
+      var filteredArr = [];
+      var isFirstSeason = false;
+      var isSecondSeason = false;
+      statsArr.forEach((item, index) => {
+        if (item.season == firstDropSelectedVal) {
+          isFirstSeason = true;
+          filteredArr.push(item?.seasonStats)
+        }
+        if (item.season == secondDropSelectedVal) {
+          isSecondSeason = true;
+          filteredArr.push(item?.seasonStats)
+        }
+        if (isFirstSeason == true && isSecondSeason == true) {
+          return false;
+        }
+      })
+      this.setState({ sideBySideBarData: filteredArr })
+    }
   }
 
   _renderLevel = (item, index) => {
@@ -829,8 +876,55 @@ class MyStanding extends Component {
   //             </SafeAreaView >
   //     );
   // }
+
+
+  _renderFirstSessionList = (item, index) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flex: 1, justifyContent: 'center', alignItems: 'center',
+          height: 30, marginTop: 10,
+          // borderBottomWidth: 1, borderBottomColor: Colors.newGrayFontColor
+        }}
+        activeOpacity={1}
+        onPress={() => this.setState({ firstDropSelectedVal: item.item, showFirstSeasonDrop: false })}
+      >
+        <Text style={{
+          color: Colors.light, fontSize: 15, lineHeight: 16,
+          fontFamily: Fonts.Bold,
+        }}>{item.item}</Text>
+
+      </TouchableOpacity>
+    )
+  }
+
+  _renderSecondSessionList = (item, index) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flex: 1, justifyContent: 'center', alignItems: 'center',
+          height: 30, marginTop: 10,
+          // borderBottomWidth: 1, borderBottomColor: Colors.newGrayFontColor
+        }}
+        activeOpacity={1}
+        onPress={() => this.setState({ secondDropSelectedVal: item.item, showSecondSeasonDrop: false }, () => {
+          this._filterSideBySideChartData();
+        })}
+      >
+        <Text style={{
+          color: Colors.light, fontSize: 15, lineHeight: 16,
+          fontFamily: Fonts.Bold,
+        }}>{item.item}</Text>
+
+      </TouchableOpacity>
+    )
+  }
+
+
   render() {
     const { myStandingData } = this.props.Home
+    const { loading, firstDropSelectedVal, secondDropSelectedVal, showFirstSeasonDrop, showSecondSeasonDrop, } = this.state;
+    console.log("sideBarData", this.state.sideBySideBarData)
     return (
       // myStandingData.length === 0 ?
       //     <View style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -1010,9 +1104,9 @@ class MyStanding extends Component {
                 null
               }
 
-              {this.state.userStatBarData.length > 0 ?
+              {/* {this.state.userStatBarData.length > 0 ?
                 <View style={{ marginTop: wide * 0.1, marginBottom: 20 }}>
-                  <Title data={'My Stats'} />
+                 
                   <View style={{
                     // height: wide * 0.8,
                     justifyContent: 'center',
@@ -1033,10 +1127,229 @@ class MyStanding extends Component {
 
 
                 : null
-              }
+              } */}
+              <View style={{ marginTop: wide * 0.1, }}>
+                <Title data={'Box Score'} />
+
+                <View style={{ width: '90%', alignSelf: 'center', alignItems: 'center', }}>
+                  {this.state.statTabelData != null ?
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                      bounces={false}
+                    >
+                      <QuickBoxScoreTable
+                        // teamId={teamId} 
+                        data={this.state.statTabelData}
+                        heading={"Table stat"} />
+                    </ScrollView>
+                    : <></>}
+
+                </View>
+              </View>
+
+              <View style={{ marginTop: wide * 0.1, marginBottom: 20 }}>
+                <Title data={'My Stats'} />
+
+
+                <View style={{
+                  width: '90%',
+                  alignSelf: 'center',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: 10,
+                  flexDirection: 'row',
+                  height: wide * 0.15,
+
+                }}>
+                  <View style={{
+                    justifyContent: 'space-evenly', width: '40%', marginLeft: wide * 0.02
+                  }}>
+                    <Text style={{
+                      color: Colors.light,
+                      fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
+                    }}>Session:</Text>
+
+                    <TouchableOpacity
+                      style={{
+                        marginTop: 10, flexDirection: 'row', height: '50%',
+                        alignItems: 'center', width: '80%',
+                      }}
+                      activeOpacity={1}
+                      onPress={() => this.setState({ showFirstSeasonDrop: true })}
+                    >
+                      <Text style={{
+                        color: Colors.light,
+                        fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
+                      }}>{firstDropSelectedVal}</Text>
+                      <Image
+                        style={{
+                          width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
+                        }} source={require('../../Images/dropDownIconNew.png')} />
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{
+                    justifyContent: 'space-evenly', width: '40%',
+                  }}>
+                    <Text style={{
+                      color: Colors.light,
+                      fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
+                    }}>Session:</Text>
+
+                    <TouchableOpacity
+                      style={{
+                        marginTop: 10, flexDirection: 'row', height: '50%',
+                        alignItems: 'center', width: '80%',
+                      }}
+                      activeOpacity={1}
+                      onPress={() => this.setState({ showSecondSeasonDrop: true })}
+                    >
+                      <Text style={{
+                        color: Colors.light,
+                        fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
+                      }}>{secondDropSelectedVal}</Text>
+                      <Image
+                        style={{
+                          width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
+                        }} source={require('../../Images/dropDownIconNew.png')} />
+                    </TouchableOpacity>
+                  </View>
+
+                </View>
+
+                <View style={{
+                  marginTop: wide * 0.04, marginBottom: 10,
+                  width: '90%', alignSelf: 'center'
+                }}>
+                  {this.state.sideBySideBarData != null ?
+                    <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
+                    : <></>
+                  }
+                </View>
+              </View>
+
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
+
+        {showFirstSeasonDrop === true ?
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showFirstSeasonDrop}
+          >
+            <TouchableOpacity
+              onPress={() => this.setState({ showFirstSeasonDrop: false })}
+              style={{
+                width: wide,
+                height: high,
+                justifyContent: 'center', alignItems: 'center'
+              }}
+            >
+
+
+              <BlurView style={{
+                width: wide,
+                height: high,
+                position: 'absolute',
+              }}
+                blurAmount={10}
+                blurRadius={10}
+              />
+              <View style={{
+                width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                marginTop: 20, borderRadius: 20, alignItems: 'center',
+                position: 'absolute',
+
+              }}>
+                <View style={{
+                  width: '100%', height: '15%', marginTop: 10,
+                  alignItems: 'center', justifyContent: 'center',
+                  // borderBottomColor: Colors.newGrayFontColor, 
+                  // borderBottomWidth: 1
+                }}>
+                  <Text style={{
+                    color: Colors.light, fontFamily: Fonts.Bold,
+                    fontSize: 14, lineHeight: 16
+                  }}>Select</Text>
+                </View>
+
+
+                <View style={{ width: '60%', height: '80%', }}>
+                  <FlatList
+                    keyExtractor={(item, index) => index.toString()}
+                    style={{ marginBottom: 10 }}
+                    // data={[{ session: '2020-21' }, { session: '2019-20' }]}
+                    data={this.state.seasonList}
+                    renderItem={(item, index) => this._renderFirstSessionList(item, index)}
+                  />
+                </View>
+              </View>
+              {/* </BlurView> */}
+            </TouchableOpacity>
+          </Modal>
+          : null
+        }
+
+        {showSecondSeasonDrop === true ?
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showSecondSeasonDrop}
+          >
+            <TouchableOpacity
+              onPress={() => this.setState({ showSecondSeasonDrop: false })}
+              style={{
+                width: wide,
+                height: high,
+                justifyContent: 'center', alignItems: 'center'
+              }}
+            >
+
+
+              <BlurView style={{
+                width: wide,
+                height: high,
+                position: 'absolute',
+              }}
+                blurAmount={10}
+                blurRadius={10}
+              />
+              <View style={{
+                width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                marginTop: 20, borderRadius: 20, alignItems: 'center',
+                position: 'absolute',
+
+              }}>
+                <View style={{
+                  width: '100%', height: '15%', marginTop: 10,
+                  alignItems: 'center', justifyContent: 'center',
+                  // borderBottomColor: Colors.newGrayFontColor, 
+                  // borderBottomWidth: 1
+                }}>
+                  <Text style={{
+                    color: Colors.light, fontFamily: Fonts.Bold,
+                    fontSize: 14, lineHeight: 16
+                  }}>Select</Text>
+                </View>
+
+
+                <View style={{ width: '60%', height: '80%', }}>
+                  <FlatList
+                    keyExtractor={(item, index) => index.toString()}
+                    style={{ marginBottom: 10 }}
+                    // data={[{ session: '2020-21' }, { session: '2019-20' }]}
+                    data={this.state.seasonList}
+                    renderItem={(item, index) => this._renderSecondSessionList(item, index)}
+                    showsVerticalScrollIndicator={false}
+                  />
+                </View>
+              </View>
+              {/* </BlurView> */}
+            </TouchableOpacity>
+          </Modal>
+          : null
+        }
+
       </SafeAreaView >
     );
   }
