@@ -52,6 +52,10 @@ const CoachMyTeamStack = createStackNavigator(
         InvitePlayerToTeam: {
             getScreen: () => require('../views/Coach/InvitePlayerToTeam').default,
         },
+        ViewFullScreenBoxScore: {
+            getScreen: () => require('../views/home/ViewFullScreenBoxScore').default,
+
+        },
     },
     {
         defaultNavigationOptions,
@@ -71,6 +75,7 @@ CoachMyTeamStack.navigationOptions = ({ navigation }) => {
             || navigation.state.routes[i].routeName == "GamesRecentTab"
             || navigation.state.routes[i].routeName == "CoachRoadToPro"
             || navigation.state.routes[i].routeName == "CoachRoadToProPlan"
+            || navigation.state.routes[i].routeName == "ViewFullScreenBoxScore"
         ) {
             console.log("Tab bar invisible here");
             tabBarVisible = false;

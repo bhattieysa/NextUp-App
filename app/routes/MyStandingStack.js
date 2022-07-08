@@ -77,6 +77,10 @@ const MyStandingStack = createStackNavigator(
       getScreen: () => require('../views/home/MoreRecentGames').default,
 
     },
+    ViewFullScreenBoxScore: {
+      getScreen: () => require('../views/home/ViewFullScreenBoxScore').default,
+
+    },
     // Manage: {
     //     getScreen: () => require('../views/Coach/Manage').default,
     // },
@@ -105,7 +109,8 @@ MyStandingStack.navigationOptions = ({ navigation }) => {
       navigation.state.routes[i].routeName == "Compare" ||
       navigation.state.routes[i].routeName == "TeamMore" ||
       navigation.state.routes[i].routeName == "PlayerMyTeams" ||
-      navigation.state.routes[i].routeName == "PlayerMoreRecentGames") {
+      navigation.state.routes[i].routeName == "PlayerMoreRecentGames" ||
+      navigation.state.routes[i].routeName == "ViewFullScreenBoxScore") {
       tabBarVisible = false;
     } else {
       defaultNavigationOptions

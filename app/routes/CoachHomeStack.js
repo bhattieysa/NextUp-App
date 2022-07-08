@@ -43,6 +43,10 @@ const CoachHomeStack = createStackNavigator(
         AppReload: {
             getScreen: () => require('../views/loadingView/index').default,
         },
+        ViewFullScreenBoxScore: {
+            getScreen: () => require('../views/home/ViewFullScreenBoxScore').default,
+
+        },
 
         // notification nav
         // MyTeam: {
@@ -67,7 +71,8 @@ CoachHomeStack.navigationOptions = ({ navigation }) => {
             || navigation.state.routes[i].routeName == "GamesRecentTab"
             || navigation.state.routes[i].routeName == "ShareScreen"
             || navigation.state.routes[i].routeName == "Compare"
-            || navigation.state.routes[i].routeName == "AppReload") {
+            || navigation.state.routes[i].routeName == "AppReload"
+            || navigation.state.routes[i].routeName == "ViewFullScreenBoxScore") {
             tabBarVisible = false;
         } else {
             defaultNavigationOptions

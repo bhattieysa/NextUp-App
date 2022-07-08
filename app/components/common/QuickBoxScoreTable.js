@@ -115,7 +115,6 @@ const QuickBoxScoreTable = ({ heading, point, title, rowId, teamId, data }) => {
   }
   // "AST", "NPG", "PPG", "RPG", "BPG", "PTS"
   function renderResultsRow(item, row) {
-    debugger
     return <View style={styles.rowContainer}>
       {renderResultItem(item?.id, 0, row)}
       {renderResultItem(item?.AST, 2, row)}
@@ -132,7 +131,6 @@ const QuickBoxScoreTable = ({ heading, point, title, rowId, teamId, data }) => {
   }
 
   function renderResultItem(txt, index, row) {
-    debugger
     return <View style={{
       ...styles.rowItemContainer,
       borderTopLeftRadius: (index === 0 && row === 0) ? 9 : 0,
@@ -146,8 +144,8 @@ const styles = StyleSheet.create({
   teamNameAndBoxesSoreTxt: {
     width: '100%',
     flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: wide * 0.01,
+    marginBottom: 10,
   },
   teamName: {
     color: Colors.lightBlue,

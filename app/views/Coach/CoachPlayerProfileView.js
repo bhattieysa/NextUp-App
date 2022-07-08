@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View, TouchableOpacity, Text, SafeAreaView, Image, key,
-  KeyboardAvoidingView, FlatList, Platform, ScrollView
+  KeyboardAvoidingView, FlatList, Platform, ScrollView, Modal
 } from 'react-native';
 import {
   Layout,
@@ -35,8 +35,12 @@ import { Card } from '../../components/common/DashBoardCard';
 import { Title } from '../../components/common/titleLabel';
 import { barData, radarData, radarKpi } from '../../constants/chartData'
 import { EmptyBarChart } from './Components/EmptyPieChart'
+import QuickBoxScoreTable from '../../components/common/QuickBoxScoreTable';
+import SideBySideBarGraph from '../../components/common/SideBySideBar';
+import { BlurView } from '@react-native-community/blur';
 
 let wide = Layout.width;
+let high = Layout.height;
 var pageNum = 1
 
 const characterData = [
@@ -84,6 +88,13 @@ class CoachPlayerProfileView extends Component {
       isStatNull: false,
       isRadarLblShow: true,
       isBarLblShow: true,
+      statTabelData: null,
+      seasonList: null,
+      firstDropSelectedVal: null,
+      secondDropSelectedVal: null,
+      sideBySideBarData: null,
+      showFirstSeasonDrop: false,
+      showSecondSeasonDrop: false,
 
     };
   }
@@ -98,18 +109,23 @@ class CoachPlayerProfileView extends Component {
         console.log("HomeFeed call");
         this.props.dispatch(getPlayerDashBoard(this.state.playerId, (res, resData) => {
           if (res) {
+            var seasonArr = [];
+            var arr = [];
             this.setState({ dashboardData: resData }, () => {
-              this.filterBarChartData();
+              if (resData?.standingSeasonInfo != null) {
+                resData?.standingSeasonInfo?.statsForSeasonList.forEach((item, index) => {
+                  var obj = item?.seasonStats;
+                  seasonArr.push(item.season)
+                  arr.push({ ...obj, id: "#" + index })
+                })
+                this.setState({
+                  statTabelData: arr, seasonList: seasonArr,
+                  firstDropSelectedVal: seasonArr[0], secondDropSelectedVal: seasonArr[1]
+                })
+              }
+              this._filterSideBySideChartData();
             })
-            // setTimeout(() => {
-            //     this.setState({ loading: false }, () => {
-
-            //     })
-            // }, 500)
-
           }
-
-
         }))
       })
     }
@@ -249,6 +265,7 @@ class CoachPlayerProfileView extends Component {
         isStatNull: isBarStat, isRadarLblShow: true
       })
     }
+    // this._filterSideBySideChartData();
     // else {
     //     isBarStat = true;
     //     for (let i = 0; i < radarData.length; i++) {
@@ -278,6 +295,35 @@ class CoachPlayerProfileView extends Component {
     // }
 
 
+  }
+
+
+  _filterSideBySideChartData = () => {
+    debugger
+    const { dashboardData, firstDropSelectedVal, secondDropSelectedVal } = this.state
+    if (firstDropSelectedVal != null && secondDropSelectedVal != null) {
+      var statsArr = dashboardData?.standingSeasonInfo?.statsForSeasonList;
+      var filteredArr = [];
+      var isFirstSeason = false;
+      var isSecondSeason = false;
+      statsArr.forEach((item, index) => {
+        if (item.season == firstDropSelectedVal) {
+          isFirstSeason = true;
+          filteredArr.push(item?.seasonStats)
+        }
+        if (item.season == secondDropSelectedVal) {
+          isSecondSeason = true;
+          filteredArr.push(item?.seasonStats)
+        }
+        if (isFirstSeason == true && isSecondSeason == true) {
+          return false;
+        }
+      })
+      debugger
+      this.setState({ sideBySideBarData: filteredArr }, () => {
+        this.filterBarChartData()
+      })
+    }
   }
 
 
@@ -616,20 +662,64 @@ class CoachPlayerProfileView extends Component {
           </View>
 
         </View>
-
-
       </TouchableOpacity>
 
     )
   }
 
+  _renderFirstSessionList = (item, index) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flex: 1, justifyContent: 'center', alignItems: 'center',
+          height: 30, marginTop: 10,
+          // borderBottomWidth: 1, borderBottomColor: Colors.newGrayFontColor
+        }}
+        activeOpacity={1}
+        onPress={() => this.setState({ firstDropSelectedVal: item.item, showFirstSeasonDrop: false })}
+      >
+        <Text style={{
+          color: Colors.light, fontSize: 15, lineHeight: 16,
+          fontFamily: Fonts.Bold,
+        }}>{item.item}</Text>
+
+      </TouchableOpacity>
+    )
+  }
+
+  _renderSecondSessionList = (item, index) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flex: 1, justifyContent: 'center', alignItems: 'center',
+          height: 30, marginTop: 10,
+          // borderBottomWidth: 1, borderBottomColor: Colors.newGrayFontColor
+        }}
+        activeOpacity={1}
+        onPress={() => this.setState({ secondDropSelectedVal: item.item, showSecondSeasonDrop: false }, () => {
+          this._filterSideBySideChartData();
+        })}
+      >
+        <Text style={{
+          color: Colors.light, fontSize: 15, lineHeight: 16,
+          fontFamily: Fonts.Bold,
+        }}>{item.item}</Text>
+
+      </TouchableOpacity>
+    )
+  }
+
+  _handleFullScreenView = () => {
+    Navigation.navigate('ViewFullScreenBoxScore', { boxScoreData: this.state.statTabelData })
+  }
+
   render() {
 
-    const { dashboardData, radarChartData, showBar, loading } = this.state
+    const { dashboardData, radarChartData, showBar, loading, secondDropSelectedVal, firstDropSelectedVal, showFirstSeasonDrop, showSecondSeasonDrop } = this.state
     // if (this.state.playerId !== null) {
     //   dashboardData['playerId'] = this.state.playerId;
     // }
-    console.log("Home Dash New:- ", this.state.bar1_Data.length);
+    console.log("Home Dash New:- ", this.state.sideBySideBarData);
     debugger;
     return (
       dashboardData.length === 0 ?
@@ -1077,14 +1167,18 @@ class CoachPlayerProfileView extends Component {
                                         </View>
                                         : <></>
                                       }
-                                      <View style={{ marginTop: 15, height: 12 }}>
-                                        <Text style={{
-                                          color: Colors.compareBar, fontSize: 14, lineHeight: 16,
-                                          fontFamily: Fonts.Bold, //marginLeft: 12
-                                        }}>
-                                          {dashboardData?.userBarGraphComparisonDto?.comparisonRemark}
-                                        </Text>
-                                      </View>
+                                      {this.state.isBarLblShow ?
+                                        <View style={{ marginTop: 15, height: 12, }}>
+                                          <Text style={{
+                                            color: Colors.compareBar, fontSize: 14, lineHeight: 16,
+                                            fontFamily: Fonts.Bold, //marginLeft: 12
+                                          }}>
+                                            {dashboardData?.userBarGraphComparisonDto?.comparisonRemark}
+                                          </Text>
+                                        </View>
+                                        :
+                                        <></>
+                                      }
                                       {this.state.playerId !== null && this.state.isStatNull == false ?
                                         <TouchableOpacity style={{
                                           backgroundColor: Colors.btnBg,
@@ -1112,6 +1206,155 @@ class CoachPlayerProfileView extends Component {
 
                             }
                           </>
+
+                          {/* Box Score table */}
+
+                          {this.state.statTabelData != null ?
+                            <>
+                              <View style={{
+                                // width: '95%',
+                                // height: wide * 0.98, top: wide * 0.08, left: wide * 0.02,
+                                // borderRadius: 20,
+                                // backgroundColor: Colors.lightGreen,
+                                justifyContent: "center",
+                                alignItems: 'center',
+                                marginTop: 20,
+                                // flex: 1
+                              }}>
+                                <Title data={'Box Score'} />
+
+
+                                <View style={{
+                                  width: '90%',
+                                  justifyContent: 'center',
+                                  marginTop: wide * 0.03,
+                                  alignItems: 'center',
+                                  // backgroundColor: 'green',
+                                }}>
+
+                                  <View style={{
+                                    width: '100%', flexDirection: 'row', justifyContent: 'flex-end',
+                                    marginTop: wide * 0.01
+                                  }}>
+                                    <TouchableOpacity style={{
+                                      width: 30, height: 30,
+                                      alignItems: 'center', justifyContent: 'center',
+                                      marginRight: wide * 0.01
+                                    }}
+                                      onPress={() => this._handleFullScreenView()}
+                                    >
+                                      <Image
+                                        style={{ width: '80%', height: '80%', }}
+                                        source={require('../../Images/full_screen_icon.png')}
+                                        resizeMode={'contain'}
+                                      />
+                                    </TouchableOpacity>
+                                  </View>
+
+                                  {this.state.statTabelData != null ?
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                                      style={{ marginBottom: wide * 0.02 }}
+                                    // bounces={false}
+                                    >
+                                      <QuickBoxScoreTable
+                                        // teamId={teamId} 
+                                        data={this.state.statTabelData}
+                                        heading={"Table stat"} />
+                                    </ScrollView>
+                                    : <></>}
+
+                                </View>
+
+                              </View>
+
+                            </>
+                            : <></>
+                          }
+
+                          {/* Side by side chart  */}
+                          {this.state.sideBySideBarData != null ?
+                            <View style={{ marginTop: wide * 0.1, marginBottom: 20 }}>
+                              <Title data={'My Stats'} />
+
+                              <View style={{
+                                width: '90%',
+                                alignSelf: 'center',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: wide * 0.03,
+                                flexDirection: 'row',
+                                height: wide * 0.15,
+
+                              }}>
+                                <View style={{
+                                  justifyContent: 'space-evenly', width: '40%', marginLeft: wide * 0.02
+                                }}>
+                                  <Text style={{
+                                    color: Colors.light,
+                                    fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
+                                  }}>Session:</Text>
+
+                                  <TouchableOpacity
+                                    style={{
+                                      marginTop: 10, flexDirection: 'row', height: '50%',
+                                      alignItems: 'center', width: '80%',
+                                    }}
+                                    activeOpacity={1}
+                                    onPress={() => this.setState({ showFirstSeasonDrop: true })}
+                                  >
+                                    <Text style={{
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
+                                    }}>{firstDropSelectedVal}</Text>
+                                    <Image
+                                      style={{
+                                        width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
+                                      }} source={require('../../Images/dropDownIconNew.png')} />
+                                  </TouchableOpacity>
+                                </View>
+
+                                <View style={{
+                                  justifyContent: 'space-evenly', width: '40%',
+                                }}>
+                                  <Text style={{
+                                    color: Colors.light,
+                                    fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
+                                  }}>Session:</Text>
+
+                                  <TouchableOpacity
+                                    style={{
+                                      marginTop: 10, flexDirection: 'row', height: '50%',
+                                      alignItems: 'center', width: '80%',
+                                    }}
+                                    activeOpacity={1}
+                                    onPress={() => this.setState({ showSecondSeasonDrop: true })}
+                                  >
+                                    <Text style={{
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
+                                    }}>{secondDropSelectedVal}</Text>
+                                    <Image
+                                      style={{
+                                        width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
+                                      }} source={require('../../Images/dropDownIconNew.png')} />
+                                  </TouchableOpacity>
+                                </View>
+
+                              </View>
+
+                              <View style={{
+                                marginTop: wide * 0.04, marginBottom: 10,
+                                width: '90%', alignSelf: 'center'
+                              }}>
+                                {this.state.sideBySideBarData != null ?
+                                  <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
+                                  : <></>
+                                }
+                              </View>
+                            </View>
+                            : <></>
+                          }
+
                         </>
                         : null
                       }
@@ -1193,8 +1436,128 @@ class CoachPlayerProfileView extends Component {
 
 
 
+
+
             </ScrollView>
           </KeyboardAvoidingView>
+          {showFirstSeasonDrop === true ?
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={showFirstSeasonDrop}
+            >
+              <TouchableOpacity
+                onPress={() => this.setState({ showFirstSeasonDrop: false })}
+                style={{
+                  width: wide,
+                  height: high,
+                  justifyContent: 'center', alignItems: 'center'
+                }}
+              >
+
+
+                <BlurView style={{
+                  width: wide,
+                  height: high,
+                  position: 'absolute',
+                }}
+                  blurAmount={10}
+                  blurRadius={10}
+                />
+                <View style={{
+                  width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                  marginTop: 20, borderRadius: 20, alignItems: 'center',
+                  position: 'absolute',
+
+                }}>
+                  <View style={{
+                    width: '100%', height: '15%', marginTop: 10,
+                    alignItems: 'center', justifyContent: 'center',
+                    // borderBottomColor: Colors.newGrayFontColor, 
+                    // borderBottomWidth: 1
+                  }}>
+                    <Text style={{
+                      color: Colors.light, fontFamily: Fonts.Bold,
+                      fontSize: 14, lineHeight: 16
+                    }}>Select</Text>
+                  </View>
+
+
+                  <View style={{ width: '60%', height: '80%', }}>
+                    <FlatList
+                      keyExtractor={(item, index) => index.toString()}
+                      style={{ marginBottom: 10 }}
+                      // data={[{ session: '2020-21' }, { session: '2019-20' }]}
+                      data={this.state.seasonList}
+                      renderItem={(item, index) => this._renderFirstSessionList(item, index)}
+                    />
+                  </View>
+                </View>
+                {/* </BlurView> */}
+              </TouchableOpacity>
+            </Modal>
+            : null
+          }
+
+          {showSecondSeasonDrop === true ?
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={showSecondSeasonDrop}
+            >
+              <TouchableOpacity
+                onPress={() => this.setState({ showSecondSeasonDrop: false })}
+                style={{
+                  width: wide,
+                  height: high,
+                  justifyContent: 'center', alignItems: 'center'
+                }}
+              >
+
+
+                <BlurView style={{
+                  width: wide,
+                  height: high,
+                  position: 'absolute',
+                }}
+                  blurAmount={10}
+                  blurRadius={10}
+                />
+                <View style={{
+                  width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                  marginTop: 20, borderRadius: 20, alignItems: 'center',
+                  position: 'absolute',
+
+                }}>
+                  <View style={{
+                    width: '100%', height: '15%', marginTop: 10,
+                    alignItems: 'center', justifyContent: 'center',
+                    // borderBottomColor: Colors.newGrayFontColor, 
+                    // borderBottomWidth: 1
+                  }}>
+                    <Text style={{
+                      color: Colors.light, fontFamily: Fonts.Bold,
+                      fontSize: 14, lineHeight: 16
+                    }}>Select</Text>
+                  </View>
+
+
+                  <View style={{ width: '60%', height: '80%', }}>
+                    <FlatList
+                      keyExtractor={(item, index) => index.toString()}
+                      style={{ marginBottom: 10 }}
+                      // data={[{ session: '2020-21' }, { session: '2019-20' }]}
+                      data={this.state.seasonList}
+                      renderItem={(item, index) => this._renderSecondSessionList(item, index)}
+                      showsVerticalScrollIndicator={false}
+                    />
+                  </View>
+                </View>
+                {/* </BlurView> */}
+              </TouchableOpacity>
+            </Modal>
+            : null
+          }
 
         </SafeAreaView >
 
@@ -1232,18 +1595,18 @@ export const MyPlayerStats = ({ barData1, barData2, }) => {
             (heightToBe.length <= 2 ? 70
               : heightToBe.length <= 3 ? 100
                 : heightToBe.length <= 5 ? 160
-                  : heightToBe.length <= 8 ? 270
+                  : heightToBe.length <= 8 ? 240
                     : heightToBe.length <= 10 ? 320
                       : heightToBe.length <= 13 ? 390
                         : heightToBe.length <= 15 ? 450
                           : heightToBe.length <= 18 ? 550 : 750)}
           horizontal
           // padding={{ left: 50, right: 40, }}
-          padding={{ left: 60, top: 30, right: 40, bottom: 10 }}
-          domainPadding={{ x: 10, y: 20, }}
+          padding={{ left: 60, top: 20, right: 10, }}
+          domainPadding={{ x: 20, }}
 
         >
-          <VictoryGroup offset={15} colorScale={'qualitative'}>
+          <VictoryGroup colorScale={'qualitative'}>
             {barData2.length > 0 ?
 
               <VictoryBar
@@ -1265,7 +1628,7 @@ export const MyPlayerStats = ({ barData1, barData2, }) => {
                     fill: '#D8A433'
                   }
                 }}
-                barWidth={10}
+                barWidth={12}
 
               // labelComponent={<VictoryLabel dx={10}
               //     style={{ fill: 'red', padding: 20 }} />
@@ -1296,7 +1659,7 @@ export const MyPlayerStats = ({ barData1, barData2, }) => {
                   }
 
                 }}
-                barWidth={10}
+                barWidth={12}
 
               /> : null}
 

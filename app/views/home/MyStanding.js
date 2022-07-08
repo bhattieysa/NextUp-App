@@ -97,11 +97,13 @@ class MyStanding extends Component {
 
             var arr = []
             var seasonArr = []
-            myStandingData.standingSeasonInfo?.statsForSeasonList.forEach((item, index) => {
-              var obj = item?.seasonStats;
-              seasonArr.push(item.season)
-              arr.push({ ...obj, id: "#" + index })
-            })
+            if (myStandingData.standingSeasonInfo !== null) {
+              myStandingData.standingSeasonInfo?.statsForSeasonList.forEach((item, index) => {
+                var obj = item?.seasonStats;
+                seasonArr.push(item.season)
+                arr.push({ ...obj, id: "#" + index })
+              })
+            }
             this.setState({
               statTabelData: arr, seasonList: seasonArr,
               firstDropSelectedVal: seasonArr[0], secondDropSelectedVal: seasonArr[1]
@@ -920,6 +922,10 @@ class MyStanding extends Component {
     )
   }
 
+  _handleFullScreenView = () => {
+    Navigation.navigate('ViewFullScreenBoxScore', { boxScoreData: this.state.statTabelData })
+  }
+
 
   render() {
     const { myStandingData } = this.props.Home
@@ -1132,9 +1138,27 @@ class MyStanding extends Component {
                 <Title data={'Box Score'} />
 
                 <View style={{ width: '90%', alignSelf: 'center', alignItems: 'center', }}>
+                  <View style={{
+                    width: '100%', flexDirection: 'row', justifyContent: 'flex-end',
+                    marginTop: wide * 0.01
+                  }}>
+                    <TouchableOpacity style={{
+                      width: 30, height: 30,
+                      alignItems: 'center', justifyContent: 'center',
+                      marginRight: wide * 0.01
+                    }}
+                      onPress={() => this._handleFullScreenView()}
+                    >
+                      <Image
+                        style={{ width: '80%', height: '80%', }}
+                        source={require('../../Images/full_screen_icon.png')}
+                        resizeMode={'contain'}
+                      />
+                    </TouchableOpacity>
+                  </View>
                   {this.state.statTabelData != null ?
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                      bounces={false}
+                    // bounces={false}
                     >
                       <QuickBoxScoreTable
                         // teamId={teamId} 
@@ -1149,13 +1173,12 @@ class MyStanding extends Component {
               <View style={{ marginTop: wide * 0.1, marginBottom: 20 }}>
                 <Title data={'My Stats'} />
 
-
                 <View style={{
                   width: '90%',
                   alignSelf: 'center',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginTop: 10,
+                  marginTop: wide * 0.03,
                   flexDirection: 'row',
                   height: wide * 0.15,
 

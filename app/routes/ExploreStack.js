@@ -92,6 +92,10 @@ const ExploreStack = createStackNavigator(
         CoachAssignTask: {
             getScreen: () => require('../views/Coach/CoachAssignTask').default,
         },
+        ViewFullScreenBoxScore: {
+            getScreen: () => require('../views/home/ViewFullScreenBoxScore').default,
+
+        },
 
     },
     {
@@ -117,7 +121,8 @@ ExploreStack.navigationOptions = ({ navigation }) => {
             navigation.state.routes[i].routeName == "ExploreSearch" ||
             navigation.state.routes[i].routeName == "TeamMore" ||
             navigation.state.routes[i].routeName == "CoachChallengeAction" ||
-            navigation.state.routes[i].routeName == "CoachAssignTask") {
+            navigation.state.routes[i].routeName == "CoachAssignTask" ||
+            navigation.state.routes[i].routeName == "ViewFullScreenBoxScore") {
             tabBarVisible = false;
         } else {
             defaultNavigationOptions
