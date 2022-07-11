@@ -109,21 +109,31 @@ class CoachPlayerProfileView extends Component {
         console.log("HomeFeed call");
         this.props.dispatch(getPlayerDashBoard(this.state.playerId, (res, resData) => {
           if (res) {
+
             var seasonArr = [];
             var arr = [];
+            debugger
             this.setState({ dashboardData: resData }, () => {
               if (resData?.standingSeasonInfo != null) {
+                debugger
                 resData?.standingSeasonInfo?.statsForSeasonList.forEach((item, index) => {
                   var obj = item?.seasonStats;
                   seasonArr.push(item.season)
                   arr.push({ ...obj, id: "#" + index })
                 })
+                debugger
                 this.setState({
+                  firstDropSelectedVal: seasonArr[0], secondDropSelectedVal: seasonArr[1],
                   statTabelData: arr, seasonList: seasonArr,
-                  firstDropSelectedVal: seasonArr[0], secondDropSelectedVal: seasonArr[1]
+
+                }, () => {
+                  this.filterBarChartData()
                 })
+              } else {
+                this.filterBarChartData()
+
               }
-              this._filterSideBySideChartData();
+              // this._filterSideBySideChartData();
             })
           }
         }))
@@ -265,7 +275,8 @@ class CoachPlayerProfileView extends Component {
         isStatNull: isBarStat, isRadarLblShow: true
       })
     }
-    // this._filterSideBySideChartData();
+    debugger
+    this._filterSideBySideChartData();
     // else {
     //     isBarStat = true;
     //     for (let i = 0; i < radarData.length; i++) {
@@ -301,6 +312,7 @@ class CoachPlayerProfileView extends Component {
   _filterSideBySideChartData = () => {
     debugger
     const { dashboardData, firstDropSelectedVal, secondDropSelectedVal } = this.state
+    debugger
     if (firstDropSelectedVal != null && secondDropSelectedVal != null) {
       var statsArr = dashboardData?.standingSeasonInfo?.statsForSeasonList;
       var filteredArr = [];
@@ -321,12 +333,11 @@ class CoachPlayerProfileView extends Component {
       })
       debugger
       this.setState({ sideBySideBarData: filteredArr }, () => {
-        this.filterBarChartData()
+        debugger
+
       })
     }
   }
-
-
 
   _renderPhotos = (item) => {
     return (
@@ -1202,8 +1213,10 @@ class CoachPlayerProfileView extends Component {
                                 }
                               </>
                               :
-                              <EmptyBarChart kpi={dashboardData?.userBarGraphComparisonDto?.kpi != null ? dashboardData?.userBarGraphComparisonDto?.kpi : []} />
+                              <View style={{ width: '90%', alignSelf: 'center' }}>
 
+                                <EmptyBarChart kpi={dashboardData?.userBarGraphComparisonDto?.kpi != null ? dashboardData?.userBarGraphComparisonDto?.kpi : []} />
+                              </View>
                             }
                           </>
 

@@ -82,6 +82,7 @@ export const AppURLs = {
   getSchoolOrTeam: 'admin/list/onboarding',
   sendPlayerInvitation: 'team/invite/player/',
   getMoreRecentGames: 'player/more/game/list/',
+  getGameInitData: 'log/start/',
 
 
 };

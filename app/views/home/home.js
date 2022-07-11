@@ -986,8 +986,10 @@ class Home extends Component {
       // arr2.push({ x: "Lb4", y: 18.8 })
 
       console.log("----a-a-a", arr2);
-      this.setState({ bar2_Data: arr2, bar1_Data: arr1, showBar: isBarShow, isBarLblShow: isBarLbl });
-      this.prepareRadarChartData(dashboardData);
+      this.setState({ bar2_Data: arr2, bar1_Data: arr1, showBar: isBarShow, isBarLblShow: isBarLbl }, () => {
+        this.prepareRadarChartData(dashboardData);
+
+      });
     }
     // this.setState({ loading: false });
   }
@@ -1739,69 +1741,69 @@ class Home extends Component {
                         />
                       </View>
                       {this.state.selectedTab === 'Stats' ?
-                        this.state.radarChartData !== null && this.state.radarChartData.length == 0 && this.state.showBar == false ?
-                          <>
-                            {/* <View style={{
-                          width: '100%', height: 150,
-                          justifyContent: 'center', alignItems: 'center',
-                          // backgroundColor: 'green',
-                          marginTop: wide * 0.2
-                        }}>
-                          <Text
-                            style={{
-                              color: Colors.fontColorGray,
-                              fontSize: 20, lineHeight: 20,
-                              fontFamily: Fonts.SemiBold, textAlign: 'center'
-                            }}>Nothing to display...</Text>
-                        </View> */}
-                          </>
-                          :
+                        // this.state.radarChartData !== null && this.state.radarChartData.length == 0 && this.state.showBar == false ?
+                        //   <>
+                        //     <View style={{
+                        //       width: '100%', height: 150,
+                        //       justifyContent: 'center', alignItems: 'center',
+                        //       // backgroundColor: 'green',
+                        //       marginTop: wide * 0.2
+                        //     }}>
+                        //       <Text
+                        //         style={{
+                        //           color: Colors.fontColorGray,
+                        //           fontSize: 20, lineHeight: 20,
+                        //           fontFamily: Fonts.SemiBold, textAlign: 'center'
+                        //         }}>Nothing to display...</Text>
+                        //     </View>
+                        //   </>
+                        //   :
 
-                          <>
-                            {this.state.radarChartData !== null && this.state.radarChartData.length > 0 ?
-                              <View style={{ marginTop: 30 }}>
-                                <Title data={'Summary'} />
+                        <>
+                          {this.state.radarChartData !== null && this.state.radarChartData.length > 0 ?
+                            <View style={{ marginTop: 30 }}>
+                              <Title data={'Summary'} />
 
-                              </View>
-                              : null
-                            }
-                            {this.state.radarChartData !== null && this.state.radarChartData.length > 0 ?
-                              <View style={{
-                                marginTop: wide * 0.03,
-                                // borderRadius: 20,
-                                // backgroundColor: Colors.ractangelCardColor,
-                                justifyContent: "center", alignItems: 'center',
-                                // backgroundColor: 'green',
-                                marginHorizontal: 24
+                            </View>
+                            : null
+                          }
+                          {this.state.radarChartData !== null && this.state.radarChartData.length > 0 ?
+                            <View style={{
+                              marginTop: wide * 0.03,
+                              // borderRadius: 20,
+                              // backgroundColor: Colors.ractangelCardColor,
+                              justifyContent: "center", alignItems: 'center',
+                              // backgroundColor: 'green',
+                              marginHorizontal: 24
 
-                              }}>
+                            }}>
 
-                                {this.state.radarChartData !== null && this.state.radarChartData.length > 0 ?
-                                  <View style={{
-                                    justifyContent: 'center',
-                                    // backgroundColor: 'red',
-                                    width: '95%',
-                                    alignItems: 'center'
+                              {this.state.radarChartData !== null && this.state.radarChartData.length > 0 ?
+                                <View style={{
+                                  justifyContent: 'center',
+                                  // backgroundColor: 'red',
+                                  width: '95%',
+                                  alignItems: 'center'
 
-                                  }}>
-                                    <VictoryChart
-                                      polar
-                                      theme={VictoryTheme.material}
-                                      domain={{ y: [0, 1] }}
-                                      height={280}
-                                      width={310}
-                                      animate
-                                    // containerComponent={<VictoryContainer responsive={false} />}
+                                }}>
+                                  <VictoryChart
+                                    polar
+                                    theme={VictoryTheme.material}
+                                    domain={{ y: [0, 1] }}
+                                    height={280}
+                                    width={310}
+                                    animate
+                                  // containerComponent={<VictoryContainer responsive={false} />}
 
+                                  >
+                                    <VictoryGroup colorScale={[Colors.compareBar, Colors.light]}
+                                      style={{ data: { fillOpacity: 0.1, strokeWidth: 2 } }}
                                     >
-                                      <VictoryGroup colorScale={[Colors.compareBar, Colors.light]}
-                                        style={{ data: { fillOpacity: 0.1, strokeWidth: 2 } }}
-                                      >
-                                        {this.state.data.map((data, i) => {
-                                          return <VictoryArea key={i} data={data} />;
-                                        })}
-                                      </VictoryGroup>
-                                      {/* {
+                                      {this.state.data.map((data, i) => {
+                                        return <VictoryArea key={i} data={data} />;
+                                      })}
+                                    </VictoryGroup>
+                                    {/* {
                         Object.keys(this.state.maxima).map((key, i) => {
                           return (
                             <VictoryPolarAxis
@@ -1823,188 +1825,189 @@ class Home extends Component {
                           );
                         })
                       } */}
-                                      {
-                                        Object.keys(this.state.maxima).map((key, i) => {
-                                          return (
-                                            <VictoryPolarAxis
-                                              key={i} dependentAxis
-                                              labelPlacement="vertical"
-                                              tickFormat={() => ""}
-                                              style={{
-                                                axisLabel: { fontSize: 15, fill: Colors.light, padding: 35 },
-                                                axis: { stroke: "grey", opacity: 0.1, },
-                                                grid: { stroke: "grey", opacity: 0.01 }
-                                              }}
-                                              // tickLabelComponent={
-                                              //   <VictoryLabel labelPlacement="vertical"
+                                    {
+                                      Object.keys(this.state.maxima).map((key, i) => {
+                                        return (
+                                          <VictoryPolarAxis
+                                            key={i} dependentAxis
+                                            labelPlacement="vertical"
+                                            tickFormat={() => ""}
+                                            style={{
+                                              axisLabel: { fontSize: 15, fill: Colors.light, padding: 35 },
+                                              axis: { stroke: "grey", opacity: 0.1, },
+                                              grid: { stroke: "grey", opacity: 0.01 }
+                                            }}
+                                            // tickLabelComponent={
+                                            //   <VictoryLabel labelPlacement="vertical"
 
-                                              //   />
-                                              // }
-                                              axisValue={i + 1}
-                                              label={key}
-                                            />
-                                          );
+                                            //   />
+                                            // }
+                                            axisValue={i + 1}
+                                            label={key}
+                                          />
+                                        );
 
-                                        })
-                                      }
-
-                                    </VictoryChart>
-                                  </View>
-                                  : null
-                                }
-                                <View style={{
-                                  width: wide * 0.3,
-                                  height: wide * 0.09,
-                                  marginTop: 20, flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                  // backgroundColor: "red",
-                                }}>
-                                  <View style={{
-                                    // marginTop: 10,
-                                    // width: wide * 0.4,
-                                    // top: 0, right: 8,
-                                    justifyContent: 'space-around',
-                                    alignItems: 'center'
-                                  }}>
-                                    <View style={{ width: 35, backgroundColor: Colors.light, borderBottomWidth: 2, borderBottomColor: Colors.light }}></View>
-                                    <View style={{ width: 35, backgroundColor: Colors.compareBar, borderBottomWidth: 2, borderBottomColor: Colors.compareBar }}></View>
-
-                                  </View>
-                                  <View style={{
-                                    // marginTop: 30, 
-                                    // width: wide * 0.3,
-                                    // top: 0, right: 10,
-                                    justifyContent: 'space-around',
-                                    // alignItems: 'center'
-                                  }}>
-                                    <Text style={{
-                                      color: Colors.light, fontSize: 10, lineHeight: 12,
-                                      fontFamily: Fonts.Bold,
-                                    }}>Team Average</Text>
-
-                                    <Text style={{
-                                      color: Colors.compareBar, fontSize: 10,
-                                      lineHeight: 12,
-                                      fontFamily: Fonts.Bold,
-                                    }}>Player Stats</Text>
-                                  </View>
-                                </View>
-                              </View>
-                              : null
-                            }
-                            {this.state.bar1_Data.length > 0 && this.state.bar2_Data.length > 0 ?
-                              <>
-                                <Text style={{ color: 'white', alignItems: 'center', marginTop: 20 }}>This is statttt</Text>
-
-                                {this.state.showBar === true ?
-                                  <View style={{
-                                    justifyContent: "center",
-                                    alignItems: 'center',
-                                    marginTop: 25,
-                                    flex: 1
-                                  }}>
-                                    {this.state.isBarLblShow ?
-                                      <Title data={'Comparison'} />
-                                      : <></>
+                                      })
                                     }
 
+                                  </VictoryChart>
+                                </View>
+                                : null
+                              }
+                              <View style={{
+                                width: wide * 0.3,
+                                height: wide * 0.09,
+                                marginTop: 20, flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                // backgroundColor: "red",
+                              }}>
+                                <View style={{
+                                  // marginTop: 10,
+                                  // width: wide * 0.4,
+                                  // top: 0, right: 8,
+                                  justifyContent: 'space-around',
+                                  alignItems: 'center'
+                                }}>
+                                  <View style={{ width: 35, backgroundColor: Colors.light, borderBottomWidth: 2, borderBottomColor: Colors.light }}></View>
+                                  <View style={{ width: 35, backgroundColor: Colors.compareBar, borderBottomWidth: 2, borderBottomColor: Colors.compareBar }}></View>
 
-                                    <View style={{
-                                      width: '90%',
-                                      justifyContent: 'center',
-                                      marginTop: wide * 0.03,
-                                      alignItems: 'center',
-                                      // backgroundColor: 'green',
-                                    }}>
-                                      {this.state.showBar === true ?
-                                        <MyPlayerStats barData1={this.state.bar1_Data} barData2={this.state.bar2_Data} />
-                                        : null
-                                      }
-                                    </View>
+                                </View>
+                                <View style={{
+                                  // marginTop: 30, 
+                                  // width: wide * 0.3,
+                                  // top: 0, right: 10,
+                                  justifyContent: 'space-around',
+                                  // alignItems: 'center'
+                                }}>
+                                  <Text style={{
+                                    color: Colors.light, fontSize: 10, lineHeight: 12,
+                                    fontFamily: Fonts.Bold,
+                                  }}>Team Average</Text>
 
-                                    {/* </View> */}
+                                  <Text style={{
+                                    color: Colors.compareBar, fontSize: 10,
+                                    lineHeight: 12,
+                                    fontFamily: Fonts.Bold,
+                                  }}>Player Stats</Text>
+                                </View>
+                              </View>
+                            </View>
+                            : null
+                          }
+                          {this.state.bar1_Data.length > 0 || this.state.bar2_Data.length > 0 ?
+                            <>
+                              {this.state.showBar === true ?
+                                <View style={{
+                                  justifyContent: "center",
+                                  alignItems: 'center',
+                                  marginTop: 25,
+                                  flex: 1
+                                }}>
+                                  {this.state.isBarLblShow ?
+                                    <Title data={'Comparison'} />
+                                    : <></>
+                                  }
 
-                                    <View style={{
-                                      // backgroundColor: 'green',
-                                      width: '80%',
-                                      alignItems: 'center',
-                                      marginHorizontal: 20,
-                                      marginTop: 20,
-                                      marginBottom: 10,
-                                      // backgroundColor: 'red',
+
+                                  <View style={{
+                                    width: '90%',
+                                    justifyContent: 'center',
+                                    marginTop: wide * 0.03,
+                                    alignItems: 'center',
+                                    // backgroundColor: 'green',
+                                  }}>
+                                    {this.state.showBar === true ?
+                                      <MyPlayerStats barData1={this.state.bar1_Data} barData2={this.state.bar2_Data} />
+                                      : null
+                                    }
+                                  </View>
+
+                                  {/* </View> */}
+
+                                  <View style={{
+                                    // backgroundColor: 'green',
+                                    width: '80%',
+                                    alignItems: 'center',
+                                    marginHorizontal: 20,
+                                    marginTop: 20,
+                                    marginBottom: 10,
+                                    // backgroundColor: 'red',
 
 
-                                    }}>
-                                      {this.state.isBarLblShow ?
+                                  }}>
+                                    {this.state.isBarLblShow ?
+                                      <View style={{
+                                        marginTop: 10, flexDirection: 'row', alignItems: 'center',
+                                        justifyContent: 'space-between', //backgroundColor: 'red',
+                                        height: 18
+                                      }}>
                                         <View style={{
-                                          marginTop: 10, flexDirection: 'row', alignItems: 'center',
-                                          justifyContent: 'space-between', //backgroundColor: 'red',
-                                          height: 18
-                                        }}>
-                                          <View style={{
-                                            // marginTop: 10,
-                                            //  width: wide * 0.4,
-                                            flexDirection: 'row',
+                                          // marginTop: 10,
+                                          //  width: wide * 0.4,
+                                          flexDirection: 'row',
 
-                                            justifyContent: 'space-between', alignItems: 'center'
-                                          }}>
-                                            <View style={{ width: 28, height: 6, backgroundColor: '#4F5155' }}></View>
-                                            <Text style={{
-                                              color: Colors.light, fontSize: 12, lineHeight: 12,
-                                              fontFamily: Fonts.Bold, marginLeft: 12
-                                            }}>Player Excluded</Text>
-                                          </View>
-                                          <View style={{
-                                            // marginTop: 30,
-                                            // width: wide * 0.4,
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-around', alignItems: 'center', marginLeft: 20
-                                          }}>
-                                            <View style={{ width: 28, height: 6, backgroundColor: Colors.compareBar }}></View>
-                                            <Text style={{
-                                              color: Colors.compareBar, fontSize: 12, lineHeight: 12,
-                                              fontFamily: Fonts.Bold, marginLeft: 12
-                                            }}>Player Included</Text>
-                                          </View>
+                                          justifyContent: 'space-between', alignItems: 'center'
+                                        }}>
+                                          <View style={{ width: 28, height: 6, backgroundColor: '#4F5155' }}></View>
+                                          <Text style={{
+                                            color: Colors.light, fontSize: 12, lineHeight: 12,
+                                            fontFamily: Fonts.Bold, marginLeft: 12
+                                          }}>Player Excluded</Text>
                                         </View>
-                                        : <></>
-                                      }
-                                      <View style={{ marginTop: 15, height: 12 }}>
-                                        <Text style={{
-                                          color: Colors.compareBar, fontSize: 14, lineHeight: 16,
-                                          fontFamily: Fonts.Bold, //marginLeft: 12
+                                        <View style={{
+                                          // marginTop: 30,
+                                          // width: wide * 0.4,
+                                          flexDirection: 'row',
+                                          justifyContent: 'space-around', alignItems: 'center', marginLeft: 20
                                         }}>
-                                          {dashboardData?.userBarGraphComparisonDto?.comparisonRemark}
-                                        </Text>
-
+                                          <View style={{ width: 28, height: 6, backgroundColor: Colors.compareBar }}></View>
+                                          <Text style={{
+                                            color: Colors.compareBar, fontSize: 12, lineHeight: 12,
+                                            fontFamily: Fonts.Bold, marginLeft: 12
+                                          }}>Player Included</Text>
+                                        </View>
                                       </View>
-                                      {this.state.playerId !== null ?
-                                        <TouchableOpacity style={{
-                                          backgroundColor: Colors.btnBg,
-                                          width: 140, height: 30, borderRadius: 5,
-                                          justifyContent: 'center', alignItems: 'center',
-                                          marginTop: 18,
-                                          marginBottom: wide * 0.04,
-                                        }}
-                                          onPress={() => Navigation.navigate('Compare', dashboardData)}
-                                        >
-                                          <Text style={{ color: Colors.light, fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16, }}>Add to Compare</Text>
-                                        </TouchableOpacity>
-                                        : null}
+                                      : <></>
+                                    }
+                                    <View style={{ marginTop: 15, height: 12 }}>
+                                      <Text style={{
+                                        color: Colors.compareBar, fontSize: 14, lineHeight: 16,
+                                        fontFamily: Fonts.Bold, //marginLeft: 12
+                                      }}>
+                                        {dashboardData?.userBarGraphComparisonDto?.comparisonRemark}
+                                      </Text>
 
                                     </View>
-
+                                    {this.state.playerId !== null ?
+                                      <TouchableOpacity style={{
+                                        backgroundColor: Colors.btnBg,
+                                        width: 140, height: 30, borderRadius: 5,
+                                        justifyContent: 'center', alignItems: 'center',
+                                        marginTop: 18,
+                                        marginBottom: wide * 0.04,
+                                      }}
+                                        onPress={() => Navigation.navigate('Compare', dashboardData)}
+                                      >
+                                        <Text style={{ color: Colors.light, fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16, }}>Add to Compare</Text>
+                                      </TouchableOpacity>
+                                      : null}
 
                                   </View>
-                                  : null
-                                }
-                              </>
-                              :
-                              <Text style={{ color: 'white', alignItems: 'center', marginTop: 20 }}>This is statttt</Text>
-                              // <EmptyBarChart kpi={dashboardData?.userBarGraphComparisonDto?.kpi != null ? dashboardData?.userBarGraphComparisonDto?.kpi : []} />
-                            }
 
-                          </>
+
+                                </View>
+                                : null
+                              }
+                            </>
+                            :
+                            <View style={{ width: '90%', alignSelf: 'center' }}>
+                              <EmptyBarChart kpi={dashboardData?.userBarGraphComparisonDto?.kpi != null ? dashboardData?.userBarGraphComparisonDto?.kpi : []} />
+
+                            </View>
+                            // <Text style={{ color: 'white', alignItems: 'center', marginTop: 20, fontSize: 18 }}>This is statttt</Text>
+                          }
+
+                        </>
                         : null}
                       {this.state.selectedTab === 'Challenges' ?
                         <View style={{ flex: 1, alignItems: 'center', }}>

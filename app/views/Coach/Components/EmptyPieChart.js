@@ -164,7 +164,7 @@ function EmptyBarChart({ kpi }) {
 
   useEffect(() => {
     console.log("empty bar chartttttttttt")
-    debugger
+    // debugger
     let arr = [];
     if (kpi.length > 0) {
       kpi.map((key, index) => {
@@ -220,11 +220,11 @@ function EmptyBarChart({ kpi }) {
 
           </VictoryGroup>
           <VictoryAxis
-            offsetX={40}
+            offsetX={45}
             style={{
               tickLabels: {
                 fill: Colors.light, fontSize: 12, lineHeight: 16,
-                fontFamily: Fonts.Bold
+                fontFamily: Fonts.Bold,
               },
               axis: { stroke: Colors.base, }
             }}

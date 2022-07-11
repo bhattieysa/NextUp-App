@@ -2196,4 +2196,29 @@ export function getCities(state_name, cb) {
   };
 }
 
+export function getGameInitialData(cb) {
+  return (dispatch, getState) => {
+
+    dispatch(gamesRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .post(`${AppURLs.getGameInitData}165584329697608/165584356686406/1652921974198`)//'162522113111002'
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          // let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, response);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
 

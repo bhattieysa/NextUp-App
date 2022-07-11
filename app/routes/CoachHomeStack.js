@@ -30,9 +30,17 @@ const CoachHomeStack = createStackNavigator(
         Calender: {
             getScreen: () => require('../views/home/Calender').default,
         },
+
+        // old game screen
+        // GamesRecentTab: {
+        //     getScreen: () => require('../views/home/GamesRecentTab').default,
+        // },
+
+        // new game screen
         GamesRecentTab: {
-            getScreen: () => require('../views/home/GamesRecentTab').default,
+            getScreen: () => require('../views/playing/GameScreen').default,
         },
+
         ShareScreen: {
             getScreen: () => require('../views/home/ShareScreen').default,
         },
