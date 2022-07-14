@@ -1,22 +1,26 @@
 import React from "react"
-import Svg, { Path, G, Defs, ClipPath, Text } from "react-native-svg"
+import Svg, { Path, G, Defs, ClipPath, Text, Circle } from "react-native-svg"
+import { Colors } from "../../../constants";
 import TouchableOpacityG from './TouchableOpacityG';
 
 function PlayGroundBox(props) {
     return (
         <Svg
             width={props.width}
-            height={props.width * (72.881/100)}
+            height={props.width * (72.881 / 100)}
             viewBox="0 0 354 258"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
-        >
 
+        >
+            <Circle cx={19} cy={12} r={9} fill={Colors.lightGreen} />
             {/* shape two */}
             <TouchableOpacityG onPress={props.onPressShapeTwo}>
                 <Path fill={props.shapeTwoBGColor} d="M32 1H124V51H32z" />
+
             </TouchableOpacityG>
+
 
             {/* shape four */}
             <TouchableOpacityG onPress={props.onPressShapeFour}>
@@ -86,10 +90,10 @@ function PlayGroundBox(props) {
 
             {/* shape holder holder right */}
             <TouchableOpacityG onPress={props.onPressShapeHolderRight} >
-            <Path
-                d="M244 191l31.5 66H178v-50l16.5-1 27.5-5.5 22-9.5z"
-                fill={props.shapeHolderRightBGColor}
-            />
+                <Path
+                    d="M244 191l31.5 66H178v-50l16.5-1 27.5-5.5 22-9.5z"
+                    fill={props.shapeHolderRightBGColor}
+                />
             </TouchableOpacityG>
             <G clipPath="url(#clip0_18_1977)">
                 {/* shape holder zero */}

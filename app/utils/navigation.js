@@ -28,6 +28,8 @@ export const getActiveRouteName = (navigationState) => {
 
 export const defaultNavigationOptions = {
   headerMode: 'screen',
+
+
   headerStatusBarHeight: 0,
   ...TransitionPresets.SlideFromRightIOS,
 };

@@ -54,6 +54,8 @@ export const Colors = {
   lightGray: '#363A47',
   darkGray: '#32353E',//used for btn bg on playing screen
   darkYellow: '#FDB927',
-  lightGreen: "#74C896"
+  lightGreen: "#74C896",
+  btnRed: '#FD2727',
+  btnGren: '#48C81B',
 
 };

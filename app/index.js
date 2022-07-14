@@ -163,6 +163,7 @@ export default class Root extends React.Component {
     debugger;
     return (
       <Provider store={configureStore()}>
+
         <AppStatusBar color={Colors.base} barStyle='light-content' />
         {content}
       </Provider>

@@ -29,66 +29,94 @@ const PlayingGameScreenHeader = ({
 
 
 
-  return <View style={{ ...styles.header, ...style }}>
-    {renderBackArrow(nav, setView)}
-    <View style={{ flex: 1, flexDirection: 'row', }}>
-      <Text style={{ ...styles.scoreTxt }}>{blueTeamScore}</Text>
-      {blueTeamDetails()}
-      <Switch
-        trackColor={{ false: Colors.lightBlue, true: Colors.lightRed }}
-        thumbColor={isEnabled ? Colors.lightRed : Colors.lightBlue}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-      {redTeamDetails()}
-      <Text style={{ ...styles.scoreTxt, color: Colors.lightRed }}>{redTeamScore}</Text>
+  return <View style={{ ...styles.header, ...style, }}>
+    <View style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '95%',
+
+    }}>
+      {renderBackArrow(nav, setView)}
+      <View style={{ flex: 1, flexDirection: 'row', }}>
+        <Text style={{ ...styles.scoreTxt }}>{blueTeamScore}</Text>
+        {blueTeamDetails()}
+        <Switch
+          trackColor={{ false: Colors.newGrayFontColor, true: Colors.newGrayFontColor }}
+          thumbColor={isEnabled ? Colors.lightRed : Colors.lightBlue}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+        {redTeamDetails()}
+        <Text style={{ ...styles.scoreTxt, color: Colors.lightRed }}>{redTeamScore}</Text>
+      </View>
+      {renderPlayingRound()}
     </View>
-    {renderPlayingRound()}
   </View>
 
 
   function renderBackArrow(nav, setView) {
     return <TouchableOpacity
-      // onPress={nav == "playing" ? () => Navigation.navigate('ExploreSearch', { to: true }) : () => setView("playing")}
-      onPress={() => Navigation.back()}
+      onPress={nav == "playing" ? () => Navigation.back() :
+        nav == "assistScreen" ? () => setView("shootScore") :
+          nav == "throwScreen" ? () => setView("assistScreen") :
+            nav == "madeMissedScreen" ? () => setView("throwScreen") :
+              () => setView("playing")
+      }
+    // onPress={() => Navigation.back()}    Navigation.navigate('ExploreSearch', { to: true })
     >
       <Image style={styles.backArrow} source={require('../../../Images/back_ico.png')} />
     </TouchableOpacity>
   }
 
   function blueTeamDetails() {
-    return <View style={styles.teamDetailCNTR}>
-      <View style={{ ...CommonStyles.numberContainerCircle, ...styles.circle }}>
-        <Text style={styles.circleTxt}>
-          {blueTeamCaptain?.charAt(0)}
-        </Text>
+    return (
+      <View style={{
+        ...styles.teamDetailCNTR,
+        alignItems: 'center'
+      }}>
+        <View style={{
+          ...styles.circle, backgroundColor: Colors.lightBlue,
+          justifyContent: 'center', alignItems: 'center'
+
+        }}>
+          <Text style={styles.circleTxt}>
+            {blueTeamCaptain?.charAt(0)}
+          </Text>
+        </View>
+
+        {renderCaptainAndTeamName()}
       </View>
-      {renderCaptainAndTeamName()}
-    </View>
+    )
   }
 
   function renderCaptainAndTeamName() {
-    return <View style={{ paddingLeft: 2.5, flex: 1 }}>
+    return <View style={{ marginHorizontal: 10, alignItems: 'center', justifyContent: 'center' }}>
       <Text style={styles.captainName}>{blueTeamCaptain}</Text>
-      <Text style={styles.clubName}>{blueTeamClubName}</Text>
+      {/* <Text style={styles.clubName}>{blueTeamClubName}</Text> */}
     </View>
   }
 
   function renderRedTeamName() {
-    return <View style={{ marginRight: 2.5, flex: 1, alignItems: 'flex-end' }}>
+    return <View style={{ marginRight: 5, flex: 1, alignItems: 'flex-end' }}>
       <Text style={styles.captainName}>{redTeamCaptain}</Text>
-      <Text style={{ ...styles.clubName, color: Colors.lightRed }}>{redTeamClubName}</Text>
+      {/* <Text style={{ ...styles.clubName, color: Colors.lightRed }}>{redTeamClubName}</Text> */}
     </View>
   }
 
   function redTeamDetails() {
-    return <View style={{ ...styles.teamDetailCNTR, }}>
+    return <View style={{
+      ...styles.teamDetailCNTR, alignItems: 'center',
+    }}>
       {renderRedTeamName()}
       {/*Circle*/}
       <View style={{
-        ...CommonStyles.numberContainerCircle, ...styles.circle,
-        ...{ backgroundColor: Colors.lightRed, }
+        ...styles.circle,
+        ...{
+          backgroundColor: Colors.lightRed,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }
       }}>
         <Text style={styles.circleTxt}>
           {redTeamCaptain?.charAt(0)}
@@ -119,7 +147,7 @@ const PlayingGameScreenHeader = ({
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     width: "100%",
     alignItems: 'center',
     paddingHorizontal: '1.5%',
@@ -128,11 +156,9 @@ const styles = StyleSheet.create({
 
   },
   backArrow: {
-    width: wide * 0.06,
-    height: wide * 0.06,
-    borderRadius: wide * 0.01,
-    borderWidth: 1,
-    borderColor: Colors.borderColor
+    width: wide * 0.08, height: wide * 0.08,
+    borderRadius: wide * 0.02,
+    borderWidth: 1, borderColor: Colors.borderColor
   },
   scoreTxt: {
     marginHorizontal: 30,
@@ -147,7 +173,6 @@ const styles = StyleSheet.create({
     borderRadius: 22.5,
   },
   teamDetailCNTR: {
-
     flex: 1,
     flexDirection: "row",
     alignItems: 'center',

@@ -16,7 +16,7 @@ import Svg, {
 
 const AnimatedG = Animated.createAnimatedComponent(G);
 
-const ensurePositiveDelayProps = function(props) {
+const ensurePositiveDelayProps = function (props) {
     invariant(
         !(
             props.delayPressIn < 0 ||
@@ -133,13 +133,13 @@ const TouchableOpacityG = ((createReactClass({
         tvParallaxProperties: PropTypes.object,
     },
 
-    getDefaultProps: function() {
+    getDefaultProps: function () {
         return {
             activeOpacity: 0.2,
         };
     },
 
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             /* $FlowFixMe(>=0.89.0 site=react_native_fb) This comment suppresses an
              * error found when Flow v0.89 was deployed. To see the error, delete
@@ -152,15 +152,15 @@ const TouchableOpacityG = ((createReactClass({
         };
     },
 
-    componentDidMount: function() {
+    componentDidMount: function () {
         ensurePositiveDelayProps(this.props);
     },
 
-    UNSAFE_componentWillReceiveProps: function(nextProps) {
+    UNSAFE_componentWillReceiveProps: function (nextProps) {
         ensurePositiveDelayProps(nextProps);
     },
 
-    componentDidUpdate: function(prevProps, prevState) {
+    componentDidUpdate: function (prevProps, prevState) {
         if (this.props.disabled !== prevProps.disabled) {
             this._opacityInactive(250);
         }
@@ -169,7 +169,7 @@ const TouchableOpacityG = ((createReactClass({
     /**
      * Animate the touchable to a new opacity.
      */
-    setOpacityTo: function(value, duration) {
+    setOpacityTo: function (value, duration) {
         console.log('setOpacityTo', value, duration);
         Animated.timing(this.state.anim, {
             toValue: value,
@@ -183,7 +183,7 @@ const TouchableOpacityG = ((createReactClass({
      * `Touchable.Mixin` self callbacks. The mixin will invoke these if they are
      * defined on your component.
      */
-    touchableHandleActivePressIn: function(e) {
+    touchableHandleActivePressIn: function (e) {
         if (e.dispatchConfig.registrationName === 'onResponderGrant') {
             this._opacityActive(0);
         } else {
@@ -192,61 +192,61 @@ const TouchableOpacityG = ((createReactClass({
         this.props.onPressIn && this.props.onPressIn(e);
     },
 
-    touchableHandleActivePressOut: function(e) {
+    touchableHandleActivePressOut: function (e) {
         this._opacityInactive(250);
         this.props.onPressOut && this.props.onPressOut(e);
     },
 
-    touchableHandleFocus: function(e) {
+    touchableHandleFocus: function (e) {
         if (Platform.isTV) {
             this._opacityActive(150);
         }
         this.props.onFocus && this.props.onFocus(e);
     },
 
-    touchableHandleBlur: function(e) {
+    touchableHandleBlur: function (e) {
         if (Platform.isTV) {
             this._opacityInactive(250);
         }
         this.props.onBlur && this.props.onBlur(e);
     },
 
-    touchableHandlePress: function(e) {
+    touchableHandlePress: function (e) {
         this.props.onPress && this.props.onPress(e);
     },
 
-    touchableHandleLongPress: function(e) {
+    touchableHandleLongPress: function (e) {
         this.props.onLongPress && this.props.onLongPress(e);
     },
 
-    touchableGetPressRectOffset: function() {
+    touchableGetPressRectOffset: function () {
         return this.props.pressRetentionOffset || PRESS_RETENTION_OFFSET;
     },
 
-    touchableGetHitSlop: function() {
+    touchableGetHitSlop: function () {
         return this.props.hitSlop;
     },
 
-    touchableGetHighlightDelayMS: function() {
+    touchableGetHighlightDelayMS: function () {
         return this.props.delayPressIn || 0;
     },
 
-    touchableGetLongPressDelayMS: function() {
+    touchableGetLongPressDelayMS: function () {
         return this.props.delayLongPress === 0
             ? 0
             : this.props.delayLongPress || 500;
     },
 
-    touchableGetPressOutDelayMS: function() {
+    touchableGetPressOutDelayMS: function () {
         return this.props.delayPressOut;
     },
 
-    _opacityActive: function(duration) {
+    _opacityActive: function (duration) {
         console.log('_opacityActive', duration);
         this.setOpacityTo(this.props.activeOpacity, duration);
     },
 
-    _opacityInactive: function(duration) {
+    _opacityInactive: function (duration) {
         console.log('_opacityInactive', duration);
         /* $FlowFixMe(>=0.89.0 site=react_native_fb) This comment suppresses an
          * error found when Flow v0.89 was deployed. To see the error, delete this
@@ -254,12 +254,12 @@ const TouchableOpacityG = ((createReactClass({
         this.setOpacityTo(this._getChildStyleOpacityWithDefault(), duration);
     },
 
-    _getChildStyleOpacityWithDefault: function() {
+    _getChildStyleOpacityWithDefault: function () {
         const childStyle = flattenStyle(this.props.style) || {};
         return childStyle.opacity == null ? 1 : childStyle.opacity;
     },
 
-    render: function() {
+    render: function () {
         return (
             <AnimatedG
                 accessible={this.props.accessible !== false}
@@ -301,10 +301,10 @@ const TouchableOpacityG = ((createReactClass({
                 //  * error found when Flow v0.89 was deployed. To see the error, delete
                 //  * this comment and run Flow. */
                 // onResponderTerminate={this.touchableHandleResponderTerminate}
-                onPress={()=>{this.touchableHandlePress}}
+                onPress={() => { this.touchableHandlePress }}
                 onPressIn={this.touchableHandlePress}
-                // onPressOut={this.touchableHandleActivePressOut}
-                >
+            // onPressOut={this.touchableHandleActivePressOut}
+            >
                 {this.props.children}
             </AnimatedG>
         );

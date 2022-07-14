@@ -19,7 +19,7 @@ const DropDownModal = ({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={true}
+      visible={visibility}
     >
       <TouchableOpacity
         onPress={onPressOuter}

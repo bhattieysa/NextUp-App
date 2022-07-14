@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, StatusBar, Modal } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, StatusBar, Modal, FlatList } from 'react-native'
 import { Colors, CommonStyles, Fonts, Layout } from "../../constants";
 import PlayingGameScreenHeader from "../../components/common/playing_header/PlayingGameScreenHeader";
 import DropDownModal from "../../components/common/playing_header/DropDownModal";
 import PlayGroundBox from "../../components/common/cort/PlayGroundBox";
-import ActiveTeamPlayer from "../../components/common/ActiveTeamPalyer";
+import { ActiveTeamPlayer, ScoreActiveTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import PlaygroundScreenBtn from "../../components/common/PlaygroundScreenBtn";
 import { getGameInitialData } from '../../actions/home';
 import { connect } from 'react-redux';
@@ -12,9 +12,13 @@ import { connect } from 'react-redux';
 // import SyncStorage from 'sync-storage';
 import Orientation from 'react-native-orientation-locker';
 import { useDimensions } from '@react-native-community/hooks'
+import AssistScreen from './AssistScreen';
+import ThrowScreen from './ThrowScreen';
+import MadeMissScreen from './MadeMissScreen';
+import { BlurView } from '@react-native-community/blur';
 
 
-// const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const quarterList = [
   {
     name: 'Quarter 1',
@@ -50,6 +54,7 @@ let lineup = [
 
 
 const GameScreen = (props) => {
+  const { width, height } = Dimensions.get('window');
 
   const [dropDownVisibility, setDropDownVisibility] = useState(false);
   const { btnEnable, setBtnEnable } = useState(false);
@@ -63,6 +68,9 @@ const GameScreen = (props) => {
   const [activePlayer, setActivePlayer] = useState('')
   const [substitutes, setSubstitutes] = useState('')
   const [courtArea, setCourtArea] = useState('')
+  //new flow stat
+  const [selectedPlayer, setSelectedPlayer] = useState('')
+  const [assistPlayer, setAssistPlayer] = useState('')
 
   useEffect(() => {
     debugger
@@ -206,6 +214,7 @@ const GameScreen = (props) => {
 
 
   const switchView = () => {
+    debugger
     switch (currentView) {
       default:
       case "playing":
@@ -238,80 +247,155 @@ const GameScreen = (props) => {
           currentView={currentView}
           toggleSwitch={toggleSwitch}
         />
+
+      case "shootScore":
+        return <ShootScore
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+
+        />
+
+      case "assistScreen":
+        return <AssistScreen
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          setSelectedPlayer={setSelectedPlayer}
+          setAssistPlayer={setAssistPlayer}
+          selectedPlayer={selectedPlayer}
+
+        />
+      case "throwScreen":
+        return <ThrowScreen
+          // playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+
+          // setSelectedPlayer={setSelectedPlayer}
+          setAssistPlayer={setAssistPlayer}
+          selectedAssistPlayer={assistPlayer}
+          selectedPlayer={selectedPlayer}
+
+        />
+
+      case "madeMissedScreen":
+        return <MadeMissScreen
+          // playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+
+          // setSelectedPlayer={setSelectedPlayer}
+          setAssistPlayer={setAssistPlayer}
+          selectedAssistPlayer={assistPlayer}
+          selectedPlayer={selectedPlayer}
+
+        />
+
     }
   }
 
+  const _renderSessionList = (item, index) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flex: 1, justifyContent: 'center', alignItems: 'center',
+          height: 50, marginTop: 10, borderBottomWidth: 1,
+          borderBottomColor: Colors.newGrayFontColor
+        }}
+      // onPress={() => this.setState({ dropDownSelectedVal: item.item.session }, () => {
+      //   const { coachDash } = this.props.Home;
+      //   this._filterPieChartData(coachDash.teamDetailInfo);
+      // })}
+      >
+        <Text style={{
+          color: Colors.light, fontSize: 13, lineHeight: 14,
+          fontFamily: Fonts.Bold,
+        }}>{item.item.session}</Text>
 
-  return (<View style={{ flex: 1, backgroundColor: Colors.base, }}>
+      </TouchableOpacity>
+    )
+  }
 
-    <StatusBar hidden />
-    <DropDownModal
-      list={quarterList}
-      visibility={dropDownVisibility}
-      preSelected={preSelectedQuarter}
-      onPress={(item) => {
-        setPreSelectedQuarter(item.value);
-        setDropDownVisibility(false);
-      }}
-      onPressOuter={() => setDropDownVisibility(false)}
-    />
-    <PlayingGameScreenHeader
-      blueTeamScore={challengerTeam.score}
-      redTeamScore={defenderTeam.score}
-      blueTeamCaptain={challengerTeam.name}
-      redTeamCaptain={defenderTeam.name}
-      // redTeamClubName=""
-      // blueTeamClubName=""
-      nav={currentView}
-      setView={setCurrentView}
-      round={preSelectedQuarter}
-      onPressQuarter={() => {
-        setDropDownVisibility(true)
-      }}
-      toggleSwitch={toggleSwitch}
-      isEnabled={isEnabled}
-    />
 
-    {/*<ScrollView showsVerticalScrollIndicator={false}>*/}
-    <View style={{ width: '95%', alignSelf: 'center', }}>
+  return (
+    <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+      {/* <StatusBar backgroundColor="transparent" translucent /> */}
 
-      {switchView()}
+      <PlayingGameScreenHeader
+        blueTeamScore={challengerTeam.score}
+        redTeamScore={defenderTeam.score}
+        blueTeamCaptain={challengerTeam.name}
+        redTeamCaptain={defenderTeam.name}
+        // redTeamClubName=""
+        // blueTeamClubName=""
+        nav={currentView}
+        setView={setCurrentView}
+        round={preSelectedQuarter}
+        onPressQuarter={() => {
+          setDropDownVisibility(true)
+        }}
+        toggleSwitch={toggleSwitch}
+        isEnabled={isEnabled}
+        style={{
+          height: 60,
+          alignSelf: 'center',
+          justifyContent: 'center',
+          alignItems: 'center'
 
-      {/*</ScrollView>*/}
+        }}
+      />
+      <View style={{ width: '90%', alignSelf: 'center', marginTop: 8 }}>
+        {switchView()}
+      </View>
 
-      {/*</ScrollView>*/}
-    </View>
-
-    {/* {dropDownVisibility == true ?
-      <Modal animationType="fade" transparent={true} visible={true}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={{
-            width: '100%',
-            height: '100%',
+      {dropDownVisibility == true ?
+        <TouchableOpacity style={{
+          width: '100%', height: '100%',
+          backgroundColor: '#00000066',
+          position: 'absolute',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          flexDirection: 'row'
+        }}
+          onPress={() => setDropDownVisibility(false)}
+        >
+          <View style={{
+            width: '30%',
+            height: '60%',
+            backgroundColor: Colors.base,
             alignItems: 'center',
             justifyContent: 'center',
-            paddingHorizontal: 16,
-            backgroundColor: 'red'
-            // backgroundColor: 'rgba(0,0,0,0.5)',
-          }}
-          onPress={() => setDropDownVisibility(false)}>
+            marginTop: -5
 
-          <Text style={{ fontSize: 20, }}>this is Modal</Text>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', }}
-            showsVerticalScrollIndicator={false}>
-            <View
+          }}>
+            <ScrollView showsVerticalScrollIndicator={false}
               style={{
-                backgroundColor: '#32353E',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-                elevation: 4,
-              }}>
+                width: '90%',
+                height: '90%',
+                marginTop: 5,
+                marginBottom: 10,
+
+                // backgroundColor: 'red',
+
+              }}
+              contentContainerStyle={{ alignItems: 'center' }}
+            >
+
               {quarterList.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -325,7 +409,7 @@ const GameScreen = (props) => {
                       //     backgroundColor: Colors.lightRed,
                       // },
                     ]}
-                    key={index}
+                    // key={inde}
                     onPress={() => {
                       setPreSelectedQuarter(item.value);
                       setDropDownVisibility(false);
@@ -343,12 +427,102 @@ const GameScreen = (props) => {
                   </TouchableOpacity>
                 );
               })}
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
+
         </TouchableOpacity>
-      </Modal>
-      : <></>} */}
-  </View>
+        : <></>
+      }
+
+      {/* <DropDownModal
+        list={quarterList}
+        visibility={dropDownVisibility}
+        preSelected={preSelectedQuarter}
+        onPress={(item) => {
+          setPreSelectedQuarter(item.value);
+          setDropDownVisibility(false);
+        }}
+        onPressOuter={() => setDropDownVisibility(false)}
+      /> */}
+
+      {/* {dropDownVisibility == true ?
+        <Modal
+          transparent={true} 
+          visible={dropDownVisibility}>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={{
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingHorizontal: 16,
+              backgroundColor: 'red'
+              // backgroundColor: 'rgba(0,0,0,0.5)',
+            }}
+            onPress={() => setDropDownVisibility(false)}>
+
+            <Text style={{ fontSize: 20, }}>this is Modal</Text>
+            <ScrollView
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: 'center',
+              }}
+              showsVerticalScrollIndicator={false}>
+              <View
+                style={{
+                  backgroundColor: '#32353E',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.23,
+                  shadowRadius: 2.62,
+                  elevation: 4,
+                }}>
+                {quarterList.map((item, index) => {
+                  return (
+                    <TouchableOpacity
+                      style={[
+                        {
+                          height: 40,
+                          justifyContent: 'center',
+                          paddingHorizontal: 20,
+                        },
+                        // preSelected === item && {
+                        //     backgroundColor: Colors.lightRed,
+                        // },
+                      ]}
+                      // key={inde}
+                      onPress={() => {
+                        setPreSelectedQuarter(item.value);
+                        setDropDownVisibility(false);
+                      }}>
+                      <Text
+                        style={[
+                          {
+                            fontFamily: Fonts.Regular,
+                            color: Colors.light,
+                          },
+                          preSelectedQuarter === item.value && { color: '#74C896' },
+                        ]}>
+                        {item.name}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
+          </TouchableOpacity>
+        </Modal>
+        : <></>} */}
+
+
+
+
+
+
+    </View>
   )
 
 
@@ -477,7 +651,7 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response }) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: 'row', paddingVertical: 10, width: '100%' }}>
         <View style={{ flex: 1.5 }}>
-          <ActiveTeamPlayer heading={"Select Player"} list={isEnabled ? redTeamList : blueTeamList} isBlueTeam={!isEnabled}
+          <ScoreActiveTeamPlayer heading={"Select Player"} list={isEnabled ? redTeamList : blueTeamList} isBlueTeam={!isEnabled}
             onPress={
               (e) => setActive(e.id)
             }
@@ -486,7 +660,7 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response }) => {
         </View>
         <View style={{ height: '100%', width: 1, backgroundColor: Colors.fontColorGray }} />
         <View style={{ flex: 3, paddingHorizontal: 30 }}>
-          <ActiveTeamPlayer heading={"Select Substitute"} list={isEnabled ? redTeamListSub : blueTeamListSub} isBlueTeam={!isEnabled}
+          <ScoreActiveTeamPlayer heading={"Select Substitute"} list={isEnabled ? redTeamListSub : blueTeamListSub} isBlueTeam={!isEnabled}
             onPress={
               (e) => setSubstitute(e.id)
             }
@@ -521,7 +695,7 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response }) => {
 const ChangeLineUp = ({ setCurrentView, isEnabled }) => {
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      // flex: 1,
       flexDirection: 'row',
       paddingVertical: 10,
       paddingHorizontal: 20
@@ -611,7 +785,7 @@ const ChangeLineUp = ({ setCurrentView, isEnabled }) => {
 
   function renderLineUp(heading, list) {
     return (
-      <View>
+      <View style={{}}>
         <Text style={styles.headingTxt}>
           {heading}
         </Text>
@@ -822,18 +996,36 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
-        <View style={{ width: "25%" }}>
-          <ActiveTeamPlayer heading={"Active Player"}
+      <View style={{ flexDirection: 'row', paddingVertical: 10, justifyContent: 'space-between' }}>
+        <View style={{ width: "20%", }}>
+          <ActiveTeamPlayer
+            containerStyle={{ width: '100%' }}
+            heading={"Active Player"}
             activePlayer={activePlayer}
-            list={isEnabled ? blueTeamList : redTeamList} isBlueTeam={isEnabled}
+            list={isEnabled ? blueTeamList : redTeamList}
+            isBlueTeam={isEnabled}
             onPress={(e) => {
               setActivePlayer(e.id)
             }} />
-          <View style={{ marginTop: 20, }}>
-            <PlaygroundScreenBtn title="Substitute Player" onPress={() => setCurrentView("substitute")} />
-            <PlaygroundScreenBtn title="Substitute Lineup"
-              style={{ backgroundColor: Colors.darkGray }}
+
+          <View style={{ marginTop: 20, flex: 1 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+              <PlaygroundScreenBtn
+                style={{ width: '45%', }}
+                // title="Substitute Player"
+                title="Sub Player"
+                onPress={() => setCurrentView("substitute")}
+              />
+              <PlaygroundScreenBtn
+                title="Lineup"
+                style={{ backgroundColor: Colors.darkGray, width: '45%', }}
+                txtStyle={{ color: Colors.light }}
+                onPress={() => setCurrentView("changelineup")}
+              />
+            </View>
+            <PlaygroundScreenBtn
+              title="Undo"
+              style={{ backgroundColor: Colors.btnRed, width: '45%', alignSelf: 'flex-start' }}
               txtStyle={{ color: Colors.light }}
               onPress={() => setCurrentView("changelineup")}
             />
@@ -841,7 +1033,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
         </View>
         {renderPlayground()}
 
-        <View style={{ flex: 0.9 }} pointerEvents={courtArea && activePlayer ? "auto" : "none"}>
+        {/* <View style={{ flex: 0.9 }} pointerEvents={courtArea && activePlayer ? "auto" : "none"}>
           <PlaygroundScreenBtn title="Score"
             style={{ ...styles.btn, opacity: activePlayer && courtArea == true ? 0.6 : 1 }}
             txtStyle={{ color: Colors.light }}
@@ -880,6 +1072,102 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
           <PlaygroundScreenBtn title="Switch Positions"
             style={{ ...styles.btn, backgroundColor: Colors.lightGreen }}
             txtStyle={{ color: Colors.light }} />
+        </View> */}
+
+        {/* new button  */}
+        <View style={{ width: '25%', }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, }}>
+            <PlaygroundScreenBtn title="Def. Reb"
+              style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                debugger
+                setCurrentView('shootScore')
+                // console.log(cu)
+                // if (activePlayer && courtArea) {
+                //   addEvent("defReb")
+                // }
+              }}
+            />
+            <PlaygroundScreenBtn title="Off. Reb"
+              style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                setCurrentView('shootScore')
+                // if (activePlayer && courtArea) {
+                //   addEvent("Shoot")
+                // }
+              }}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <PlaygroundScreenBtn title="Turnover"
+              style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                setCurrentView('shootScore')
+                // if (activePlayer && courtArea) {
+                //   setCurrentView("pass")
+                // }
+              }}
+            />
+            <PlaygroundScreenBtn title="Steal"
+              style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                setCurrentView('shootScore')
+                // if (activePlayer && courtArea) {
+                //   setCurrentView("pass")
+                // }
+              }}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <PlaygroundScreenBtn title="Assist"
+              style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                setCurrentView('shootScore')
+                // if (activePlayer && courtArea) {
+                //   setCurrentView("pass")
+                // }
+              }}
+            />
+            <PlaygroundScreenBtn title="Block"
+              style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                setCurrentView('shootScore')
+                // if (activePlayer && courtArea) {
+                //   setCurrentView("pass")
+                // }
+              }}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <PlaygroundScreenBtn title="Free Throw"
+              style={{ ...styles.btn, backgroundColor: Colors.lightGreen, width: '45%' }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                setCurrentView('shootScore')
+                // if (activePlayer && courtArea) {
+                //   setCurrentView("foul")
+                // }
+              }} />
+            <PlaygroundScreenBtn title="Foul"
+              style={{ ...styles.btn, backgroundColor: Colors.darkRed, width: '45%' }}
+              txtStyle={{ color: Colors.light }}
+              onPress={() => {
+                setCurrentView('shootScore')
+                // if (activePlayer && courtArea) {
+                //   setCurrentView("foul")
+                // }
+              }} />
+          </View>
+
+          {/* <PlaygroundScreenBtn title="Switch Positions"
+            style={{ ...styles.btn, backgroundColor: Colors.lightGreen }}
+            txtStyle={{ color: Colors.light }} /> */}
         </View>
       </View>
     </ScrollView>
@@ -998,6 +1286,81 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
     />
   }
 }
+
+
+const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
+  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer }) => {
+  const [activePlayerList, setActivePlayerList] = useState(playersList);
+  const { width, height } = useDimensions().window;
+  const fullPlayerList = playersList;
+
+  useEffect(() => {
+    // console.log("is blueee", isBlueTeamPlaying, "..")
+    removeActivePlayerFromList();
+  }, []);
+
+  const removeActivePlayerFromList = () => {
+    debugger
+    currentView == "shootScore" ?
+      setActivePlayerList(fullPlayerList.filter(player => player.id !== activePlayerId))
+      :
+      toggleSwitch()
+
+  };
+
+  const selectPlayer = (id) => {
+    // setCurrentView('playing');
+    setSelectedPlayer(id);
+    setCurrentView('assistScreen');
+
+  }
+
+  return (
+    <View style={{ paddingVertical: 20, }}>
+      {isBlueTeamPlaying ?
+        <ScoreActiveTeamPlayer
+          itemStyle={{
+            width: width / 8.5,
+            height: width / 8.5,
+            marginTop: 30,
+            borderRadius: (width / 8.5) / 2,
+          }}
+          heading={"Who Scored"}
+          list={activePlayerList}
+          isBlueTeam={isBlueTeamPlaying}
+          activePlayer={selectedPlayer}
+          onPress={(e) => {
+            if (e == 'other team') {
+              selectPlayer(e)
+            } else {
+              selectPlayer(e.id)
+            }
+          }} />
+
+        :
+        <ScoreActiveTeamPlayer
+          itemStyle={{
+            width: width / 8.5,
+            height: width / 8.5,
+            marginTop: 30,
+            borderRadius: (width / 8.5) / 2,
+          }}
+          heading={"Who Scored"}
+          list={activePlayerList}
+          isBlueTeam={isBlueTeamPlaying}
+          activePlayer={selectedPlayer}
+          onPress={(e) => {
+            if (e == 'other team') {
+              selectPlayer(e)
+            } else {
+              selectPlayer(e.id)
+            }
+          }} />
+      }
+
+    </View>)
+}
+
 
 
 const styles = StyleSheet.create({
