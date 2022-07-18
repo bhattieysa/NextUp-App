@@ -2223,13 +2223,20 @@ class Home extends Component {
 
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        {SHOW_SHARE_SCREEN.show === true ?
-          Navigation.navigate('ShareScreen', { shareData: sharedData, shareMimeType: sharedMimeType })
-          :
-          content
-        }
-      </SafeAreaView >
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 20 : 0,
+          backgroundColor: Colors.base
+        }}>
+          {SHOW_SHARE_SCREEN.show === true ?
+            Navigation.navigate('ShareScreen', { shareData: sharedData, shareMimeType: sharedMimeType })
+            :
+            content
+          }
+        </SafeAreaView >
+      </View>
     );
   }
 }

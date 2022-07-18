@@ -479,129 +479,135 @@ class GamesRecentTab extends Component {
     console.log("------->>>......", gameDetailData)
     // console.log(''gameDetailData?.gameSummaryInfo?.notablePlayers)
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        <View style={[CommonStyles.headerBottomLine]}>
-          <ScreenHeader
-            title={'Game Stats'}
-            backButtonAction={() => Navigation.back()}
-          />
-          {/* <TouchableOpacity onPress={() => Navigation.back()}>
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          <View style={[CommonStyles.headerBottomLine]}>
+            <ScreenHeader
+              title={'Game Stats'}
+              backButtonAction={() => Navigation.back()}
+            />
+            {/* <TouchableOpacity onPress={() => Navigation.back()}>
                         <Image style={{
                             width: wide * 0.1, height: wide * 0.1,
                             marginTop: 24, borderRadius: wide * 0.03, borderWidth: 1,
                             borderColor: Colors.borderColor, marginHorizontal: 10
                         }} source={require('../../Images/back_ico.png')} />
                     </TouchableOpacity> */}
-        </View>
-        <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-          <ScrollView showsVerticalScrollIndicator={false}
-            bounces={false}
-            contentContainerStyle={{
-              // marginHorizontal: 15,
-              // flex: 1,
-              marginTop: 20,
-              // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100, 
-              paddingBottom: 20
-            }}>
+          </View>
+          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+            <ScrollView showsVerticalScrollIndicator={false}
+              bounces={false}
+              contentContainerStyle={{
+                // marginHorizontal: 15,
+                // flex: 1,
+                marginTop: 20,
+                // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100, 
+                paddingBottom: 20
+              }}>
 
-            <View style={{
-              // flex: 1,
-              backgroundColor: Colors.base,
-              // marginHorizontal: 15,
-              paddingBottom: wide * 0.15,
-            }} >
-              <TouchableOpacity style={{
-                backgroundColor: Colors.overlay2,
-                borderRadius: 10,
-                marginTop: wide * 0.01,
-                height: 180,
-                width: wide * 0.9,
-                marginHorizontal: 24,
-              }}
-                onPress={() => this.setState({
-                  videoUrlToPlay: gameDetailData?.fullMatchVideo?.videoUrl,
-                  videoThumbNail: gameDetailData?.fullMatchVideo?.videoUrl.thumbnailUrl,
-                  isPlayVideo: true
-                })}
-              >
-                <FastImage style={{ width: '100%', height: '100%', position: 'absolute', borderRadius: 10 }}
-                  resizeMode={FastImage.resizeMode.cover}
-                  source={{
-                    uri: gameDetailData?.fullMatchVideo?.thumbnailUrl,
-                    priority: FastImage.priority.high,
-                  }}
-                />
-                <Image style={{ width: '100%', height: '100%', position: 'absolute', }}
-                  resizeMode={'cover'} source={require('../../Images/Rect_dummy.png')} />
-                <View style={{
-                  position: 'absolute', bottom: wide * 0.03, left: wide * 0.04,
-                  flexDirection: 'row'
-                }}>
-                  <Image style={{ width: 16, height: 16, position: 'absolute', }}
-                    resizeMode={'contain'} source={require('../../Images/play_ico_tint.png')} />
-                  <Text numberOfLines={2} style={{
-                    color: Colors.light,
-                    fontSize: 14, lineHeight: 16,
-                    fontFamily: Fonts.SemiBold, marginLeft: wide * 0.04
-                  }}> WATCH NOW</Text>
+              <View style={{
+                // flex: 1,
+                backgroundColor: Colors.base,
+                // marginHorizontal: 15,
+                paddingBottom: wide * 0.15,
+              }} >
+                <TouchableOpacity style={{
+                  backgroundColor: Colors.overlay2,
+                  borderRadius: 10,
+                  marginTop: wide * 0.01,
+                  height: 180,
+                  width: wide * 0.9,
+                  marginHorizontal: 24,
+                }}
+                  onPress={() => this.setState({
+                    videoUrlToPlay: gameDetailData?.fullMatchVideo?.videoUrl,
+                    videoThumbNail: gameDetailData?.fullMatchVideo?.videoUrl.thumbnailUrl,
+                    isPlayVideo: true
+                  })}
+                >
+                  <FastImage style={{ width: '100%', height: '100%', position: 'absolute', borderRadius: 10 }}
+                    resizeMode={FastImage.resizeMode.cover}
+                    source={{
+                      uri: gameDetailData?.fullMatchVideo?.thumbnailUrl,
+                      priority: FastImage.priority.high,
+                    }}
+                  />
+                  <Image style={{ width: '100%', height: '100%', position: 'absolute', }}
+                    resizeMode={'cover'} source={require('../../Images/Rect_dummy.png')} />
+                  <View style={{
+                    position: 'absolute', bottom: wide * 0.03, left: wide * 0.04,
+                    flexDirection: 'row'
+                  }}>
+                    <Image style={{ width: 16, height: 16, position: 'absolute', }}
+                      resizeMode={'contain'} source={require('../../Images/play_ico_tint.png')} />
+                    <Text numberOfLines={2} style={{
+                      color: Colors.light,
+                      fontSize: 14, lineHeight: 16,
+                      fontFamily: Fonts.SemiBold, marginLeft: wide * 0.04
+                    }}> WATCH NOW</Text>
 
 
 
-                </View>
-                <View style={{
-                  marginTop: wide * 0.08,
-                  left: wide * 0.04, flexDirection: 'row', alignItems: 'flex-end'
-                }}>
+                  </View>
+                  <View style={{
+                    marginTop: wide * 0.08,
+                    left: wide * 0.04, flexDirection: 'row', alignItems: 'flex-end'
+                  }}>
+                    <Text style={{
+                      color: Colors.light,
+                      fontSize: 12,
+                      fontFamily: Fonts.SemiBold,
+                    }}>{gameDetailData?.challengerTeamInfo?.name}</Text>
+                    <Text style={{
+
+                      color: Colors.light,
+                      fontSize: 25,
+                      fontFamily: Fonts.SemiBold, paddingHorizontal: 5
+                    }}>{gameDetailData?.gameSummaryInfo?.score}</Text>
+                    <Text style={{
+                      color: Colors.light,
+                      fontSize: 12,
+                      fontFamily: Fonts.SemiBold,
+                    }}>{gameDetailData?.defenderTeamInfo?.name}</Text>
+                  </View>
                   <Text style={{
+
+                    left: wide * 0.04,
                     color: Colors.light,
                     fontSize: 12,
-                    fontFamily: Fonts.SemiBold,
-                  }}>{gameDetailData?.challengerTeamInfo?.name}</Text>
-                  <Text style={{
+                    fontFamily: Fonts.Regular, width: wide * 0.6, marginTop: wide * 0.035
+                  }}>{gameDetailData?.basicSummary}</Text>
+                </TouchableOpacity>
+                {gameDetailData?.highlightVideos !== null && gameDetailData?.highlightVideos !== undefined ?
+                  <View style={{ marginTop: wide * 0.09 }}>
 
-                    color: Colors.light,
-                    fontSize: 25,
-                    fontFamily: Fonts.SemiBold, paddingHorizontal: 5
-                  }}>{gameDetailData?.gameSummaryInfo?.score}</Text>
-                  <Text style={{
-                    color: Colors.light,
-                    fontSize: 12,
-                    fontFamily: Fonts.SemiBold,
-                  }}>{gameDetailData?.defenderTeamInfo?.name}</Text>
-                </View>
-                <Text style={{
-
-                  left: wide * 0.04,
-                  color: Colors.light,
-                  fontSize: 12,
-                  fontFamily: Fonts.Regular, width: wide * 0.6, marginTop: wide * 0.035
-                }}>{gameDetailData?.basicSummary}</Text>
-              </TouchableOpacity>
-              {gameDetailData?.highlightVideos !== null && gameDetailData?.highlightVideos !== undefined ?
-                <View style={{ marginTop: wide * 0.09 }}>
-
-                  <Title data={'Highlights'} />
-                  {/* <Text style={{
+                    <Title data={'Highlights'} />
+                    {/* <Text style={{
                                         color: Colors.light, fontFamily: Fonts.SemiBold, fontSize: 28,
                                     }}>
                                         Highlights
 
                                     </Text> */}
-                  <FlatList
-                    style={{ marginHorizontal: 24 }}
-                    data={gameDetailData?.highlightVideos}
-                    renderItem={(item, index) => this._renderHighlights(item, index)}
-                    showsHorizontalScrollIndicator={false}
-                    horizontal
-                  />
-                </View>
-                : null
-              }
-              {gameDetailData?.gameSummaryInfo?.notablePlayers !== null && gameDetailData?.gameSummaryInfo?.notablePlayers !== undefined ?
-                <View style={{ marginTop: wide * 0.09 }}>
-                  <Title data={'Notable Players'} />
+                    <FlatList
+                      style={{ marginHorizontal: 24 }}
+                      data={gameDetailData?.highlightVideos}
+                      renderItem={(item, index) => this._renderHighlights(item, index)}
+                      showsHorizontalScrollIndicator={false}
+                      horizontal
+                    />
+                  </View>
+                  : null
+                }
+                {gameDetailData?.gameSummaryInfo?.notablePlayers !== null && gameDetailData?.gameSummaryInfo?.notablePlayers !== undefined ?
+                  <View style={{ marginTop: wide * 0.09 }}>
+                    <Title data={'Notable Players'} />
 
-                  {/* <Text style={{
+                    {/* <Text style={{
                                         color: Colors.light, fontFamily: Fonts.SemiBold, fontSize: 28,
                                     }}>
                                         Player of the match
@@ -609,19 +615,19 @@ class GamesRecentTab extends Component {
                                     </Text> */}
 
 
-                  <FlatList
-                    contentContainerStyle={{ marginBottom: 10 }}
-                    style={{
-                      width: '90%',
-                      marginHorizontal: 15,
-                    }}
-                    data={gameDetailData?.gameSummaryInfo?.notablePlayers}
-                    renderItem={(item, index) => this._renderNotablePlayer(item, index)}
-                    showsHorizontalScrollIndicator={false}
-                    horizontal
-                  />
+                    <FlatList
+                      contentContainerStyle={{ marginBottom: 10 }}
+                      style={{
+                        width: '90%',
+                        marginHorizontal: 15,
+                      }}
+                      data={gameDetailData?.gameSummaryInfo?.notablePlayers}
+                      renderItem={(item, index) => this._renderNotablePlayer(item, index)}
+                      showsHorizontalScrollIndicator={false}
+                      horizontal
+                    />
 
-                  {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <View style={{ alignSelf: 'center', zIndex: 1 }}>
 
                                                 <FastImage style={{
@@ -742,138 +748,138 @@ class GamesRecentTab extends Component {
 
 
                                         </View> */}
-                  {/* </View> */}
-                </View>
-                : null
-              }
+                    {/* </View> */}
+                  </View>
+                  : null
+                }
 
-              {/* Game stat need to add in graph                     */}
+                {/* Game stat need to add in graph                     */}
 
-              {gameDetailData?.gameSummaryInfo !== null && gameDetailData?.gameSummaryInfo !== undefined ?
-                <View style={{ marginTop: 30 }}>
-                  <Title data={'Summary'} />
+                {gameDetailData?.gameSummaryInfo !== null && gameDetailData?.gameSummaryInfo !== undefined ?
+                  <View style={{ marginTop: 30 }}>
+                    <Title data={'Summary'} />
 
-                  {/* <Text style={{
+                    {/* <Text style={{
                                         color: Colors.light, fontFamily: Fonts.SemiBold, fontSize: 28,
                                     }}>
                                         Summary
 
                                     </Text> */}
 
-                  <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    marginTop: wide * 0.02,
-                    // backgroundColor: 'red',
-                    alignItems: 'center'
-                  }}
-                  >
-
-                    <FastImage
-                      source={{
-                        uri: gameDetailData?.challengerTeamInfo?.logoUrl,
-                        priority: FastImage.priority.high,
-                      }}
-                      resizeMode={FastImage.resizeMode.contain}
-                      style={{
-                        width: wide * 0.1,
-                        height: wide * 0.09,
-
-                      }}
-                    />
-
-                    <Text style={{
-                      color: Colors.light, fontSize: 14,
-                      lineHeight: 20, fontFamily: Fonts.Regular,
-                      width: wide * 0.2, textAlign: 'center'
-                    }}>Team Stats</Text>
-                    <FastImage
-                      source={{
-                        uri: gameDetailData?.defenderTeamInfo?.logoUrl,
-                        priority: FastImage.priority.high,
-                      }}
-                      resizeMode={FastImage.resizeMode.contain}
-                      style={{
-                        width: wide * 0.1,
-                        height: wide * 0.09,
-
-                      }}
-                    />
-                  </View>
-                  <View style={{
-                    // height: this.state.sideBySideBarData[0] !== undefined ? (
-                    //     Object.keys(this.state.sideBySideBarData[0]).length < 8 ? wide * 0.54
-                    //         : wide * 0.65)
-                    //     : 0,
-                    width: '95%',
-                    marginTop: 10,
-                    marginHorizontal: 15,
-                    // backgroundColor: 'green',
-                    // overflow: 'hidden',
-                    justifyContent: this.state.sideBySideBarData[0] !== undefined ? (
-                      Object.keys(this.state.sideBySideBarData[0]).length > 8 ? 'center'
-                        : null)
-                      : null,
-                    // flex: 1,
-
-                  }}>
-                    {this.state.sideBySideBarData !== undefined && this.state.sideBySideBarData.length > 0 ?
-                      <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
-                      : null
-                    }
-                  </View>
-
-                  <View style={{
-                    // backgroundColor: Colors.overlay2,
-                    borderRadius: wide * 0.06,
-                    marginTop: wide * 0.04,
-                  }}>
                     <View style={{
                       flexDirection: 'row',
                       justifyContent: 'space-around',
-                      // width: wide * 0.4,
-                      padding: wide * 0.04,
-                      // backgroundColor: 'green',
-                      // marginHorizontal: wide / 4,
+                      marginTop: wide * 0.02,
+                      // backgroundColor: 'red',
                       alignItems: 'center'
+                    }}
+                    >
+
+                      <FastImage
+                        source={{
+                          uri: gameDetailData?.challengerTeamInfo?.logoUrl,
+                          priority: FastImage.priority.high,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
+                        style={{
+                          width: wide * 0.1,
+                          height: wide * 0.09,
+
+                        }}
+                      />
+
+                      <Text style={{
+                        color: Colors.light, fontSize: 14,
+                        lineHeight: 20, fontFamily: Fonts.Regular,
+                        width: wide * 0.2, textAlign: 'center'
+                      }}>Team Stats</Text>
+                      <FastImage
+                        source={{
+                          uri: gameDetailData?.defenderTeamInfo?.logoUrl,
+                          priority: FastImage.priority.high,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
+                        style={{
+                          width: wide * 0.1,
+                          height: wide * 0.09,
+
+                        }}
+                      />
+                    </View>
+                    <View style={{
+                      // height: this.state.sideBySideBarData[0] !== undefined ? (
+                      //     Object.keys(this.state.sideBySideBarData[0]).length < 8 ? wide * 0.54
+                      //         : wide * 0.65)
+                      //     : 0,
+                      width: '95%',
+                      marginTop: 10,
+                      marginHorizontal: 15,
+                      // backgroundColor: 'green',
+                      // overflow: 'hidden',
+                      justifyContent: this.state.sideBySideBarData[0] !== undefined ? (
+                        Object.keys(this.state.sideBySideBarData[0]).length > 8 ? 'center'
+                          : null)
+                        : null,
+                      // flex: 1,
+
                     }}>
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                        <TouchableOpacity
-                          activeOpacity={1}
-                          onPress={() => this.setState({ strSelectedTab: 0 })}
-                          style={{
-                            borderBottomColor: Colors.light,
-                            borderBottomWidth: strSelectedTab === 0 ? 2 : 0
-                          }}
-                        >
-                          <Text style={{
-                            color: strSelectedTab === 0 ? Colors.light : Colors.overlayWhite
-                            , fontSize: 16, lineHeight: 24, fontFamily: Fonts.Bold,
+                      {this.state.sideBySideBarData !== undefined && this.state.sideBySideBarData.length > 0 ?
+                        <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
+                        : null
+                      }
+                    </View>
 
-                          }}>
-                            {gameDetailData?.challengerTeamInfo?.name}
+                    <View style={{
+                      // backgroundColor: Colors.overlay2,
+                      borderRadius: wide * 0.06,
+                      marginTop: wide * 0.04,
+                    }}>
+                      <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        // width: wide * 0.4,
+                        padding: wide * 0.04,
+                        // backgroundColor: 'green',
+                        // marginHorizontal: wide / 4,
+                        alignItems: 'center'
+                      }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                          <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => this.setState({ strSelectedTab: 0 })}
+                            style={{
+                              borderBottomColor: Colors.light,
+                              borderBottomWidth: strSelectedTab === 0 ? 2 : 0
+                            }}
+                          >
+                            <Text style={{
+                              color: strSelectedTab === 0 ? Colors.light : Colors.overlayWhite
+                              , fontSize: 16, lineHeight: 24, fontFamily: Fonts.Bold,
 
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          activeOpacity={1}
-                          onPress={() => this.setState({ strSelectedTab: 1 })}
-                          style={{
-                            marginLeft: 15,
-                            borderBottomColor: Colors.light,
-                            borderBottomWidth: strSelectedTab === 1 ? 2 : 0
-                          }}
-                        >
-                          <Text style={{
-                            color: strSelectedTab === 1 ? Colors.light : Colors.overlayWhite,
-                            fontSize: 16, lineHeight: 24, fontFamily: Fonts.SemiBold,
-                          }}>
-                            {/* Goldan Figma */}
-                            {gameDetailData?.defenderTeamInfo?.name}
+                            }}>
+                              {gameDetailData?.challengerTeamInfo?.name}
 
-                          </Text>
-                        </TouchableOpacity>
-                        {/* <TouchableOpacity activeOpacity={1} onPress={() => this.setState({ strSelectedTab: 2 })}>
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => this.setState({ strSelectedTab: 1 })}
+                            style={{
+                              marginLeft: 15,
+                              borderBottomColor: Colors.light,
+                              borderBottomWidth: strSelectedTab === 1 ? 2 : 0
+                            }}
+                          >
+                            <Text style={{
+                              color: strSelectedTab === 1 ? Colors.light : Colors.overlayWhite,
+                              fontSize: 16, lineHeight: 24, fontFamily: Fonts.SemiBold,
+                            }}>
+                              {/* Goldan Figma */}
+                              {gameDetailData?.defenderTeamInfo?.name}
+
+                            </Text>
+                          </TouchableOpacity>
+                          {/* <TouchableOpacity activeOpacity={1} onPress={() => this.setState({ strSelectedTab: 2 })}>
                                                     <Text style={{
                                                         color: strSelectedTab === 2 ? Colors.light : Colors.overlayWhite
                                                         , fontSize: 18, fontFamily: Fonts.Bold,
@@ -882,140 +888,140 @@ class GamesRecentTab extends Component {
 
                                                     </Text>
                                                 </TouchableOpacity> */}
+                        </View>
+
+
                       </View>
+                      <ScrollView
+                        horizontal showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}
+                        bounces={false}
+                      >
 
+                        {
+                          strSelectedTab === 0 || strSelectedTab === 1 ?
+                            <FlatList
+                              bounces={false}
+                              style={{ flex: 1, paddingHorizontal: wide * 0.05 }}
+                              // data={strSelectedTab === 0 ? gameDetailData?.gameSummaryInfo?.scoreCardKpi?.challengerScoreCardValue
+                              //     : gameDetailData?.gameSummaryInfo?.scoreCardKpi?.defenderScoreCardValue}
+                              data={strSelectedTab === 0 ? gameDetailData?.gameSummaryInfo?.challengerTeamKpi
+                                : gameDetailData?.gameSummaryInfo?.defenderTeamKpi}
+                              renderItem={(item, index) => this._renderTeam(item, index)}
+                              stickyHeaderIndices={[0]}
+                              ListHeaderComponent={() => <View style={{
+                                height: wide * 0.08,
+                                paddingVertical: 5, flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                // backgroundColor: 'green'
+                              }}
+                              >
 
-                    </View>
-                    <ScrollView
-                      horizontal showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}
-                      bounces={false}
-                    >
-
-                      {
-                        strSelectedTab === 0 || strSelectedTab === 1 ?
-                          <FlatList
-                            bounces={false}
-                            style={{ flex: 1, paddingHorizontal: wide * 0.05 }}
-                            // data={strSelectedTab === 0 ? gameDetailData?.gameSummaryInfo?.scoreCardKpi?.challengerScoreCardValue
-                            //     : gameDetailData?.gameSummaryInfo?.scoreCardKpi?.defenderScoreCardValue}
-                            data={strSelectedTab === 0 ? gameDetailData?.gameSummaryInfo?.challengerTeamKpi
-                              : gameDetailData?.gameSummaryInfo?.defenderTeamKpi}
-                            renderItem={(item, index) => this._renderTeam(item, index)}
-                            stickyHeaderIndices={[0]}
-                            ListHeaderComponent={() => <View style={{
-                              height: wide * 0.08,
-                              paddingVertical: 5, flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              // backgroundColor: 'green'
-                            }}
-                            >
-
-                              <View style={{ paddingHorizontal: 10, flex: 1, }}>
-                                <Text style={{
-                                  color: Colors.overlayWhite, fontSize: 14,
-                                  lineHeight: 16, fontFamily: Fonts.Bold
-                                }}>Player</Text>
-
-
-
-                              </View>
-                              <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                {
-                                  gameDetailData?.gameSummaryInfo?.kpiValue?.map((val) => <Text style={{
+                                <View style={{ paddingHorizontal: 10, flex: 1, }}>
+                                  <Text style={{
                                     color: Colors.overlayWhite, fontSize: 14,
-                                    lineHeight: 20, fontFamily: Fonts.Regular, marginRight: 8,
-                                    width: 26, height: 20, textAlign: 'center',
-                                  }}>{val}</Text>)
-
-                                }
-                              </View>
-
-                            </View>}
-                            showsHorizontalScrollIndicator={false}
-                          />
-                          : strSelectedTab === 2 ?
-                            <>
-                              <FlatList
-                                style={{ flex: 1, paddingHorizontal: wide * 0.06 }}
-                                // data={gameDetailData?.gameSummaryInfo?.summaryKpi?.name}
-                                data={gameDetailData?.gameSummaryInfo?.kpiValue}
-                                renderItem={(item, index) => this._renderStats(item, index)}
-                                stickyHeaderIndices={[0]}
-                                // ListHeaderComponent={() => <View style={{
-
-                                //     paddingBottom: 20, flexDirection: 'row',
-                                //     justifyContent: 'space-between'
-                                // }}
-                                // >
-
-                                //     <FastImage
-                                //         source={{ uri: gameDetailData?.challengerTeamInfo?.logoUrl }}
-                                //         resizeMode="contain"
-                                //         style={{
-                                //             width: wide * 0.12,
-                                //             height: wide * 0.08,
-
-                                //         }}
-                                //     />
-
-                                //     <Text style={{
-                                //         color: Colors.light, fontSize: 14,
-                                //         lineHeight: 30, fontFamily: Fonts.Regular, marginHorizontal: 5, width: wide * 0.2, textAlign: 'center'
-                                //     }}>Team Stats</Text>
-                                //     <FastImage
-                                //         source={{ uri: gameDetailData?.defenderTeamInfo?.logoUrl }}
-                                //         resizeMode="contain"
-                                //         style={{
-                                //             width: wide * 0.12,
-                                //             height: wide * 0.08,
-
-                                //         }}
-                                //     />
+                                    lineHeight: 16, fontFamily: Fonts.Bold
+                                  }}>Player</Text>
 
 
 
-                                // </View>}
-                                showsHorizontalScrollIndicator={false}
-                              />
-                              <FlatList
-                                style={{ flex: 1, paddingHorizontal: wide * 0.06 }}
-                                // data={gameDetailData?.gameSummaryInfo?.playerKpis?.name}
-                                data={gameDetailData?.gameSummaryInfo?.kpiValue}
-                                renderItem={(item, index) => this._renderPlayerStats(item, index)}
-                                stickyHeaderIndices={[0]}
-                                ListHeaderComponent={() => <View style={{
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                  {
+                                    gameDetailData?.gameSummaryInfo?.kpiValue?.map((val) => <Text style={{
+                                      color: Colors.overlayWhite, fontSize: 14,
+                                      lineHeight: 20, fontFamily: Fonts.Regular, marginRight: 8,
+                                      width: 26, height: 20, textAlign: 'center',
+                                    }}>{val}</Text>)
 
-                                  paddingBottom: 20, flexDirection: 'row',
-                                  justifyContent: 'space-between'
-                                }}
-                                >
+                                  }
+                                </View>
 
-                                  <View style={{ height: 1, backgroundColor: Colors.seperator, width: '100%' }} />
+                              </View>}
+                              showsHorizontalScrollIndicator={false}
+                            />
+                            : strSelectedTab === 2 ?
+                              <>
+                                <FlatList
+                                  style={{ flex: 1, paddingHorizontal: wide * 0.06 }}
+                                  // data={gameDetailData?.gameSummaryInfo?.summaryKpi?.name}
+                                  data={gameDetailData?.gameSummaryInfo?.kpiValue}
+                                  renderItem={(item, index) => this._renderStats(item, index)}
+                                  stickyHeaderIndices={[0]}
+                                  // ListHeaderComponent={() => <View style={{
+
+                                  //     paddingBottom: 20, flexDirection: 'row',
+                                  //     justifyContent: 'space-between'
+                                  // }}
+                                  // >
+
+                                  //     <FastImage
+                                  //         source={{ uri: gameDetailData?.challengerTeamInfo?.logoUrl }}
+                                  //         resizeMode="contain"
+                                  //         style={{
+                                  //             width: wide * 0.12,
+                                  //             height: wide * 0.08,
+
+                                  //         }}
+                                  //     />
+
+                                  //     <Text style={{
+                                  //         color: Colors.light, fontSize: 14,
+                                  //         lineHeight: 30, fontFamily: Fonts.Regular, marginHorizontal: 5, width: wide * 0.2, textAlign: 'center'
+                                  //     }}>Team Stats</Text>
+                                  //     <FastImage
+                                  //         source={{ uri: gameDetailData?.defenderTeamInfo?.logoUrl }}
+                                  //         resizeMode="contain"
+                                  //         style={{
+                                  //             width: wide * 0.12,
+                                  //             height: wide * 0.08,
+
+                                  //         }}
+                                  //     />
 
 
 
-                                </View>}
-                                showsHorizontalScrollIndicator={false}
-                              />
-                            </>
-                            :
-                            null
-                      }
-                    </ScrollView>
+                                  // </View>}
+                                  showsHorizontalScrollIndicator={false}
+                                />
+                                <FlatList
+                                  style={{ flex: 1, paddingHorizontal: wide * 0.06 }}
+                                  // data={gameDetailData?.gameSummaryInfo?.playerKpis?.name}
+                                  data={gameDetailData?.gameSummaryInfo?.kpiValue}
+                                  renderItem={(item, index) => this._renderPlayerStats(item, index)}
+                                  stickyHeaderIndices={[0]}
+                                  ListHeaderComponent={() => <View style={{
+
+                                    paddingBottom: 20, flexDirection: 'row',
+                                    justifyContent: 'space-between'
+                                  }}
+                                  >
+
+                                    <View style={{ height: 1, backgroundColor: Colors.seperator, width: '100%' }} />
+
+
+
+                                  </View>}
+                                  showsHorizontalScrollIndicator={false}
+                                />
+                              </>
+                              :
+                              null
+                        }
+                      </ScrollView>
+                    </View>
                   </View>
-                </View>
-                : null
-              }
-            </View>
+                  : null
+                }
+              </View>
 
-          </ScrollView>
-          {isPlayVideo ?
+            </ScrollView>
+            {isPlayVideo ?
 
-            <Modal visible={this.state.isPlayVideo} animationType="slide"
-              supportedOrientations={['portrait', 'landscape']}
-            >
-              <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-                {/* <TouchableOpacity
+              <Modal visible={this.state.isPlayVideo} animationType="slide"
+                supportedOrientations={['portrait', 'landscape']}
+              >
+                <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
+                  {/* <TouchableOpacity
                                     onPress={() => this.handleChallengeModelClose()}
 
                                     style={{
@@ -1040,27 +1046,28 @@ class GamesRecentTab extends Component {
                                     />
                                 </TouchableOpacity> */}
 
-                <VideoPlay
-                  source={{ uri: videoUrlToPlay }}
-                  thumbnailUrl={videoThumbNail}
-                  onBackPress={() => this.handleChallengeModelClose()}
-                />
+                  <VideoPlay
+                    source={{ uri: videoUrlToPlay }}
+                    thumbnailUrl={videoThumbNail}
+                    onBackPress={() => this.handleChallengeModelClose()}
+                  />
 
-              </SafeAreaView>
-            </Modal>
+                </SafeAreaView>
+              </Modal>
 
 
-            // <CommonVideoComponent
-            //     videoUrl={videoUrlToPlay}
-            //     closeVideoView={() => this.setState({ isPlayVideo: false })}
-            // />
-            :
-            null
-          }
-          {/* <AppLoader visible={this.state.loading} /> */}
-        </KeyboardAvoidingView>
+              // <CommonVideoComponent
+              //     videoUrl={videoUrlToPlay}
+              //     closeVideoView={() => this.setState({ isPlayVideo: false })}
+              // />
+              :
+              null
+            }
+            {/* <AppLoader visible={this.state.loading} /> */}
+          </KeyboardAvoidingView>
 
-      </SafeAreaView >
+        </SafeAreaView >
+      </View>
     );
 
   }

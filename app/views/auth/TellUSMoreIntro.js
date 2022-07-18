@@ -395,262 +395,268 @@ class TellUsMoreIntro extends Component {
     // }
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
-            <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
-              <Image style={{
-                width: wide * 0.08, height: wide * 0.08,
-                // marginTop: 20, 
-                borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
-              }} source={require('../../Images/back_ico.png')} />
-            </TouchableOpacity>
-            <Text style={{
-              // marginTop: 16,
-              color: Colors.light, fontSize: 16,
-              fontFamily: Fonts.Bold, lineHeight: 24,
-              marginHorizontal: 10
-            }}>
-              Tell us more
-            </Text>
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+              <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
+                <Image style={{
+                  width: wide * 0.08, height: wide * 0.08,
+                  // marginTop: 20, 
+                  borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
+                }} source={require('../../Images/back_ico.png')} />
+              </TouchableOpacity>
+              <Text style={{
+                // marginTop: 16,
+                color: Colors.light, fontSize: 16,
+                fontFamily: Fonts.Bold, lineHeight: 24,
+                marginHorizontal: 10
+              }}>
+                Tell us more
+              </Text>
+            </View>
+            <Progress.Bar
+              progress={0.3}
+              width={wide * 0.8}
+              borderColor={Colors.base}
+              unfilledColor={Colors.borderColor}
+              style={{ marginTop: 16 }}
+            />
           </View>
-          <Progress.Bar
-            progress={0.3}
-            width={wide * 0.8}
-            borderColor={Colors.base}
-            unfilledColor={Colors.borderColor}
-            style={{ marginTop: 16 }}
-          />
-        </View>
-        {/* <KeyboardAvoidingView 
+          {/* <KeyboardAvoidingView 
                 // keyboardVerticalOffset={10}
                     style={{ flex: 1, marginTop: 16, }}
                     // behavior={Platform.OS === 'ios' ? "padding" : null}
                     // enabled
                 > */}
 
-        <KeyboardAwareScrollView
-          showsVerticalScrollIndicator={false}
-          enableOnAndroid={true}
-          style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
-          bounces={false}
+          <KeyboardAwareScrollView
+            showsVerticalScrollIndicator={false}
+            enableOnAndroid={true}
+            style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
+            bounces={false}
 
-        >
+          >
 
 
-          {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
+            {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
                         minHeight: isNotch ? Layout.height - 170 : Layout.height - 100,
                         paddingBottom: isNotch ? 0 : 10
                     }}> */}
-          <View style={{
-            backgroundColor: Colors.base,
-            marginHorizontal: 32,
-            marginTop: wide * 0.01
-          }} >
-
             <View style={{
-              width: wide * 0.85,
-              marginTop: wide * 0.04,
-            }}>
-              <SwiperFlatList
-                showPagination
-                paginationStyleItem={{ marginTop: wide * 0.09 }}
-                paginationActiveColor={Colors.btnBg}
-                paginationDefaultColor={Colors.fontGray}
-                data={["player", "Coach"]}
-                renderItem={({ item, index }) => this.renderTopImage(item, index)}
-              />
-            </View>
+              backgroundColor: Colors.base,
+              marginHorizontal: 32,
+              marginTop: wide * 0.01
+            }} >
 
-            {/*             
+              <View style={{
+                width: wide * 0.85,
+                marginTop: wide * 0.04,
+              }}>
+                <SwiperFlatList
+                  showPagination
+                  paginationStyleItem={{ marginTop: wide * 0.09 }}
+                  paginationActiveColor={Colors.btnBg}
+                  paginationDefaultColor={Colors.fontGray}
+                  data={["player", "Coach"]}
+                  renderItem={({ item, index }) => this.renderTopImage(item, index)}
+                />
+              </View>
+
+              {/*             
             <StatesListModal
               openModal={openStatesModal}
               onStateChoose={(e) => this.onStateChoose(e)}
               onClose={() => this.onClose()}
             /> */}
-            {strSelectedMode === 'player' ?
-              <View style={{
-                flexDirection: 'row', marginTop: wide * 0.18, alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <Text style={{
-                  color: Colors.light, alignSelf: 'center',
-                  fontFamily: Fonts.Medium, fontSize: 16,
-                  lineHeight: 24,
-                }}>Boy</Text>
-                <SwitchToggle
-                  switchOn={isGirl}
-                  onPress={() => this.setState({ isGirl: !isGirl })}
-                  circleColorOff={Colors.togelCircleColor}
-                  circleColorOn={Colors.togelCircleColor}
-                  backgroundColorOn={Colors.togelBackground}
-                  backgroundColorOff={Colors.togelBackground}
-                  containerStyle={{
-                    width: 60,
-                    height: 30,
-                    borderRadius: 20,
-                    padding: 5,
-                    marginHorizontal: wide * 0.09
-                  }}
-                  circleStyle={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: 12,
-                  }}
-                />
-                <Text style={{
-                  color: Colors.light, alignSelf: 'center',
-                  fontFamily: Fonts.Medium, fontSize: 16,
-                  lineHeight: 24,
-                }}>Girl</Text>
-              </View>
-              : <></>
-            }
-
-
-
-
-            {
-              strSelectedMode === 'player' ?
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: strSelectedMode === 'player' ? wide * 0.12 : wide * 0.16 }}>
-                  <TouchableOpacity onPress={() => Navigation.navigate("School")}>
-                    <AnimatedInput
-                      placeholder="SCHOOL"
-                      onChangeText={(e) => this.setTextofFields('school', e)}
-                      value={school.name}
-                      onFocus={() => Navigation.navigate("School")}
-                      disabled={school !== "" && school != undefined ? true : false}
-                      sufix={
-                        <Image
-                          style={{
-                            width: 7,
-                            height: 7,
-                            position: 'absolute',
-                            top:
-                              Platform.OS === "android"
-                                ? 5
-                                : school != ""
-                                  ? 30
-                                  : 5,
-                            right: 7
-                          }}
-                          source={require('../../Images/dropDownIconNew.png')}
-                        />
-                      }
-                      styleInput={{
-                        fontFamily: Fonts.Bold,
-                        color: Colors.light,
-                        fontSize: 16, lineHeight: 18
-                      }}
-                      styleLabel={{
-                        fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                        fontSize: 12,
-                      }}
-                      styleBodyContent={{
-                        borderBottomWidth: 1.5,
-                        borderBottomColor: Colors.borderColor,
-                        width: wide * 0.4
-                      }}
-                    // isAutoFocus={true}
-                    />
-                  </TouchableOpacity>
-
-                  {/* Add picker here */}
-
-                  <TouchableOpacity onPress={() => Navigation.navigate("Year")}>
-                    <AnimatedInput
-                      disabled={classof !== "" && classof != undefined ? true : false}
-                      placeholder="CLASS OF"
-                      value={classof}
-                      onFocus={() => Navigation.navigate("Year")}
-                      sufix={
-                        <Image
-                          style={{
-                            width: 7,
-                            height: 7,
-                            position: 'absolute',
-                            top:
-                              Platform.OS === "android"
-                                ? 5
-                                : classof != ""
-                                  ? 30
-                                  : 5,
-                            right: 7
-                          }}
-                          source={require('../../Images/dropDownIconNew.png')}
-                        />
-                      }
-                      styleInput={{
-                        fontFamily: Fonts.Bold,
-                        color: Colors.light,
-                        fontSize: 16,
-                        lineHeight: 18,
-                        position: 'relative'
-                      }}
-                      styleLabel={{
-                        fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                        fontSize: 12,
-                      }}
-                      styleBodyContent={{
-                        borderBottomWidth: 1.5,
-                        borderBottomColor: Colors.borderColor,
-                        width: wide * 0.4
-                      }}
-                    // isAutoFocus={true}
-                    // multiline
-                    />
-                  </TouchableOpacity>
-                </View>
-                :
-                <TouchableOpacity style={{ alignItems: 'center', marginTop: wide * 0.2 }}
-                  onPress={() => Navigation.navigate("TeamList")}>
-                  <AnimatedInput
-                    placeholder="SELECT TEAM"
-                    onChangeText={(e) => this.setTextofFields('team', e)}
-                    value={coachTeam.name}
-                    onFocus={() => Navigation.navigate("TeamList")}
-                    disabled={coachTeam !== "" && coachTeam != undefined ? true : false}
-                    sufix={
-                      <Image
-                        style={{
-                          width: 7,
-                          height: 7,
-                          position: 'absolute',
-                          top:
-                            Platform.OS === "android"
-                              ? 5
-                              : coachTeam != ""
-                                ? 30
-                                : 5,
-                          right: 7
-                        }}
-                        source={require('../../Images/dropDownIconNew.png')}
-                      />
-                    }
-                    styleInput={{
-                      fontFamily: Fonts.Bold,
-                      color: Colors.light,
-                      fontSize: 16, lineHeight: 18,
+              {strSelectedMode === 'player' ?
+                <View style={{
+                  flexDirection: 'row', marginTop: wide * 0.18, alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Text style={{
+                    color: Colors.light, alignSelf: 'center',
+                    fontFamily: Fonts.Medium, fontSize: 16,
+                    lineHeight: 24,
+                  }}>Boy</Text>
+                  <SwitchToggle
+                    switchOn={isGirl}
+                    onPress={() => this.setState({ isGirl: !isGirl })}
+                    circleColorOff={Colors.togelCircleColor}
+                    circleColorOn={Colors.togelCircleColor}
+                    backgroundColorOn={Colors.togelBackground}
+                    backgroundColorOff={Colors.togelBackground}
+                    containerStyle={{
+                      width: 60,
+                      height: 30,
+                      borderRadius: 20,
+                      padding: 5,
+                      marginHorizontal: wide * 0.09
                     }}
-                    styleLabel={{
-                      fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                      fontSize: 12,
+                    circleStyle={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: 12,
                     }}
-                    styleBodyContent={{
-                      borderBottomWidth: 1.5,
-                      borderBottomColor: Colors.borderColor,
-                      width: wide * 0.6
-                    }}
-                  // isAutoFocus={true}
                   />
-                </TouchableOpacity>
-            }
-            {/* <YearSelectionModal
+                  <Text style={{
+                    color: Colors.light, alignSelf: 'center',
+                    fontFamily: Fonts.Medium, fontSize: 16,
+                    lineHeight: 24,
+                  }}>Girl</Text>
+                </View>
+                : <></>
+              }
+
+
+
+
+              {
+                strSelectedMode === 'player' ?
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: strSelectedMode === 'player' ? wide * 0.12 : wide * 0.16 }}>
+                    <TouchableOpacity onPress={() => Navigation.navigate("School")}>
+                      <AnimatedInput
+                        placeholder="SCHOOL"
+                        onChangeText={(e) => this.setTextofFields('school', e)}
+                        value={school.name}
+                        onFocus={() => Navigation.navigate("School")}
+                        disabled={school !== "" && school != undefined ? true : false}
+                        sufix={
+                          <Image
+                            style={{
+                              width: 7,
+                              height: 7,
+                              position: 'absolute',
+                              top:
+                                Platform.OS === "android"
+                                  ? 5
+                                  : school != ""
+                                    ? 30
+                                    : 5,
+                              right: 7
+                            }}
+                            source={require('../../Images/dropDownIconNew.png')}
+                          />
+                        }
+                        styleInput={{
+                          fontFamily: Fonts.Bold,
+                          color: Colors.light,
+                          fontSize: 16, lineHeight: 18
+                        }}
+                        styleLabel={{
+                          fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                          fontSize: 12,
+                        }}
+                        styleBodyContent={{
+                          borderBottomWidth: 1.5,
+                          borderBottomColor: Colors.borderColor,
+                          width: wide * 0.4
+                        }}
+                      // isAutoFocus={true}
+                      />
+                    </TouchableOpacity>
+
+                    {/* Add picker here */}
+
+                    <TouchableOpacity onPress={() => Navigation.navigate("Year")}>
+                      <AnimatedInput
+                        disabled={classof !== "" && classof != undefined ? true : false}
+                        placeholder="CLASS OF"
+                        value={classof}
+                        onFocus={() => Navigation.navigate("Year")}
+                        sufix={
+                          <Image
+                            style={{
+                              width: 7,
+                              height: 7,
+                              position: 'absolute',
+                              top:
+                                Platform.OS === "android"
+                                  ? 5
+                                  : classof != ""
+                                    ? 30
+                                    : 5,
+                              right: 7
+                            }}
+                            source={require('../../Images/dropDownIconNew.png')}
+                          />
+                        }
+                        styleInput={{
+                          fontFamily: Fonts.Bold,
+                          color: Colors.light,
+                          fontSize: 16,
+                          lineHeight: 18,
+                          position: 'relative'
+                        }}
+                        styleLabel={{
+                          fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                          fontSize: 12,
+                        }}
+                        styleBodyContent={{
+                          borderBottomWidth: 1.5,
+                          borderBottomColor: Colors.borderColor,
+                          width: wide * 0.4
+                        }}
+                      // isAutoFocus={true}
+                      // multiline
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  :
+                  <TouchableOpacity style={{ alignItems: 'center', marginTop: wide * 0.2 }}
+                    onPress={() => Navigation.navigate("TeamList")}>
+                    <AnimatedInput
+                      placeholder="SELECT TEAM"
+                      onChangeText={(e) => this.setTextofFields('team', e)}
+                      value={coachTeam.name}
+                      onFocus={() => Navigation.navigate("TeamList")}
+                      disabled={coachTeam !== "" && coachTeam != undefined ? true : false}
+                      sufix={
+                        <Image
+                          style={{
+                            width: 7,
+                            height: 7,
+                            position: 'absolute',
+                            top:
+                              Platform.OS === "android"
+                                ? 5
+                                : coachTeam != ""
+                                  ? 30
+                                  : 5,
+                            right: 7
+                          }}
+                          source={require('../../Images/dropDownIconNew.png')}
+                        />
+                      }
+                      styleInput={{
+                        fontFamily: Fonts.Bold,
+                        color: Colors.light,
+                        fontSize: 16, lineHeight: 18,
+                      }}
+                      styleLabel={{
+                        fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                        fontSize: 12,
+                      }}
+                      styleBodyContent={{
+                        borderBottomWidth: 1.5,
+                        borderBottomColor: Colors.borderColor,
+                        width: wide * 0.6
+                      }}
+                    // isAutoFocus={true}
+                    />
+                  </TouchableOpacity>
+              }
+              {/* <YearSelectionModal
               openModal={showYearPicker}
               onYearChoose={(e) => this.onYearChoose(e)}
               onClose={() => this.onYearClose()}
             /> */}
-            {/* {
+              {/* {
               strSelectedMode === 'coach' ? <View style={{ marginTop: 27 }}>
                 <Text style={{
                   fontFamily: Fonts.Bold,
@@ -688,29 +694,30 @@ class TellUsMoreIntro extends Component {
 
 
 
-            <TouchableOpacity
-              key={isbtnEnable}
-              style={{
-                width: wide * 0.8, height: 48,
-                backgroundColor: Colors.btnBg,
-                alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
-                justifyContent: 'center', marginTop: 20,
-              }} onPress={() => {
-                this.actionContinue()
-              }}>
-              <Text style={{
-                alignSelf: 'center', color: Colors.light,
-                fontFamily: Fonts.Bold,
-              }}>Continue</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                key={isbtnEnable}
+                style={{
+                  width: wide * 0.8, height: 48,
+                  backgroundColor: Colors.btnBg,
+                  alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
+                  justifyContent: 'center', marginTop: 20,
+                }} onPress={() => {
+                  this.actionContinue()
+                }}>
+                <Text style={{
+                  alignSelf: 'center', color: Colors.light,
+                  fontFamily: Fonts.Bold,
+                }}>Continue</Text>
+              </TouchableOpacity>
 
-          </View>
-          <AppLoader visible={this.state.loading} />
-          {/* </ScrollView> */}
+            </View>
+            <AppLoader visible={this.state.loading} />
+            {/* </ScrollView> */}
 
-        </KeyboardAwareScrollView>
-        {/* </KeyboardAvoidingView> */}
-      </SafeAreaView>
+          </KeyboardAwareScrollView>
+          {/* </KeyboardAvoidingView> */}
+        </SafeAreaView>
+      </View>
     );
   }
 }

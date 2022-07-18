@@ -8,4 +8,10 @@ const AppStatusBar = ({ color, ...props }) => (
   // </View>
 );
 
+export const GameAppStatusBar = ({ color, ...props }) => (
+  // <View style={[CommonStyles.statusBar, { backgroundColor: color }]}>
+  <StatusBar translucent backgroundColor={color} {...props} />
+  // </View>
+);
+
 export default AppStatusBar;

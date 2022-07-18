@@ -7,13 +7,15 @@ import { Colors, Fonts } from "../../constants";
 
 
 const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer }) => {
+  currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
+  clickedCourtArea, setMadeOrMissed, madeOrMissed }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
 
   useEffect(() => {
-    // console.log("is blueee", isBlueTeamPlaying, "..")
+    debugger
+    console.log("is blueee", clickedCourtArea)
     // removeActivePlayerFromList();
   }, []);
 
@@ -122,7 +124,32 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                 alignItems: 'center', justifyContent: 'center',
                 backgroundColor: Colors.btnGren
               }}
-            // onPress={onPress}
+              onPress={() => {
+                debugger
+                if (madeOrMissed != undefined && madeOrMissed != null) {
+                  debugger
+                  setMadeOrMissed([
+                    ...madeOrMissed,
+                    {
+                      "x": clickedCourtArea.x,
+                      "y": clickedCourtArea.y,
+                      "isMade": true
+                    }
+                  ])
+                  setCurrentView("playing")
+                } else {
+                  debugger
+                  setMadeOrMissed([
+                    {
+                      "x": clickedCourtArea.x,
+                      "y": clickedCourtArea.y,
+                      "isMade": true
+                    }
+                  ])
+                  setCurrentView("playing")
+                }
+
+              }}
             >
               <Text style={{
                 color: Colors.base,
@@ -141,6 +168,30 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                 alignItems: 'center', justifyContent: 'center',
                 backgroundColor: Colors.lightRed,
                 marginLeft: 30
+              }}
+              onPress={() => {
+                if (madeOrMissed != undefined && madeOrMissed != null) {
+                  debugger
+                  setMadeOrMissed([
+                    ...madeOrMissed,
+                    {
+                      "x": clickedCourtArea.x,
+                      "y": clickedCourtArea.y,
+                      "isMade": false
+                    }
+                  ])
+                  setCurrentView("playing")
+                } else {
+                  debugger
+                  setMadeOrMissed([
+                    {
+                      "x": clickedCourtArea.x,
+                      "y": clickedCourtArea.y,
+                      "isMade": false
+                    }
+                  ])
+                  setCurrentView("playing")
+                }
               }}
             // onPress={onPress}
             >

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import Navigation from './lib/Navigation';
-import { View, Modal, Text, BackHandler } from 'react-native';
+import { View, Modal, Text, BackHandler, Platform } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { Provider, connect } from 'react-redux';
 import {
@@ -146,6 +146,7 @@ export const App = createAppContainer(
 );
 
 export default class Root extends React.Component {
+
   componentDidMount() {
     SplashScreen.hide();
   }
@@ -165,8 +166,10 @@ export default class Root extends React.Component {
       <Provider store={configureStore()}>
 
         <AppStatusBar color={Colors.base} barStyle='light-content' />
+
         {content}
-      </Provider>
+
+      </Provider >
     );
   }
 }

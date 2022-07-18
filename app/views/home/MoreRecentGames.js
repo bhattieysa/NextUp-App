@@ -84,73 +84,79 @@ class MoreRecentGames extends Component {
     const { loading, gameDataList } = this.state;
     // console.log(dataList, topRankerData);
     return (
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
 
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        <View style={{
-          alignItems: 'center',
-          // borderBottomWidth: 0.5,
-          // borderBottomColor: Colors.newGrayFontColor,
-          // backgroundColor: 'green'
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
         }}>
           <View style={{
-            width: '90%', flexDirection: 'row', alignItems: 'center',
-            justifyContent: 'space-between', height: 50,
-            marginBottom: 8,
+            alignItems: 'center',
+            // borderBottomWidth: 0.5,
+            // borderBottomColor: Colors.newGrayFontColor,
             // backgroundColor: 'green'
           }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-              <TouchableOpacity style={{
-                width: wide * 0.1,
-                // marginHorizontal: 15
-              }} onPress={() => Navigation.back()}>
-                <FastImage style={{
-                  width: wide * 0.08, height: wide * 0.08,
-                  borderRadius: wide * 0.02,
-                  borderWidth: 1, borderColor: Colors.borderColor
-                }}
-                  source={require('../../Images/back_ico.png')}
-                />
-              </TouchableOpacity>
-              <Text style={{
-                // marginTop: 16,
-                color: Colors.light, fontSize: 24,
-                fontFamily: Fonts.Bold, lineHeight: 40,
-                marginHorizontal: 10
-              }}>
-                Recent Games
-              </Text>
-
-            </View>
-          </View>
-
-        </View>
-        {loading == true ?
-          <View style={{ flex: 1, backgroundColor: Colors.base }}>
-            <AppLoader visible={this.state.loading} />
-          </View>
-          :
-          <>
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-
-              <View style={{ backgroundColor: Colors.base, alignItems: 'center', paddingBottom: wide * 0.01 }} >
-
-                <View style={{ marginTop: wide * 0.01, width: '100%' }}>
-                  <FlatList
-                    keyExtractor={(item, index) => index.toString()}
-                    style={{ width: '100%', }}
-                    data={gameDataList}
-                    renderItem={(item, index) => this.renderRecentGames(item, index)}
-                    showsVerticalScrollIndicator={false}
-                    bounces={false}
+            <View style={{
+              width: '90%', flexDirection: 'row', alignItems: 'center',
+              justifyContent: 'space-between', height: 50,
+              marginBottom: 8,
+              // backgroundColor: 'green'
+            }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                <TouchableOpacity style={{
+                  width: wide * 0.1,
+                  // marginHorizontal: 15
+                }} onPress={() => Navigation.back()}>
+                  <FastImage style={{
+                    width: wide * 0.08, height: wide * 0.08,
+                    borderRadius: wide * 0.02,
+                    borderWidth: 1, borderColor: Colors.borderColor
+                  }}
+                    source={require('../../Images/back_ico.png')}
                   />
-                </View>
+                </TouchableOpacity>
+                <Text style={{
+                  // marginTop: 16,
+                  color: Colors.light, fontSize: 24,
+                  fontFamily: Fonts.Bold, lineHeight: 40,
+                  marginHorizontal: 10
+                }}>
+                  Recent Games
+                </Text>
+
               </View>
+            </View>
 
-            </KeyboardAvoidingView>
+          </View>
+          {loading == true ?
+            <View style={{ flex: 1, backgroundColor: Colors.base }}>
+              <AppLoader visible={this.state.loading} />
+            </View>
+            :
+            <>
+              <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
 
-          </>
-        }
-      </SafeAreaView >
+                <View style={{ backgroundColor: Colors.base, alignItems: 'center', paddingBottom: wide * 0.01 }} >
+
+                  <View style={{ marginTop: wide * 0.01, width: '100%' }}>
+                    <FlatList
+                      keyExtractor={(item, index) => index.toString()}
+                      style={{ width: '100%', }}
+                      data={gameDataList}
+                      renderItem={(item, index) => this.renderRecentGames(item, index)}
+                      showsVerticalScrollIndicator={false}
+                      bounces={false}
+                    />
+                  </View>
+                </View>
+
+              </KeyboardAvoidingView>
+
+            </>
+          }
+        </SafeAreaView >
+      </View>
 
     );
   }

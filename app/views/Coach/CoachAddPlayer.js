@@ -605,155 +605,157 @@ class CoachAddPlayer extends Component {
     const { arrPlayers } = this.state
     console.log("Dattaaaa", this.props.navigation.state.params);
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        <View style={{ marginHorizontal: 15, backgroundColor: Colors.base, }}>
-          <TouchableOpacity style={{ marginHorizontal: 15, width: wide * 0.1, }}
-            onPress={() => Navigation.back()}>
-            <Image style={{
-              width: wide * 0.1, height: wide * 0.1,
-              marginTop: 24, borderRadius: wide * 0.03, borderWidth: 1, borderColor: Colors.borderColor
-            }} source={require('../../Images/back_ico.png')} />
-          </TouchableOpacity>
-          <Text numberOfLines={1} style={{
-            color: Colors.light, fontSize: 18,
-            lineHeight: 28,
-            fontFamily: Fonts.Bold, textAlign: 'left', position: 'absolute', alignSelf: 'center', marginTop: wide * 0.08,
-          }}>{this.props.navigation.state.params.playerDetails.playingPosition}</Text>
-        </View>
-        <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+      <View style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base, }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
+          <View style={{ marginHorizontal: 15, backgroundColor: Colors.base, }}>
+            <TouchableOpacity style={{ marginHorizontal: 15, width: wide * 0.1, }}
+              onPress={() => Navigation.back()}>
+              <Image style={{
+                width: wide * 0.1, height: wide * 0.1,
+                marginTop: 24, borderRadius: wide * 0.03, borderWidth: 1, borderColor: Colors.borderColor
+              }} source={require('../../Images/back_ico.png')} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} style={{
+              color: Colors.light, fontSize: 18,
+              lineHeight: 28,
+              fontFamily: Fonts.Bold, textAlign: 'left', position: 'absolute', alignSelf: 'center', marginTop: wide * 0.08,
+            }}>{this.props.navigation.state.params.playerDetails.playingPosition}</Text>
+          </View>
+          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
 
-          <View style={{ flex: 1, backgroundColor: Colors.base, marginHorizontal: 15 }} >
+            <View style={{ flex: 1, backgroundColor: Colors.base, marginHorizontal: 15 }} >
 
-            <View style={{ marginTop: wide * 0.05, marginHorizontal: 15, flexDirection: 'row' }}>
-              {/* <Text numberOfLines={1} style={{
+              <View style={{ marginTop: wide * 0.05, marginHorizontal: 15, flexDirection: 'row' }}>
+                {/* <Text numberOfLines={1} style={{
                                 color: Colors.light, fontSize: 18,
                                 lineHeight: 28,
                                 fontFamily: Fonts.Regular, textAlign: 'left'
                             }}>{this.props.navigation.state.params.teamDetails.name}</Text>
                             <View style={{ flex: 1 }} /> */}
 
-              <TextInput style={{
-                borderWidth: 3, borderColor: Colors.borderColor,
-                fontFamily: Fonts.Bold, height: 60, paddingHorizontal: 10,
-                borderRadius: 5, color: Colors.light, fontSize: 16, width: '100%'
-              }}
-                value={this.state.srchTxt}
-                autoCorrect={false}
-                autoCapitalize='none'
-                placeholder={"SEARCH"}
-                placeholderTextColor={Colors.borderColor}
-                onChangeText={(e) => {
-                  this.setState({ srchTxt: e }, () => {
-                    if (e.length == 0) {
-                      Keyboard.dismiss();
-                    }
-                    this.getPlayers(e)
-                  })
+                <TextInput style={{
+                  borderWidth: 3, borderColor: Colors.borderColor,
+                  fontFamily: Fonts.Bold, height: 60, paddingHorizontal: 10,
+                  borderRadius: 5, color: Colors.light, fontSize: 16, width: '100%'
                 }}
-
-              />
-
-              {this.state.srchTxt == '' ?
-                <TouchableOpacity style={{
-                  position: 'absolute',
-                  width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
-                  justifyContent: 'center', alignItems: 'center'
-                }}
-                  activeOpacity={1}
-                >
-                  <Image
-                    style={{
-                      // position: 'absolute',
-                      width: 20, height: 20, //right: wide * 0.05, //top: wide * 0.05
-                    }}
-                    source={require('../../Images/search_ico.png')}
-                    resizeMode={'contain'}
-                  />
-                </TouchableOpacity>
-                :
-                <TouchableOpacity style={{
-                  position: 'absolute',
-                  width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
-                  justifyContent: 'center', alignItems: 'center',
-                  // backgroundColor: 'green'
-                }}
-                  activeOpacity={1}
-                  onPress={() => {
-                    this.setState({
-                      srchTxt: ''
-                    }, () => {
-                      Keyboard.dismiss();
-                      this.getPlayers('')
+                  value={this.state.srchTxt}
+                  autoCorrect={false}
+                  autoCapitalize='none'
+                  placeholder={"SEARCH"}
+                  placeholderTextColor={Colors.borderColor}
+                  onChangeText={(e) => {
+                    this.setState({ srchTxt: e }, () => {
+                      if (e.length == 0) {
+                        Keyboard.dismiss();
+                      }
+                      this.getPlayers(e)
                     })
                   }}
-                >
-                  <Text style={{
-                    fontSize: 16,
-                    lineHeight: 24, fontFamily: Fonts.Bold,
-                    color: Colors.light
-                  }}>X</Text>
-                </TouchableOpacity>
-              }
 
-              {/* <Image style={{
+                />
+
+                {this.state.srchTxt == '' ?
+                  <TouchableOpacity style={{
+                    position: 'absolute',
+                    width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
+                    justifyContent: 'center', alignItems: 'center'
+                  }}
+                    activeOpacity={1}
+                  >
+                    <Image
+                      style={{
+                        // position: 'absolute',
+                        width: 20, height: 20, //right: wide * 0.05, //top: wide * 0.05
+                      }}
+                      source={require('../../Images/search_ico.png')}
+                      resizeMode={'contain'}
+                    />
+                  </TouchableOpacity>
+                  :
+                  <TouchableOpacity style={{
+                    position: 'absolute',
+                    width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
+                    justifyContent: 'center', alignItems: 'center',
+                    // backgroundColor: 'green'
+                  }}
+                    activeOpacity={1}
+                    onPress={() => {
+                      this.setState({
+                        srchTxt: ''
+                      }, () => {
+                        Keyboard.dismiss();
+                        this.getPlayers('')
+                      })
+                    }}
+                  >
+                    <Text style={{
+                      fontSize: 16,
+                      lineHeight: 24, fontFamily: Fonts.Bold,
+                      color: Colors.light
+                    }}>X</Text>
+                  </TouchableOpacity>
+                }
+
+                {/* <Image style={{
                                 position: 'absolute',
                                 width: 20, height: 20, right: wide * 0.05, top: wide * 0.05
                             }} source={require('../../Images/search_ico.png')} /> */}
+              </View>
+              {this.state.showInviteButton == true ?
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    width: wide * 0.8, height: 48,
+                    backgroundColor: Colors.btnBg,
+                    alignSelf: 'center', borderRadius: 24,
+                    justifyContent: 'center',
+                    marginTop: wide * 0.08,
+                    // marginTop: 20,
+                  }} onPress={() => {
+                    Navigation.navigate('InvitePlayerToTeam', {
+                      playerDetails: this.props.navigation.state.params.playerDetails,
+                      teamDetails: this.props.navigation.state.params.teamDetails
+                    })
+                  }}>
+                  <Text style={{
+                    alignSelf: 'center', color: Colors.light,
+                    fontFamily: Fonts.Bold,
+                  }}>Invite</Text>
+                </TouchableOpacity>
+                : <></>
+              }
+
+
+
+              <View style={{ flex: 1, marginHorizontal: 15 }}>
+
+                <FlatList
+                  data={arrPlayers}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  initialNumToRender={20}
+                  // onEndReachedThreshold={0.1}
+                  // onEndReached={() => {
+                  //     pageNum = pageNum + 1
+                  //     this.getPlayers()
+                  // }}
+
+
+                  style={{
+                    marginTop: wide * 0.03, marginBottom: wide * 0.03,
+                    // backgroundColor: 'green'
+                  }}
+
+                  renderItem={(item, index) => this._renderTrainer(item, index)}
+                />
+              </View>
+
             </View>
-            {this.state.showInviteButton == true ?
-              <TouchableOpacity
-                activeOpacity={1}
-                style={{
-                  width: wide * 0.8, height: 48,
-                  backgroundColor: Colors.btnBg,
-                  alignSelf: 'center', borderRadius: 24,
-                  justifyContent: 'center',
-                  marginTop: wide * 0.08,
-                  // marginTop: 20,
-                }} onPress={() => {
-                  Navigation.navigate('InvitePlayerToTeam', {
-                    playerDetails: this.props.navigation.state.params.playerDetails,
-                    teamDetails: this.props.navigation.state.params.teamDetails
-                  })
-                }}>
-                <Text style={{
-                  alignSelf: 'center', color: Colors.light,
-                  fontFamily: Fonts.Bold,
-                }}>Invite</Text>
-              </TouchableOpacity>
-              : <></>
-            }
+            <AppLoader visible={this.state.loading} />
+          </KeyboardAvoidingView>
 
-
-
-            <View style={{ flex: 1, marginHorizontal: 15 }}>
-
-              <FlatList
-                data={arrPlayers}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                initialNumToRender={20}
-                // onEndReachedThreshold={0.1}
-                // onEndReached={() => {
-                //     pageNum = pageNum + 1
-                //     this.getPlayers()
-                // }}
-
-
-                style={{
-                  marginTop: wide * 0.03, marginBottom: wide * 0.03,
-                  // backgroundColor: 'green'
-                }}
-
-                renderItem={(item, index) => this._renderTrainer(item, index)}
-              />
-            </View>
-
-          </View>
-          <AppLoader visible={this.state.loading} />
-        </KeyboardAvoidingView>
-
-      </SafeAreaView >
+        </SafeAreaView >
+      </View>
     );
   }
 }

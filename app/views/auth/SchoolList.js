@@ -152,370 +152,377 @@ function SchoolList(props) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
+    <View style={{ flex: 1, backgroundColor: Colors.base, }}>
 
-      {
-        loading ? <AppLoader visible={loading} /> : null
-      }
+      <SafeAreaView style={{
+        flex: 1,
+        marginTop: Platform.OS == 'android' ? 30 : 0,
+        backgroundColor: Colors.base
+      }}>
 
-
-
-      <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
-          <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
-            <Image style={{
-              width: wide * 0.08, height: wide * 0.08,
-              borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
-            }} source={require('../../Images/back_ico.png')} />
-          </TouchableOpacity>
-          <Text style={{
-            color: Colors.light, fontSize: 16,
-            fontFamily: Fonts.Bold, lineHeight: 24,
-            marginHorizontal: 10
-          }}>
-            Select Your Location
-          </Text>
-        </View>
-      </View>
-
-      <KeyboardAwareScrollView
-        showsVerticalScrollIndicator={false}
-        enableOnAndroid={true}
-        style={{ marginTop: wide * 0.03, marginBottom: wide * 0.05 }}
-        bounces={false}
-      >
-
-        <View style={{
-          marginHorizontal: 15,
-          alignItems: 'center',
-          marginTop: wide * 0.04,
-          marginBottom: wide * 0.04
-
-        }}>
-          <TextInput
-            style={[styles.input, { width: '90%', }]}
-            onChangeText={(text) => setSchoolSearch(text)}
-            value={school_search}
-            placeholder="Search School"
-            placeholderTextColor={Colors.newGrayFontColor}
-          />
-        </View>
-
-        <View style={{
-          flexDirection: 'row', justifyContent: 'space-between', marginTop: wide * 0.08,
-          width: '85%', alignSelf: 'center',
-          // backgroundColor: "red"
-        }}>
-          <TouchableOpacity onPress={() => setStateModal(true)} activeOpacity={1}>
-            <AnimatedInput
-              placeholder="STATE"
-              onChangeText={(e) => this.setTextofFields('school', e)}
-              value={state_selected}
-              disabled
-              // editable={false}
-              // onFocus={() => setStateModal(true)}
-              sufix={
-                <Image
-                  style={{
-                    width: 7,
-                    height: 7,
-                    position: 'absolute',
-                    top:
-                      Platform.OS === "android"
-                        ? 5
-                        : state_selected != ""
-                          ? 30
-                          : 5,
-                    right: 7
-                  }}
-                  source={require('../../Images/dropDownIconNew.png')}
-                />
-              }
-              styleInput={{
-                fontFamily: Fonts.Bold,
-                color: Colors.light,
-                fontSize: 16, lineHeight: 18
-              }}
-              styleLabel={{
-                fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                fontSize: 12,
-              }}
-              styleBodyContent={{
-                borderBottomWidth: 1.5,
-                borderBottomColor: Colors.borderColor,
-                width: wide * 0.3
-              }}
-            // isAutoFocus={true}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setCityModal(true)} activeOpacity={1}>
-            <AnimatedInput
-              placeholder="CITY"
-              onChangeText={(e) => this.setTextofFields('city', e)}
-              value={city_selected}
-              disabled
-              // onFocus={() => setCityModal(true)}
-
-              sufix={
-                <Image
-                  style={{
-                    width: 7,
-                    height: 7,
-                    position: 'absolute',
-                    top:
-                      Platform.OS === "android"
-                        ? 5
-                        : city_selected != ""
-                          ? 30
-                          : 5,
-                    right: 7
-                  }}
-                  source={require('../../Images/dropDownIconNew.png')}
-                />
-              }
-              styleInput={{
-                fontFamily: Fonts.Bold,
-                color: Colors.light,
-                fontSize: 16, lineHeight: 18
-              }}
-              styleLabel={{
-                fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                fontSize: 12,
-              }}
-              styleBodyContent={{
-                borderBottomWidth: 1.5,
-                borderBottomColor: Colors.borderColor,
-                width: wide * 0.4
-              }}
-            // isAutoFocus={true}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <Text style={{ color: Colors.lightshade }}>{JSON.stringify(navParams)}</Text>
-
-        {city_selected !== '' ?
-          <View style={{
-            flexDirection: "column",
-            marginHorizontal: 30,
-          }}>
-
-            {
-              schoolList.map((st, index) => (
-                <TouchableOpacity key={`state-${index}`} style={{ marginTop: 15 }} onPress={() => {
-                  Navigation.navigate("TellUsMoreIntro", { school: st, selected_state: state_selected, city: city_selected })
-                }}>
-                  <Text style={{ color: Colors.lightshade, fontSize: 16 }}>{st.name}</Text>
-                </TouchableOpacity>
-              ))
-            }
-
-          </View>
-          : <></>
+        {
+          loading ? <AppLoader visible={loading} /> : null
         }
 
 
 
-      </KeyboardAwareScrollView>
-      {/* </KeyboardAvoidingView> */}
-
-      <Modal
-        visible={openStateModal}
-        animationType={'slide'}
-      >
-        <SafeAreaView style={{ backgroundColor: Colors.base }}>
-          <View
-            style={{
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingTop: 10,
-            }}
-          >
-            <Text style={{ color: Colors.white_08, fontSize: 20 }}>Choose States</Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 20,
-                top: 10
-              }}
-              onPress={() => setStateModal(false)}
-            >
-              <View>
-                <Text
-                  style={{
-                    color: Colors.white_08,
-                    fontSize: 20,
-                    fontWeight: '600'
-                  }}
-                >X</Text>
-              </View>
+        <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+            <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
+              <Image style={{
+                width: wide * 0.08, height: wide * 0.08,
+                borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
+              }} source={require('../../Images/back_ico.png')} />
             </TouchableOpacity>
+            <Text style={{
+              color: Colors.light, fontSize: 16,
+              fontFamily: Fonts.Bold, lineHeight: 24,
+              marginHorizontal: 10
+            }}>
+              Select Your Location
+            </Text>
           </View>
+        </View>
+
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          enableOnAndroid={true}
+          style={{ marginTop: wide * 0.03, marginBottom: wide * 0.05 }}
+          bounces={false}
+        >
+
           <View style={{
             marginHorizontal: 15,
             alignItems: 'center',
-            marginTop: wide * 0.05,
-            marginBottom: wide * 0.02
+            marginTop: wide * 0.04,
+            marginBottom: wide * 0.04
+
           }}>
             <TextInput
               style={[styles.input, { width: '90%', }]}
-              onChangeText={(text) => setStateSearch(text)}
-              value={state_search}
-              placeholder="Search State"
+              onChangeText={(text) => setSchoolSearch(text)}
+              value={school_search}
+              placeholder="Search School"
               placeholderTextColor={Colors.newGrayFontColor}
             />
           </View>
-          <View
-            style={{
-              height: '98%',
-              width: '100%',
-            }}
-          >
-            <ScrollView
-              showsHorizontalScrollIndicator={false}
-              bounces={false}
-              contentContainerStyle={{ marginBottom: wide * 0.05 }}
-            >
-              <View
-                style={{
-                  width: '100%',
-                  padding: 20,
+
+          <View style={{
+            flexDirection: 'row', justifyContent: 'space-between', marginTop: wide * 0.08,
+            width: '85%', alignSelf: 'center',
+            // backgroundColor: "red"
+          }}>
+            <TouchableOpacity onPress={() => setStateModal(true)} activeOpacity={1}>
+              <AnimatedInput
+                placeholder="STATE"
+                onChangeText={(e) => this.setTextofFields('school', e)}
+                value={state_selected}
+                disabled
+                // editable={false}
+                // onFocus={() => setStateModal(true)}
+                sufix={
+                  <Image
+                    style={{
+                      width: 7,
+                      height: 7,
+                      position: 'absolute',
+                      top:
+                        Platform.OS === "android"
+                          ? 5
+                          : state_selected != ""
+                            ? 30
+                            : 5,
+                      right: 7
+                    }}
+                    source={require('../../Images/dropDownIconNew.png')}
+                  />
+                }
+                styleInput={{
+                  fontFamily: Fonts.Bold,
+                  color: Colors.light,
+                  fontSize: 16, lineHeight: 18
                 }}
-              >
-                {stateList.map(el => (
-                  <TouchableOpacity onPress={() => {
+                styleLabel={{
+                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                  fontSize: 12,
+                }}
+                styleBodyContent={{
+                  borderBottomWidth: 1.5,
+                  borderBottomColor: Colors.borderColor,
+                  width: wide * 0.3
+                }}
+              // isAutoFocus={true}
+              />
+            </TouchableOpacity>
 
-                    // if (res) {
-                    setSelectedState(el)
-                    setSelectedCity('')
-                    getCityData(el)
-                    setStateModal(false)
+            <TouchableOpacity onPress={() => setCityModal(true)} activeOpacity={1}>
+              <AnimatedInput
+                placeholder="CITY"
+                onChangeText={(e) => this.setTextofFields('city', e)}
+                value={city_selected}
+                disabled
+                // onFocus={() => setCityModal(true)}
 
-
-                    // 
-                    // 
-                  }}>
-                    <View
-                      style={{
-                        padding: 10,
-                        width: '95%',
-                        alignSelf: 'center'
-                        // borderBottomWidth: 0.5,
-                        // borderBottomColor: Colors.white_08
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: Colors.lightshade,
-                          fontSize: 14,
-                        }}
-                      >{el}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </ScrollView>
-          </View>
-        </SafeAreaView>
-      </Modal>
-
-      <Modal
-        visible={openCityModal}
-        animationType={'slide'}
-      >
-        <SafeAreaView style={{ backgroundColor: Colors.base }}>
-          <View
-            style={{
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingTop: 10,
-            }}
-          >
-            <Text style={{ color: Colors.white_08, fontSize: 20 }}>Choose City</Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 20,
-                top: 10
-              }}
-              onPress={() => setCityModal(false)}
-            >
-              <View>
-                <Text
-                  style={{
-                    color: Colors.white_08,
-                    fontSize: 20,
-                    fontWeight: '600'
-                  }}
-                >X</Text>
-              </View>
+                sufix={
+                  <Image
+                    style={{
+                      width: 7,
+                      height: 7,
+                      position: 'absolute',
+                      top:
+                        Platform.OS === "android"
+                          ? 5
+                          : city_selected != ""
+                            ? 30
+                            : 5,
+                      right: 7
+                    }}
+                    source={require('../../Images/dropDownIconNew.png')}
+                  />
+                }
+                styleInput={{
+                  fontFamily: Fonts.Bold,
+                  color: Colors.light,
+                  fontSize: 16, lineHeight: 18
+                }}
+                styleLabel={{
+                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                  fontSize: 12,
+                }}
+                styleBodyContent={{
+                  borderBottomWidth: 1.5,
+                  borderBottomColor: Colors.borderColor,
+                  width: wide * 0.4
+                }}
+              // isAutoFocus={true}
+              />
             </TouchableOpacity>
           </View>
-          <View style={{
-            marginHorizontal: 15,
-            alignItems: 'center',
-            marginTop: wide * 0.05,
-            marginBottom: wide * 0.02
-          }}>
-            <TextInput
-              style={[styles.input, { width: '90%', }]}
-              onChangeText={(text) => setCitySeatch(text)}
-              value={city_search}
-              placeholder="Search City"
-              placeholderTextColor={Colors.newGrayFontColor}
-            />
-          </View>
-          <View
-            style={{
-              height: '98%',
-              width: '100%',
-            }}
-          >
-            <ScrollView
-              showsHorizontalScrollIndicator={false}
-              bounces={false}
-              contentContainerStyle={{ marginBottom: wide * 0.05 }}
-            >
-              <View
-                style={{
-                  width: '100%',
-                  padding: 20,
-                }}
-              >
-                {cityList.map(el => (
-                  <TouchableOpacity onPress={() => {
-                    setSelectedCity(el)
-                    getSchoolData(el)
-                    setCityModal(false)
-                  }}>
-                    <View
-                      style={{
-                        padding: 10,
-                        width: '95%',
-                        alignSelf: 'center'
-                        // borderBottomWidth: 0.5,
-                        // borderBottomColor: Colors.white_08
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: Colors.lightshade,
-                          fontSize: 14,
-                        }}
-                      >{el}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </ScrollView>
-          </View>
-        </SafeAreaView>
-      </Modal>
 
-    </SafeAreaView>
+          <Text style={{ color: Colors.lightshade }}>{JSON.stringify(navParams)}</Text>
+
+          {city_selected !== '' ?
+            <View style={{
+              flexDirection: "column",
+              marginHorizontal: 30,
+            }}>
+
+              {
+                schoolList.map((st, index) => (
+                  <TouchableOpacity key={`state-${index}`} style={{ marginTop: 15 }} onPress={() => {
+                    Navigation.navigate("TellUsMoreIntro", { school: st, selected_state: state_selected, city: city_selected })
+                  }}>
+                    <Text style={{ color: Colors.lightshade, fontSize: 16 }}>{st.name}</Text>
+                  </TouchableOpacity>
+                ))
+              }
+
+            </View>
+            : <></>
+          }
+
+
+
+        </KeyboardAwareScrollView>
+        {/* </KeyboardAvoidingView> */}
+
+        <Modal
+          visible={openStateModal}
+          animationType={'slide'}
+        >
+          <SafeAreaView style={{ backgroundColor: Colors.base }}>
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: 10,
+              }}
+            >
+              <Text style={{ color: Colors.white_08, fontSize: 20 }}>Choose States</Text>
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  top: 10
+                }}
+                onPress={() => setStateModal(false)}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color: Colors.white_08,
+                      fontSize: 20,
+                      fontWeight: '600'
+                    }}
+                  >X</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{
+              marginHorizontal: 15,
+              alignItems: 'center',
+              marginTop: wide * 0.05,
+              marginBottom: wide * 0.02
+            }}>
+              <TextInput
+                style={[styles.input, { width: '90%', }]}
+                onChangeText={(text) => setStateSearch(text)}
+                value={state_search}
+                placeholder="Search State"
+                placeholderTextColor={Colors.newGrayFontColor}
+              />
+            </View>
+            <View
+              style={{
+                height: '98%',
+                width: '100%',
+              }}
+            >
+              <ScrollView
+                showsHorizontalScrollIndicator={false}
+                bounces={false}
+                contentContainerStyle={{ marginBottom: wide * 0.05 }}
+              >
+                <View
+                  style={{
+                    width: '100%',
+                    padding: 20,
+                  }}
+                >
+                  {stateList.map(el => (
+                    <TouchableOpacity onPress={() => {
+
+                      // if (res) {
+                      setSelectedState(el)
+                      setSelectedCity('')
+                      getCityData(el)
+                      setStateModal(false)
+
+
+                      // 
+                      // 
+                    }}>
+                      <View
+                        style={{
+                          padding: 10,
+                          width: '95%',
+                          alignSelf: 'center'
+                          // borderBottomWidth: 0.5,
+                          // borderBottomColor: Colors.white_08
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: Colors.lightshade,
+                            fontSize: 14,
+                          }}
+                        >{el}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
+            </View>
+          </SafeAreaView>
+        </Modal>
+
+        <Modal
+          visible={openCityModal}
+          animationType={'slide'}
+        >
+          <SafeAreaView style={{ backgroundColor: Colors.base }}>
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: 10,
+              }}
+            >
+              <Text style={{ color: Colors.white_08, fontSize: 20 }}>Choose City</Text>
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  top: 10
+                }}
+                onPress={() => setCityModal(false)}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color: Colors.white_08,
+                      fontSize: 20,
+                      fontWeight: '600'
+                    }}
+                  >X</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{
+              marginHorizontal: 15,
+              alignItems: 'center',
+              marginTop: wide * 0.05,
+              marginBottom: wide * 0.02
+            }}>
+              <TextInput
+                style={[styles.input, { width: '90%', }]}
+                onChangeText={(text) => setCitySeatch(text)}
+                value={city_search}
+                placeholder="Search City"
+                placeholderTextColor={Colors.newGrayFontColor}
+              />
+            </View>
+            <View
+              style={{
+                height: '98%',
+                width: '100%',
+              }}
+            >
+              <ScrollView
+                showsHorizontalScrollIndicator={false}
+                bounces={false}
+                contentContainerStyle={{ marginBottom: wide * 0.05 }}
+              >
+                <View
+                  style={{
+                    width: '100%',
+                    padding: 20,
+                  }}
+                >
+                  {cityList.map(el => (
+                    <TouchableOpacity onPress={() => {
+                      setSelectedCity(el)
+                      getSchoolData(el)
+                      setCityModal(false)
+                    }}>
+                      <View
+                        style={{
+                          padding: 10,
+                          width: '95%',
+                          alignSelf: 'center'
+                          // borderBottomWidth: 0.5,
+                          // borderBottomColor: Colors.white_08
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: Colors.lightshade,
+                            fontSize: 14,
+                          }}
+                        >{el}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
+            </View>
+          </SafeAreaView>
+        </Modal>
+
+      </SafeAreaView>
+    </View>
   )
 }
 

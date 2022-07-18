@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41714fd9-432f-4161-bd1f-0834b5d4ed07" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_2_4_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_1_2_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_3_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_3_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_3_6_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
@@ -15,20 +24,102 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_5_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_installreferrer_installreferrer_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_installreferrer_installreferrer_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_eightbitlab_blurview_1_6_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_eightbitlab_blurview_1_6_3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_common_4_42_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_common_4_42_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_core_4_42_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_core_4_42_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_login_4_42_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_login_4_42_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_share_4_42_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_share_4_42_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_12_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_12_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_maps_android_android_maps_utils_0_5_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_maps_android_android_maps_utils_0_5_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_yqritc_android_scalablevideoview_1_0_4_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_yqritc_android_scalablevideoview_1_0_4_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_inject_javax_inject_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_inject_javax_inject_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_junit_4_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_junit_4_12.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_1_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_1_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_api_5_5_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_api_5_5_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_5_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_5_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_mockito_mockito_core_3_3_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_mockito_mockito_core_3_3_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_objenesis_objenesis_2_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_objenesis_objenesis_2_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1469637757/NextUp.react-native-month-year-picker.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1469637757/NextUp.react-native-month-year-picker.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1648704118/NextUp.react-native-linear-gradient.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1648704118/NextUp.react-native-linear-gradient.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1685659557/NextUp.invertase_react-native-apple-authentication.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1685659557/NextUp.invertase_react-native-apple-authentication.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1685659557/NextUp.invertase_react-native-apple-authentication.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1685659557/NextUp.invertase_react-native-apple-authentication.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1685659557/NextUp.invertase_react-native-apple-authentication.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1685659557/NextUp.invertase_react-native-apple-authentication.unitTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1714337975/NextUp.stripe_stripe-react-native.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1714337975/NextUp.stripe_stripe-react-native.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1714337975/NextUp.stripe_stripe-react-native.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1714337975/NextUp.stripe_stripe-react-native.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1714337975/NextUp.stripe_stripe-react-native.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1714337975/NextUp.stripe_stripe-react-native.unitTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1767626405/NextUp.react-native-google-signin_google-signin.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1767626405/NextUp.react-native-google-signin_google-signin.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1840480083/NextUp.react-native-video.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1840480083/NextUp.react-native-video.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-1977898015/NextUp.react-native-safe-area-context.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-1977898015/NextUp.react-native-safe-area-context.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-713874389/NextUp.react-native-image-crop-picker.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-713874389/NextUp.react-native-image-crop-picker.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/-926529026/NextUp.react-native-navigation-bar-color.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/-926529026/NextUp.react-native-navigation-bar-color.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/1321805552/NextUp.react-native-push-notification.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/1321805552/NextUp.react-native-push-notification.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/1583692126/NextUp.react-native-vector-icons.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/1583692126/NextUp.react-native-vector-icons.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/1728135481/NextUp.react-native-screens.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/1728135481/NextUp.react-native-screens.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/2026312056/NextUp.react-native-gesture-handler.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/2026312056/NextUp.react-native-gesture-handler.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/223903835/NextUp.react-native-share-menu.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/223903835/NextUp.react-native-share-menu.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/261483611/NextUp.react-native-maps.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/261483611/NextUp.react-native-maps.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/437101110/NextUp.react-native-permissions.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/437101110/NextUp.react-native-permissions.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/453574166/NextUp.react-native-svg.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/453574166/NextUp.react-native-svg.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/727775213/NextUp.react-native-picker_picker.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/727775213/NextUp.react-native-picker_picker.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/800591235/NextUp.react-native-orientation-locker.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/800591235/NextUp.react-native-orientation-locker.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/92701092/NextUp.react-native-reanimated.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/92701092/NextUp.react-native-reanimated.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/951206340/NextUp.react-native-splash-screen.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/951206340/NextUp.react-native-splash-screen.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/NextUp.app.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/NextUp.app.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/NextUp.app.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/NextUp.app.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/NextUp.app.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/NextUp.app.unitTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/generated/rncli/src/main/java/com/facebook/react/PackageList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/generated/rncli/src/main/java/com/facebook/react/PackageList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/compressed_assets/debug/out/assets/index.android.bundle.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/compressed_assets/debug/out/assets/index.android.bundle.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_0.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_0.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_1.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_1.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_10.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_10.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_11.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_11.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_12.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_12.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_13.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_13.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_14.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_14.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_15.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_15.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_16.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_16.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_17.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_17.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_18.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_18.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_19.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_19.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_2.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_2.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_20.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_20.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_21.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_21.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_22.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_22.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_23.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_23.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_24.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_24.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_25.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_25.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_26.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_26.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_27.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_27.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_28.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_28.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_29.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_29.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_3.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_3.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_30.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_30.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_31.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_31.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_32.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_32.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_33.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_33.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_34.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_34.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_4.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_4.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_5.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_5.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_6.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_6.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_7.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_7.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_8.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_8.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_9.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeLibDexDebug/classes_9.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes2.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes2.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex_archive_input_jar_hashes/debug/out" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex_archive_input_jar_hashes/debug/out" afterDir="false" />
@@ -40,13 +131,30 @@
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/merger.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugShaders/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugShaders/merger.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/androidResources" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/javaResources0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/androidResources" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/androidResources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/javaResources0" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/javaResources0" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/facebook/react/PackageList.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/facebook/react/PackageList.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_assets/debug/out/index.android.bundle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_assets/debug/out/index.android.bundle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_java_res/debug/out.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_java_res/debug/out.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_manifest/debug/out/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_manifest/debug/out/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/arm64-v8a/libflipper.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/armeabi-v7a/libflipper.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86/libflipper.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_native_libs/debug/out/lib/x86_64/libflipper.so" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/debug.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/debug.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values-af.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values-af.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values-am.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values-am.json" afterDir="false" />
@@ -164,6 +272,7 @@
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values-zu.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values-zu.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/single/debug.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/single/debug.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/packaged_manifests/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/packaged_manifests/debug/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/processed_res/debug/out/resources-debug.ap_" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/processed_res/debug/out/resources-debug.ap_" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/facebook/react/PackageList.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/facebook/react/PackageList.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/drawable-hdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/drawable-hdpi_node_modules_reactnativecalendars_src_calendar_img_next.png.flat" afterDir="false" />
@@ -497,295 +606,62 @@
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values-zu_values-zu.arsc.flat" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values-zu_values-zu.arsc.flat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values_values.arsc.flat" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values_values.arsc.flat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/runtime_symbol_list/debug/R.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/runtime_symbol_list/debug/R.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libc++_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent_core-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent_extra-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libfb.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libfbjni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libflipper.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libfolly_futures.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libfolly_json.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libglog.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libglog_init.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libhermes-executor-debug.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libhermes-executor-release.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libhermes-inspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libimagepipeline.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libjsc.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libjscexecutor.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libjsijniprofiler.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libjsinspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libnative-filters.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libnative-imagetranscoder.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libreactnativeblob.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libreactnativejni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libucrop.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libyoga.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libc++_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent_core-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent_extra-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libfb.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libfbjni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libflipper.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libfolly_futures.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libfolly_json.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libglog.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libglog_init.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libhermes-executor-debug.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libhermes-executor-release.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libhermes-inspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libimagepipeline.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libjsc.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libjscexecutor.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libjsijniprofiler.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libjsinspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libnative-filters.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libnative-imagetranscoder.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libreactnativeblob.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libreactnativejni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libucrop.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libyoga.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi/libucrop.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libc++_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent_core-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent_extra-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libfb.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libfbjni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libflipper.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libfolly_futures.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libfolly_json.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libglog.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libglog_init.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libhermes-executor-debug.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libhermes-executor-release.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libhermes-inspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libimagepipeline.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libjsc.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libjscexecutor.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libjsijniprofiler.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libjsinspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libnative-filters.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libnative-imagetranscoder.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libreactnativeblob.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libreactnativejni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libucrop.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libyoga.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libc++_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent_core-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent_extra-2.1.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libfb.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libfbjni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libflipper.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libfolly_futures.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libfolly_json.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libglog.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libglog_init.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libhermes-executor-debug.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libhermes-executor-release.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libhermes-inspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libimagepipeline.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libjsc.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libjscexecutor.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libjsijniprofiler.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libjsinspector.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libnative-filters.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libnative-imagetranscoder.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libreactnativeblob.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libreactnativejni.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libucrop.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libyoga.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libflipper.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libjsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libjsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libucrop.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/arm64-v8a/libucrop.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libflipper.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libjsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libjsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libucrop.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/armeabi-v7a/libucrop.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libflipper.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libjsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libjsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libucrop.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86/libucrop.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent_core-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent_core-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent_extra-2.1.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libevent_extra-2.1.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libflipper.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libflipper.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libjsc.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libjsc.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libucrop.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/stripped_native_libs/debug/out/lib/x86_64/libucrop.so" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/output-metadata.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/outputs/logs/manifest-merger-debug-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/outputs/logs/manifest-merger-debug-report.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/index.android.bundle" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/index.android.bundle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/routes/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/routes/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/routes/loginStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/routes/loginStack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/views/auth/AddCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/views/auth/AddCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/views/auth/CardsList.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/views/auth/CardsList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/views/auth/RoadToProPlan.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/views/auth/RoadToProPlan.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/views/home/MyStanding.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/views/home/MyStanding.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/views/home/RoadToProStack/RoadToProPlan.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/views/home/RoadToProStack/RoadToProPlan.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/xcshareddata/xcschemes/NextUp-tvOS.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/xcshareddata/xcschemes/NextUp-tvOS.xcscheme" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/xcshareddata/xcschemes/NextUp.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/xcshareddata/xcschemes/NextUp.xcscheme" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/xcuserdata/divesh.xcuserdatad/xcschemes/xcschememanagement.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp.xcodeproj/xcuserdata/divesh.xcuserdatad/xcschemes/xcschememanagement.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp.xcworkspace/xcuserdata/divesh.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp.xcworkspace/xcuserdata/divesh.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp/AppDelegate.m" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp/AppDelegate.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/NextUp/NextUp.entitlements" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/NextUp/NextUp.entitlements" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Activity.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Body.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Characteristic.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_ClinicalRecords.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Dietary.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Fitness.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Hearing.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_LabTests.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Mindfulness.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Results.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Sleep.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Summary.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Vitals.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Methods_Workout.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Queries.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+TypesAndPermissions.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit+Utils.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Private/RNAppleHealthKit/RCTAppleHealthKit.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Activity.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Body.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Characteristic.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_ClinicalRecords.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Dietary.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Fitness.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Hearing.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_LabTests.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Mindfulness.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Results.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Sleep.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Summary.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Vitals.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Methods_Workout.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Queries.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+TypesAndPermissions.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit+Utils.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Headers/Public/RNAppleHealthKit/RCTAppleHealthKit.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Manifest.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Manifest.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/AppAuth.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/BVLinearGradient.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/DoubleConversion.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FBLazyVector.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FBReactNativeSpec.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FBSDKCoreKit.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FBSDKLoginKit.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FBSDKShareKit.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Firebase.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FirebaseAnalytics.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FirebaseAuth.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FirebaseCore.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FirebaseCoreDiagnostics.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FirebaseInstallations.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FirebaseInstanceID.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/FirebaseMessaging.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/GTMAppAuth.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/GTMSessionFetcher.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/GoogleAppMeasurement.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/GoogleDataTransport.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/GoogleSignIn.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/GoogleUtilities.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Permission-Camera.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Permission-LocationAlways.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Permission-LocationWhenInUse.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Permission-Microphone.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Permission-Notifications.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Permission-PhotoLibrary.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Permission-PhotoLibraryAddOnly.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Pods-NextUp-NextUpTests.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Pods-NextUp-tvOS.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Pods-NextUp-tvOSTests.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Pods-NextUp.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Pods-NextUpShareExt.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/PromisesObjC.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RCTRequired.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RCTTypeSafety.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNAppleAuthentication.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNAppleHealthKit.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNCAsyncStorage.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNCClipboard.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNCMaskedView.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNCPicker.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNCPushNotificationIOS.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNDateTimePicker.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNDeviceInfo.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNFBApp.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNFBAuth.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNFBMessaging.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNFastImage.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNGestureHandler.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNGoogleSignin.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNImageCropPicker-QBImagePicker.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNImageCropPicker.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNPermissions.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNReanimated.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNSVG.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNScreens.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNShareMenu.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/RNVectorIcons.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-Core-AccessibilityResources.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-Core.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-CoreModules.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTActionSheet.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTAnimation.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTBlob.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTImage.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTLinking.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTNetwork.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTSettings.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTText.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-RCTVibration.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-callinvoker.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-cxxreact.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-jsi.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-jsiexecutor.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React-jsinspector.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/React.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/ReactCommon.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/SDWebImage.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/SDWebImageWebPCoder.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/TOCropViewController-TOCropViewControllerBundle.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/TOCropViewController.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/Yoga.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/glog.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/libwebp.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/nanopb.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-blur.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-fbsdk.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-geolocation.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-maps.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-netinfo.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-orientation-locker.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-safe-area-context.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-slider.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-splash-screen.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/react-native-video.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Pods.xcodeproj/xcuserdata/paly.xcuserdatad/xcschemes/xcschememanagement.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/FirebaseAnalytics/FirebaseAnalytics-xcframeworks.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/FirebaseAnalytics/FirebaseAnalytics-xcframeworks.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/GoogleAppMeasurement/GoogleAppMeasurement-xcframeworks.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/GoogleAppMeasurement/GoogleAppMeasurement-xcframeworks.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests-acknowledgements.markdown" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests-acknowledgements.markdown" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests-acknowledgements.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests-acknowledgements.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests.debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-NextUpTests/Pods-NextUp-NextUpTests.release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOS/Pods-NextUp-tvOS.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOS/Pods-NextUp-tvOS.debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOS/Pods-NextUp-tvOS.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOS/Pods-NextUp-tvOS.release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOSTests/Pods-NextUp-tvOSTests.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOSTests/Pods-NextUp-tvOSTests.debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOSTests/Pods-NextUp-tvOSTests.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp-tvOSTests/Pods-NextUp-tvOSTests.release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp-acknowledgements.markdown" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp-acknowledgements.markdown" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp-acknowledgements.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp-acknowledgements.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp.debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUp/Pods-NextUp.release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUpShareExt/Pods-NextUpShareExt.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUpShareExt/Pods-NextUpShareExt.debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUpShareExt/Pods-NextUpShareExt.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Pods/Target Support Files/Pods-NextUpShareExt/Pods-NextUpShareExt.release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/RNAppleHealthKit/RNAppleHealthKit-dummy.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/RNAppleHealthKit/RNAppleHealthKit-prefix.pch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/RNAppleHealthKit/RNAppleHealthKit.debug.xcconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ios/Pods/Target Support Files/RNAppleHealthKit/RNAppleHealthKit.release.xcconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/AntDesign.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/Entypo.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/EvilIcons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/Feather.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/FontAwesome.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/FontAwesome5_Brands.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/FontAwesome5_Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/FontAwesome5_Solid.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/Fontisto.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/Foundation.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/Ionicons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/MaterialCommunityIcons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/MaterialIcons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/Octicons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/SimpleLineIcons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/fonts/Zocial.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -800,7 +676,70 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="memory.settings.postsync.last.time.stamp" value="1657866797426" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="NextUp.app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -823,5 +762,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

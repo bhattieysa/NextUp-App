@@ -605,174 +605,179 @@ class ExploreSearch extends Component {
           </SafeAreaView>
           :
           <KeyBoardDismissHandler>
-            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-              <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-                <View style={{
-                  backgroundColor: Colors.base,
-                  flexDirection: 'row',
-                  width: '90%',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: wide * 0.02,
-                  marginBottom: wide * 0.03,
-                }}>
+            <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+              <SafeAreaView style={{
+                flex: 1,
+                marginTop: Platform.OS == 'android' ? 30 : 0,
+                backgroundColor: Colors.base
+              }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', }}>
+                  <View style={{
+                    backgroundColor: Colors.base,
+                    flexDirection: 'row',
+                    width: '90%',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: wide * 0.02,
+                    marginBottom: wide * 0.03,
+                  }}>
 
-                  <TouchableOpacity
-                    style={{ marginLeft: wide * 0.01 }}
-                    onPress={() => Navigation.back()}>
-                    <Image style={{
-                      width: wide * 0.08, height: wide * 0.08,
-                      borderRadius: wide * 0.02,
-                      borderWidth: 1, borderColor: Colors.borderColor
-                    }} source={require('../../Images/back_ico.png')} />
-                  </TouchableOpacity>
-                  <View style={{ width: '80%', marginRight: wide * 0.02 }}>
-                    <TextInput style={{
-                      borderWidth: 3, borderColor: Colors.borderColor,
-                      fontFamily: Fonts.Bold, height: 50,
-                      paddingLeft: 10, paddingRight: wide * 0.1,
-                      borderRadius: 5, color: Colors.light, fontSize: 16
-                    }}
-                      value={this.state.srchTxt}
-                      autoCorrect={false}
-                      autoCapitalize='none'
-                      placeholder={"SEARCH"}
-                      returnKeyType='search'
-                      placeholderTextColor={Colors.borderColor}
-                      onChangeText={(e) => {
-                        this.setState({ srchTxt: e },
-                          () => {
-                            if (e.length >= 3) {
-                              this.searchDataForTxt()
-
-                            }
-                          });
+                    <TouchableOpacity
+                      style={{ marginLeft: wide * 0.01 }}
+                      onPress={() => Navigation.back()}>
+                      <Image style={{
+                        width: wide * 0.08, height: wide * 0.08,
+                        borderRadius: wide * 0.02,
+                        borderWidth: 1, borderColor: Colors.borderColor
+                      }} source={require('../../Images/back_ico.png')} />
+                    </TouchableOpacity>
+                    <View style={{ width: '80%', marginRight: wide * 0.02 }}>
+                      <TextInput style={{
+                        borderWidth: 3, borderColor: Colors.borderColor,
+                        fontFamily: Fonts.Bold, height: 50,
+                        paddingLeft: 10, paddingRight: wide * 0.1,
+                        borderRadius: 5, color: Colors.light, fontSize: 16
                       }}
-                      onSubmitEditing={() => {
-                        this.searchDataForTxt()
+                        value={this.state.srchTxt}
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                        placeholder={"SEARCH"}
+                        returnKeyType='search'
+                        placeholderTextColor={Colors.borderColor}
+                        onChangeText={(e) => {
+                          this.setState({ srchTxt: e },
+                            () => {
+                              if (e.length >= 3) {
+                                this.searchDataForTxt()
+
+                              }
+                            });
+                        }}
+                        onSubmitEditing={() => {
+                          this.searchDataForTxt()
+                        }
+                        }
+
+
+                      />
+                      {this.state.srchTxt.length == '' ?
+                        <TouchableOpacity style={{
+                          position: 'absolute',
+                          width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
+                          justifyContent: 'center', alignItems: 'center'
+                        }}
+                          activeOpacity={1}
+                        >
+                          <Image
+                            style={{
+                              // position: 'absolute',
+                              width: 20, height: 20, //right: wide * 0.05, //top: wide * 0.05
+                            }}
+                            source={require('../../Images/search_ico.png')}
+                            resizeMode={'contain'}
+                          />
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity style={{
+                          position: 'absolute',
+                          width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
+                          justifyContent: 'center', alignItems: 'center'
+                        }}
+                          activeOpacity={1}
+                          onPress={() => this.setState({
+                            srchTxt: ''
+                          })}
+                        >
+                          <Text style={{
+                            fontSize: 16,
+                            lineHeight: 24, fontFamily: Fonts.Bold,
+                            color: Colors.light
+                          }}>X</Text>
+                        </TouchableOpacity>
                       }
-                      }
 
-
-                    />
-                    {this.state.srchTxt.length == '' ?
-                      <TouchableOpacity style={{
-                        position: 'absolute',
-                        width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
-                        justifyContent: 'center', alignItems: 'center'
-                      }}
-                        activeOpacity={1}
-                      >
-                        <Image
-                          style={{
-                            // position: 'absolute',
-                            width: 20, height: 20, //right: wide * 0.05, //top: wide * 0.05
-                          }}
-                          source={require('../../Images/search_ico.png')}
-                          resizeMode={'contain'}
-                        />
-                      </TouchableOpacity>
-                      :
-                      <TouchableOpacity style={{
-                        position: 'absolute',
-                        width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
-                        justifyContent: 'center', alignItems: 'center'
-                      }}
-                        activeOpacity={1}
-                        onPress={() => this.setState({
-                          srchTxt: ''
-                        })}
-                      >
-                        <Text style={{
-                          fontSize: 16,
-                          lineHeight: 24, fontFamily: Fonts.Bold,
-                          color: Colors.light
-                        }}>X</Text>
-                      </TouchableOpacity>
-                    }
-
+                    </View>
                   </View>
                 </View>
-              </View>
 
-              <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-                <View style={{
-                  // backgroundColor: 'green',
-                  alignItems: 'center',
-                }} >
-
+                <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
                   <View style={{
-                    width: '95%',
-                    flexDirection: 'row', alignItems: 'center',
-                    justifyContent: 'space-around',
-                    // backgroundColor: 'blue',
-                    height: wide * 0.1
-                  }}>
-                    <TouchableOpacity style={{
-                      // width: '20%',
-                      borderBottomColor: this.state.selectedCat_nm == 'Players' ? Colors.light : null,
-                      borderBottomWidth: this.state.selectedCat_nm == 'Players' ? 1 : 0,
-                    }}
-                      onPress={() => this.setState({ selectedCat_nm: 'Players' })}
-                      activeOpacity={1}
-                    >
-                      <Text numberOfLines={2} style={{
-                        color: this.state.selectedCat_nm === 'Players' ? Colors.light : Colors.fontColorGray,
-                        fontSize: 16, lineHeight: 24,
-                        fontFamily: Fonts.Bold, textAlign: 'center'
-                      }}>
-                        Players
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{
-                      // width: '20%',
-                      borderBottomColor: this.state.selectedCat_nm == 'Coaches' ? Colors.light : null,
-                      borderBottomWidth: this.state.selectedCat_nm == 'Coaches' ? 1 : 0
-                    }}
-                      onPress={() => this.setState({ selectedCat_nm: 'Coaches' })}
-                      activeOpacity={1}
-                    >
-                      <Text numberOfLines={2} style={{
-                        color: this.state.selectedCat_nm == 'Coaches' ? Colors.light : Colors.fontColorGray,
-                        fontSize: 16, lineHeight: 24,
-                        fontFamily: Fonts.Bold, textAlign: 'center'
-                      }}>
-                        Coaches
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{
-                      // width: '20%',
-                      borderBottomColor: this.state.selectedCat_nm == 'Teams' ? Colors.light : null,
-                      borderBottomWidth: this.state.selectedCat_nm == 'Teams' ? 1 : 0
-                    }}
-                      onPress={() => this.setState({ selectedCat_nm: 'Teams' })}
-                      activeOpacity={1}
-                    >
-                      <Text numberOfLines={2} style={{
-                        color: this.state.selectedCat_nm === 'Teams' ? Colors.light : Colors.fontColorGray,
-                        fontSize: 16, lineHeight: 24,
-                        fontFamily: Fonts.Bold, textAlign: 'center'
-                      }}>
-                        Teams
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{
-                      // width: '20%',
-                      borderBottomColor: this.state.selectedCat_nm == 'Games' ? Colors.light : null,
-                      borderBottomWidth: this.state.selectedCat_nm == 'Games' ? 1 : 0
-                    }}
-                      onPress={() => this.setState({ selectedCat_nm: 'Games' })}
-                      activeOpacity={1}
-                    >
-                      <Text numberOfLines={2} style={{
-                        color: this.state.selectedCat_nm === 'Games' ? Colors.light : Colors.fontColorGray,
-                        fontSize: 16, lineHeight: 24,
-                        fontFamily: Fonts.Bold, textAlign: 'center'
-                      }}>
-                        Games
-                      </Text>
-                    </TouchableOpacity>
-                    {/* <FlatList
+                    // backgroundColor: 'green',
+                    alignItems: 'center',
+                  }} >
+
+                    <View style={{
+                      width: '95%',
+                      flexDirection: 'row', alignItems: 'center',
+                      justifyContent: 'space-around',
+                      // backgroundColor: 'blue',
+                      height: wide * 0.1
+                    }}>
+                      <TouchableOpacity style={{
+                        // width: '20%',
+                        borderBottomColor: this.state.selectedCat_nm == 'Players' ? Colors.light : null,
+                        borderBottomWidth: this.state.selectedCat_nm == 'Players' ? 1 : 0,
+                      }}
+                        onPress={() => this.setState({ selectedCat_nm: 'Players' })}
+                        activeOpacity={1}
+                      >
+                        <Text numberOfLines={2} style={{
+                          color: this.state.selectedCat_nm === 'Players' ? Colors.light : Colors.fontColorGray,
+                          fontSize: 16, lineHeight: 24,
+                          fontFamily: Fonts.Bold, textAlign: 'center'
+                        }}>
+                          Players
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{
+                        // width: '20%',
+                        borderBottomColor: this.state.selectedCat_nm == 'Coaches' ? Colors.light : null,
+                        borderBottomWidth: this.state.selectedCat_nm == 'Coaches' ? 1 : 0
+                      }}
+                        onPress={() => this.setState({ selectedCat_nm: 'Coaches' })}
+                        activeOpacity={1}
+                      >
+                        <Text numberOfLines={2} style={{
+                          color: this.state.selectedCat_nm == 'Coaches' ? Colors.light : Colors.fontColorGray,
+                          fontSize: 16, lineHeight: 24,
+                          fontFamily: Fonts.Bold, textAlign: 'center'
+                        }}>
+                          Coaches
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{
+                        // width: '20%',
+                        borderBottomColor: this.state.selectedCat_nm == 'Teams' ? Colors.light : null,
+                        borderBottomWidth: this.state.selectedCat_nm == 'Teams' ? 1 : 0
+                      }}
+                        onPress={() => this.setState({ selectedCat_nm: 'Teams' })}
+                        activeOpacity={1}
+                      >
+                        <Text numberOfLines={2} style={{
+                          color: this.state.selectedCat_nm === 'Teams' ? Colors.light : Colors.fontColorGray,
+                          fontSize: 16, lineHeight: 24,
+                          fontFamily: Fonts.Bold, textAlign: 'center'
+                        }}>
+                          Teams
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{
+                        // width: '20%',
+                        borderBottomColor: this.state.selectedCat_nm == 'Games' ? Colors.light : null,
+                        borderBottomWidth: this.state.selectedCat_nm == 'Games' ? 1 : 0
+                      }}
+                        onPress={() => this.setState({ selectedCat_nm: 'Games' })}
+                        activeOpacity={1}
+                      >
+                        <Text numberOfLines={2} style={{
+                          color: this.state.selectedCat_nm === 'Games' ? Colors.light : Colors.fontColorGray,
+                          fontSize: 16, lineHeight: 24,
+                          fontFamily: Fonts.Bold, textAlign: 'center'
+                        }}>
+                          Games
+                        </Text>
+                      </TouchableOpacity>
+                      {/* <FlatList
                                         style={{ overflow: 'visible' }}
                                         data={this.state.category}
                                         contentContainerStyle={{ justifyContent: 'space-evenly' }}
@@ -780,44 +785,22 @@ class ExploreSearch extends Component {
                                         showsHorizontalScrollIndicator={false}
                                         horizontal
                                     /> */}
-                  </View>
-                  <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                    {selectedCat_nm === 'Players' ?
-                      <View style={{ width: '90%', height: Platform.OS == 'ios' ? '100%' : '96%', }}>
-                        {playersArr !== null && playersArr.length > 0 ?
-                          <FlatList
-                            style={{ marginBottom: wide * 0.03, }}
-                            contentContainerStyle={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              // flexGrow: 1
-
-                            }}
-                            // data={[1, 2, 3, 4, 5]}
-                            data={playersArr}
-                            renderItem={(item, index) => this._renderPlayerData(item, index)}
-                            showsVerticalScrollIndicator={false}
-                          />
-                          :
-                          <View style={{ width: '100%', height: '75%', justifyContent: 'center', alignItems: 'center' }}>
-                            <Text
-                              style={{
-                                color: Colors.fontColorGray,
-                                fontSize: 20, lineHeight: 20,
-                                fontFamily: Fonts.SemiBold, textAlign: 'center'
-                              }}>No match found</Text>
-                          </View>
-
-                        }
-                      </View>
-                      : selectedCat_nm === 'Coaches' ?
-                        <View style={{ width: '90%', height: '100%', }}>
-                          {coachArr !== null && coachArr.length > 0 ?
+                    </View>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                      {selectedCat_nm === 'Players' ?
+                        <View style={{ width: '90%', height: Platform.OS == 'ios' ? '100%' : '96%', }}>
+                          {playersArr !== null && playersArr.length > 0 ?
                             <FlatList
-                              // style={{ backgroundColor: 'green', }}
-                              contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-                              data={coachArr}
-                              renderItem={(item, index) => this._renderCoachData(item, index)}
+                              style={{ marginBottom: wide * 0.03, }}
+                              contentContainerStyle={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                // flexGrow: 1
+
+                              }}
+                              // data={[1, 2, 3, 4, 5]}
+                              data={playersArr}
+                              renderItem={(item, index) => this._renderPlayerData(item, index)}
                               showsVerticalScrollIndicator={false}
                             />
                             :
@@ -829,16 +812,17 @@ class ExploreSearch extends Component {
                                   fontFamily: Fonts.SemiBold, textAlign: 'center'
                                 }}>No match found</Text>
                             </View>
+
                           }
                         </View>
-                        : selectedCat_nm === 'Teams' ?
+                        : selectedCat_nm === 'Coaches' ?
                           <View style={{ width: '90%', height: '100%', }}>
-                            {teamArr !== null && teamArr.length > 0 ?
+                            {coachArr !== null && coachArr.length > 0 ?
                               <FlatList
-                                // style={{ marginHorizontal: 15 }}
-                                // contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-                                data={teamArr}
-                                renderItem={(item, index) => this._renderTeamData(item, index)}
+                                // style={{ backgroundColor: 'green', }}
+                                contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+                                data={coachArr}
+                                renderItem={(item, index) => this._renderCoachData(item, index)}
                                 showsVerticalScrollIndicator={false}
                               />
                               :
@@ -852,14 +836,14 @@ class ExploreSearch extends Component {
                               </View>
                             }
                           </View>
-                          : selectedCat_nm === 'Games' ?
+                          : selectedCat_nm === 'Teams' ?
                             <View style={{ width: '90%', height: '100%', }}>
-                              {gameArr !== null && gameArr.length > 0 ?
+                              {teamArr !== null && teamArr.length > 0 ?
                                 <FlatList
                                   // style={{ marginHorizontal: 15 }}
                                   // contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-                                  data={gameArr}
-                                  renderItem={(item, index) => this._renderGameData(item, index)}
+                                  data={teamArr}
+                                  renderItem={(item, index) => this._renderTeamData(item, index)}
                                   showsVerticalScrollIndicator={false}
                                 />
                                 :
@@ -873,17 +857,38 @@ class ExploreSearch extends Component {
                                 </View>
                               }
                             </View>
-                            : <Text
-                              style={{
-                                color: Colors.fontColorGray,
-                                fontSize: 20, lineHeight: 20,
-                                fontFamily: Fonts.SemiBold, textAlign: 'center'
-                              }}>No match found</Text>
+                            : selectedCat_nm === 'Games' ?
+                              <View style={{ width: '90%', height: '100%', }}>
+                                {gameArr !== null && gameArr.length > 0 ?
+                                  <FlatList
+                                    // style={{ marginHorizontal: 15 }}
+                                    // contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+                                    data={gameArr}
+                                    renderItem={(item, index) => this._renderGameData(item, index)}
+                                    showsVerticalScrollIndicator={false}
+                                  />
+                                  :
+                                  <View style={{ width: '100%', height: '75%', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text
+                                      style={{
+                                        color: Colors.fontColorGray,
+                                        fontSize: 20, lineHeight: 20,
+                                        fontFamily: Fonts.SemiBold, textAlign: 'center'
+                                      }}>No match found</Text>
+                                  </View>
+                                }
+                              </View>
+                              : <Text
+                                style={{
+                                  color: Colors.fontColorGray,
+                                  fontSize: 20, lineHeight: 20,
+                                  fontFamily: Fonts.SemiBold, textAlign: 'center'
+                                }}>No match found</Text>
 
-                    }
+                      }
 
-                  </View>
-                  {/* <View  >
+                    </View>
+                    {/* <View  >
                                     <FlatList
                                         style={{ marginHorizontal: 15 }}
                                         // data={selectedCat_nm === 'Player' ? messageList.Palyer
@@ -900,12 +905,13 @@ class ExploreSearch extends Component {
                                     />
                                 </View> */}
 
-                </View>
+                  </View>
 
-              </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
 
 
-            </SafeAreaView >
+              </SafeAreaView >
+            </View>
           </KeyBoardDismissHandler>
         }
       </>

@@ -486,69 +486,75 @@ class TellUsMore extends Component {
     // }
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
-            <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
-              <Image style={{
-                width: wide * 0.08, height: wide * 0.08,
-                // marginTop: 20, 
-                borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
-              }} source={require('../../Images/back_ico.png')} />
-            </TouchableOpacity>
-            <Text style={{
-              // marginTop: 16,
-              color: Colors.light, fontSize: 16,
-              fontFamily: Fonts.Bold, lineHeight: 24,
-              marginHorizontal: 10
-            }}>
-              Tell us more
-            </Text>
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+              <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
+                <Image style={{
+                  width: wide * 0.08, height: wide * 0.08,
+                  // marginTop: 20, 
+                  borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
+                }} source={require('../../Images/back_ico.png')} />
+              </TouchableOpacity>
+              <Text style={{
+                // marginTop: 16,
+                color: Colors.light, fontSize: 16,
+                fontFamily: Fonts.Bold, lineHeight: 24,
+                marginHorizontal: 10
+              }}>
+                Tell us more
+              </Text>
+            </View>
+            <Progress.Bar
+              progress={0.3}
+              width={wide * 0.8}
+              borderColor={Colors.base}
+              unfilledColor={Colors.borderColor}
+              style={{ marginTop: 16 }}
+            />
           </View>
-          <Progress.Bar
-            progress={0.3}
-            width={wide * 0.8}
-            borderColor={Colors.base}
-            unfilledColor={Colors.borderColor}
-            style={{ marginTop: 16 }}
-          />
-        </View>
-        {/* <KeyboardAvoidingView 
+          {/* <KeyboardAvoidingView 
                 // keyboardVerticalOffset={10}
                     style={{ flex: 1, marginTop: 16, }}
                     // behavior={Platform.OS === 'ios' ? "padding" : null}
                     // enabled
                 > */}
 
-        <KeyboardAwareScrollView
-          showsVerticalScrollIndicator={false}
-          enableOnAndroid={true}
-          // automaticallyAdjustContentInsets={true}
-          style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
-          bounces={false}
-        // keyboardShouldPersistTaps='always'
-        // scrollEventThrottle={10}
-        // extraHeight={120}
-        // resetScrollToCoords={{ x: 0, y: 0 }}
-        // scrollEnabled={Platform.OS == 'ios' ? false : true}
-        // scrollToOverflowEnabled={true}
-        // style={{ backgroundColor: 'red' }}
+          <KeyboardAwareScrollView
+            showsVerticalScrollIndicator={false}
+            enableOnAndroid={true}
+            // automaticallyAdjustContentInsets={true}
+            style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
+            bounces={false}
+          // keyboardShouldPersistTaps='always'
+          // scrollEventThrottle={10}
+          // extraHeight={120}
+          // resetScrollToCoords={{ x: 0, y: 0 }}
+          // scrollEnabled={Platform.OS == 'ios' ? false : true}
+          // scrollToOverflowEnabled={true}
+          // style={{ backgroundColor: 'red' }}
 
-        >
+          >
 
 
-          {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
+            {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
                         minHeight: isNotch ? Layout.height - 170 : Layout.height - 100,
                         paddingBottom: isNotch ? 0 : 10
                     }}> */}
-          <View style={{
-            backgroundColor: Colors.base,
-            marginHorizontal: 32,
-            marginTop: wide * 0.01
-          }} >
+            <View style={{
+              backgroundColor: Colors.base,
+              marginHorizontal: 32,
+              marginTop: wide * 0.01
+            }} >
 
 
-            {/* <Text style={{
+              {/* <Text style={{
                             marginTop: 16,
                             color: Colors.light, fontSize: 32,
                             fontFamily: Fonts.Thin, lineHeight: 36
@@ -560,60 +566,60 @@ class TellUsMore extends Component {
                         }}>
                             more
                         </Text> */}
-            <View style={{
-              width: wide * 0.8,
-              height: wide * 0.4,
-              marginTop: wide * 0.04,
-              flexDirection: 'row',
+              <View style={{
+                width: wide * 0.8,
+                height: wide * 0.4,
+                marginTop: wide * 0.04,
+                flexDirection: 'row',
 
-            }}>
-              <TouchableOpacity activeOpacity={1} style={{
-                width: wide * 0.35,
-                height: wide * 0.44,
-                borderWidth: 3, borderRadius: 10,
-                // borderColor: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor
-                borderColor: Colors.light
-              }}
-                onPress={() => {
-                  this.setState({ strSelectedMode: 'player' }, () => {
-                    this.checkForButtonEnable()
-                  })
+              }}>
+                <TouchableOpacity activeOpacity={1} style={{
+                  width: wide * 0.35,
+                  height: wide * 0.44,
+                  borderWidth: 3, borderRadius: 10,
+                  // borderColor: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor
+                  borderColor: Colors.light
+                }}
+                  onPress={() => {
+                    this.setState({ strSelectedMode: 'player' }, () => {
+                      this.checkForButtonEnable()
+                    })
 
-                }
-                }
-              >
-                <Image resizeMode={'cover'} style={{
-                  // alignSelf: 'center',
-                  // marginTop: wide * 0.1,
-                  height: '100%',
-                  width: '100%',
-                  borderRadius: 10,
-                  // tintColor: strSelectedMode === 'player' ?
-                  //   Colors.light : Colors.newGrayFontColor
-                }} source={require('../../Images/onBoardPlayerImg.png')} />
-                <Text style={{
-                  // color: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor, 
-                  color: Colors.light,
-                  alignSelf: 'center',
-                  fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
-                }}>{strSelectedMode.toUpperCase()}</Text>
-                {/* {
+                  }
+                  }
+                >
+                  <Image resizeMode={'cover'} style={{
+                    // alignSelf: 'center',
+                    // marginTop: wide * 0.1,
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: 10,
+                    // tintColor: strSelectedMode === 'player' ?
+                    //   Colors.light : Colors.newGrayFontColor
+                  }} source={require('../../Images/onBoardPlayerImg.png')} />
+                  <Text style={{
+                    // color: strSelectedMode === 'player' ? Colors.light : Colors.newGrayFontColor, 
+                    color: Colors.light,
+                    alignSelf: 'center',
+                    fontFamily: Fonts.Bold, fontSize: 16, marginTop: wide * 0.04
+                  }}>{strSelectedMode.toUpperCase()}</Text>
+                  {/* {
                   strSelectedMode === 'player' ? */}
-                <Image style={{
-                  position: 'absolute',
-                  right: wide * 0.02,
-                  top: wide * 0.02,
-                  width: 20,
-                  height: 20
+                  <Image style={{
+                    position: 'absolute',
+                    right: wide * 0.02,
+                    top: wide * 0.02,
+                    width: 20,
+                    height: 20
 
-                }} source={require('../../Images/tick.png')} />
-                {/* :
+                  }} source={require('../../Images/tick.png')} />
+                  {/* :
                     null
                 } */}
 
-              </TouchableOpacity>
+                </TouchableOpacity>
 
-              {/* <TouchableOpacity activeOpacity={1} style={{
+                {/* <TouchableOpacity activeOpacity={1} style={{
                 width: wide * 0.24, borderWidth: 3, borderRadius: 10,
                 marginHorizontal: 15,
                 borderColor: strSelectedMode === 'coach' ? Colors.light : Colors.newGrayFontColor,
@@ -650,7 +656,7 @@ class TellUsMore extends Component {
                 }
               </TouchableOpacity> */}
 
-              {/* <TouchableOpacity activeOpacity={1} style={{
+                {/* <TouchableOpacity activeOpacity={1} style={{
                                 width: wide * 0.24,
                                 borderWidth: 3, borderRadius: 10,
                                 borderColor: strSelectedMode === 'trainer' ? Colors.light : Colors.borderColor
@@ -687,73 +693,73 @@ class TellUsMore extends Component {
                                         null
                                 }
                             </TouchableOpacity> */}
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: wide * 0.25 }}>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: wide * 0.25 }}>
 
-              <AnimatedInput
-                placeholder="FIRST NAME"
-                onChangeText={(e) => this.setTextofFields('fname', e)}
-                value={fname}
-                styleInput={{
-                  fontFamily: Fonts.Bold,
-                  color: Colors.light,
-                  fontSize: 16, lineHeight: 18
-                }}
-                styleLabel={{
-                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                  fontSize: 12,
-                }}
-                styleBodyContent={{
-                  borderBottomWidth: 1.5,
-                  borderBottomColor: Colors.borderColor,
-                  width: wide * 0.4
-                }}
-              />
-
-              <AnimatedInput
-                placeholder="LAST NAME"
-                onChangeText={(e) => this.setTextofFields('lname', e)}
-                value={lname}
-                styleInput={{
-                  fontFamily: Fonts.Bold,
-                  color: Colors.light,
-                  fontSize: 16, lineHeight: 18
-                }}
-                styleLabel={{
-                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                  fontSize: 12,
-                }}
-                styleBodyContent={{
-                  borderBottomWidth: 1.5,
-                  borderBottomColor: Colors.borderColor,
-                  width: wide * 0.4
-                }}
-              />
-            </View>
-
-            {
-              strSelectedMode === 'player' ?
-                <View style={{ marginTop: 20 }}>
-                  <Text style={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor, fontSize: 12 }}>DATE OF BIRTH</Text>
-                  <TouchableOpacity style={{
-                    marginTop: 15, borderBottomWidth: 1.5,
+                <AnimatedInput
+                  placeholder="FIRST NAME"
+                  onChangeText={(e) => this.setTextofFields('fname', e)}
+                  value={fname}
+                  styleInput={{
+                    fontFamily: Fonts.Bold,
+                    color: Colors.light,
+                    fontSize: 16, lineHeight: 18
+                  }}
+                  styleLabel={{
+                    fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                    fontSize: 12,
+                  }}
+                  styleBodyContent={{
+                    borderBottomWidth: 1.5,
                     borderBottomColor: Colors.borderColor,
-                  }} onPress={() => {
-                    this.setState({ isDatePickerVisible: true })
-                  }}>
-                    <Text style={{
-                      fontFamily: Fonts.Bold,
-                      paddingVertical: 10, color: dob === 'SELECT DATE' ? Colors.borderColor : Colors.light, fontSize: 16
-                    }}>{dob === 'SELECT DATE' ? dob : moment(dob).format('MM/DD/YYYY')}</Text>
-                  </TouchableOpacity>
-                </View>
-                :
-                null
-            }
+                    width: wide * 0.4
+                  }}
+                />
 
-            {/* Email ID */}
+                <AnimatedInput
+                  placeholder="LAST NAME"
+                  onChangeText={(e) => this.setTextofFields('lname', e)}
+                  value={lname}
+                  styleInput={{
+                    fontFamily: Fonts.Bold,
+                    color: Colors.light,
+                    fontSize: 16, lineHeight: 18
+                  }}
+                  styleLabel={{
+                    fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                    fontSize: 12,
+                  }}
+                  styleBodyContent={{
+                    borderBottomWidth: 1.5,
+                    borderBottomColor: Colors.borderColor,
+                    width: wide * 0.4
+                  }}
+                />
+              </View>
 
-            {/* {strSelectedMode === 'player' ? <View style={{ marginTop: 30 }}>
+              {
+                strSelectedMode === 'player' ?
+                  <View style={{ marginTop: 20 }}>
+                    <Text style={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor, fontSize: 12 }}>DATE OF BIRTH</Text>
+                    <TouchableOpacity style={{
+                      marginTop: 15, borderBottomWidth: 1.5,
+                      borderBottomColor: Colors.borderColor,
+                    }} onPress={() => {
+                      this.setState({ isDatePickerVisible: true })
+                    }}>
+                      <Text style={{
+                        fontFamily: Fonts.Bold,
+                        paddingVertical: 10, color: dob === 'SELECT DATE' ? Colors.borderColor : Colors.light, fontSize: 16
+                      }}>{dob === 'SELECT DATE' ? dob : moment(dob).format('MM/DD/YYYY')}</Text>
+                    </TouchableOpacity>
+                  </View>
+                  :
+                  null
+              }
+
+              {/* Email ID */}
+
+              {/* {strSelectedMode === 'player' ? <View style={{ marginTop: 30 }}>
               <AnimatedInput
 
                 placeholder="EMAIL ID"
@@ -781,101 +787,101 @@ class TellUsMore extends Component {
               null
             } */}
 
-            {/* End Email ID */}
+              {/* End Email ID */}
 
-            {/* City & State Field */}
+              {/* City & State Field */}
 
-            {/* {
+              {/* {
               strSelectedMode === 'player' ? */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
-              <AnimatedInput
-                placeholder="CITY"
-                onChangeText={(e) => this.setTextofFields('city', e)}
-                value={city}
-                disabled
-                styleInput={{
-                  fontFamily: Fonts.Bold,
-                  color: Colors.light,
-                  fontSize: 16, lineHeight: 18
-                }}
-                styleLabel={{
-                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                  fontSize: 12,
-                }}
-                styleBodyContent={{
-                  borderBottomWidth: 1.5,
-                  borderBottomColor: Colors.borderColor,
-                  width: wide * 0.4
-                }}
-              />
-
-              {/* <Text style={{ color: Colors.lightshade }}>Params: {JSON.stringify(navParams)}</Text> */}
-
-              <View>
-
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
                 <AnimatedInput
-                  disabled={this.state.state !== "" ? true : false}
-                  pointerEvents="none"
-                  placeholder="STATE"
-                  onChangeText={(e) => this.setTextofFields('state', e)}
-                  value={state}
-
-                  // onFocus={() => {
-                  //   Navigation.navigate("State")
-                  // }}
-                  // sufix={
-                  //   <Image
-                  //     style={{
-                  //       width: 7,
-                  //       height: 7,
-                  //       position: 'absolute',
-                  //       top:
-                  //         Platform.OS === "android"
-                  //           ? 5
-                  //           : state != ""
-                  //             ? 30
-                  //             : 5,
-                  //       right: 7
-                  //     }}
-                  //     source={require('../../Images/dropDownIconNew.png')}
-                  //   />
-                  // }
+                  placeholder="CITY"
+                  onChangeText={(e) => this.setTextofFields('city', e)}
+                  value={city}
+                  disabled
                   styleInput={{
                     fontFamily: Fonts.Bold,
                     color: Colors.light,
-                    fontSize: 16,
-                    lineHeight: 18,
-                    position: 'relative'
+                    fontSize: 16, lineHeight: 18
                   }}
                   styleLabel={{
                     fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                    fontSize: 12
+                    fontSize: 12,
                   }}
                   styleBodyContent={{
                     borderBottomWidth: 1.5,
                     borderBottomColor: Colors.borderColor,
                     width: wide * 0.4
                   }}
-                // isAutoFocus={true}
-                // multiline
                 />
 
+                {/* <Text style={{ color: Colors.lightshade }}>Params: {JSON.stringify(navParams)}</Text> */}
+
+                <View>
+
+                  <AnimatedInput
+                    disabled={this.state.state !== "" ? true : false}
+                    pointerEvents="none"
+                    placeholder="STATE"
+                    onChangeText={(e) => this.setTextofFields('state', e)}
+                    value={state}
+
+                    // onFocus={() => {
+                    //   Navigation.navigate("State")
+                    // }}
+                    // sufix={
+                    //   <Image
+                    //     style={{
+                    //       width: 7,
+                    //       height: 7,
+                    //       position: 'absolute',
+                    //       top:
+                    //         Platform.OS === "android"
+                    //           ? 5
+                    //           : state != ""
+                    //             ? 30
+                    //             : 5,
+                    //       right: 7
+                    //     }}
+                    //     source={require('../../Images/dropDownIconNew.png')}
+                    //   />
+                    // }
+                    styleInput={{
+                      fontFamily: Fonts.Bold,
+                      color: Colors.light,
+                      fontSize: 16,
+                      lineHeight: 18,
+                      position: 'relative'
+                    }}
+                    styleLabel={{
+                      fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                      fontSize: 12
+                    }}
+                    styleBodyContent={{
+                      borderBottomWidth: 1.5,
+                      borderBottomColor: Colors.borderColor,
+                      width: wide * 0.4
+                    }}
+                  // isAutoFocus={true}
+                  // multiline
+                  />
+
+                </View>
               </View>
-            </View>
-            {/* :
+              {/* :
                  null
              } */}
-            <StatesListModal
-              openModal={openStatesModal}
-              onStateChoose={(e) => this.onStateChoose(e)}
-              onClose={() => this.onClose()}
-            />
+              <StatesListModal
+                openModal={openStatesModal}
+                onStateChoose={(e) => this.onStateChoose(e)}
+                onClose={() => this.onClose()}
+              />
 
-            {/* End City & State Field */}
+              {/* End City & State Field */}
 
-            {/* School & Class of */}
+              {/* School & Class of */}
 
-            {/* {strSelectedMode === 'player' ? 
+              {/* {strSelectedMode === 'player' ? 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
 
                 <View>
@@ -947,53 +953,53 @@ class TellUsMore extends Component {
                 :
                 null
             } */}
-            <YearSelectionModal
-              openModal={showYearPicker}
-              onYearChoose={(e) => this.onYearChoose(e)}
-              onClose={() => this.onYearClose()}
-            />
-            {
-              strSelectedMode.toLowerCase() === 'coach' ? <View style={{ marginTop: 27 }}>
-                <Text style={{
-                  fontFamily: Fonts.Bold,
-                  color: Colors.newGrayFontColor, fontSize: 12, position: 'absolute', left: 0,
-                }}>ABOUT ME</Text>
-                <Text style={{
-                  fontFamily: Fonts.Bold,
-                  color: Colors.light, fontSize: 12, position: 'absolute', right: 0
-                }}>{aboutMe.trim().length}/266</Text>
+              <YearSelectionModal
+                openModal={showYearPicker}
+                onYearChoose={(e) => this.onYearChoose(e)}
+                onClose={() => this.onYearClose()}
+              />
+              {
+                strSelectedMode.toLowerCase() === 'coach' ? <View style={{ marginTop: 27 }}>
+                  <Text style={{
+                    fontFamily: Fonts.Bold,
+                    color: Colors.newGrayFontColor, fontSize: 12, position: 'absolute', left: 0,
+                  }}>ABOUT ME</Text>
+                  <Text style={{
+                    fontFamily: Fonts.Bold,
+                    color: Colors.light, fontSize: 12, position: 'absolute', right: 0
+                  }}>{aboutMe.trim().length}/266</Text>
 
-                <TextInput
-                  onChangeText={(e) => this.setTextofFields('aboutMe', e)}
-                  value={aboutMe}
-                  style={{
-                    marginTop: 25,
-                    fontFamily: Fonts.Bold, color: Colors.light, fontSize: 16,
-                    lineHeight: 18, height: wide * 0.29,
-                    borderWidth: 1.5,
-                    borderColor: Colors.aboutTxtBorder,
-                    padding: 10,
-                    textAlignVertical: 'top',
-                  }}
+                  <TextInput
+                    onChangeText={(e) => this.setTextofFields('aboutMe', e)}
+                    value={aboutMe}
+                    style={{
+                      marginTop: 25,
+                      fontFamily: Fonts.Bold, color: Colors.light, fontSize: 16,
+                      lineHeight: 18, height: wide * 0.29,
+                      borderWidth: 1.5,
+                      borderColor: Colors.aboutTxtBorder,
+                      padding: 10,
+                      textAlignVertical: 'top',
+                    }}
 
-                  placeholder={'Minimum 60 character are required.'}
-                  placeholderTextColor={Colors.borderColor}
-                  multiline
-                  maxLength={266}
-                />
-              </View>
-                :
-                null
-            }
-
-
-            {/* End About me section  */}
-            {/* </KeyboardAvoidingView> */}
+                    placeholder={'Minimum 60 character are required.'}
+                    placeholderTextColor={Colors.borderColor}
+                    multiline
+                    maxLength={266}
+                  />
+                </View>
+                  :
+                  null
+              }
 
 
+              {/* End About me section  */}
+              {/* </KeyboardAvoidingView> */}
 
-            {/* Sport Position */}
-            {/* {
+
+
+              {/* Sport Position */}
+              {/* {
               strSelectedMode === 'player' ?
                 <FlatList
                   data={positions}
@@ -1008,50 +1014,51 @@ class TellUsMore extends Component {
                 null
             } */}
 
-            {/* End Sport Position */}
+              {/* End Sport Position */}
 
 
-            <TouchableOpacity
-              key={isbtnEnable}
-              style={{
-                width: wide * 0.8, height: 48,
-                backgroundColor: Colors.btnBg,
-                alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
-                justifyContent: 'center', marginTop: 20,
-              }} onPress={() => {
-                this.actionContinue()
-              }}>
-              <Text style={{
-                alignSelf: 'center', color: Colors.light,
-                fontFamily: Fonts.Bold,
-              }}>Continue</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                key={isbtnEnable}
+                style={{
+                  width: wide * 0.8, height: 48,
+                  backgroundColor: Colors.btnBg,
+                  alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
+                  justifyContent: 'center', marginTop: 20,
+                }} onPress={() => {
+                  this.actionContinue()
+                }}>
+                <Text style={{
+                  alignSelf: 'center', color: Colors.light,
+                  fontFamily: Fonts.Bold,
+                }}>Continue</Text>
+              </TouchableOpacity>
 
-          </View>
-          <AppLoader visible={this.state.loading} />
-          {/* </ScrollView> */}
+            </View>
+            <AppLoader visible={this.state.loading} />
+            {/* </ScrollView> */}
 
-        </KeyboardAwareScrollView>
-        {/* </KeyboardAvoidingView> */}
+          </KeyboardAwareScrollView>
+          {/* </KeyboardAvoidingView> */}
 
 
 
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          onConfirm={(date) => {
-            if (this.calculate_age(moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")) <= 16) {
-              UserModel.isAdult = false
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={(date) => {
+              if (this.calculate_age(moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")) <= 16) {
+                UserModel.isAdult = false
 
-            } else {
-              UserModel.isAdult = true
-            }
-            this.setTextofFields('dob', date.toString())
-          }}
-          onCancel={() => this.setState({ isDatePickerVisible: false })}
-          maximumDate={moment.now()}
-        />
-      </SafeAreaView>
+              } else {
+                UserModel.isAdult = true
+              }
+              this.setTextofFields('dob', date.toString())
+            }}
+            onCancel={() => this.setState({ isDatePickerVisible: false })}
+            maximumDate={moment.now()}
+          />
+        </SafeAreaView>
+      </View>
     );
   }
 }

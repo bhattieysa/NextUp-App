@@ -237,118 +237,125 @@ class PlayerCategoryStyle extends Component {
     // }
 
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        {loading == true ?
-          <AppLoader visible={this.state.loading} />
-          :
-          <>
-            <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
-                <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
-                  <Image style={{
-                    width: wide * 0.08, height: wide * 0.08,
-                    // marginTop: 20, 
-                    borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
-                  }} source={require('../../Images/back_ico.png')} />
-                </TouchableOpacity>
-                <Text style={{
-                  // marginTop: 16,
-                  color: Colors.light, fontSize: 16,
-                  fontFamily: Fonts.Bold, lineHeight: 24,
-                  marginHorizontal: 10
-                }}>
-                  Select Player Style
-                </Text>
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          {loading == true ?
+            <AppLoader visible={this.state.loading} />
+            :
+            <>
+              <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+                  <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
+                    <Image style={{
+                      width: wide * 0.08, height: wide * 0.08,
+                      // marginTop: 20, 
+                      borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
+                    }} source={require('../../Images/back_ico.png')} />
+                  </TouchableOpacity>
+                  <Text style={{
+                    // marginTop: 16,
+                    color: Colors.light, fontSize: 16,
+                    fontFamily: Fonts.Bold, lineHeight: 24,
+                    marginHorizontal: 10
+                  }}>
+                    Select Player Style
+                  </Text>
+                </View>
               </View>
-            </View>
-            <KeyboardAwareScrollView
-              showsVerticalScrollIndicator={false}
-              enableOnAndroid={true}
-              style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
-              bounces={false}
+              <KeyboardAwareScrollView
+                showsVerticalScrollIndicator={false}
+                enableOnAndroid={true}
+                style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
+                bounces={false}
 
-            >
+              >
 
 
-              {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
+                {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
                         minHeight: isNotch ? Layout.height - 170 : Layout.height - 100,
                         paddingBottom: isNotch ? 0 : 10
                     }}> */}
-              <View style={{
-                backgroundColor: Colors.base,
-                // marginHorizontal: 32,
-                marginTop: wide * 0.01,
-                alignItems: 'center',
-              }} >
-
                 <View style={{
-                  width: wide * 0.85,
-                  marginTop: wide * 0.04,
-                  // marginHorizontal: -2
-                  // flexDirection: 'row',
-
+                  backgroundColor: Colors.base,
+                  // marginHorizontal: 32,
+                  marginTop: wide * 0.01,
+                  alignItems: 'center',
                 }} >
-                  <FlatList
-                    data={playerCategory}
-                    keyExtractor={item => item}
-                    renderItem={({ item, index }) => this.renderPlayerCategory(item, index)}
-                    numColumns={3}
-                    scrollEnabled={false}
-                  />
-                </View>
-                {/* <View style={{ height: 80 }} /> */}
 
-                <View style={{ marginTop: wide * 0.1, width: wide * 0.84 }}>
-                  {playerCategory !== null ?
-                    <Text style={{
-                      // marginTop: 16,
-                      color: Colors.light, fontSize: 16,
-                      fontFamily: Fonts.Bold, lineHeight: 24,
+                  <View style={{
+                    width: wide * 0.85,
+                    marginTop: wide * 0.04,
+                    // marginHorizontal: -2
+                    // flexDirection: 'row',
+
+                  }} >
+                    <FlatList
+                      data={playerCategory}
+                      keyExtractor={item => item}
+                      renderItem={({ item, index }) => this.renderPlayerCategory(item, index)}
+                      numColumns={3}
+                      scrollEnabled={false}
+                    />
+                  </View>
+                  {/* <View style={{ height: 80 }} /> */}
+
+                  <View style={{ marginTop: wide * 0.1, width: wide * 0.84 }}>
+                    {playerCategory !== null ?
+                      <Text style={{
+                        // marginTop: 16,
+                        color: Colors.light, fontSize: 16,
+                        fontFamily: Fonts.Bold, lineHeight: 24,
+                      }}>
+                        {playerCategory[this.state.selectedCategoryIndex]?.name}
+                      </Text>
+                      : <></>
+                    }
+                    {playerCategory !== null ?
+                      <Text style={{
+                        // marginTop: 16,
+                        color: Colors.light, fontSize: 14,
+                        fontFamily: Fonts.Regular, lineHeight: 18,
+                        textAlign: 'justify',
+                        paddingRight: 5
+                      }}>
+                        {playerCategory[this.state.selectedCategoryIndex]?.description}
+                      </Text>
+                      : <></>
+                    }
+                  </View>
+
+
+                  <TouchableOpacity
+                    key={isbtnEnable}
+                    style={{
+                      width: wide * 0.8, height: 48,
+                      backgroundColor: Colors.btnBg,
+                      alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
+                      justifyContent: 'center', marginTop: 40,
+                    }} onPress={() => {
+                      this.actionContinue()
                     }}>
-                      {playerCategory[this.state.selectedCategoryIndex]?.name}
-                    </Text>
-                    : <></>
-                  }
-                  {playerCategory !== null ?
                     <Text style={{
-                      // marginTop: 16,
-                      color: Colors.light, fontSize: 14,
-                      fontFamily: Fonts.Regular, lineHeight: 18,
-                      textAlign: 'justify',
-                      paddingRight: 5
-                    }}>
-                      {playerCategory[this.state.selectedCategoryIndex]?.description}
-                    </Text>
-                    : <></>
-                  }
+                      alignSelf: 'center', color: Colors.light,
+                      fontFamily: Fonts.Bold,
+                    }}>Continue</Text>
+                  </TouchableOpacity>
+
                 </View>
 
+                {/* </ScrollView> */}
 
-                <TouchableOpacity
-                  key={isbtnEnable}
-                  style={{
-                    width: wide * 0.8, height: 48,
-                    backgroundColor: Colors.btnBg,
-                    alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
-                    justifyContent: 'center', marginTop: 40,
-                  }} onPress={() => {
-                    this.actionContinue()
-                  }}>
-                  <Text style={{
-                    alignSelf: 'center', color: Colors.light,
-                    fontFamily: Fonts.Bold,
-                  }}>Continue</Text>
-                </TouchableOpacity>
-
-              </View>
-
-              {/* </ScrollView> */}
-
-            </KeyboardAwareScrollView>
-          </>
-        }
-        {/* </KeyboardAvoidingView> */}
-      </SafeAreaView>
+              </KeyboardAwareScrollView>
+            </>
+          }
+          {/* </KeyboardAvoidingView> */}
+        </SafeAreaView>
+      </View>
     );
   }
 }

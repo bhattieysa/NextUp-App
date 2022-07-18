@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, StatusBar, Modal, FlatList } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, StatusBar, Modal, FlatList, Platform } from 'react-native'
 import { Colors, CommonStyles, Fonts, Layout } from "../../constants";
 import PlayingGameScreenHeader from "../../components/common/playing_header/PlayingGameScreenHeader";
 import DropDownModal from "../../components/common/playing_header/DropDownModal";
@@ -16,6 +16,7 @@ import AssistScreen from './AssistScreen';
 import ThrowScreen from './ThrowScreen';
 import MadeMissScreen from './MadeMissScreen';
 import { BlurView } from '@react-native-community/blur';
+import { GameAppStatusBar } from '../../components/common/statusBar';
 
 
 const { width, height } = Dimensions.get('window');
@@ -71,6 +72,8 @@ const GameScreen = (props) => {
   //new flow stat
   const [selectedPlayer, setSelectedPlayer] = useState('')
   const [assistPlayer, setAssistPlayer] = useState('')
+  const [courtAreaClick, setCourtAreaClick] = useState();
+  const [madeOrMised, setMadeOrMissed] = useState();
 
   useEffect(() => {
     debugger
@@ -220,9 +223,13 @@ const GameScreen = (props) => {
       case "playing":
         return <PlayingGameScreen isEnabled={!isEnabled} setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer} activePlayer={activePlayer}
-          quarter={preSelectedQuarter} setCourtArea={setCourtArea} courtArea={courtArea}
+          quarter={preSelectedQuarter} setCourtArea={setCourtArea}
+          courtArea={courtArea}
           handleBtnEnable={handleBtnEnable}
           btnEnable={btnEnable}
+          setCourtAreaClick={setCourtAreaClick}
+          courtAreaClick={courtAreaClick}
+          madeOrMised={madeOrMised}
         />
       case "substitute":
         return <SubstitutePlayer setCurrentView={setCurrentView} isEnabled={isEnabled} />
@@ -303,6 +310,9 @@ const GameScreen = (props) => {
           setAssistPlayer={setAssistPlayer}
           selectedAssistPlayer={assistPlayer}
           selectedPlayer={selectedPlayer}
+          clickedCourtArea={courtAreaClick}
+          madeOrMissed={madeOrMised}
+          setMadeOrMissed={setMadeOrMissed}
 
         />
 
@@ -334,7 +344,8 @@ const GameScreen = (props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.base, }}>
-      {/* <StatusBar backgroundColor="transparent" translucent /> */}
+      {/* <GameAppStatusBar hidden /> */}
+      {/* <StatusBar hidden backgroundColor="transparent" translucent /> */}
 
       <PlayingGameScreenHeader
         blueTeamScore={challengerTeam.score}
@@ -894,7 +905,7 @@ const ChangeLineUp = ({ setCurrentView, isEnabled }) => {
 
 const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
   activePlayer, quarter, setCourtArea, courtArea,
-  btnEnable, handleBtnEnable }) => {
+  btnEnable, handleBtnEnable, setCourtAreaClick, courtAreaClick, madeOrMised }) => {
 
 
 
@@ -1176,6 +1187,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
   function renderPlayground() {
     return <PlayGroundBox
 
+      clickedCourtArea={madeOrMised}
       // configs
       width={playGroundWidth}
       background={background}
@@ -1208,9 +1220,11 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
         // handleBtnEnable()
 
       }}
-      onPressShapeTwo={() => {
-        onChangeColorHandler("shapeTwoBGColor");
-        setCourtArea("COURT_2")
+      onPressShapeTwo={(e) => {
+        // onChangeColorHandler("shapeTwoBGColor");
+        // setCourtArea("COURT_2")
+        setCourtAreaClick({ 'x': e.nativeEvent.locationX, 'y': e.nativeEvent.locationY })
+        setCurrentView('shootScore')
         // handleBtnEnable()
       }}
 

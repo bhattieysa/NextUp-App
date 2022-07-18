@@ -154,7 +154,7 @@ export default class CardList extends Component {
     }
   }
 
-  getCardLogo (card) {
+  getCardLogo(card) {
     switch (card) {
       case 'Visa':
         return require('../../Images/visa.png');
@@ -171,7 +171,7 @@ export default class CardList extends Component {
     }
   }
 
-  _renderCard (item) {
+  _renderCard(item) {
     return (
       <TouchableOpacity>
         <View style={styles.cardsListContainer}>
@@ -197,6 +197,7 @@ export default class CardList extends Component {
   render() {
     const { cards } = this.state;
     return (
+
       <SafeAreaView style={styles.container}>
         <View style={{ width: Dimensions.get('screen').width, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.heading}>

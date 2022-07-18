@@ -2172,6 +2172,10 @@ class CoachProfile extends Component {
                 justifyContent: 'space-between', alignItems: 'center'
               }}>
                 <TouchableOpacity
+                  style={{
+                    width: 30, height: 30,
+                    // tintColor: Colors.light
+                  }}
                   // onPress={() => { Navigation.navigate('MessageList') }} 
                   onPress={() => { Navigation.navigate('Calender') }}
                 >
@@ -2766,139 +2770,143 @@ class CoachProfile extends Component {
           {/* <AppLoader visible={this.state.loading} /> */}
         </View>
         :
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+        <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+          <SafeAreaView style={{
+            flex: 1, marginTop: Platform.OS == 'android' ? 20 : 0,
+            backgroundColor: Colors.base
+          }}>
+            <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
 
-            {SHOW_SHARE_SCREEN.show === true ?
-              Navigation.navigate('ShareScreen', { shareData: sharedData, shareMimeType: sharedMimeType })
-              :
+              {SHOW_SHARE_SCREEN.show === true ?
+                Navigation.navigate('ShareScreen', { shareData: sharedData, shareMimeType: sharedMimeType })
+                :
 
-              android_Profile
+                android_Profile
+              }
+            </KeyboardAvoidingView>
+            {this.state.showSessionModal === true ?
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={this.state.showSessionModal}
+              >
+                <TouchableOpacity
+                  onPress={() => this.setState({ showSessionModal: false })}
+                  style={{
+                    width: wide,
+                    height: high,
+                    justifyContent: 'center', alignItems: 'center'
+                  }}
+                >
+
+
+                  <BlurView style={{
+                    width: wide,
+                    height: high,
+                    position: 'absolute',
+                  }}
+                    blurAmount={10}
+                    blurRadius={10}
+                  />
+                  <View style={{
+                    width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                    marginTop: 20, borderRadius: 20, alignItems: 'center',
+                    position: 'absolute',
+
+                  }}>
+                    <View style={{
+                      width: '100%', height: '15%', marginTop: 10,
+                      alignItems: 'center', justifyContent: 'center',
+                      // borderBottomColor: Colors.newGrayFontColor, 
+                      // borderBottomWidth: 1
+                    }}>
+                      <Text style={{
+                        color: Colors.light, fontFamily: Fonts.Bold,
+                        fontSize: 14, lineHeight: 16
+                      }}>Select</Text>
+                    </View>
+
+
+                    <View style={{ width: '60%', height: '80%', }}>
+                      <FlatList
+                        keyExtractor={(item, index) => index.toString()}
+                        style={{ flex: 1 }}
+                        // data={[{ session: '2020-21' }, { session: '2019-20' }]}
+                        data={coachDash?.seasonList}
+                        renderItem={(item, index) => this._renderSessionList(item, index)}
+                      />
+                    </View>
+
+
+                  </View>
+
+                  {/* </BlurView> */}
+                </TouchableOpacity>
+              </Modal>
+              : null
             }
-          </KeyboardAvoidingView>
-          {this.state.showSessionModal === true ?
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={this.state.showSessionModal}
-            >
-              <TouchableOpacity
-                onPress={() => this.setState({ showSessionModal: false })}
-                style={{
-                  width: wide,
-                  height: high,
-                  justifyContent: 'center', alignItems: 'center'
-                }}
+
+            {this.state.showTeamModal === true ?
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={this.state.showTeamModal}
               >
+                <TouchableOpacity
+                  onPress={() => this.setState({ showTeamModal: false })}
+                  style={{
+                    width: wide,
+                    height: high,
+                    justifyContent: 'center', alignItems: 'center'
+                  }}
+                >
 
 
-                <BlurView style={{
-                  width: wide,
-                  height: high,
-                  position: 'absolute',
-                }}
-                  blurAmount={10}
-                  blurRadius={10}
-                />
-                <View style={{
-                  width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
-                  marginTop: 20, borderRadius: 20, alignItems: 'center',
-                  position: 'absolute',
+                  <BlurView style={{
+                    width: wide,
+                    height: high,
+                    position: 'absolute',
+                  }}
+                    blurAmount={10}
+                    blurRadius={10}
 
-                }}>
+                  />
                   <View style={{
-                    width: '100%', height: '15%', marginTop: 10,
-                    alignItems: 'center', justifyContent: 'center',
-                    // borderBottomColor: Colors.newGrayFontColor, 
-                    // borderBottomWidth: 1
+                    width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                    marginTop: 20, borderRadius: 20, alignItems: 'center'
                   }}>
-                    <Text style={{
-                      color: Colors.light, fontFamily: Fonts.Bold,
-                      fontSize: 14, lineHeight: 16
-                    }}>Select</Text>
+                    <View style={{
+                      width: '100%', height: '15%', marginTop: 10,
+                      alignItems: 'center', justifyContent: 'center',
+                      // borderBottomColor: Colors.newGrayFontColor, borderBottomWidth: 1
+                    }}>
+                      <Text style={{
+                        color: Colors.light, fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16
+                      }}>Select</Text>
+                    </View>
+
+
+                    <View style={{ width: '60%', height: '80%' }}>
+                      <FlatList
+                        keyExtractor={(item, index) => index.toString()}
+                        style={{ flex: 1 }}
+                        // data={[{ teamName: 'La Lakers' }, { teamName: 'Golden Figma' }]}
+                        data={this.state.teamDropDownData}
+                        renderItem={(item, index) => this._renderTeamList(item, index)}
+                      />
+                    </View>
+
+
                   </View>
 
+                  {/* </BlurView> */}
+                </TouchableOpacity>
+              </Modal>
+              : null
+            }
 
-                  <View style={{ width: '60%', height: '80%', }}>
-                    <FlatList
-                      keyExtractor={(item, index) => index.toString()}
-                      style={{ flex: 1 }}
-                      // data={[{ session: '2020-21' }, { session: '2019-20' }]}
-                      data={coachDash?.seasonList}
-                      renderItem={(item, index) => this._renderSessionList(item, index)}
-                    />
-                  </View>
-
-
-                </View>
-
-                {/* </BlurView> */}
-              </TouchableOpacity>
-            </Modal>
-            : null
-          }
-
-          {this.state.showTeamModal === true ?
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={this.state.showTeamModal}
-            >
-              <TouchableOpacity
-                onPress={() => this.setState({ showTeamModal: false })}
-                style={{
-                  width: wide,
-                  height: high,
-                  justifyContent: 'center', alignItems: 'center'
-                }}
-              >
-
-
-                <BlurView style={{
-                  width: wide,
-                  height: high,
-                  position: 'absolute',
-                }}
-                  blurAmount={10}
-                  blurRadius={10}
-
-                />
-                <View style={{
-                  width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
-                  marginTop: 20, borderRadius: 20, alignItems: 'center'
-                }}>
-                  <View style={{
-                    width: '100%', height: '15%', marginTop: 10,
-                    alignItems: 'center', justifyContent: 'center',
-                    // borderBottomColor: Colors.newGrayFontColor, borderBottomWidth: 1
-                  }}>
-                    <Text style={{
-                      color: Colors.light, fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16
-                    }}>Select</Text>
-                  </View>
-
-
-                  <View style={{ width: '60%', height: '80%' }}>
-                    <FlatList
-                      keyExtractor={(item, index) => index.toString()}
-                      style={{ flex: 1 }}
-                      // data={[{ teamName: 'La Lakers' }, { teamName: 'Golden Figma' }]}
-                      data={this.state.teamDropDownData}
-                      renderItem={(item, index) => this._renderTeamList(item, index)}
-                    />
-                  </View>
-
-
-                </View>
-
-                {/* </BlurView> */}
-              </TouchableOpacity>
-            </Modal>
-            : null
-          }
-
-        </SafeAreaView >
-      // </View>
+          </SafeAreaView >
+        </View>
     );
   }
 }

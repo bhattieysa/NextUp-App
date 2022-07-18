@@ -288,41 +288,46 @@ class Login extends Component {
     const { isbtnEnable, loading, isConfirmPass } = this.state;
     debugger;
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        <KeyBoardDismissHandler>
-          <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
-              <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
-                <Image style={{
-                  width: wide * 0.08, height: wide * 0.08,
-                  // marginTop: 20, 
-                  borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
-                }} source={require('../../Images/back_ico.png')} />
-              </TouchableOpacity>
-              <Text style={{
-                // marginTop: 16,
-                color: Colors.light, fontSize: 16,
-                fontFamily: Fonts.Bold, lineHeight: 24,
-                marginHorizontal: 10
-              }}>
-                Sign in with Email
-              </Text>
-            </View>
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          <KeyBoardDismissHandler>
+            <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
+                <TouchableOpacity style={{ width: wide * 0.1, }} onPress={() => Navigation.back()}>
+                  <Image style={{
+                    width: wide * 0.08, height: wide * 0.08,
+                    // marginTop: 20, 
+                    borderRadius: wide * 0.02, borderWidth: 1, borderColor: Colors.borderColor
+                  }} source={require('../../Images/back_ico.png')} />
+                </TouchableOpacity>
+                <Text style={{
+                  // marginTop: 16,
+                  color: Colors.light, fontSize: 16,
+                  fontFamily: Fonts.Bold, lineHeight: 24,
+                  marginHorizontal: 10
+                }}>
+                  Sign in with Email
+                </Text>
+              </View>
 
-            <Progress.Bar
-              progress={0.1}
-              width={wide * 0.8}
-              borderColor={Colors.base}
-              unfilledColor={Colors.borderColor}
-              style={{ marginTop: 16 }}
-            />
-          </View>
-          <KeyboardAvoidingView keyboardVerticalOffset={0} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-            {/* <KeyboardAwareScrollView contentContainerStyle={{ minHeight: isNotch ? Layout.height - 170 : Layout.height - 100 }}> */}
-            {/* <KeyboardAwareScrollView contentContainerStyle={{ minHeight: isNotch ? Layout.height - 170 : Layout.height - 100 }}
+              <Progress.Bar
+                progress={0.1}
+                width={wide * 0.8}
+                borderColor={Colors.base}
+                unfilledColor={Colors.borderColor}
+                style={{ marginTop: 16 }}
+              />
+            </View>
+            <KeyboardAvoidingView keyboardVerticalOffset={0} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+              {/* <KeyboardAwareScrollView contentContainerStyle={{ minHeight: isNotch ? Layout.height - 170 : Layout.height - 100 }}> */}
+              {/* <KeyboardAwareScrollView contentContainerStyle={{ minHeight: isNotch ? Layout.height - 170 : Layout.height - 100 }}
             showsVerticalScrollIndicator={false} enableOnAndroid={true}> */}
-            <View style={{ flex: 1, marginHorizontal: 32, marginTop: 40 }} >
-              {/* <Text style={{
+              <View style={{ flex: 1, marginHorizontal: 32, marginTop: 40 }} >
+                {/* <Text style={{
                 marginTop: 16,
                 color: Colors.light, fontSize: 32,
                 fontFamily: Fonts.B, lineHeight: 36
@@ -333,91 +338,92 @@ class Login extends Component {
                 with Email
               </Text> */}
 
-              <View style={{ marginTop: wide * 0.1 }}>
-                <AnimatedInput
-                  onEndEditing={() => this.checkEmailExist()}
-                  placeholder="YOUR EMAIL"
-                  //valid={() => isValidEmail(email)}
-                  // errorText="Error"
-                  onChangeText={(e) => this.setTextofEmailAndPass('email', e)}
-                  value={this.state.email}
-                  styleInput={{
-                    fontFamily: Fonts.Bold, color: Colors.light,
-                    fontSize: 16, lineHeight: 18
-                  }}
-                  // isAutoFoucs={true}
-                  styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
-                  styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
-                  keyboardType={'email-address'}
-                />
+                <View style={{ marginTop: wide * 0.1 }}>
+                  <AnimatedInput
+                    onEndEditing={() => this.checkEmailExist()}
+                    placeholder="YOUR EMAIL"
+                    //valid={() => isValidEmail(email)}
+                    // errorText="Error"
+                    onChangeText={(e) => this.setTextofEmailAndPass('email', e)}
+                    value={this.state.email}
+                    styleInput={{
+                      fontFamily: Fonts.Bold, color: Colors.light,
+                      fontSize: 16, lineHeight: 18
+                    }}
+                    // isAutoFoucs={true}
+                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                    styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
+                    keyboardType={'email-address'}
+                  />
+                </View>
+                <View style={{ marginTop: wide * 0.15 }}>
+                  <AnimatedInput
+                    placeholder="PASSWORD"
+                    //valid={() => isValidEmail(email)}
+                    // errorText="Error"
+                    onChangeText={(e) => this.setTextofEmailAndPass('pass', e)}
+                    value={this.state.password}
+                    // isAutoFoucs={true}
+                    styleInput={{ fontFamily: Fonts.Bold, color: Colors.light, fontSize: 16, lineHeight: 18 }}
+                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                    styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
+                    secureTextEntry={true}
+
+                  />
+                  {
+                    isConfirmPass ?
+
+                      <View style={{ marginTop: wide * 0.1 }}>
+                        <AnimatedInput
+
+                          placeholder="CONFIRM PASSWORD"
+                          //valid={() => isValidEmail(email)}
+                          // errorText="Error"
+                          onChangeText={(e) => this.setTextofEmailAndPass('cpass', e)}
+                          value={this.state.cpassword}
+                          styleInput={{
+                            fontFamily: Fonts.Bold, color: Colors.light, fontSize: 16,
+                            lineHeight: 18
+                          }}
+                          // isAutoFoucs={true}
+                          styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                          styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
+                          secureTextEntry={true}
+
+                        />
+                      </View>
+                      :
+                      null
+                  }
+                </View>
+
+
+
               </View>
-              <View style={{ marginTop: wide * 0.15 }}>
-                <AnimatedInput
-                  placeholder="PASSWORD"
-                  //valid={() => isValidEmail(email)}
-                  // errorText="Error"
-                  onChangeText={(e) => this.setTextofEmailAndPass('pass', e)}
-                  value={this.state.password}
-                  // isAutoFoucs={true}
-                  styleInput={{ fontFamily: Fonts.Bold, color: Colors.light, fontSize: 16, lineHeight: 18 }}
-                  styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
-                  styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
-                  secureTextEntry={true}
+              <AppLoader visible={loading} />
+              {/* </KeyboardAwareScrollView> */}
+            </KeyboardAvoidingView>
 
-                />
-                {
-                  isConfirmPass ?
-
-                    <View style={{ marginTop: wide * 0.1 }}>
-                      <AnimatedInput
-
-                        placeholder="CONFIRM PASSWORD"
-                        //valid={() => isValidEmail(email)}
-                        // errorText="Error"
-                        onChangeText={(e) => this.setTextofEmailAndPass('cpass', e)}
-                        value={this.state.cpassword}
-                        styleInput={{
-                          fontFamily: Fonts.Bold, color: Colors.light, fontSize: 16,
-                          lineHeight: 18
-                        }}
-                        // isAutoFoucs={true}
-                        styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
-                        styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
-                        secureTextEntry={true}
-
-                      />
-                    </View>
-                    :
-                    null
-                }
-              </View>
-
-
-
-            </View>
-            <AppLoader visible={loading} />
-            {/* </KeyboardAwareScrollView> */}
-          </KeyboardAvoidingView>
-
-        </KeyBoardDismissHandler>
-        <TouchableOpacity
-          key={isbtnEnable}
-          style={{
-            width: wide * 0.8, height: 48,
-            backgroundColor: Colors.btnBg,
-            alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
-            justifyContent: 'center', bottom: Platform.OS == 'android' ? 50 : 60, position: 'absolute'
-          }} onPress={() => {
-            if (isbtnEnable) {
-              this.loginUser()
-            }
-          }}>
-          <Text style={{
-            alignSelf: 'center', color: Colors.light,
-            fontFamily: Fonts.Bold,
-          }}>Continue</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
+          </KeyBoardDismissHandler>
+          <TouchableOpacity
+            key={isbtnEnable}
+            style={{
+              width: wide * 0.8, height: 48,
+              backgroundColor: Colors.btnBg,
+              alignSelf: 'center', borderRadius: 24, opacity: isbtnEnable === false ? 0.3 : 1.0,
+              justifyContent: 'center', bottom: Platform.OS == 'android' ? 50 : 60, position: 'absolute'
+            }} onPress={() => {
+              if (isbtnEnable) {
+                this.loginUser()
+              }
+            }}>
+            <Text style={{
+              alignSelf: 'center', color: Colors.light,
+              fontFamily: Fonts.Bold,
+            }}>Continue</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </View>
     );
   }
 }

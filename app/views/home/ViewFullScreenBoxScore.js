@@ -29,12 +29,12 @@ class ViewFullScreenBoxScore extends Component {
       boxScoreData: props.navigation.state.params !== undefined ? props.navigation.state.params.boxScoreData : null,
     };
 
-    Orientation.getOrientation((res) => {
-      if (res == 'PORTRAIT') {
-        Orientation.lockToLandscape()
-        StatusBar.setHidden(true)
-      }
-    })
+    // Orientation.getOrientation((res) => {
+    //   if (res == 'PORTRAIT') {
+    Orientation.lockToLandscape()
+    StatusBar.setHidden(true)
+    //   }
+    // })
   }
 
   componentDidMount() {
@@ -42,16 +42,17 @@ class ViewFullScreenBoxScore extends Component {
   }
 
   componentWillUnmount() {
-    Orientation.getOrientation((res) => {
-      if (res == 'PORTRAIT') {
-      } else if (res == 'LANDSCAPE-LEFT') {
-        Orientation.lockToPortrait()
-        StatusBar.setHidden(false)
-      } else if (res == 'LANDSCAPE-RIGHT') {
-        Orientation.lockToPortrait()
-        StatusBar.setHidden(false)
-      }
-    })
+    // Orientation.getOrientation((res) => {
+    //   if (res == 'PORTRAIT') {
+    //   } else if (res == 'LANDSCAPE-LEFT') {
+    StatusBar.setHidden(false)
+    Orientation.lockToPortrait()
+
+    // } else if (res == 'LANDSCAPE-RIGHT') {
+    //   Orientation.lockToPortrait()
+    //   StatusBar.setHidden(false)
+    // }
+    // })
   }
 
   onScreenFocus = () => {
@@ -85,19 +86,19 @@ class ViewFullScreenBoxScore extends Component {
   }
 
   _handleBackPress = () => {
-    Orientation.getOrientation((res) => {
-      if (res == 'PORTRAIT') {
-        // Navigation.back();
-      } else if (res == 'LANDSCAPE-LEFT') {
-        Orientation.lockToPortrait()
-        StatusBar.setHidden(false)
-        Navigation.back();
-      } else if (res == 'LANDSCAPE-RIGHT') {
-        Orientation.lockToPortrait()
-        StatusBar.setHidden(false)
-        Navigation.back();
-      }
-    })
+    // Orientation.getOrientation((res) => {
+    //   if (res == 'PORTRAIT') {
+    //     // Navigation.back();
+    //   } else if (res == 'LANDSCAPE-LEFT') {
+    StatusBar.setHidden(false)
+    Orientation.lockToPortrait()
+    Navigation.back();
+    //   } else if (res == 'LANDSCAPE-RIGHT') {
+    //     Orientation.lockToPortrait()
+    //     StatusBar.setHidden(false)
+    //     Navigation.back();
+    //   }
+    // })
 
 
   }
@@ -106,73 +107,80 @@ class ViewFullScreenBoxScore extends Component {
     const { boxScoreData } = this.state;
     console.log("sideBarData", boxScoreData)
     return (
-      <SafeAreaView style={{ backgroundColor: Colors.base, width: high, height: wide, }}>
-        <View style={{
-          width: '90%', flexDirection: 'row', alignItems: 'center',
-          justifyContent: 'space-between', height: 50,
-          marginBottom: 8,
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
 
+        <SafeAreaView style={{
+          backgroundColor: Colors.base, width: high, height: wide,
+          marginTop: Platform.OS == 'android' ? 10 : 0,
         }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-            <TouchableOpacity style={{
-              width: wide * 0.1,
-              // marginHorizontal: 15
-            }}
-              onPress={() => this._handleBackPress()}>
-              <FastImage style={{
-                width: wide * 0.08, height: wide * 0.08,
-                borderRadius: wide * 0.02,
-                borderWidth: 1, borderColor: Colors.borderColor
+          <View style={{
+            width: '90%', flexDirection: 'row', alignItems: 'center',
+            justifyContent: 'space-between', height: 50,
+            alignSelf: 'center',
+            marginBottom: 8,
+
+          }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+              <TouchableOpacity style={{
+                width: wide * 0.1,
+                // marginHorizontal: 15
               }}
-                source={require('../../Images/back_ico.png')}
-              />
-            </TouchableOpacity>
-            <Text style={{
-              // marginTop: 16,
-              color: Colors.light, fontSize: 24,
-              fontFamily: Fonts.Bold, lineHeight: 40,
-              marginHorizontal: 10
-            }}>
-              Box Score
-            </Text>
+                onPress={() => this._handleBackPress()}>
+                <FastImage style={{
+                  width: wide * 0.08, height: wide * 0.08,
+                  borderRadius: wide * 0.02,
+                  borderWidth: 1, borderColor: Colors.borderColor
+                }}
+                  source={require('../../Images/back_ico.png')}
+                />
+              </TouchableOpacity>
+              <Text style={{
+                // marginTop: 16,
+                color: Colors.light, fontSize: 24,
+                fontFamily: Fonts.Bold, lineHeight: 40,
+                marginHorizontal: 10
+              }}>
+                Box Score
+              </Text>
 
-          </View>
-        </View>
-        {this.state.loading == true ?
-          <AppLoader visible={this.state.loading} /> : <></>}
-        {/* <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}> */}
-
-        <ScrollView showsVerticalScrollIndicator={false}
-          bounces={false}
-          contentContainerStyle={{
-            // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100,
-            marginTop: wide * 0.01
-          }}
-        >
-
-          <View style={{ width: '90%', alignSelf: 'center' }} >
-            <View style={{ marginTop: wide * 0.03, }}>
-              <View style={{}}>
-                {boxScoreData != null && boxScoreData !== undefined ?
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                  // bounces={false}
-                  >
-                    <FullScreenQuickBoxScoreTable
-                      // teamId={teamId} 
-                      data={boxScoreData}
-                      heading={"Table stat"} />
-                  </ScrollView>
-                  : <></>}
-
-              </View>
             </View>
-
-
           </View>
-        </ScrollView>
-        {/* </KeyboardAvoidingView> */}
+          {this.state.loading == true ?
+            <AppLoader visible={this.state.loading} /> : <></>}
+          {/* <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}> */}
 
-      </SafeAreaView >
+          <ScrollView showsVerticalScrollIndicator={false}
+            bounces={false}
+            contentContainerStyle={{
+              // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100,
+              marginTop: wide * 0.01
+            }}
+          >
+
+            <View style={{ width: '90%', alignSelf: 'center' }} >
+              <View style={{ marginTop: wide * 0.03, }}>
+                <View style={{}}>
+                  {boxScoreData != null && boxScoreData !== undefined ?
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                    // bounces={false}
+                    >
+                      <FullScreenQuickBoxScoreTable
+                        // teamId={teamId} 
+                        data={boxScoreData}
+                        heading={"Table stat"} />
+                    </ScrollView>
+                    : <></>}
+
+                </View>
+              </View>
+
+
+            </View>
+          </ScrollView>
+          {/* </KeyboardAvoidingView> */}
+
+        </SafeAreaView >
+      </View>
 
 
     );

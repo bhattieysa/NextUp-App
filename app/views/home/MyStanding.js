@@ -937,116 +937,170 @@ class MyStanding extends Component {
       //         <AppLoader visible={this.state.loading} />
       //     </View>
       //     :
-      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-        {this.state.loading == true ?
-          <AppLoader visible={this.state.loading} /> : <></>}
-        <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-          <View style={{
-            marginTop: wide * 0.03,
-            width: '90%',
-            // backgroundColor: 'green',
-            alignSelf: 'center'
-          }}>
-            <Text style={{
-              color: Colors.light, fontSize: 24,
-              fontFamily: Fonts.Bold, lineHeight: 40
-            }}>
-              My Standing
-            </Text>
-          </View>
-          <ScrollView showsVerticalScrollIndicator={false}
-            bounces={false}
-            contentContainerStyle={{
-              // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100,
-              paddingBottom: 20,
-              marginTop: wide * 0.03
-            }}>
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
 
-            <View style={{ backgroundColor: Colors.base, }} >
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          {this.state.loading == true ?
+            <AppLoader visible={this.state.loading} /> : <></>}
+          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+            <View style={{
+              marginTop: wide * 0.03,
+              width: '90%',
+              // backgroundColor: 'green',
+              alignSelf: 'center'
+            }}>
+              <Text style={{
+                color: Colors.light, fontSize: 24,
+                fontFamily: Fonts.Bold, lineHeight: 40
+              }}>
+                My Standing
+              </Text>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}
+              bounces={false}
+              contentContainerStyle={{
+                // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100,
+                paddingBottom: 20,
+                marginTop: wide * 0.03
+              }}>
 
-              {myStandingData?.leadingPlayerInfoList !== null && myStandingData?.leadingPlayerInfoList?.length > 0 ?
-                <>
-                  {/* <View style={{ marginTop: wide * 0.1 }}>
+              <View style={{ backgroundColor: Colors.base, }} >
+
+                {myStandingData?.leadingPlayerInfoList !== null && myStandingData?.leadingPlayerInfoList?.length > 0 ?
+                  <>
+                    {/* <View style={{ marginTop: wide * 0.1 }}>
                                             <Title data={'Leading Players'} />
                                            
                                         </View> */}
-                  <View style={{
-                    marginTop: wide * 0.04,
-                    // backgroundColor: 'red',
-                    alignItems: 'center',
-                  }}>
-                    <FlatList
-                      keyExtractor={(item, index) => index.toString()}
-                      style={{
-                        overflow: 'visible', width: '93%',
-                        // backgroundColor: 'red'
-                      }}
-                      data={myStandingData?.leadingPlayerInfoList}
-                      renderItem={(item, index) => this._renderLeadingPlayer(item, index)}
-                      showsHorizontalScrollIndicator={false}
-                      horizontal
-                    />
-
-                    <TouchableOpacity style={{
-                      // backgroundColor: Colors.btnBg,
-                      width: wide * 0.22,
-                      height: 20,
-                      marginTop: wide * 0.05,
-                      flexDirection: 'row',
+                    <View style={{
+                      marginTop: wide * 0.04,
+                      // backgroundColor: 'red',
                       alignItems: 'center',
-                      justifyContent: 'space-evenly'
-                    }}
-                      onPress={() => Navigation.navigate('PlayerMore')}>
-                      <Text style={{
-                        color: Colors.light, fontSize: 14, fontFamily: Fonts.Bold,
-                        lineHeight: 16
-                      }}>View More</Text>
-                      <Image
+                    }}>
+                      <FlatList
+                        keyExtractor={(item, index) => index.toString()}
                         style={{
-                          width: wide * 0.025, height: wide * 0.02, marginHorizontal: wide * 0.01
-                        }} source={require('../../Images/dropDownIconNew.png')} />
-                    </TouchableOpacity>
-                  </View>
-                </>
-                : null
-              }
-              {/* {myStandingData?.leadingTeamInfoList !== null && myStandingData?.leadingTeamInfoList?.length > 0 ? */}
-              {myStandingData?.teamDetailTabInfo !== null && myStandingData?.teamDetailTabInfo?.teamTabInfoDtoList.length > 0 ?
-                <>
-                  <View style={{ marginTop: wide * 0.1 }}>
-                    <Title data={'My Teams'} />
-                  </View>
+                          overflow: 'visible', width: '93%',
+                          // backgroundColor: 'red'
+                        }}
+                        data={myStandingData?.leadingPlayerInfoList}
+                        renderItem={(item, index) => this._renderLeadingPlayer(item, index)}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal
+                      />
 
-                  <View style={{
-                    marginTop: wide * 0.04,
-                    alignItems: 'center',
-                  }}>
-                    <FlatList
-                      keyExtractor={(item, index) => index.toString()}
-                      style={{
-                        overflow: 'visible', width: '90%',
-                        marginLeft: -10,
+                      <TouchableOpacity style={{
+                        // backgroundColor: Colors.btnBg,
+                        width: wide * 0.22,
+                        height: 20,
+                        marginTop: wide * 0.05,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly'
                       }}
-                      // data={myStandingData?.leadingTeamInfoList}
-                      data={myStandingData?.teamDetailTabInfo?.teamTabInfoDtoList}
-                      renderItem={(item, index) => this._renderLeadingTeam(item, index)}
+                        onPress={() => Navigation.navigate('PlayerMore')}>
+                        <Text style={{
+                          color: Colors.light, fontSize: 14, fontFamily: Fonts.Bold,
+                          lineHeight: 16
+                        }}>View More</Text>
+                        <Image
+                          style={{
+                            width: wide * 0.025, height: wide * 0.02, marginHorizontal: wide * 0.01
+                          }} source={require('../../Images/dropDownIconNew.png')} />
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                  : null
+                }
+                {/* {myStandingData?.leadingTeamInfoList !== null && myStandingData?.leadingTeamInfoList?.length > 0 ? */}
+                {myStandingData?.teamDetailTabInfo !== null && myStandingData?.teamDetailTabInfo?.teamTabInfoDtoList.length > 0 ?
+                  <>
+                    <View style={{ marginTop: wide * 0.1 }}>
+                      <Title data={'My Teams'} />
+                    </View>
+
+                    <View style={{
+                      marginTop: wide * 0.04,
+                      alignItems: 'center',
+                    }}>
+                      <FlatList
+                        keyExtractor={(item, index) => index.toString()}
+                        style={{
+                          overflow: 'visible', width: '90%',
+                          marginLeft: -10,
+                        }}
+                        // data={myStandingData?.leadingTeamInfoList}
+                        data={myStandingData?.teamDetailTabInfo?.teamTabInfoDtoList}
+                        renderItem={(item, index) => this._renderLeadingTeam(item, index)}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal
+                      />
+
+                      <TouchableOpacity style={{
+                        // backgroundColor: Colors.btnBg,
+                        width: wide * 0.22,
+                        height: 20,
+                        marginTop: wide * 0.06,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly'
+                      }}
+                        // onPress={() => Navigation.navigate('TeamMore')}
+
+                        onPress={() => Navigation.navigate("PlayerMyTeams",
+                          { teamId: myStandingData?.teamDetailTabInfo?.teamTabInfoDtoList[0]?.teamId })}
+                      >
+                        <Text style={{
+                          color: Colors.light, fontSize: 14, fontFamily: Fonts.Bold,
+                          lineHeight: 16
+                        }}>View More</Text>
+                        <Image
+                          style={{
+                            width: wide * 0.025, height: wide * 0.02, marginHorizontal: wide * 0.01
+                          }} source={require('../../Images/dropDownIconNew.png')} />
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                  : null
+                }
+                {myStandingData?.recentGamesInfo !== null && myStandingData?.recentGamesInfo !== undefined ?
+
+                  <View style={{ marginTop: wide * 0.1, alignItems: 'center' }}>
+                    {/* <Title data={'Recent Games'} /> */}
+
+                    <View style={{
+                      width: '100%',
+                      // backgroundColor: 'green'
+                      // marginHorizontal: wide * 0.055,
+                    }}>
+
+                      <TeamStats key={`game-${0}`} data={myStandingData?.recentGamesInfo} />
+                      {/* <FlatList
+                      style={{ overflow: 'visible' }}
+                      //style={{marginTop:wide*0.01}}    
+                      data={myStandingData?.recentGames}
+                      renderItem={(item, index) => this._renderRecents(item, index)}
                       showsHorizontalScrollIndicator={false}
                       horizontal
-                    />
+                    /> */}
 
+                    </View>
                     <TouchableOpacity style={{
                       // backgroundColor: Colors.btnBg,
                       width: wide * 0.22,
                       height: 20,
-                      marginTop: wide * 0.06,
+                      marginTop: wide * 0.09,
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'space-evenly'
                     }}
                       // onPress={() => Navigation.navigate('TeamMore')}
 
-                      onPress={() => Navigation.navigate("PlayerMyTeams",
-                        { teamId: myStandingData?.teamDetailTabInfo?.teamTabInfoDtoList[0]?.teamId })}
+                      onPress={() => Navigation.navigate("PlayerMoreRecentGames")}
                     >
                       <Text style={{
                         color: Colors.light, fontSize: 14, fontFamily: Fonts.Bold,
@@ -1058,59 +1112,11 @@ class MyStanding extends Component {
                         }} source={require('../../Images/dropDownIconNew.png')} />
                     </TouchableOpacity>
                   </View>
-                </>
-                : null
-              }
-              {myStandingData?.recentGamesInfo !== null && myStandingData?.recentGamesInfo !== undefined ?
+                  :
+                  null
+                }
 
-                <View style={{ marginTop: wide * 0.1, alignItems: 'center' }}>
-                  {/* <Title data={'Recent Games'} /> */}
-
-                  <View style={{
-                    width: '100%',
-                    // backgroundColor: 'green'
-                    // marginHorizontal: wide * 0.055,
-                  }}>
-
-                    <TeamStats key={`game-${0}`} data={myStandingData?.recentGamesInfo} />
-                    {/* <FlatList
-                      style={{ overflow: 'visible' }}
-                      //style={{marginTop:wide*0.01}}    
-                      data={myStandingData?.recentGames}
-                      renderItem={(item, index) => this._renderRecents(item, index)}
-                      showsHorizontalScrollIndicator={false}
-                      horizontal
-                    /> */}
-
-                  </View>
-                  <TouchableOpacity style={{
-                    // backgroundColor: Colors.btnBg,
-                    width: wide * 0.22,
-                    height: 20,
-                    marginTop: wide * 0.09,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly'
-                  }}
-                    // onPress={() => Navigation.navigate('TeamMore')}
-
-                    onPress={() => Navigation.navigate("PlayerMoreRecentGames")}
-                  >
-                    <Text style={{
-                      color: Colors.light, fontSize: 14, fontFamily: Fonts.Bold,
-                      lineHeight: 16
-                    }}>View More</Text>
-                    <Image
-                      style={{
-                        width: wide * 0.025, height: wide * 0.02, marginHorizontal: wide * 0.01
-                      }} source={require('../../Images/dropDownIconNew.png')} />
-                  </TouchableOpacity>
-                </View>
-                :
-                null
-              }
-
-              {/* {this.state.userStatBarData.length > 0 ?
+                {/* {this.state.userStatBarData.length > 0 ?
                 <View style={{ marginTop: wide * 0.1, marginBottom: 20 }}>
                  
                   <View style={{
@@ -1134,246 +1140,247 @@ class MyStanding extends Component {
 
                 : null
               } */}
-              <View style={{ marginTop: wide * 0.1, }}>
-                <Title data={'Box Score'} />
+                <View style={{ marginTop: wide * 0.1, }}>
+                  <Title data={'Box Score'} />
 
-                <View style={{ width: '90%', alignSelf: 'center', alignItems: 'center', }}>
-                  <View style={{
-                    width: '100%', flexDirection: 'row', justifyContent: 'flex-end',
-                    marginTop: wide * 0.01
-                  }}>
-                    <TouchableOpacity style={{
-                      width: 30, height: 30,
-                      alignItems: 'center', justifyContent: 'center',
-                      marginRight: wide * 0.01
-                    }}
-                      onPress={() => this._handleFullScreenView()}
-                    >
-                      <Image
-                        style={{ width: '80%', height: '80%', }}
-                        source={require('../../Images/full_screen_icon.png')}
-                        resizeMode={'contain'}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  {this.state.statTabelData != null ?
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                    // bounces={false}
-                    >
-                      <QuickBoxScoreTable
-                        // teamId={teamId} 
-                        data={this.state.statTabelData}
-                        heading={"Table stat"} />
-                    </ScrollView>
-                    : <></>}
-
-                </View>
-              </View>
-
-              <View style={{ marginTop: wide * 0.1, marginBottom: 20 }}>
-                <Title data={'My Stats'} />
-
-                <View style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: wide * 0.03,
-                  flexDirection: 'row',
-                  height: wide * 0.15,
-
-                }}>
-                  <View style={{
-                    justifyContent: 'space-evenly', width: '40%', marginLeft: wide * 0.02
-                  }}>
-                    <Text style={{
-                      color: Colors.light,
-                      fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
-                    }}>Session:</Text>
-
-                    <TouchableOpacity
-                      style={{
-                        marginTop: 10, flexDirection: 'row', height: '50%',
-                        alignItems: 'center', width: '80%',
+                  <View style={{ width: '90%', alignSelf: 'center', alignItems: 'center', }}>
+                    <View style={{
+                      width: '100%', flexDirection: 'row', justifyContent: 'flex-end',
+                      marginTop: wide * 0.01
+                    }}>
+                      <TouchableOpacity style={{
+                        width: 30, height: 30,
+                        alignItems: 'center', justifyContent: 'center',
+                        marginRight: wide * 0.01
                       }}
-                      activeOpacity={1}
-                      onPress={() => this.setState({ showFirstSeasonDrop: true })}
-                    >
+                        onPress={() => this._handleFullScreenView()}
+                      >
+                        <Image
+                          style={{ width: '80%', height: '80%', }}
+                          source={require('../../Images/full_screen_icon.png')}
+                          resizeMode={'contain'}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    {this.state.statTabelData != null ?
+                      <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                      // bounces={false}
+                      >
+                        <QuickBoxScoreTable
+                          // teamId={teamId} 
+                          data={this.state.statTabelData}
+                          heading={"Table stat"} />
+                      </ScrollView>
+                      : <></>}
+
+                  </View>
+                </View>
+
+                <View style={{ marginTop: wide * 0.1, marginBottom: 20 }}>
+                  <Title data={'My Stats'} />
+
+                  <View style={{
+                    width: '90%',
+                    alignSelf: 'center',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: wide * 0.03,
+                    flexDirection: 'row',
+                    height: wide * 0.15,
+
+                  }}>
+                    <View style={{
+                      justifyContent: 'space-evenly', width: '40%', marginLeft: wide * 0.02
+                    }}>
                       <Text style={{
                         color: Colors.light,
-                        fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
-                      }}>{firstDropSelectedVal}</Text>
-                      <Image
+                        fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
+                      }}>Session:</Text>
+
+                      <TouchableOpacity
                         style={{
-                          width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
-                        }} source={require('../../Images/dropDownIconNew.png')} />
-                    </TouchableOpacity>
+                          marginTop: 10, flexDirection: 'row', height: '50%',
+                          alignItems: 'center', width: '80%',
+                        }}
+                        activeOpacity={1}
+                        onPress={() => this.setState({ showFirstSeasonDrop: true })}
+                      >
+                        <Text style={{
+                          color: Colors.light,
+                          fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
+                        }}>{firstDropSelectedVal}</Text>
+                        <Image
+                          style={{
+                            width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
+                          }} source={require('../../Images/dropDownIconNew.png')} />
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={{
+                      justifyContent: 'space-evenly', width: '40%',
+                    }}>
+                      <Text style={{
+                        color: Colors.light,
+                        fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
+                      }}>Session:</Text>
+
+                      <TouchableOpacity
+                        style={{
+                          marginTop: 10, flexDirection: 'row', height: '50%',
+                          alignItems: 'center', width: '80%',
+                        }}
+                        activeOpacity={1}
+                        onPress={() => this.setState({ showSecondSeasonDrop: true })}
+                      >
+                        <Text style={{
+                          color: Colors.light,
+                          fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
+                        }}>{secondDropSelectedVal}</Text>
+                        <Image
+                          style={{
+                            width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
+                          }} source={require('../../Images/dropDownIconNew.png')} />
+                      </TouchableOpacity>
+                    </View>
+
                   </View>
 
                   <View style={{
-                    justifyContent: 'space-evenly', width: '40%',
+                    marginTop: wide * 0.04, marginBottom: 10,
+                    width: '90%', alignSelf: 'center'
+                  }}>
+                    {this.state.sideBySideBarData != null ?
+                      <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
+                      : <></>
+                    }
+                  </View>
+                </View>
+
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+
+          {showFirstSeasonDrop === true ?
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={showFirstSeasonDrop}
+            >
+              <TouchableOpacity
+                onPress={() => this.setState({ showFirstSeasonDrop: false })}
+                style={{
+                  width: wide,
+                  height: high,
+                  justifyContent: 'center', alignItems: 'center'
+                }}
+              >
+
+
+                <BlurView style={{
+                  width: wide,
+                  height: high,
+                  position: 'absolute',
+                }}
+                  blurAmount={10}
+                  blurRadius={10}
+                />
+                <View style={{
+                  width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                  marginTop: 20, borderRadius: 20, alignItems: 'center',
+                  position: 'absolute',
+
+                }}>
+                  <View style={{
+                    width: '100%', height: '15%', marginTop: 10,
+                    alignItems: 'center', justifyContent: 'center',
+                    // borderBottomColor: Colors.newGrayFontColor, 
+                    // borderBottomWidth: 1
                   }}>
                     <Text style={{
-                      color: Colors.light,
-                      fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 12
-                    }}>Session:</Text>
-
-                    <TouchableOpacity
-                      style={{
-                        marginTop: 10, flexDirection: 'row', height: '50%',
-                        alignItems: 'center', width: '80%',
-                      }}
-                      activeOpacity={1}
-                      onPress={() => this.setState({ showSecondSeasonDrop: true })}
-                    >
-                      <Text style={{
-                        color: Colors.light,
-                        fontFamily: Fonts.Bold, fontSize: 16, lineHeight: 16
-                      }}>{secondDropSelectedVal}</Text>
-                      <Image
-                        style={{
-                          width: wide * 0.035, height: wide * 0.025, marginHorizontal: wide * 0.04
-                        }} source={require('../../Images/dropDownIconNew.png')} />
-                    </TouchableOpacity>
+                      color: Colors.light, fontFamily: Fonts.Bold,
+                      fontSize: 14, lineHeight: 16
+                    }}>Select</Text>
                   </View>
 
+
+                  <View style={{ width: '60%', height: '80%', }}>
+                    <FlatList
+                      keyExtractor={(item, index) => index.toString()}
+                      style={{ marginBottom: 10 }}
+                      // data={[{ session: '2020-21' }, { session: '2019-20' }]}
+                      data={this.state.seasonList}
+                      renderItem={(item, index) => this._renderFirstSessionList(item, index)}
+                    />
+                  </View>
                 </View>
+                {/* </BlurView> */}
+              </TouchableOpacity>
+            </Modal>
+            : null
+          }
 
-                <View style={{
-                  marginTop: wide * 0.04, marginBottom: 10,
-                  width: '90%', alignSelf: 'center'
-                }}>
-                  {this.state.sideBySideBarData != null ?
-                    <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
-                    : <></>
-                  }
-                </View>
-              </View>
-
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-
-        {showFirstSeasonDrop === true ?
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showFirstSeasonDrop}
-          >
-            <TouchableOpacity
-              onPress={() => this.setState({ showFirstSeasonDrop: false })}
-              style={{
-                width: wide,
-                height: high,
-                justifyContent: 'center', alignItems: 'center'
-              }}
+          {showSecondSeasonDrop === true ?
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={showSecondSeasonDrop}
             >
+              <TouchableOpacity
+                onPress={() => this.setState({ showSecondSeasonDrop: false })}
+                style={{
+                  width: wide,
+                  height: high,
+                  justifyContent: 'center', alignItems: 'center'
+                }}
+              >
 
 
-              <BlurView style={{
-                width: wide,
-                height: high,
-                position: 'absolute',
-              }}
-                blurAmount={10}
-                blurRadius={10}
-              />
-              <View style={{
-                width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
-                marginTop: 20, borderRadius: 20, alignItems: 'center',
-                position: 'absolute',
-
-              }}>
+                <BlurView style={{
+                  width: wide,
+                  height: high,
+                  position: 'absolute',
+                }}
+                  blurAmount={10}
+                  blurRadius={10}
+                />
                 <View style={{
-                  width: '100%', height: '15%', marginTop: 10,
-                  alignItems: 'center', justifyContent: 'center',
-                  // borderBottomColor: Colors.newGrayFontColor, 
-                  // borderBottomWidth: 1
+                  width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
+                  marginTop: 20, borderRadius: 20, alignItems: 'center',
+                  position: 'absolute',
+
                 }}>
-                  <Text style={{
-                    color: Colors.light, fontFamily: Fonts.Bold,
-                    fontSize: 14, lineHeight: 16
-                  }}>Select</Text>
+                  <View style={{
+                    width: '100%', height: '15%', marginTop: 10,
+                    alignItems: 'center', justifyContent: 'center',
+                    // borderBottomColor: Colors.newGrayFontColor, 
+                    // borderBottomWidth: 1
+                  }}>
+                    <Text style={{
+                      color: Colors.light, fontFamily: Fonts.Bold,
+                      fontSize: 14, lineHeight: 16
+                    }}>Select</Text>
+                  </View>
+
+
+                  <View style={{ width: '60%', height: '80%', }}>
+                    <FlatList
+                      keyExtractor={(item, index) => index.toString()}
+                      style={{ marginBottom: 10 }}
+                      // data={[{ session: '2020-21' }, { session: '2019-20' }]}
+                      data={this.state.seasonList}
+                      renderItem={(item, index) => this._renderSecondSessionList(item, index)}
+                      showsVerticalScrollIndicator={false}
+                    />
+                  </View>
                 </View>
+                {/* </BlurView> */}
+              </TouchableOpacity>
+            </Modal>
+            : null
+          }
 
-
-                <View style={{ width: '60%', height: '80%', }}>
-                  <FlatList
-                    keyExtractor={(item, index) => index.toString()}
-                    style={{ marginBottom: 10 }}
-                    // data={[{ session: '2020-21' }, { session: '2019-20' }]}
-                    data={this.state.seasonList}
-                    renderItem={(item, index) => this._renderFirstSessionList(item, index)}
-                  />
-                </View>
-              </View>
-              {/* </BlurView> */}
-            </TouchableOpacity>
-          </Modal>
-          : null
-        }
-
-        {showSecondSeasonDrop === true ?
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showSecondSeasonDrop}
-          >
-            <TouchableOpacity
-              onPress={() => this.setState({ showSecondSeasonDrop: false })}
-              style={{
-                width: wide,
-                height: high,
-                justifyContent: 'center', alignItems: 'center'
-              }}
-            >
-
-
-              <BlurView style={{
-                width: wide,
-                height: high,
-                position: 'absolute',
-              }}
-                blurAmount={10}
-                blurRadius={10}
-              />
-              <View style={{
-                width: '60%', height: wide * 0.5, backgroundColor: Colors.ractangelCardColor,
-                marginTop: 20, borderRadius: 20, alignItems: 'center',
-                position: 'absolute',
-
-              }}>
-                <View style={{
-                  width: '100%', height: '15%', marginTop: 10,
-                  alignItems: 'center', justifyContent: 'center',
-                  // borderBottomColor: Colors.newGrayFontColor, 
-                  // borderBottomWidth: 1
-                }}>
-                  <Text style={{
-                    color: Colors.light, fontFamily: Fonts.Bold,
-                    fontSize: 14, lineHeight: 16
-                  }}>Select</Text>
-                </View>
-
-
-                <View style={{ width: '60%', height: '80%', }}>
-                  <FlatList
-                    keyExtractor={(item, index) => index.toString()}
-                    style={{ marginBottom: 10 }}
-                    // data={[{ session: '2020-21' }, { session: '2019-20' }]}
-                    data={this.state.seasonList}
-                    renderItem={(item, index) => this._renderSecondSessionList(item, index)}
-                    showsVerticalScrollIndicator={false}
-                  />
-                </View>
-              </View>
-              {/* </BlurView> */}
-            </TouchableOpacity>
-          </Modal>
-          : null
-        }
-
-      </SafeAreaView >
+        </SafeAreaView>
+      </View>
     );
   }
 }

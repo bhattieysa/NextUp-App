@@ -125,6 +125,7 @@ class MyTeam extends Component {
         console.log('My Team--->> ', myTeamDetailData);
 
         return (
+
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
                 <View style={{ marginHorizontal: 32, backgroundColor: Colors.base, }}>
                     <AppLoader visible={this.state.loading} />

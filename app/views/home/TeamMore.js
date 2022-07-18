@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, FlatList, StyleSheet, StatusBar } from 'react-native';
 import {
-    Layout,
-    Colors,
-    Fonts,
+  Layout,
+  Colors,
+  Fonts,
 } from '../../constants';
 
 import Navigation from '../../lib/Navigation';
@@ -204,566 +204,570 @@ let pageNum = 0;
 // ]
 
 class TeamMore extends Component {
-    static navigationOptions = { header: null };
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            selectedIndex: 0,
-            isOpenSortOption: false,
-            initialDataList: [],
-            dataList: [],
-            strText: '',
-            topRankerData: [],
+  static navigationOptions = { header: null };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      selectedIndex: 0,
+      isOpenSortOption: false,
+      initialDataList: [],
+      dataList: [],
+      strText: '',
+      topRankerData: [],
 
-            selectedSort: 'rank',
-            sortOrder: 'desc'
-        };
-    }
-    componentDidMount() {
-        pageNum = 0;
-        this.onScreenFoucs();
+      selectedSort: 'rank',
+      sortOrder: 'desc'
+    };
+  }
+  componentDidMount() {
+    pageNum = 0;
+    this.onScreenFoucs();
 
-    }
+  }
 
-    onScreenFoucs = () => {
-        const { selectedSort, sortOrder } = this.state;
-        getObject('UserId').then((obj) => {
-            this.setState({ loading: true }, () => {
-                this.props.dispatch(getTeamMoreNew(obj, pageNum, selectedSort, sortOrder, (res, resData) => {
-                    debugger
-                    if (res) {
-                        console.log('TeammmmmDattta---', resData);
-                        var topPlayer = [];
-                        if (resData.length > 0) {
-                            let resLength = resData.length;
-                            for (let i = 0; i < resLength; i++) {
-                                topPlayer.push(resData.shift());
-                                if (i == 2) {
-                                    break
-                                }
-                            }
-                        }
-                        // topPlayer.push(resData.shift());
-                        // var topPlayer1 = resData.shift();
-                        // var topPlayer2 = resData.shift();
-                        this.setState({
-                            loading: false,
-                            // initialDataList: resData,
-                            topRankerData: topPlayer,
-                            dataList: resData,
+  onScreenFoucs = () => {
+    const { selectedSort, sortOrder } = this.state;
+    getObject('UserId').then((obj) => {
+      this.setState({ loading: true }, () => {
+        this.props.dispatch(getTeamMoreNew(obj, pageNum, selectedSort, sortOrder, (res, resData) => {
+          debugger
+          if (res) {
+            console.log('TeammmmmDattta---', resData);
+            var topPlayer = [];
+            if (resData.length > 0) {
+              let resLength = resData.length;
+              for (let i = 0; i < resLength; i++) {
+                topPlayer.push(resData.shift());
+                if (i == 2) {
+                  break
+                }
+              }
+            }
+            // topPlayer.push(resData.shift());
+            // var topPlayer1 = resData.shift();
+            // var topPlayer2 = resData.shift();
+            this.setState({
+              loading: false,
+              // initialDataList: resData,
+              topRankerData: topPlayer,
+              dataList: resData,
 
-                        })
-                        if (resData.length == 0) {
-                            this.setState({ selectedSort: '', sortOrder: '', loading: false, })
-                        }
-                        // this.setState({ loading: false, })
-                    } else {
-                        this.setState({ loading: false, dataList: [] })
-                    }
-                    // this.setInitialOffSet();
-                }))
             })
+            if (resData.length == 0) {
+              this.setState({ selectedSort: '', sortOrder: '', loading: false, })
+            }
+            // this.setState({ loading: false, })
+          } else {
+            this.setState({ loading: false, dataList: [] })
+          }
+          // this.setInitialOffSet();
+        }))
+      })
 
-        })
-    }
+    })
+  }
 
-    apiCall = (strTxt) => {
-        getObject('UserId').then((obj) => {
+  apiCall = (strTxt) => {
+    getObject('UserId').then((obj) => {
 
-            this.props.dispatch(getPlayerMoreSearch(obj, strTxt, (res, resData) => {
+      this.props.dispatch(getPlayerMoreSearch(obj, strTxt, (res, resData) => {
 
-                // debugger
-                // this.setState({ topRankerData: resData.shift() })
-                this.setState({ loading: false, dataList: resData })
-
-
-            }))
-        })
+        // debugger
+        // this.setState({ topRankerData: resData.shift() })
+        this.setState({ loading: false, dataList: resData })
 
 
-    }
+      }))
+    })
 
 
-    //new team player render method by Keshav
-    _renderNewTeam = ({ item }) => {
-        console.log("----->>  ", item)
-        return (
+  }
+
+
+  //new team player render method by Keshav
+  _renderNewTeam = ({ item }) => {
+    console.log("----->>  ", item)
+    return (
+      <View style={{
+        width: '100%', flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: wide * 0.1, marginTop: 10,
+      }}>
+
+        <View style={{
+          width: '15%',
+        }}>
+          <Text style={{
+            color: Colors.light, fontSize: 13,
+            lineHeight: 15, fontFamily: Fonts.Regular,
+            marginLeft: wide * 0.01
+          }}>{item.rank}</Text>
+
+        </View>
+
+        <View style={{ width: '30%', }}>
+          <Text style={{
+            color: Colors.light, fontSize: 13, lineHeight: 15,
+            fontFamily: Fonts.Regular
+          }}>
+            {item.name}
+          </Text>
+        </View>
+
+
+        <View style={{ width: '25%', alignItems: 'center', }}>
+          <Text style={{
+            color: Colors.light, fontSize: 13,
+            lineHeight: 15, fontFamily: Fonts.Regular,
+          }}>{item.wins}</Text>
+        </View>
+        <View style={{ width: '20%', alignItems: 'center', }}>
+          <Text style={{
+            color: Colors.light, fontSize: 13,
+            lineHeight: 15, fontFamily: Fonts.Regular,
+          }}>
+            {item.loss}
+          </Text>
+        </View>
+
+      </View>
+    );
+  };
+
+  _renderLeadingTeam = (item, index) => {
+    return (
+      <View style={{
+        flexDirection: 'row',
+        // alignItems: 'center',
+        // backgroundColor: 'green',
+        width: wide * 0.36,
+        marginLeft: wide * 0.01,
+        // padding: 10,
+        // justifyContent: 'center'
+      }}>
+        <View style={{}}>
+          <Text style={{
+            color: Colors.light, fontSize: 54,
+            fontFamily: Fonts.Bold,
+            lineHeight: 60,
+
+            marginLeft: wide * 0.01,
+            marginTop: wide * 0.01
+          }}>{item.item.rank}</Text>
+        </View>
+        <View style={{
+          alignItems: 'center',
+          // marginTop: wide * 0.01,
+          marginLeft: wide * 0.03,
+          justifyContent: 'center'
+        }}>
+          <View style={{
+            width: wide * 0.16, height: wide * 0.16,
+            // marginTop: 8,
+            // marginLeft: wide * 0.01,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: wide * 0.16 / 2,
+            borderWidth: 3,
+            borderColor: Colors.newGrayFontColor,
+          }}>
+            {/* edit by keshav */}
+            {item.item.logoUrl != null ?
+              <FastImage style={{ width: '94%', height: '94%', borderRadius: wide * 0.16 / 2, }}
+                // resizeMode={'contain'}
+                source={{
+                  uri: item.item.logoUrl,
+                  priority: FastImage.priority.high
+                }}
+              />
+              :
+              null
+            }
+          </View>
+
+
+          <View style={{ marginTop: wide * 0.01 }}>
+            <Text numberOfLines={2} style={{
+              color: Colors.light, fontSize: 16, fontFamily: Fonts.Bold,
+              lineHeight: 18
+            }}>{item.item.name}</Text>
+
+          </View>
+        </View>
+
+      </View>
+    )
+  }
+
+  _renderSortOption = (item, index) => {
+    return (
+      <TouchableOpacity style={{
+        height: wide * 0.3,
+        justifyContent: 'center',
+        alignItems: 'center', paddingRight: wide * 0.05
+      }}
+        activeOpacity={1}
+        onPress={() => this.setState({ selectedIndex: item.index })}
+      >
+        <FastImage style={{
+          width: 60, height: 60,
+          marginVertical: 10
+        }} source={this.state.selectedIndex === item.index ?
+          require('../../Images/sort_tick_selected.png') : require('../../Images/sort_tick_unselected.png')} />
+
+        <Text numberOfLines={2} style={{
+          color: this.state.selectedIndex === item.index ? Colors.light : Colors.fontColorGray,
+          fontSize: 14, lineHeight: 16,
+          fontFamily: Fonts.SemiBold, textAlign: 'center', width: wide * 0.15
+        }}>Point
+          Gaurd</Text>
+
+
+
+
+      </TouchableOpacity>
+    );
+  };
+
+  render() {
+
+    const { dataList, topRankerData, initialDataList, strText, selectedSort, sortOrder } = this.state;
+    // console.log(dataList);
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+        <SafeAreaView style={{
+          flex: 1,
+          marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          <View style={{
+            alignItems: 'center',
+            // borderBottomWidth: 0.5,
+            // borderBottomColor: Colors.newGrayFontColor,
+            // backgroundColor: 'green'
+          }}>
             <View style={{
-                width: '100%', flexDirection: 'row',
-                justifyContent: 'space-between',
-                height: wide * 0.1, marginTop: 10,
+              width: '90%', flexDirection: 'row', alignItems: 'center',
+              justifyContent: 'space-between', height: 50,
+              marginBottom: 8,
+              // backgroundColor: 'green'
             }}>
-
-                <View style={{
-                    width: '15%',
+              <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                <TouchableOpacity style={{
+                  width: wide * 0.1,
+                  // marginHorizontal: 15
+                }} onPress={() => Navigation.back()}>
+                  <FastImage style={{
+                    width: wide * 0.08, height: wide * 0.08,
+                    borderRadius: wide * 0.02,
+                    borderWidth: 1, borderColor: Colors.borderColor
+                  }} source={require('../../Images/back_ico.png')} />
+                </TouchableOpacity>
+                <Text style={{
+                  // marginTop: 16,
+                  color: Colors.light, fontSize: 24,
+                  fontFamily: Fonts.Bold, lineHeight: 40,
+                  marginHorizontal: 10
                 }}>
-                    <Text style={{
-                        color: Colors.light, fontSize: 13,
-                        lineHeight: 15, fontFamily: Fonts.Regular,
-                        marginLeft: wide * 0.01
-                    }}>{item.rank}</Text>
+                  Back to Explore
+                </Text>
 
-                </View>
-
-                <View style={{ width: '30%', }}>
-                    <Text style={{
-                        color: Colors.light, fontSize: 13, lineHeight: 15,
-                        fontFamily: Fonts.Regular
-                    }}>
-                        {item.name}
-                    </Text>
-                </View>
+              </View>
 
 
-                <View style={{ width: '25%', alignItems: 'center', }}>
-                    <Text style={{
-                        color: Colors.light, fontSize: 13,
-                        lineHeight: 15, fontFamily: Fonts.Regular,
-                    }}>{item.wins}</Text>
-                </View>
-                <View style={{ width: '20%', alignItems: 'center', }}>
-                    <Text style={{
-                        color: Colors.light, fontSize: 13,
-                        lineHeight: 15, fontFamily: Fonts.Regular,
-                    }}>
-                        {item.loss}
-                    </Text>
-                </View>
 
             </View>
-        );
-    };
 
-    _renderLeadingTeam = (item, index) => {
-        return (
-            <View style={{
-                flexDirection: 'row',
-                // alignItems: 'center',
-                // backgroundColor: 'green',
-                width: wide * 0.36,
-                marginLeft: wide * 0.01,
-                // padding: 10,
-                // justifyContent: 'center'
-            }}>
-                <View style={{}}>
-                    <Text style={{
-                        color: Colors.light, fontSize: 54,
-                        fontFamily: Fonts.Bold,
-                        lineHeight: 60,
-
-                        marginLeft: wide * 0.01,
-                        marginTop: wide * 0.01
-                    }}>{item.item.rank}</Text>
-                </View>
-                <View style={{
-                    alignItems: 'center',
-                    // marginTop: wide * 0.01,
-                    marginLeft: wide * 0.03,
-                    justifyContent: 'center'
-                }}>
-                    <View style={{
-                        width: wide * 0.16, height: wide * 0.16,
-                        // marginTop: 8,
-                        // marginLeft: wide * 0.01,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: wide * 0.16 / 2,
-                        borderWidth: 3,
-                        borderColor: Colors.newGrayFontColor,
-                    }}>
-                        {/* edit by keshav */}
-                        {item.item.logoUrl != null ?
-                            <FastImage style={{ width: '94%', height: '94%', borderRadius: wide * 0.16 / 2, }}
-                                // resizeMode={'contain'}
-                                source={{
-                                    uri: item.item.logoUrl,
-                                    priority: FastImage.priority.high
-                                }}
-                            />
-                            :
-                            null
-                        }
-                    </View>
-
-
-                    <View style={{ marginTop: wide * 0.01 }}>
-                        <Text numberOfLines={2} style={{
-                            color: Colors.light, fontSize: 16, fontFamily: Fonts.Bold,
-                            lineHeight: 18
-                        }}>{item.item.name}</Text>
-
-                    </View>
-                </View>
-
+          </View>
+          {topRankerData.length === 0 ?
+            <View style={{ flex: 1, backgroundColor: Colors.base }}>
+              <AppLoader visible={this.state.loading} />
             </View>
-        )
-    }
+            :
+            <>
 
-    _renderSortOption = (item, index) => {
-        return (
-            <TouchableOpacity style={{
-                height: wide * 0.3,
-                justifyContent: 'center',
-                alignItems: 'center', paddingRight: wide * 0.05
-            }}
-                activeOpacity={1}
-                onPress={() => this.setState({ selectedIndex: item.index })}
-            >
-                <FastImage style={{
-                    width: 60, height: 60,
-                    marginVertical: 10
-                }} source={this.state.selectedIndex === item.index ?
-                    require('../../Images/sort_tick_selected.png') : require('../../Images/sort_tick_unselected.png')} />
-
-                <Text numberOfLines={2} style={{
-                    color: this.state.selectedIndex === item.index ? Colors.light : Colors.fontColorGray,
-                    fontSize: 14, lineHeight: 16,
-                    fontFamily: Fonts.SemiBold, textAlign: 'center', width: wide * 0.15
-                }}>Point
-                    Gaurd</Text>
-
-
-
-
-            </TouchableOpacity>
-        );
-    };
-
-    render() {
-
-        const { dataList, topRankerData, initialDataList, strText, selectedSort, sortOrder } = this.state;
-        // console.log(dataList);
-        return (
-
-            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
-                <View style={{
-                    alignItems: 'center',
-                    // borderBottomWidth: 0.5,
-                    // borderBottomColor: Colors.newGrayFontColor,
-                    // backgroundColor: 'green'
-                }}>
-                    <View style={{
-                        width: '90%', flexDirection: 'row', alignItems: 'center',
-                        justifyContent: 'space-between', height: 50,
-                        marginBottom: 8,
-                        // backgroundColor: 'green'
-                    }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            <TouchableOpacity style={{
-                                width: wide * 0.1,
-                                // marginHorizontal: 15
-                            }} onPress={() => Navigation.back()}>
-                                <FastImage style={{
-                                    width: wide * 0.08, height: wide * 0.08,
-                                    borderRadius: wide * 0.02,
-                                    borderWidth: 1, borderColor: Colors.borderColor
-                                }} source={require('../../Images/back_ico.png')} />
-                            </TouchableOpacity>
-                            <Text style={{
-                                // marginTop: 16,
-                                color: Colors.light, fontSize: 24,
-                                fontFamily: Fonts.Bold, lineHeight: 40,
-                                marginHorizontal: 10
-                            }}>
-                                Back to Explore
-                            </Text>
-
-                        </View>
-
-
-
-                    </View>
-
-                </View>
-                {topRankerData.length === 0 ?
-                    <View style={{ flex: 1, backgroundColor: Colors.base }}>
-                        <AppLoader visible={this.state.loading} />
-                    </View>
-                    :
-                    <>
-
-                        <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-                            {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
+              <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+                {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
                                 // marginHorizontal: 15,
                                 // backgroundColor: 'red',
                                 minHeight: isNotch ? Layout.height - 170 : Layout.height - 100, paddingBottom: isNotch ? 0 : 10
                             }}> */}
 
-                            <View style={{ backgroundColor: Colors.base, alignItems: 'center', paddingBottom: wide * 0.01 }} >
+                <View style={{ backgroundColor: Colors.base, alignItems: 'center', paddingBottom: wide * 0.01 }} >
 
-                                <View style={{ marginTop: wide * 0.05, width: '90%' }}>
-                                    <FlatList
-                                        keyExtractor={(item, index) => index.toString()}
-                                        style={{ overflow: 'visible', width: '100%', }}
-                                        data={topRankerData}
-                                        renderItem={(item, index) => this._renderLeadingTeam(item, index)}
-                                        showsHorizontalScrollIndicator={false}
-                                        horizontal
+                  <View style={{ marginTop: wide * 0.05, width: '90%' }}>
+                    <FlatList
+                      keyExtractor={(item, index) => index.toString()}
+                      style={{ overflow: 'visible', width: '100%', }}
+                      data={topRankerData}
+                      renderItem={(item, index) => this._renderLeadingTeam(item, index)}
+                      showsHorizontalScrollIndicator={false}
+                      horizontal
 
-                                    />
+                    />
 
-                                </View>
+                  </View>
 
-                                <View style={{
-                                    alignItems: 'center', marginTop: wide * 0.1,
-                                    borderBottomColor: Colors.fontColorGray, borderBottomWidth: 1,
-                                    width: '100%'
-                                }}>
-                                    <View style={{
-                                        height: wide * 0.09,
-                                        paddingVertical: 5,
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '90%',
-                                    }}
-                                    >
-                                        <TouchableOpacity style={{
-                                            width: '16%',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                        }}
-                                            activeOpacity={1}
-                                            onPress={() => {
-                                                if (dataList.length > 0) {
-                                                    this.setState({ selectedSort: 'rank', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
-                                                        this.onScreenFoucs();
-                                                    })
-                                                }
-                                            }}
-                                        >
-                                            <Text style={{
-                                                color: Colors.fontGray, fontSize: 12,
-                                                lineHeight: 12, fontFamily: Fonts.Bold,
-                                                // paddingHorizontal: wide * 0.01,
-                                                paddingTop: wide * 0.01
-                                            }}>RANK</Text>
-                                            {selectedSort == 'rank' ?
-                                                <FastImage
-                                                    style={{
-                                                        width: 10, height: 10,
-                                                        marginLeft: wide * 0.015,
-                                                        transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
-                                                    }
-                                                    }
-                                                    source={require('../../Images/dropDownIconNew.png')}
-                                                />
-                                                : null
-                                            }
-                                        </TouchableOpacity>
+                  <View style={{
+                    alignItems: 'center', marginTop: wide * 0.1,
+                    borderBottomColor: Colors.fontColorGray, borderBottomWidth: 1,
+                    width: '100%'
+                  }}>
+                    <View style={{
+                      height: wide * 0.09,
+                      paddingVertical: 5,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '90%',
+                    }}
+                    >
+                      <TouchableOpacity style={{
+                        width: '16%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                        activeOpacity={1}
+                        onPress={() => {
+                          if (dataList.length > 0) {
+                            this.setState({ selectedSort: 'rank', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
+                              this.onScreenFoucs();
+                            })
+                          }
+                        }}
+                      >
+                        <Text style={{
+                          color: Colors.fontGray, fontSize: 12,
+                          lineHeight: 12, fontFamily: Fonts.Bold,
+                          // paddingHorizontal: wide * 0.01,
+                          paddingTop: wide * 0.01
+                        }}>RANK</Text>
+                        {selectedSort == 'rank' ?
+                          <FastImage
+                            style={{
+                              width: 10, height: 10,
+                              marginLeft: wide * 0.015,
+                              transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
+                            }
+                            }
+                            source={require('../../Images/dropDownIconNew.png')}
+                          />
+                          : null
+                        }
+                      </TouchableOpacity>
 
-                                        {/* <View style={{ paddingHorizontal: 5, flex: 1 }}> */}
-                                        <TouchableOpacity style={{
-                                            width: '30%',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                        }}
-                                            activeOpacity={1}
-                                            onPress={() => {
-                                                if (dataList.length > 0) {
-                                                    this.setState({ selectedSort: 'name', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
-                                                        this.onScreenFoucs();
-                                                    })
-                                                }
-                                            }}
-                                        >
-                                            <Text style={{
-                                                color: Colors.fontGray, fontSize: 12,
-                                                lineHeight: 12, fontFamily: Fonts.Bold,
-                                                paddingHorizontal: wide * 0.01,
-                                                paddingTop: wide * 0.01
-                                            }}>TEAM NAME</Text>
-                                            {selectedSort == 'name' ?
-                                                <FastImage
-                                                    style={{
-                                                        width: 10, height: 10,
-                                                        marginLeft: wide * 0.015,
-                                                        transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
-                                                    }
-                                                    }
-                                                    source={require('../../Images/dropDownIconNew.png')}
-                                                />
-                                                : null
-                                            }
-                                        </TouchableOpacity>
-                                        {/* </View> */}
-                                        <TouchableOpacity style={{
-                                            width: '25%',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            // backgroundColor: 'green',
-                                            justifyContent: 'center'
-                                        }}
-                                            activeOpacity={1}
-                                            onPress={() => {
-                                                if (dataList.length > 0) {
-                                                    this.setState({ selectedSort: 'wins', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
-                                                        this.onScreenFoucs();
-                                                    })
-                                                }
-                                            }}
-                                        >
+                      {/* <View style={{ paddingHorizontal: 5, flex: 1 }}> */}
+                      <TouchableOpacity style={{
+                        width: '30%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                        activeOpacity={1}
+                        onPress={() => {
+                          if (dataList.length > 0) {
+                            this.setState({ selectedSort: 'name', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
+                              this.onScreenFoucs();
+                            })
+                          }
+                        }}
+                      >
+                        <Text style={{
+                          color: Colors.fontGray, fontSize: 12,
+                          lineHeight: 12, fontFamily: Fonts.Bold,
+                          paddingHorizontal: wide * 0.01,
+                          paddingTop: wide * 0.01
+                        }}>TEAM NAME</Text>
+                        {selectedSort == 'name' ?
+                          <FastImage
+                            style={{
+                              width: 10, height: 10,
+                              marginLeft: wide * 0.015,
+                              transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
+                            }
+                            }
+                            source={require('../../Images/dropDownIconNew.png')}
+                          />
+                          : null
+                        }
+                      </TouchableOpacity>
+                      {/* </View> */}
+                      <TouchableOpacity style={{
+                        width: '25%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        // backgroundColor: 'green',
+                        justifyContent: 'center'
+                      }}
+                        activeOpacity={1}
+                        onPress={() => {
+                          if (dataList.length > 0) {
+                            this.setState({ selectedSort: 'wins', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
+                              this.onScreenFoucs();
+                            })
+                          }
+                        }}
+                      >
 
-                                            <Text style={{
-                                                color: Colors.fontGray, fontSize: 12,
-                                                lineHeight: 12, fontFamily: Fonts.Bold,
-                                                // textAlign: 'center',
-                                                paddingHorizontal: wide * 0.01,
-                                                paddingTop: wide * 0.01
-                                            }}>WINS</Text>
-                                            {selectedSort == 'wins' ?
-                                                <FastImage
-                                                    style={{
-                                                        width: 10, height: 10,
-                                                        marginLeft: wide * 0.015,
-                                                        transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
-                                                    }
-                                                    }
-                                                    source={require('../../Images/dropDownIconNew.png')}
-                                                />
-                                                : null
-                                            }
+                        <Text style={{
+                          color: Colors.fontGray, fontSize: 12,
+                          lineHeight: 12, fontFamily: Fonts.Bold,
+                          // textAlign: 'center',
+                          paddingHorizontal: wide * 0.01,
+                          paddingTop: wide * 0.01
+                        }}>WINS</Text>
+                        {selectedSort == 'wins' ?
+                          <FastImage
+                            style={{
+                              width: 10, height: 10,
+                              marginLeft: wide * 0.015,
+                              transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
+                            }
+                            }
+                            source={require('../../Images/dropDownIconNew.png')}
+                          />
+                          : null
+                        }
 
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{
-                                            width: '25%',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            // backgroundColor: 'blue',
-                                            justifyContent: 'center'
-                                        }}
-                                            activeOpacity={1}
-                                            onPress={() => {
-                                                if (dataList.length > 0) {
-                                                    this.setState({ selectedSort: 'loss', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
-                                                        this.onScreenFoucs();
-                                                    })
-                                                }
-                                            }}
-                                        >
-                                            <Text style={{
-                                                color: Colors.fontGray, fontSize: 12,
-                                                lineHeight: 12, fontFamily: Fonts.Bold,
-                                                // textAlign: 'center',
-                                                paddingHorizontal: wide * 0.01,
-                                                paddingTop: wide * 0.01
-                                            }}>LOSS</Text>
-                                            {selectedSort == 'loss' ?
-                                                <FastImage
-                                                    style={{
-                                                        width: 10, height: 10,
-                                                        marginLeft: wide * 0.015,
-                                                        transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
-                                                    }
-                                                    }
-                                                    source={require('../../Images/dropDownIconNew.png')}
-                                                />
-                                                : null
-                                            }
-                                        </TouchableOpacity>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{
+                        width: '25%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        // backgroundColor: 'blue',
+                        justifyContent: 'center'
+                      }}
+                        activeOpacity={1}
+                        onPress={() => {
+                          if (dataList.length > 0) {
+                            this.setState({ selectedSort: 'loss', sortOrder: sortOrder == 'asc' ? 'desc' : 'asc' }, () => {
+                              this.onScreenFoucs();
+                            })
+                          }
+                        }}
+                      >
+                        <Text style={{
+                          color: Colors.fontGray, fontSize: 12,
+                          lineHeight: 12, fontFamily: Fonts.Bold,
+                          // textAlign: 'center',
+                          paddingHorizontal: wide * 0.01,
+                          paddingTop: wide * 0.01
+                        }}>LOSS</Text>
+                        {selectedSort == 'loss' ?
+                          <FastImage
+                            style={{
+                              width: 10, height: 10,
+                              marginLeft: wide * 0.015,
+                              transform: [{ rotate: sortOrder == 'desc' ? '180deg' : '0deg' }]
+                            }
+                            }
+                            source={require('../../Images/dropDownIconNew.png')}
+                          />
+                          : null
+                        }
+                      </TouchableOpacity>
 
-                                    </View>
+                    </View>
 
-                                </View>
+                  </View>
 
-                                <FlatList
-                                    bounces={false}
-                                    style={{
-                                        width: '90%',
-                                        marginTop: wide * 0.01,
-                                        marginBottom: wide * 0.02,
-                                        height: '60%'
-                                    }}
-                                    data={dataList}
-                                    // data={playrData}
-                                    renderItem={(item, index) => this._renderNewTeam(item)}
-                                    showsHorizontalScrollIndicator={false}
-                                    showsVerticalScrollIndicator={false}
+                  <FlatList
+                    bounces={false}
+                    style={{
+                      width: '90%',
+                      marginTop: wide * 0.01,
+                      marginBottom: wide * 0.02,
+                      height: '60%'
+                    }}
+                    data={dataList}
+                    // data={playrData}
+                    renderItem={(item, index) => this._renderNewTeam(item)}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
 
-                                />
-                                {/* {dataList.length > 0 && pageNum == 0 ? */}
-                                <View style={{
-                                    width: '90%', height: 50,
-                                    marginTop: wide * 0.01,
-                                    flexDirection: 'row',
-                                    alignSelf: 'center', justifyContent: 'space-between'
+                  />
+                  {/* {dataList.length > 0 && pageNum == 0 ? */}
+                  <View style={{
+                    width: '90%', height: 50,
+                    marginTop: wide * 0.01,
+                    flexDirection: 'row',
+                    alignSelf: 'center', justifyContent: 'space-between'
 
-                                }}>
-                                    <TouchableOpacity style={{
-                                        width: '40%',
-                                        flexDirection: 'row', alignItems: 'center',
-                                        borderColor: pageNum == 0 ? Colors.newGrayFontColor : Colors.light,
-                                        borderRadius: wide * 0.02, borderWidth: 1,
-                                        justifyContent: 'center'
-                                    }}
-                                        activeOpacity={1}
-                                    // onPress={() => {
-                                    //     if (pageNum !== 0) {
-                                    //         pageNum = pageNum - 1;
-                                    //         this.onScreenFoucs();
-                                    //     }
-                                    // }}
-                                    >
-                                        <FastImage
-                                            style={{
-                                                width: wide * 0.035, height: wide * 0.035,
-                                                tintColor: pageNum == 0 ? Colors.newGrayFontColor : Colors.light,
-                                                // marginLeft: wide * 0.015,
-                                                transform: [{ rotate: '90deg' }],
+                  }}>
+                    <TouchableOpacity style={{
+                      width: '40%',
+                      flexDirection: 'row', alignItems: 'center',
+                      borderColor: pageNum == 0 ? Colors.newGrayFontColor : Colors.light,
+                      borderRadius: wide * 0.02, borderWidth: 1,
+                      justifyContent: 'center'
+                    }}
+                      activeOpacity={1}
+                    // onPress={() => {
+                    //     if (pageNum !== 0) {
+                    //         pageNum = pageNum - 1;
+                    //         this.onScreenFoucs();
+                    //     }
+                    // }}
+                    >
+                      <FastImage
+                        style={{
+                          width: wide * 0.035, height: wide * 0.035,
+                          tintColor: pageNum == 0 ? Colors.newGrayFontColor : Colors.light,
+                          // marginLeft: wide * 0.015,
+                          transform: [{ rotate: '90deg' }],
 
-                                            }}
-                                            source={require('../../Images/dropDownIconNew.png')}
-                                        />
-                                        <Text style={{
-                                            color: pageNum == 0 ? Colors.newGrayFontColor : Colors.light,
-                                            fontSize: 18, lineHeight: 24,
-                                            fontFamily: Fonts.Bold, marginLeft: wide * 0.03
-                                        }}>Previous</Text>
+                        }}
+                        source={require('../../Images/dropDownIconNew.png')}
+                      />
+                      <Text style={{
+                        color: pageNum == 0 ? Colors.newGrayFontColor : Colors.light,
+                        fontSize: 18, lineHeight: 24,
+                        fontFamily: Fonts.Bold, marginLeft: wide * 0.03
+                      }}>Previous</Text>
 
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{
-                                        width: '40%',
-                                        flexDirection: 'row', alignItems: 'center',
-                                        borderColor: Colors.newGrayFontColor,
-                                        borderRadius: wide * 0.02, borderWidth: 1,
-                                        backgroundColor: dataList.length !== 0 ? Colors.btnBg : Colors.base,
-                                        justifyContent: 'center'
-                                    }}
-                                        activeOpacity={1}
-                                    // onPress={() => {
-                                    //     if (dataList.length > 0) {
-                                    //         pageNum = pageNum + 1;
-                                    //         this.onScreenFoucs();
-                                    //     }
-                                    // }}
-                                    >
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{
+                      width: '40%',
+                      flexDirection: 'row', alignItems: 'center',
+                      borderColor: Colors.newGrayFontColor,
+                      borderRadius: wide * 0.02, borderWidth: 1,
+                      backgroundColor: dataList.length !== 0 ? Colors.btnBg : Colors.base,
+                      justifyContent: 'center'
+                    }}
+                      activeOpacity={1}
+                    // onPress={() => {
+                    //     if (dataList.length > 0) {
+                    //         pageNum = pageNum + 1;
+                    //         this.onScreenFoucs();
+                    //     }
+                    // }}
+                    >
 
-                                        <Text style={{
-                                            color: dataList.length !== 0 ? Colors.light : Colors.newGrayFontColor,
-                                            fontSize: 18, lineHeight: 24,
-                                            fontFamily: Fonts.Bold,
-                                        }}>Next</Text>
-                                        <FastImage
-                                            style={{
-                                                width: wide * 0.035, height: wide * 0.035,
-                                                marginLeft: wide * 0.03,
-                                                tintColor: dataList.length !== 0 ? Colors.light : Colors.newGrayFontColor,
-                                                transform: [{ rotate: '270deg' }]
-                                            }}
-                                            source={require('../../Images/dropDownIconNew.png')}
-                                        />
+                      <Text style={{
+                        color: dataList.length !== 0 ? Colors.light : Colors.newGrayFontColor,
+                        fontSize: 18, lineHeight: 24,
+                        fontFamily: Fonts.Bold,
+                      }}>Next</Text>
+                      <FastImage
+                        style={{
+                          width: wide * 0.035, height: wide * 0.035,
+                          marginLeft: wide * 0.03,
+                          tintColor: dataList.length !== 0 ? Colors.light : Colors.newGrayFontColor,
+                          transform: [{ rotate: '270deg' }]
+                        }}
+                        source={require('../../Images/dropDownIconNew.png')}
+                      />
 
-                                    </TouchableOpacity>
-                                </View>
-                                {/* : null
+                    </TouchableOpacity>
+                  </View>
+                  {/* : null
                                 } */}
 
 
-                            </View>
+                </View>
 
-                            {/* </ScrollView> */}
-                        </KeyboardAvoidingView>
-                        {/* {
+                {/* </ScrollView> */}
+              </KeyboardAvoidingView>
+              {/* {
                         this.state.isOpenSortOption
                             ?
                             <View style={{
@@ -830,50 +834,51 @@ class TeamMore extends Component {
                             :
                             null
                     } */}
-                    </>
-                }
-            </SafeAreaView >
+            </>
+          }
+        </SafeAreaView >
+      </View>
 
-        );
-    }
+    );
+  }
 }
 
 function mapStateToProps(state) {
-    const { entities } = state;
-    return {
-        authReducer: state.authReducer,
-        User: entities.user,
-        Home: entities.home
-    };
+  const { entities } = state;
+  return {
+    authReducer: state.authReducer,
+    User: entities.user,
+    Home: entities.home
+  };
 }
 
 const styles = StyleSheet.create({
-    BackIcon: {
-        width: wide * 0.09, height: wide * 0.09,
-        marginTop: 20, borderRadius: wide * 0.03, borderWidth: 1,
-        borderColor: Colors.borderColor, marginHorizontal: 10
-    },
-    headerText: {
+  BackIcon: {
+    width: wide * 0.09, height: wide * 0.09,
+    marginTop: 20, borderRadius: wide * 0.03, borderWidth: 1,
+    borderColor: Colors.borderColor, marginHorizontal: 10
+  },
+  headerText: {
 
-        color: Colors.light, fontSize: 32, lineHeight: 36, fontFamily: Fonts.SemiBold
+    color: Colors.light, fontSize: 32, lineHeight: 36, fontFamily: Fonts.SemiBold
 
-    },
-    mediumHeaderText: {
+  },
+  mediumHeaderText: {
 
-        color: Colors.light, fontSize: 25, lineHeight: 26, fontFamily: Fonts.SemiBold
+    color: Colors.light, fontSize: 25, lineHeight: 26, fontFamily: Fonts.SemiBold
 
-    },
-    textPoint: {
-        color: Colors.light, fontSize: 24, fontFamily: Fonts.Bold,
-        marginTop: 6,
-    },
-    textPointHeading: {
-        color: Colors.fontColorGray, fontSize: 17, fontFamily: Fonts.SemiBold,
-    },
-    textPointCenter: {
-        color: Colors.light, fontSize: 18, fontFamily: Fonts.Bold,
-        marginTop: 6, textAlign: 'center'
-    },
+  },
+  textPoint: {
+    color: Colors.light, fontSize: 24, fontFamily: Fonts.Bold,
+    marginTop: 6,
+  },
+  textPointHeading: {
+    color: Colors.fontColorGray, fontSize: 17, fontFamily: Fonts.SemiBold,
+  },
+  textPointCenter: {
+    color: Colors.light, fontSize: 18, fontFamily: Fonts.Bold,
+    marginTop: 6, textAlign: 'center'
+  },
 });
 
 export default connect(mapStateToProps)(TeamMore);
