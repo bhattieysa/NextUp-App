@@ -8,7 +8,7 @@ import { Colors, Fonts } from "../../constants";
 
 const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
-  clickedCourtArea, setMadeOrMissed, madeOrMissed }) => {
+  clickedCourtArea, setMadeOrMissed, madeOrMissed, initMadeOrMissed }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -113,7 +113,7 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
               lineHeight: 28, fontFamily: Fonts.Regular
             }}
             >
-              Free Throw Attempt
+              1 Free Throw shot only
             </Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
@@ -143,7 +143,7 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                     {
                       "x": clickedCourtArea.x,
                       "y": clickedCourtArea.y,
-                      "isMade": true
+                      "isMade": initMadeOrMissed.isMade,
                     }
                   ])
                   setCurrentView("playing")
@@ -177,7 +177,7 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                     {
                       "x": clickedCourtArea.x,
                       "y": clickedCourtArea.y,
-                      "isMade": false
+                      "isMade": initMadeOrMissed.isMade,
                     }
                   ])
                   setCurrentView("playing")

@@ -15,8 +15,17 @@ import { useDimensions } from '@react-native-community/hooks'
 import AssistScreen from './AssistScreen';
 import ThrowScreen from './ThrowScreen';
 import MadeMissScreen from './MadeMissScreen';
-import { BlurView } from '@react-native-community/blur';
-import { GameAppStatusBar } from '../../components/common/statusBar';
+import { DeffRebound } from './DeffRebound';
+import { CourtMadeMissScreen } from './CourtMadeOrMissed';
+import { StoleBy } from './StoleBy';
+import { TurnOver } from './turnOver';
+// import { BlurView } from '@react-native-community/blur';
+// import { GameAppStatusBar } from '../../components/common/statusBar';
+import { AssistFlow } from './assistFlow';
+import { FoulBy } from './foul';
+import { FoulType } from './foulOption';
+import { Block } from './block';
+import { FreeThrow } from './freeThrow';
 
 
 const { width, height } = Dimensions.get('window');
@@ -72,8 +81,15 @@ const GameScreen = (props) => {
   //new flow stat
   const [selectedPlayer, setSelectedPlayer] = useState('')
   const [assistPlayer, setAssistPlayer] = useState('')
+  const [reboundPlayer, setReboundPlayer] = useState('')
+  const [stoleBy, setStoleBy] = useState('')
+  const [foulBy, setFoulBy] = useState('')
+  const [foulType, setFoulType] = useState('')
+  const [initMadeOrMissed, setInitMadeOrMissed] = useState();
   const [courtAreaClick, setCourtAreaClick] = useState();
   const [madeOrMised, setMadeOrMissed] = useState();
+  const [assistMadeOrMised, setAssistMadeOrMised] = useState();
+  const [blockBy, setBlockBy] = useState('');
 
   useEffect(() => {
     debugger
@@ -265,6 +281,7 @@ const GameScreen = (props) => {
           toggleSwitch={toggleSwitch}
           setSelectedPlayer={setSelectedPlayer}
           selectedPlayer={activePlayer}
+          title={"Who Scored"}
 
         />
 
@@ -279,8 +296,8 @@ const GameScreen = (props) => {
           setSelectedPlayer={setSelectedPlayer}
           setAssistPlayer={setAssistPlayer}
           selectedPlayer={selectedPlayer}
-
         />
+
       case "throwScreen":
         return <ThrowScreen
           // playersList={isEnabled ? blueTeamList : redTeamList}
@@ -294,7 +311,10 @@ const GameScreen = (props) => {
           setAssistPlayer={setAssistPlayer}
           selectedAssistPlayer={assistPlayer}
           selectedPlayer={selectedPlayer}
-
+          clickedCourtArea={courtAreaClick}
+          madeOrMissed={madeOrMised}
+          setMadeOrMissed={setMadeOrMissed}
+          initMadeOrMissed={initMadeOrMissed}
         />
 
       case "madeMissedScreen":
@@ -313,6 +333,172 @@ const GameScreen = (props) => {
           clickedCourtArea={courtAreaClick}
           madeOrMissed={madeOrMised}
           setMadeOrMissed={setMadeOrMissed}
+          initMadeOrMissed={initMadeOrMissed}
+
+        />
+
+      case "deffRebound":
+        return <DeffRebound
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          reboundPlayer={reboundPlayer}
+          setReboundPlayer={setReboundPlayer}
+          title={'Who Rebounded'}
+
+        />
+
+      case "initMadeMissedScreen":
+        return <CourtMadeMissScreen
+          // playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+
+          // setSelectedPlayer={setSelectedPlayer}
+          // setAssistPlayer={setAssistPlayer}
+          // selectedAssistPlayer={assistPlayer}
+          selectedPlayer={selectedPlayer}
+          clickedCourtArea={courtAreaClick}
+          // madeOrMissed={madeOrMised}
+          // setMadeOrMissed={setMadeOrMissed}
+          setInitMadeOrMissed={setInitMadeOrMissed}
+        />
+
+      case "whoShot":
+        return <ShootScore
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          title={"Who shot the ball"}
+
+        />
+      case "gotRebound":
+        return <DeffRebound
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          reboundPlayer={reboundPlayer}
+          setReboundPlayer={setReboundPlayer}
+          title={'Who got the rebound'}
+
+        />
+
+      case "stoleBy":
+        return <StoleBy
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          setStoleBy={setStoleBy}
+          // reboundPlayer={reboundPlayer}
+          // setReboundPlayer={setReboundPlayer}
+          title={'Who stolen'}
+        />
+
+      case "turnOverView":
+        return <TurnOver
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          selectedPlayer={selectedPlayer}
+        />
+
+      case "assistFlow":
+        return <AssistFlow
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          setSelectedPlayer={setSelectedPlayer}
+          setAssistPlayer={setAssistPlayer}
+          assistMadeOrMised={assistMadeOrMised}
+          setAssistMadeOrMised={setAssistMadeOrMised}
+        />
+
+      case "foulBy":
+        return <FoulBy
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          setFoulBy={setFoulBy}
+        // reboundPlayer={reboundPlayer}
+        // setReboundPlayer={setReboundPlayer}
+        // title={'Who stolen'}
+        />
+
+      case "foulType":
+        return <FoulType
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          setFoulType={setFoulType}
+        // reboundPlayer={reboundPlayer}
+        // setReboundPlayer={setReboundPlayer}
+        // title={'Who stolen'}
+        />
+
+      case "blockBy":
+        return <Block
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          // title={'Who got the rebound'}
+          setBlockBy={setBlockBy}
+        />
+
+      case "freeThrow":
+        return <FreeThrow
+          playersList={isEnabled ? blueTeamList : redTeamList}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          reboundPlayer={reboundPlayer}
+          setReboundPlayer={setReboundPlayer}
+        // title={'Who got the rebound'}
 
         />
 
@@ -1093,7 +1279,8 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               txtStyle={{ color: Colors.light }}
               onPress={() => {
                 debugger
-                setCurrentView('shootScore')
+                // setCurrentView('shootScore')
+                setCurrentView('deffRebound')
                 // console.log(cu)
                 // if (activePlayer && courtArea) {
                 //   addEvent("defReb")
@@ -1104,7 +1291,8 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
               txtStyle={{ color: Colors.light }}
               onPress={() => {
-                setCurrentView('shootScore')
+                // setCurrentView('shootScore')
+                setCurrentView('deffRebound')
                 // if (activePlayer && courtArea) {
                 //   addEvent("Shoot")
                 // }
@@ -1116,7 +1304,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
               txtStyle={{ color: Colors.light }}
               onPress={() => {
-                setCurrentView('shootScore')
+                setCurrentView('turnOverView')
                 // if (activePlayer && courtArea) {
                 //   setCurrentView("pass")
                 // }
@@ -1126,7 +1314,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
               txtStyle={{ color: Colors.light }}
               onPress={() => {
-                setCurrentView('shootScore')
+                setCurrentView('stoleBy')
                 // if (activePlayer && courtArea) {
                 //   setCurrentView("pass")
                 // }
@@ -1138,7 +1326,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
               txtStyle={{ color: Colors.light }}
               onPress={() => {
-                setCurrentView('shootScore')
+                setCurrentView('assistFlow')
                 // if (activePlayer && courtArea) {
                 //   setCurrentView("pass")
                 // }
@@ -1148,7 +1336,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               style={{ ...styles.btn, width: '45%', backgroundColor: Colors.btnBg, }}
               txtStyle={{ color: Colors.light }}
               onPress={() => {
-                setCurrentView('shootScore')
+                setCurrentView('blockBy')
                 // if (activePlayer && courtArea) {
                 //   setCurrentView("pass")
                 // }
@@ -1160,7 +1348,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               style={{ ...styles.btn, backgroundColor: Colors.lightGreen, width: '45%' }}
               txtStyle={{ color: Colors.light }}
               onPress={() => {
-                setCurrentView('shootScore')
+                setCurrentView('freeThrow')
                 // if (activePlayer && courtArea) {
                 //   setCurrentView("foul")
                 // }
@@ -1169,7 +1357,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
               style={{ ...styles.btn, backgroundColor: Colors.darkRed, width: '45%' }}
               txtStyle={{ color: Colors.light }}
               onPress={() => {
-                setCurrentView('shootScore')
+                setCurrentView('foulBy')
                 // if (activePlayer && courtArea) {
                 //   setCurrentView("foul")
                 // }
@@ -1224,7 +1412,8 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
         // onChangeColorHandler("shapeTwoBGColor");
         // setCourtArea("COURT_2")
         setCourtAreaClick({ 'x': e.nativeEvent.locationX, 'y': e.nativeEvent.locationY })
-        setCurrentView('shootScore')
+        setCurrentView("initMadeMissedScreen")
+        // setCurrentView('shootScore')
         // handleBtnEnable()
       }}
 
@@ -1303,7 +1492,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
 
 
 const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer }) => {
+  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, title }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -1315,7 +1504,7 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
 
   const removeActivePlayerFromList = () => {
     debugger
-    currentView == "shootScore" ?
+    currentView == "shootScore" || currentView == "whoShot" ?
       setActivePlayerList(fullPlayerList.filter(player => player.id !== activePlayerId))
       :
       toggleSwitch()
@@ -1325,8 +1514,11 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
   const selectPlayer = (id) => {
     // setCurrentView('playing');
     setSelectedPlayer(id);
-    setCurrentView('assistScreen');
-
+    if (title == 'Who Scored') {
+      setCurrentView('assistScreen');
+    } else {
+      setCurrentView('gotRebound');
+    }
   }
 
   return (
@@ -1339,7 +1531,7 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
             marginTop: 30,
             borderRadius: (width / 8.5) / 2,
           }}
-          heading={"Who Scored"}
+          heading={title}
           list={activePlayerList}
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
@@ -1359,7 +1551,7 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
             marginTop: 30,
             borderRadius: (width / 8.5) / 2,
           }}
-          heading={"Who Scored"}
+          heading={title}
           list={activePlayerList}
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}

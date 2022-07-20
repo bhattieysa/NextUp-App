@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Pressable,
   TouchableNativeFeedback,
   View,
 } from 'react-native';
@@ -20,7 +19,7 @@ const PlaygroundScreenBtn = props => {
 
   return (
     // <View style={{ ...styles.container, ...props.style }}>
-    <Pressable style={{ ...styles.container, ...styles.touchArea, ...props.style, }}
+    <TouchableOpacity style={{ ...styles.container, ...styles.touchArea, ...props.style, }}
       onPress={props.onPress}
     >
       {/* <View style={styles.touchArea}> */}
@@ -28,7 +27,7 @@ const PlaygroundScreenBtn = props => {
         {props.title}
       </Text>
       {/* </View> */}
-    </Pressable>
+    </TouchableOpacity>
     // </View>
   );
 };

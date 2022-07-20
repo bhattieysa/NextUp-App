@@ -58,10 +58,12 @@ const PlayingGameScreenHeader = ({
   function renderBackArrow(nav, setView) {
     return <TouchableOpacity
       onPress={nav == "playing" ? () => Navigation.back() :
-        nav == "assistScreen" ? () => setView("shootScore") :
-          nav == "throwScreen" ? () => setView("assistScreen") :
-            nav == "madeMissedScreen" ? () => setView("throwScreen") :
-              () => setView("playing")
+        nav == "shootScore" ? () => setView("initMadeMissedScreen") :
+          nav == "assistScreen" ? () => setView("shootScore") :
+            nav == "throwScreen" ? () => setView("assistScreen") :
+              nav == "madeMissedScreen" ? () => setView("throwScreen") :
+                nav == "gotRebound" ? () => setView("whoShot") :
+                  () => setView("playing")
       }
     // onPress={() => Navigation.back()}    Navigation.navigate('ExploreSearch', { to: true })
     >

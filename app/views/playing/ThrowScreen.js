@@ -7,7 +7,8 @@ import { Colors, Fonts } from "../../constants";
 
 
 const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer }) => {
+  currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
+  clickedCourtArea, madeOrMissed, setMadeOrMissed, initMadeOrMissed }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -111,7 +112,8 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
               lineHeight: 28, fontFamily: Fonts.Regular
             }}
             >
-              And +1 Free Throw ?
+              Was it foul ?
+              {/* And +1 Free Throw ? */}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
@@ -142,7 +144,31 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
                 backgroundColor: Colors.lightRed,
                 marginLeft: 30
               }}
-              onPress={() => setCurrentView("madeMissedScreen")}
+              onPress={() => {
+                if (madeOrMissed != undefined && madeOrMissed != null) {
+                  debugger
+                  setMadeOrMissed([
+                    ...madeOrMissed,
+                    {
+                      "x": clickedCourtArea.x,
+                      "y": clickedCourtArea.y,
+                      "isMade": initMadeOrMissed.isMade
+                    }
+                  ])
+                  setCurrentView("playing")
+                } else {
+                  debugger
+                  setMadeOrMissed([
+                    {
+                      "x": clickedCourtArea.x,
+                      "y": clickedCourtArea.y,
+                      "isMade": initMadeOrMissed.isMade
+                    }
+                  ])
+                  setCurrentView("playing")
+                }
+              }
+              }
             >
               <Text style={{
                 color: Colors.base,
