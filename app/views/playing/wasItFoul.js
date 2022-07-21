@@ -6,7 +6,7 @@ import { AssistTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import { Colors, Fonts } from "../../constants";
 
 
-const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
+const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
   clickedCourtArea, madeOrMissed, setMadeOrMissed, initMadeOrMissed }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
@@ -28,7 +28,7 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
 
   const selectPlayer = (id) => {
     // setCurrentView('playing');
-    setAssistPlayer(id);
+    setCourtFoul(id);
   }
 
   return (
@@ -124,7 +124,7 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
                 alignItems: 'center', justifyContent: 'center',
                 backgroundColor: Colors.btnGren
               }}
-              onPress={() => setCurrentView("madeMissedScreen")}
+              onPress={() => setCurrentView("courtFoul")}
             >
               <Text style={{
                 color: Colors.base,
@@ -189,4 +189,4 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
     </View>)
 }
 
-export default ThrowScreen
+export default WasItFoul

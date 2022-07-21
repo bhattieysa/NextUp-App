@@ -4,8 +4,8 @@ import { Pressable, Text, View } from "react-native";
 import { Colors, Fonts } from "../../constants";
 
 
-const TurnOver = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, clickedCourtArea, setInitMadeOrMissed }) => {
+const FreeThrowCount = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
+  currentView, toggleSwitch, clickedCourtArea, setInitMadeOrMissed, setFreeThrowCount }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -18,7 +18,7 @@ const TurnOver = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
 
   const removeActivePlayerFromList = () => {
     debugger
-    currentView == "initMadeMissedScreen" ?
+    currentView == "freeThrowCount" ?
       setActivePlayerList(fullPlayerList.filter(player => player.id !== selectedPlayer))
       :
       toggleSwitch()
@@ -26,7 +26,7 @@ const TurnOver = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
 
   const selectPlayer = (id) => {
     // setCurrentView('playing');
-    setAssistPlayer(id);
+    // setAssistPlayer(id);
   }
 
   return (
@@ -48,53 +48,82 @@ const TurnOver = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
             lineHeight: 28, fontFamily: Fonts.Regular
           }}
           >
-            Steal By? / Offensive Foul On?
+            Number of free throw
           </Text>
           <View style={{ flexDirection: 'row', marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
             <Pressable
               style={{
-                width: width * 0.16, height: width * 0.16,
-                borderRadius: width * 0.16 / 2,
+                width: width * 0.13, height: width * 0.13,
+                borderRadius: width * 0.13 / 2,
                 alignItems: 'center', justifyContent: 'center',
                 backgroundColor: Colors.btnGren
               }}
               onPress={() => {
-                setCurrentView('stoleBy')
+                setFreeThrowCount(1)
+                setCurrentView('freeThrow')
               }}
             >
               <Text style={{
                 color: Colors.base,
-                fontSize: 20,
-                lineHeight: 24,
-                fontFamily: Fonts.Bold,
-                // backgroundColor: 'red'
-              }}>
-                Steal
-              </Text>
-            </Pressable>
-            <Pressable
-              style={{
-                width: width * 0.14, height: width * 0.14,
-                borderRadius: width * 0.14 / 2,
-                alignItems: 'center', justifyContent: 'center',
-                backgroundColor: Colors.lightRed,
-                marginLeft: width * 0.09
-              }}
-              onPress={() => {
-                setCurrentView('offensiveFoulBy')
-              }}
-            >
-              <Text style={{
-                color: Colors.base,
-                fontSize: 20,
-                lineHeight: 24,
+                fontSize: 22,
+                lineHeight: 26,
                 fontFamily: Fonts.Bold,
                 textAlign: 'center'
                 // backgroundColor: 'red'
               }}>
-                Offensive Foul
+                1
               </Text>
             </Pressable>
+            <Pressable
+              style={{
+                width: width * 0.13, height: width * 0.13,
+                borderRadius: width * 0.13 / 2,
+                alignItems: 'center', justifyContent: 'center',
+                backgroundColor: Colors.btnGren,
+                marginLeft: width * 0.09
+              }}
+              onPress={() => {
+                setFreeThrowCount(2)
+                setCurrentView('freeThrow')
+              }}
+            >
+              <Text style={{
+                color: Colors.base,
+                fontSize: 22,
+                lineHeight: 26,
+                fontFamily: Fonts.Bold,
+                textAlign: 'center'
+                // backgroundColor: 'red'
+              }}>
+                2
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{
+                width: width * 0.13, height: width * 0.13,
+                borderRadius: width * 0.13 / 2,
+                alignItems: 'center', justifyContent: 'center',
+                backgroundColor: Colors.btnGren,
+                marginLeft: width * 0.09
+              }}
+              onPress={() => {
+                setFreeThrowCount(3)
+                setCurrentView('freeThrow')
+              }}
+            >
+              <Text style={{
+                color: Colors.base,
+                fontSize: 22,
+                lineHeight: 26,
+                fontFamily: Fonts.Bold,
+                textAlign: 'center'
+                // backgroundColor: 'red'
+              }}>
+                3
+              </Text>
+            </Pressable>
+
           </View>
 
         </View>
@@ -104,4 +133,4 @@ const TurnOver = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
     </View>)
 }
 
-export { TurnOver }
+export { FreeThrowCount }

@@ -59,8 +59,8 @@ const FoulType = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
                 backgroundColor: Colors.btnGren
               }}
               onPress={() => {
-                setFoulType('regular_foul')
-                setCurrentView('playing')
+                setFoulType('common_foul')
+                setCurrentView('foulBy')
               }}
             >
               <Text style={{
@@ -71,7 +71,7 @@ const FoulType = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
                 textAlign: 'center'
                 // backgroundColor: 'red'
               }}>
-                Regular Foul
+                Common Foul
               </Text>
             </Pressable>
             <Pressable
@@ -84,7 +84,7 @@ const FoulType = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
               }}
               onPress={() => {
                 setFoulType('technical_foul')
-                setCurrentView('playing')
+                setCurrentView('foulBy')
               }}
             >
               <Text style={{
@@ -109,7 +109,7 @@ const FoulType = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
               }}
               onPress={() => {
                 setFoulType('shooting_foul')
-                setCurrentView('playing')
+                setCurrentView('foulBy')
               }}
             >
               <Text style={{
@@ -121,6 +121,30 @@ const FoulType = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
                 // backgroundColor: 'red'
               }}>
                 Shooting Foul
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                width: width * 0.13, height: width * 0.13,
+                borderRadius: width * 0.13 / 2,
+                alignItems: 'center', justifyContent: 'center',
+                backgroundColor: Colors.lightRed,
+                marginLeft: width * 0.09
+              }}
+              onPress={() => {
+                setFoulType('offensive_foul')
+                setCurrentView('foulBy')
+              }}
+            >
+              <Text style={{
+                color: Colors.base,
+                fontSize: 22,
+                lineHeight: 26,
+                fontFamily: Fonts.Bold,
+                textAlign: 'center'
+                // backgroundColor: 'red'
+              }}>
+                Offensive Foul
               </Text>
             </Pressable>
           </View>

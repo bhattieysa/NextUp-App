@@ -8,13 +8,16 @@ import { Colors, Fonts } from "../../constants";
 
 const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, setSelectedPlayer, setAssistPlayer,
-  assistMadeOrMised, setAssistMadeOrMised }) => {
+  assistMadeOrMised, setAssistMadeOrMised, setCourtFoul, setCourtFreeThrow }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const [onAssist, setOnAssist] = useState(false)
   const [onScored, setOnScored] = useState(false)
   const [onPtr, setOnPtr] = useState(false)
   const [onThrow, setOnThrow] = useState(false)
+  const [onFoul, setOnFoul] = useState(false)
+  const [onFreeThrow, setOnFreeThrow] = useState(false)
+
 
   const fullPlayerList = playersList;
 
@@ -123,18 +126,48 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                   setSelectedPlayer={setSelectedPlayer}
                   setAssistPlayer={setAssistPlayer} />
                 :
-                <MadeMissScreen
-                  playersList={playersList}
-                  isBlueTeamPlaying={isBlueTeamPlaying}
-                  setCurrentView={setCurrentView}
-                  setActivePlayer={setActivePlayer}
-                  currentView={currentView}
-                  toggleSwitch={toggleSwitch}
-                  setSelectedPlayer={setSelectedPlayer}
-                  setAssistPlayer={setAssistPlayer}
-                  assistMadeOrMised={assistMadeOrMised}
-                  setAssistMadeOrMised={setAssistMadeOrMised}
-                />
+                onFoul == false ?
+                  <FoulBy
+                    setOnFoul={setOnFoul}
+                    playersList={playersList}
+                    isBlueTeamPlaying={isBlueTeamPlaying}
+                    setCurrentView={setCurrentView}
+                    setActivePlayer={setActivePlayer}
+                    currentView={currentView}
+                    toggleSwitch={toggleSwitch}
+                    setSelectedPlayer={setSelectedPlayer}
+                    setAssistPlayer={setAssistPlayer}
+                    setCourtFoul={setCourtFoul}
+                  />
+                  :
+                  onFreeThrow == false ?
+                    <WhoShootFreeThrow
+                      setOnFreeThrow={setOnFreeThrow}
+                      playersList={playersList}
+                      isBlueTeamPlaying={isBlueTeamPlaying}
+                      setCurrentView={setCurrentView}
+                      setActivePlayer={setActivePlayer}
+                      currentView={currentView}
+                      toggleSwitch={toggleSwitch}
+                      setSelectedPlayer={setSelectedPlayer}
+                      setAssistPlayer={setAssistPlayer}
+                      setCourtFreeThrow={setCourtFreeThrow}
+                    />
+                    :
+
+
+                    <MadeMissScreen
+                      playersList={playersList}
+                      isBlueTeamPlaying={isBlueTeamPlaying}
+                      setCurrentView={setCurrentView}
+                      setActivePlayer={setActivePlayer}
+                      currentView={currentView}
+                      toggleSwitch={toggleSwitch}
+                      setSelectedPlayer={setSelectedPlayer}
+                      setAssistPlayer={setAssistPlayer}
+                      assistMadeOrMised={assistMadeOrMised}
+                      setAssistMadeOrMised={setAssistMadeOrMised}
+                    />
 
         }
 
@@ -662,6 +695,153 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
         </View>
 
       </View>
+
+    </View>)
+}
+
+const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
+  currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer,
+  setCourtFoul }) => {
+  const [activePlayerList, setActivePlayerList] = useState(playersList);
+  const { width, height } = useDimensions().window;
+  const fullPlayerList = playersList;
+
+  useEffect(() => {
+    // console.log("is blueee", isBlueTeamPlaying, "..")
+    removeActivePlayerFromList();
+  }, []);
+
+  const removeActivePlayerFromList = () => {
+    debugger
+    // currentView == "foulBy" ?
+    setActivePlayerList(fullPlayerList.filter(player => player.id !== activePlayerId))
+    // :
+    // toggleSwitch()
+
+  };
+
+  const selectPlayer = (id) => {
+    // setCurrentView('playing');
+    setCourtFoul(id);
+    setOnFoul(true);
+
+  }
+
+  return (
+    <View style={{ paddingVertical: 20, }}>
+      {isBlueTeamPlaying ?
+        <ScoreActiveTeamPlayer
+          itemStyle={{
+            width: width / 8.5,
+            height: width / 8.5,
+            marginTop: 30,
+            borderRadius: (width / 8.5) / 2,
+          }}
+          heading={'Who fouled'}
+          list={activePlayerList}
+          isBlueTeam={isBlueTeamPlaying}
+          activePlayer={selectedPlayer}
+          onPress={(e) => {
+            if (e == 'other team') {
+              selectPlayer(e)
+            } else {
+              selectPlayer(e.id)
+            }
+          }} />
+
+        :
+        <ScoreActiveTeamPlayer
+          itemStyle={{
+            width: width / 8.5,
+            height: width / 8.5,
+            marginTop: 30,
+            borderRadius: (width / 8.5) / 2,
+          }}
+          heading={'Who fouled'}
+          list={activePlayerList}
+          isBlueTeam={isBlueTeamPlaying}
+          activePlayer={selectedPlayer}
+          onPress={(e) => {
+            if (e == 'other team') {
+              selectPlayer(e)
+            } else {
+              selectPlayer(e.id)
+            }
+          }} />
+      }
+
+    </View>)
+}
+
+
+const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
+  currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow }) => {
+
+  const [activePlayerList, setActivePlayerList] = useState(playersList);
+  const { width, height } = useDimensions().window;
+  const fullPlayerList = playersList;
+
+  useEffect(() => {
+    // console.log("is blueee", isBlueTeamPlaying, "..")
+    removeActivePlayerFromList();
+  }, []);
+
+  const removeActivePlayerFromList = () => {
+    debugger
+    setActivePlayerList(fullPlayerList.filter(player => player.id !== activePlayerId))
+
+
+  };
+
+  const selectPlayer = (id) => {
+    // setCurrentView('playing');
+    setCourtFreeThrow(id);
+    setOnFreeThrow(true);
+
+  }
+
+  return (
+    <View style={{ paddingVertical: 20, }}>
+      {isBlueTeamPlaying ?
+        <ScoreActiveTeamPlayer
+          itemStyle={{
+            width: width / 8.5,
+            height: width / 8.5,
+            marginTop: 30,
+            borderRadius: (width / 8.5) / 2,
+          }}
+          heading={'Who shooting the free throw ?'}
+          list={activePlayerList}
+          isBlueTeam={isBlueTeamPlaying}
+          activePlayer={selectedPlayer}
+          onPress={(e) => {
+            if (e == 'other team') {
+              selectPlayer(e)
+            } else {
+              selectPlayer(e.id)
+            }
+          }} />
+
+        :
+        <ScoreActiveTeamPlayer
+          itemStyle={{
+            width: width / 8.5,
+            height: width / 8.5,
+            marginTop: 30,
+            borderRadius: (width / 8.5) / 2,
+          }}
+          heading={'Who shooting the free throw ?'}
+          list={activePlayerList}
+          isBlueTeam={isBlueTeamPlaying}
+          activePlayer={selectedPlayer}
+          onPress={(e) => {
+            if (e == 'other team') {
+              selectPlayer(e)
+            } else {
+              selectPlayer(e.id)
+            }
+          }} />
+      }
 
     </View>)
 }
