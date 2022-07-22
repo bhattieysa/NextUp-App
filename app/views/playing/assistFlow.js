@@ -8,7 +8,8 @@ import { Colors, Fonts } from "../../constants";
 
 const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, setSelectedPlayer, setAssistPlayer,
-  assistMadeOrMised, setAssistMadeOrMised, setCourtFoul, setCourtFreeThrow }) => {
+  assistMadeOrMised, setAssistMadeOrMised, setCourtFoul, setCourtFreeThrow,
+  setPlayerScore }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const [onAssist, setOnAssist] = useState(false)

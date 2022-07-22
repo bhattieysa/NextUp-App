@@ -7,7 +7,7 @@ import { Colors, Fonts } from "../../constants";
 
 
 const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, selectedPlayer, setAssistPlayer }) => {
+  currentView, toggleSwitch, selectedPlayer, setAssistPlayer, setPlayerScore }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -26,9 +26,13 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
       toggleSwitch()
   };
 
-  const selectPlayer = (id) => {
+  const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setAssistPlayer(id);
+    setAssistPlayer(e.id);
+    setPlayerScore(e, "ast")
+    setCurrentView('throwScreen')
+
+
   }
 
   return (
@@ -73,8 +77,8 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
               isBlueTeam={isBlueTeamPlaying}
               activePlayer={selectedPlayer}
               onPress={(e) => {
-                selectPlayer(e.id)
-                setCurrentView('throwScreen')
+                selectPlayer(e)
+                // setCurrentView('throwScreen')
               }} />
 
             :
@@ -89,8 +93,8 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
               isBlueTeam={isBlueTeamPlaying}
               activePlayer={selectedPlayer}
               onPress={(e) => {
-                selectPlayer(e.id)
-                setCurrentView('throwScreen')
+                selectPlayer(e)
+                // setCurrentView('throwScreen')
               }} />
           }
 

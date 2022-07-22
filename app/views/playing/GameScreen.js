@@ -31,6 +31,7 @@ import { WhoShootFreeThrow } from './whoShootFreeThrow';
 import { OffensiveFoulBy } from './offensiveFoul';
 import { FreeThrowPlayerSelect } from './freeThrowPlayerSelect';
 import { FreeThrowCount } from './freeThrowCount';
+import { addPlayerScoreData } from '../../middleware/localDb';
 
 
 const { width, height } = Dimensions.get('window');
@@ -71,6 +72,8 @@ let lineup = [
 const GameScreen = (props) => {
   const { width, height } = Dimensions.get('window');
 
+  const [blueTeamPlayer, setBlueTeamPlayer] = useState('')
+  const [redTeamPlayer, setRedTeamPlayer] = useState('')
   const [dropDownVisibility, setDropDownVisibility] = useState(false);
   const { btnEnable, setBtnEnable } = useState(false);
   const [preSelectedQuarter, setPreSelectedQuarter] = useState('1st quarter');
@@ -101,10 +104,15 @@ const GameScreen = (props) => {
   const [freeThrowPlayer, setFreeThrowPlayer] = useState('');
   const [freeThrowCount, setFreeThrowCount] = useState('');
 
+  const [event, setEvent] = useState('')
+  const [playerScore, setPlayerScore] = useState('')
+  const [blueTeamScore, setBlueTeamScore] = useState('')
+  const [redTeamScore, setRedTeamScore] = useState('')
+
   useEffect(() => {
     debugger
     StatusBar.setHidden(true)
-    Orientation.lockToLandscape()
+    Orientation.lockToLandscapeRight()
     return () => {
       StatusBar.setHidden(false)
       Orientation.lockToPortrait()
@@ -118,6 +126,7 @@ const GameScreen = (props) => {
     // const token = SyncStorage.get('token');
     props.dispatch(getGameInitialData(async (res, response) => {
       if (res) {
+        debugger
         const r = response.data.data;
         totalResponse = r;
         await setChallengerTeam(r.challengerTeamInfo)
@@ -136,13 +145,21 @@ const GameScreen = (props) => {
             "id": ++i,
             "number": item.jerseyNumber,
             "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber
+            "jerseyNumber": item.jerseyNumber,
+            "ast": 0,
+            "pts": 0,
+            "reb": 0,
+            "stl": 0,
+            "blk": 0,
+            "fl": 0
           });
         })
 
-        if (blueTeamList != teamList)
+        if (blueTeamList != teamList) {
+          setBlueTeamPlayer(teamList);
+          setBlueTeamScore(0)
           blueTeamList = teamList
-
+        }
 
         const rTeam = r.defenderTeamKpi.filter(rTeam => rTeam.inSquad == true).map((rTeam) => {
           return {
@@ -158,11 +175,21 @@ const GameScreen = (props) => {
             "id": ++i,
             "number": item.jerseyNumber,
             "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber
+            "jerseyNumber": item.jerseyNumber,
+            "ast": 0,
+            "pts": 0,
+            "reb": 0,
+            "stl": 0,
+            "blk": 0,
+            "fl": 0
           });
         })
-        if (redTeamList != teamList)
+        if (redTeamList != teamList) {
+          setRedTeamPlayer(redTeamList)
+          setRedTeamScore(0)
           redTeamList = teamList
+
+        }
 
 
         const bTeamSub = r.challengerTeamKpi.filter(bTeam => bTeam.inSquad == false).map((bTeam) => {
@@ -201,7 +228,7 @@ const GameScreen = (props) => {
             "id": ++i,
             "number": item.jerseyNumber,
             "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber
+            "jerseyNumber": item.jerseyNumber,
           });
         })
         if (redTeamListSub != teamListSub)
@@ -242,12 +269,169 @@ const GameScreen = (props) => {
   }
 
 
+  const handlePlayerScore = (playerData, key) => {
+    debugger
+    if (playerScore != '' & playerScore != null) {
+      let playerScoreData = playerScore;
+      let newPlayerData = [];
+      debugger
+      playerScoreData.forEach((itm) => {
+        if (itm.playerId == playerData.playerId) {
+          let obj = {
+            "playerId": itm.playerId,
+            "jerseyNumber": itm.jerseyNumber,
+            "ast": key == 'ast' ? itm.ast + 1 : itm.ast,
+            "pts": key == 'pts' ? itm.pts + 1 : itm.pts,
+            "reb": key == 'reb' ? itm.reb + 1 : itm.reb,
+            "stl": key == 'stl' ? itm.stl + 1 : itm.stl,
+            "blk": key == 'blk' ? itm.blk + 1 : itm.blk,
+            "fl": key == 'fl' ? itm.fl + 1 : itm.fl,
+          }
+          newPlayerData.push(obj);
+        } else {
+          newPlayerData.push(itm);
+        }
+      })
+      setPlayerScore(newPlayerData);
+      debugger
+
+      if (isEnabled == false) {
+        let blueTeamData = blueTeamList;
+        let newBlueData = [];
+        debugger
+        blueTeamList.forEach((blObj) => {
+          if (blObj.playerId == playerData.playerId) {
+            let obj = {
+              "id": blObj.id,
+              "number": blObj.number,
+              "playerId": blObj.playerId,
+              "jerseyNumber": blObj.jerseyNumber,
+              "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
+              "pts": key == 'pts' ? blObj.pts + 1 : blObj.pts,
+              "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
+              "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
+              "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
+              "fl": key == 'fl' ? blObj.fl + 1 : blObj.fl,
+            }
+            newBlueData.push(obj);
+          } else {
+            newBlueData.push(blObj);
+          }
+        })
+        debugger
+        setBlueTeamScore(blueTeamScore + 1)
+        blueTeamList = newBlueData;
+
+      } else {
+        let redTeamData = redTeamList;
+        let newRedData = [];
+        redTeamList.forEach((rdObj) => {
+          if (rdObj.playerId == playerData.playerId) {
+            let obj = {
+              "id": rdObj.id,
+              "number": rdObj.number,
+              "playerId": rdObj.playerId,
+              "jerseyNumber": rdObj.jerseyNumber,
+              "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
+              "pts": key == 'pts' ? rdObj.pts + 1 : rdObj.pts,
+              "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
+              "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
+              "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
+              "fl": key == 'fl' ? rdObj.fl + 1 : rdObj.fl,
+            }
+            newRedData.push(obj);
+          } else {
+            newRedData.push(rdObj);
+          }
+        })
+        setRedTeamScore(redTeamScore + 1)
+        redTeamList = newRedData;
+      }
+
+    } else {
+      debugger
+      let first_obj = {
+        "playerId": playerData.playerId,
+        "jerseyNumber": playerData.jerseyNumber,
+        "ast": key == 'ast' ? 1 : 0,
+        "pts": key == 'pts' ? 1 : 0,
+        "reb": key == 'reb' ? 1 : 0,
+        "stl": key == 'stl' ? 1 : 0,
+        "blk": key == 'blk' ? 1 : 0,
+        "fl": key == 'fl' ? 1 : 0,
+        // "profilePicUrl": playerData.profilePicUrl,
+      }
+      setPlayerScore([first_obj]);
+
+      debugger
+      if (isEnabled == false) {
+        let blueTeamData = blueTeamList;
+        let newBlueData = [];
+        blueTeamList.forEach((blObj) => {
+          if (blObj.playerId == playerData.playerId) {
+            let obj = {
+              "id": blObj.id,
+              "number": blObj.number,
+              "playerId": blObj.playerId,
+              "jerseyNumber": blObj.jerseyNumber,
+              "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
+              "pts": key == 'pts' ? blObj.pts + 1 : blObj.pts,
+              "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
+              "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
+              "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
+              "fl": key == 'fl' ? blObj.fl + 1 : blObj.fl,
+            }
+            debugger
+            newBlueData.push(obj);
+
+          } else {
+            debugger
+            newBlueData.push(blObj);
+          }
+        })
+        debugger
+        setBlueTeamScore(1);
+
+        blueTeamList = newBlueData;
+
+      } else {
+        let redTeamData = redTeamList;
+        let newRedData = [];
+        redTeamList.forEach((rdObj) => {
+          if (rdObj.playerId == playerData.playerId) {
+            let obj = {
+              "id": rdObj.id,
+              "number": rdObj.number,
+              "playerId": rdObj.playerId,
+              "jerseyNumber": rdObj.jerseyNumber,
+              "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
+              "pts": key == 'pts' ? rdObj.pts + 1 : rdObj.pts,
+              "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
+              "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
+              "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
+              "fl": key == 'fl' ? rdObj.fl + 1 : rdObj.fl,
+            }
+            newRedData.push(obj);
+          } else {
+            newRedData.push(rdObj);
+          }
+        })
+        setRedTeamScore(1);
+        redTeamList = newRedData;
+      }
+
+    }
+  }
+
+
+
   const switchView = () => {
     debugger
     switch (currentView) {
       default:
       case "playing":
-        return <PlayingGameScreen isEnabled={!isEnabled} setCurrentView={setCurrentView}
+        return <PlayingGameScreen isEnabled={isEnabled}
+          setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer} activePlayer={activePlayer}
           quarter={preSelectedQuarter} setCourtArea={setCourtArea}
           courtArea={courtArea}
@@ -256,6 +440,9 @@ const GameScreen = (props) => {
           setCourtAreaClick={setCourtAreaClick}
           courtAreaClick={courtAreaClick}
           madeOrMised={madeOrMised}
+          setPlayerScore={handlePlayerScore}
+          blueTeamScore={blueTeamScore}
+          redTeamScore={redTeamScore}
         />
       case "substitute":
         return <SubstitutePlayer setCurrentView={setCurrentView} isEnabled={isEnabled} />
@@ -264,7 +451,8 @@ const GameScreen = (props) => {
       case "pass":
         return <PassScreen
           activePlayerId={activePlayer}
-          playersList={isEnabled ? redTeamList : blueTeamList}
+          playersList={!isEnabled ? redTeamList : blueTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
           isBlueTeamPlaying={!isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -273,7 +461,8 @@ const GameScreen = (props) => {
         />
       case "foul":
         return <PassScreen
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -283,7 +472,9 @@ const GameScreen = (props) => {
 
       case "shootScore":
         return <ShootScore
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -292,12 +483,15 @@ const GameScreen = (props) => {
           setSelectedPlayer={setSelectedPlayer}
           selectedPlayer={activePlayer}
           title={"Who Scored"}
+          setPlayerScore={handlePlayerScore}
 
         />
 
       case "assistScreen":
         return <AssistScreen
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -306,11 +500,14 @@ const GameScreen = (props) => {
           setSelectedPlayer={setSelectedPlayer}
           setAssistPlayer={setAssistPlayer}
           selectedPlayer={selectedPlayer}
+          setPlayerScore={handlePlayerScore}
         />
 
       case "throwScreen":
         return <WasItFoul
-          // playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -330,24 +527,30 @@ const GameScreen = (props) => {
 
       case "courtFoul":
         return <CourtFoul
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           currentView={currentView}
           toggleSwitch={toggleSwitch}
           selectedPlayer={activePlayer}
           setCourtFoul={setCourtFoul}
+          setPlayerScore={handlePlayerScore}
         />
 
       case "whoShootFreeThrow":
         return <WhoShootFreeThrow
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           currentView={currentView}
           toggleSwitch={toggleSwitch}
           selectedPlayer={activePlayer}
           setCourtFreeThrow={setCourtFreeThrow}
+          setPlayerScore={handlePlayerScore}
         />
 
       case "madeMissedScreen":
@@ -372,7 +575,9 @@ const GameScreen = (props) => {
 
       case "deffRebound":
         return <DeffRebound
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -383,6 +588,7 @@ const GameScreen = (props) => {
           reboundPlayer={reboundPlayer}
           setReboundPlayer={setReboundPlayer}
           title={'Who Rebounded'}
+          setPlayerScore={handlePlayerScore}
 
         />
 
@@ -407,7 +613,9 @@ const GameScreen = (props) => {
 
       case "whoShot":
         return <ShootScore
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -416,11 +624,14 @@ const GameScreen = (props) => {
           setSelectedPlayer={setSelectedPlayer}
           selectedPlayer={activePlayer}
           title={"Who shot the ball"}
+          setPlayerScore={handlePlayerScore}
 
         />
       case "gotRebound":
         return <DeffRebound
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -431,12 +642,14 @@ const GameScreen = (props) => {
           reboundPlayer={reboundPlayer}
           setReboundPlayer={setReboundPlayer}
           title={'Who got the rebound'}
-
+          setPlayerScore={handlePlayerScore}
         />
 
       case "stoleBy":
         return <StoleBy
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -448,6 +661,7 @@ const GameScreen = (props) => {
           // reboundPlayer={reboundPlayer}
           // setReboundPlayer={setReboundPlayer}
           title={'Who stolen'}
+          setPlayerScore={handlePlayerScore}
         />
 
       case "turnOverView":
@@ -461,7 +675,9 @@ const GameScreen = (props) => {
 
       case "offensiveFoulBy":
         return <OffensiveFoulBy
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -470,12 +686,15 @@ const GameScreen = (props) => {
           // setSelectedPlayer={setSelectedPlayer}
           selectedPlayer={activePlayer}
           setOffensiveFoul={setOffensiveFoul}
+          setPlayerScore={handlePlayerScore}
 
         />
 
       case "assistFlow":
         return <AssistFlow
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -487,12 +706,15 @@ const GameScreen = (props) => {
           setAssistMadeOrMised={setAssistMadeOrMised}
           setCourtFoul={setCourtFoul}
           setCourtFreeThrow={setCourtFreeThrow}
+          setPlayerScore={handlePlayerScore}
 
         />
 
       case "foulBy":
         return <FoulBy
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -501,14 +723,17 @@ const GameScreen = (props) => {
           // setSelectedPlayer={setSelectedPlayer}
           selectedPlayer={activePlayer}
           setFoulBy={setFoulBy}
-        // reboundPlayer={reboundPlayer}
-        // setReboundPlayer={setReboundPlayer}
-        // title={'Who stolen'}
+          // reboundPlayer={reboundPlayer}
+          // setReboundPlayer={setReboundPlayer}
+          // title={'Who stolen'}
+          setPlayerScore={handlePlayerScore}
         />
 
       case "foulType":
         return <FoulType
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -524,7 +749,9 @@ const GameScreen = (props) => {
 
       case "blockBy":
         return <Block
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -534,22 +761,24 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           // title={'Who got the rebound'}
           setBlockBy={setBlockBy}
+          setPlayerScore={handlePlayerScore}
         />
 
       case "freeThrowPlayerSelect":
         return <FreeThrowPlayerSelect
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           currentView={currentView}
           toggleSwitch={toggleSwitch}
           selectedPlayer={activePlayer}
           setFreeThrowPlayer={setFreeThrowPlayer}
+          setPlayerScore={handlePlayerScore}
         />
 
       case "freeThrowCount":
         return <FreeThrowCount
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -565,7 +794,7 @@ const GameScreen = (props) => {
 
       case "freeThrow":
         return <FreeThrow
-          playersList={isEnabled ? blueTeamList : redTeamList}
+          playersList={!isEnabled ? blueTeamList : redTeamList}
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           // setActivePlayer={setActivePlayer}
@@ -613,6 +842,8 @@ const GameScreen = (props) => {
       <PlayingGameScreenHeader
         blueTeamScore={challengerTeam.score}
         redTeamScore={defenderTeam.score}
+        blueTeamNewScore={blueTeamScore}
+        redTeamNewScore={redTeamScore}
         blueTeamCaptain={challengerTeam.name}
         redTeamCaptain={defenderTeam.name}
         // redTeamClubName=""
@@ -1168,7 +1399,7 @@ const ChangeLineUp = ({ setCurrentView, isEnabled }) => {
 
 const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
   activePlayer, quarter, setCourtArea, courtArea,
-  btnEnable, handleBtnEnable, setCourtAreaClick, courtAreaClick, madeOrMised }) => {
+  btnEnable, handleBtnEnable, setCourtAreaClick, courtAreaClick, madeOrMised, blueTeamScore, redTeamScore }) => {
 
 
 
@@ -1258,25 +1489,34 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
     setPlaygroundShapesColorList(ShapeColors);
   }
 
-  // const handleBtnEnable = () => {
-  //   if (activePlayer !== '' && activePlayer !== undefined && courtArea !== '' && courtArea !== undefined) {
-  //     setBtnEnable(true);
-  //   } else {
-  //     setBtnEnable(false);
-  //   }
-
-  // }
-  console.log("btnnnn", btnEnable)
+  const handleDataInser = () => {
+    debugger
+    let data = {
+      "playerId": 1010101010292,
+      "name": "Crishh",
+      "pts": 10,
+      "ast": 5,
+      "reb": 3,
+      "foul": 2
+    }
+    debugger
+    addPlayerScoreData(data, (res) => {
+      if (res) {
+        debugger
+      }
+    })
+  }
+  console.log("btnnnn", isEnabled)
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: 'row', paddingVertical: 10, justifyContent: 'space-between' }}>
-        <View style={{ width: "20%", }}>
+        <View style={{ width: "22%", }}>
           <ActiveTeamPlayer
             containerStyle={{ width: '100%' }}
             heading={"Active Player"}
             activePlayer={activePlayer}
-            list={isEnabled ? blueTeamList : redTeamList}
+            list={isEnabled == false ? blueTeamList : redTeamList}
             isBlueTeam={isEnabled}
             onPress={(e) => {
               setActivePlayer(e.id)
@@ -1288,6 +1528,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
                 style={{ width: '45%', }}
                 // title="Substitute Player"
                 title="Sub Player"
+                // onPress={() => handleDataInser()}
                 onPress={() => setCurrentView("substitute")}
               />
               <PlaygroundScreenBtn
@@ -1569,7 +1810,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
 
 
 const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, title }) => {
+  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, title, setPlayerScore }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -1588,9 +1829,14 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
 
   };
 
-  const selectPlayer = (id) => {
+  const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setSelectedPlayer(id);
+    if (e == 'other team') {
+      setSelectedPlayer(e.id);
+    } else {
+      setSelectedPlayer(e.id);
+    }
+    setPlayerScore(e, 'pts')
     if (title == 'Who Scored') {
       setCurrentView('assistScreen');
     } else {
@@ -1613,11 +1859,11 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            // selectPlayer(e.id)
+            // }
           }} />
 
         :
@@ -1633,11 +1879,11 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
       }
 

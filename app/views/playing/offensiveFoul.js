@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { ScoreActiveTeamPlayer } from '../../components/common/ActiveTeamPalyer';
 
 const OffensiveFoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, setOffensiveFoul }) => {
+  currentView, toggleSwitch, selectedPlayer, setOffensiveFoul, setPlayerScore }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -23,9 +23,10 @@ const OffensiveFoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCu
 
   };
 
-  const selectPlayer = (id) => {
+  const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setOffensiveFoul(id);
+    setOffensiveFoul(e.id);
+    setPlayerScore(e, 'fl');
     setCurrentView('playing');
 
   }
@@ -45,11 +46,11 @@ const OffensiveFoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCu
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
 
         :
@@ -65,11 +66,11 @@ const OffensiveFoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCu
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
       }
 

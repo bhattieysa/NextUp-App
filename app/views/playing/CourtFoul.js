@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { ScoreActiveTeamPlayer } from '../../components/common/ActiveTeamPalyer';
 
 const CourtFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, setCourtFoul }) => {
+  currentView, toggleSwitch, selectedPlayer, setCourtFoul, setPlayerScore }) => {
 
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
@@ -24,9 +24,10 @@ const CourtFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
 
   };
 
-  const selectPlayer = (id) => {
+  const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setCourtFoul(id);
+    setCourtFoul(e.id);
+    setPlayerScore(e, "fl")
 
     setCurrentView('whoShootFreeThrow');
 
@@ -47,11 +48,11 @@ const CourtFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
 
         :
@@ -67,11 +68,11 @@ const CourtFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
       }
 

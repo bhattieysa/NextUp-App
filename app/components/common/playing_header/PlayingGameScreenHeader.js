@@ -18,7 +18,10 @@ const PlayingGameScreenHeader = ({
   isEnabled,
   toggleSwitch,
   nav,
-  setView
+  setView,
+  blueTeamNewScore,
+  redTeamNewScore
+
 }) => {
 
   useEffect(() => {
@@ -38,7 +41,7 @@ const PlayingGameScreenHeader = ({
     }}>
       {renderBackArrow(nav, setView)}
       <View style={{ flex: 1, flexDirection: 'row', }}>
-        <Text style={{ ...styles.scoreTxt }}>{blueTeamScore}</Text>
+        <Text style={{ ...styles.scoreTxt }}>{blueTeamNewScore}</Text>
         {blueTeamDetails()}
         <Switch
           trackColor={{ false: Colors.newGrayFontColor, true: Colors.newGrayFontColor }}
@@ -48,7 +51,7 @@ const PlayingGameScreenHeader = ({
           value={isEnabled}
         />
         {redTeamDetails()}
-        <Text style={{ ...styles.scoreTxt, color: Colors.lightRed }}>{redTeamScore}</Text>
+        <Text style={{ ...styles.scoreTxt, color: Colors.lightRed }}>{redTeamNewScore}</Text>
       </View>
       {renderPlayingRound()}
     </View>

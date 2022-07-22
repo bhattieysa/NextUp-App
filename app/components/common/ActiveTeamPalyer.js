@@ -86,6 +86,7 @@ const ActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, it
     marginTop: 10,
     flexWrap: 'wrap',
     width: '100%',
+    // backgroundColor: 'green',
     // marginLeft: 10,
     // alignItems: 'center',
     // justifyContent: 'center',
@@ -93,7 +94,7 @@ const ActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, it
   }
 
   const headingTxt = {
-    marginLeft: 10,
+    marginLeft: 8,
     color: Colors.fontColorGray,
     fontFamily: Fonts.SemiBold,
   }
@@ -104,46 +105,80 @@ const ActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, it
     </Text>
     <View style={{ ...listContainer, }}>
       <View>
-        <View style={{ flexDirection: 'row', width: '100%' }}>
-          <View style={{ width: '60%' }}>
+        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+          <View style={{ width: '30%', }}>
             <Text style={{
               color: Colors.overlayWhite, fontSize: 14,
               lineHeight: 16, fontFamily: Fonts.Bold
             }}>Player</Text>
 
           </View>
-          <View style={{ flexDirection: 'row', width: '40%', justifyContent: 'space-between', alignItems: "center" }}>
+          <View style={{
+            flexDirection: 'row', width: '65%',
+            justifyContent: 'space-between', alignItems: "center",
+            marginRight: 4
+
+            // backgroundColor: 'red'
+          }}>
             <Text style={{
-              color: Colors.overlayWhite, fontSize: 14,
+              color: Colors.overlayWhite, fontSize: 12,
               lineHeight: 16, fontFamily: Fonts.Bold,
             }}>PTS</Text>
             <Text style={{
-              color: Colors.overlayWhite, fontSize: 14,
+              color: Colors.overlayWhite, fontSize: 12,
               lineHeight: 16, fontFamily: Fonts.Bold,
             }}>AST</Text>
+            <Text style={{
+              color: Colors.overlayWhite, fontSize: 12,
+              lineHeight: 16, fontFamily: Fonts.Bold,
+            }}>REB</Text>
+            <Text style={{
+              color: Colors.overlayWhite, fontSize: 12,
+              lineHeight: 16, fontFamily: Fonts.Bold,
+            }}>FL</Text>
           </View>
         </View>
         <View style={{ marginTop: 5 }}>
           {numberList.map((e, index) => {
             return (
-              <View style={{ flexDirection: 'row', }}>
-                <View style={{ width: '60%' }}>
-                  <Text style={{
-                    color: Colors.light, fontSize: 14,
-                    lineHeight: 20, fontFamily: Fonts.Regular
-                  }}>Player name</Text>
-
+              <View style={{ flexDirection: 'row', marginVertical: 2 }}>
+                <View style={{ width: '35%' }}>
+                  <View style={{
+                    width: 20, height: 20, borderRadius: 10, backgroundColor: bgColor,
+                    alignItems: 'center', justifyContent: 'center'
+                  }}>
+                    <Text style={{
+                      color: Colors.light, fontSize: 12,
+                      lineHeight: 18, fontFamily: Fonts.Regular
+                    }}>{e.jerseyNumber}</Text>
+                  </View>
                 </View>
-                <View style={{ flexDirection: 'row', width: '40%', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{
+                  flexDirection: 'row', width: '62%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+
+                }}>
                   <Text style={{
-                    color: Colors.light, fontSize: 14,
-                    lineHeight: 20, fontFamily: Fonts.Regular,
-                    marginLeft: 4
-                  }}>12</Text>
+                    color: Colors.light, fontSize: 12,
+                    lineHeight: 18, fontFamily: Fonts.Regular,
+                    // marginLeft: 4
+                  }}>{e.pts}</Text>
                   <Text style={{
-                    color: Colors.light, fontSize: 14,
-                    lineHeight: 20, fontFamily: Fonts.Regular, marginRight: 4
-                  }}>10</Text>
+                    color: Colors.light, fontSize: 12,
+                    lineHeight: 18, fontFamily: Fonts.Regular,
+                    //  marginRight: 4
+                  }}>{e.ast}</Text>
+                  <Text style={{
+                    color: Colors.light, fontSize: 12,
+                    lineHeight: 18, fontFamily: Fonts.Regular,
+                    //  marginRight: 4
+                  }}>{e.reb}</Text>
+                  <Text style={{
+                    color: Colors.light, fontSize: 12,
+                    lineHeight: 18, fontFamily: Fonts.Regular,
+                    //  marginRight: 4
+                  }}>{e.fl}</Text>
                 </View>
               </View>
             )
