@@ -8,7 +8,9 @@ import { Colors, Fonts } from "../../constants";
 
 const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
-  clickedCourtArea, madeOrMissed, setMadeOrMissed, initMadeOrMissed }) => {
+  clickedCourtArea, madeOrMissed, setMadeOrMissed, initMadeOrMissed, event, setEvent,
+  setIsEventCompleted
+}) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -124,7 +126,10 @@ const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
                 alignItems: 'center', justifyContent: 'center',
                 backgroundColor: Colors.btnGren
               }}
-              onPress={() => setCurrentView("courtFoul")}
+              onPress={() => {
+                // setEvent(event.push(`foul_yes`))
+                setCurrentView("courtFoul")
+              }}
             >
               <Text style={{
                 color: Colors.base,
@@ -155,6 +160,9 @@ const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
                       "isMade": initMadeOrMissed.isMade
                     }
                   ])
+                  setEvent([...event, `foul_no`])
+                  setIsEventCompleted(true)
+                  // handleEventInsert('court_score')
                   setCurrentView("playing")
                 } else {
                   debugger
@@ -165,6 +173,9 @@ const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
                       "isMade": initMadeOrMissed.isMade
                     }
                   ])
+                  setEvent([...event, `foul_no`])
+                  setIsEventCompleted(true)
+                  // handleEventInsert('court_score')
                   setCurrentView("playing")
                 }
               }

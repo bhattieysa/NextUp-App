@@ -8,7 +8,8 @@ import { Colors, Fonts } from "../../constants";
 
 const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
-  clickedCourtArea, setMadeOrMissed, madeOrMissed, initMadeOrMissed }) => {
+  clickedCourtArea, setMadeOrMissed, madeOrMissed, initMadeOrMissed,
+  courtFreeThrowPlayer, event, setEvent, setIsEventCompleted }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -133,9 +134,12 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                     {
                       "x": clickedCourtArea.x,
                       "y": clickedCourtArea.y,
-                      "isMade": true
+                      "isMade": initMadeOrMissed.isMade
                     }
                   ])
+                  setEvent([...event, `free_throw_made_${courtFreeThrowPlayer}`])
+                  // handleEventInsert('court_score')
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 } else {
                   debugger
@@ -146,6 +150,9 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                       "isMade": initMadeOrMissed.isMade,
                     }
                   ])
+                  setEvent([...event, `free_throw_made_${courtFreeThrowPlayer}`])
+                  // handleEventInsert('court_score')
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 }
 
@@ -180,6 +187,9 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                       "isMade": initMadeOrMissed.isMade,
                     }
                   ])
+                  setEvent([...event, `free_throw_missed_${courtFreeThrowPlayer}`])
+                  // handleEventInsert('court_score')
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 } else {
                   debugger
@@ -187,9 +197,12 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                     {
                       "x": clickedCourtArea.x,
                       "y": clickedCourtArea.y,
-                      "isMade": false
+                      "isMade": initMadeOrMissed.isMade,
                     }
                   ])
+                  setEvent([...event, `free_throw_missed_${courtFreeThrowPlayer}`])
+                  // handleEventInsert('court_score')
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 }
               }}

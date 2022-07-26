@@ -5,7 +5,7 @@ import { ScoreActiveTeamPlayer } from '../../components/common/ActiveTeamPalyer'
 
 const StoleBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
   currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer, title, setStoleBy,
-  setPlayerScore }) => {
+  setPlayerScore, event, setEvent, setTypeOfEvent, setIsEventCompleted }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -26,8 +26,18 @@ const StoleBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentVie
 
   const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setStoleBy(e.id);
+    setTypeOfEvent('steal')
+    debugger
+    if (e == "other team") {
+      setStoleBy(e);
+      setEvent(['steal_otherTeam'])
+    } else {
+      setStoleBy(e.playerId);
+      setEvent([`steal_${e.playerId}`])
+    }
     setPlayerScore(e, 'stl')
+    // handleEventInsert('steal')
+    setIsEventCompleted(true)
     setCurrentView('playing');
 
   }

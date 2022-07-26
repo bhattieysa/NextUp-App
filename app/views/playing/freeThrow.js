@@ -5,7 +5,8 @@ import { Colors, Fonts } from "../../constants";
 
 
 const FreeThrow = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, freeThrowCount, freeThrowPlayer }) => {
+  currentView, toggleSwitch, freeThrowCount, freeThrowPlayer, event, setEvent,
+  setIsEventCompleted }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
 
   const [firstThrow, setFirstTrow] = useState(null)
@@ -41,21 +42,42 @@ const FreeThrow = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
   const handleMadeOrMissed = (val) => {
     if (currentCount == 1) {
       setFirstTrowVal(val)
+      if (val == true) {
+        setEvent([...event, `freeThrow1_made`])
+      } else {
+        setEvent([...event, `freeThrow1_missed`])
+      }
       if (currentCount == throwCount) {
+        // handleEventInsert('freeThrow')
+        setIsEventCompleted(true);
         setCurrentView('playing')
       } else {
         setCurrentCount(currentCount + 1)
       }
     } else if (currentCount == 2) {
       setSecondTrowVal(val)
+      if (val == true) {
+        setEvent([...event, `freeThrow2_made`])
+      } else {
+        setEvent([...event, `freeThrow2_missed`])
+      }
       if (currentCount == throwCount) {
+        // handleEventInsert('freeThrow')
+        setIsEventCompleted(true);
         setCurrentView('playing')
       } else {
         setCurrentCount(currentCount + 1)
       }
     } else if (currentCount == 3) {
       setThirdTrowVal(val)
+      if (val == true) {
+        setEvent([...event, `freeThrow3_made`])
+      } else {
+        setEvent([...event, `freeThrow3_missed`])
+      }
       if (currentCount == throwCount) {
+        // handleEventInsert('freeThrow')
+        setIsEventCompleted(true);
         setCurrentView('playing')
       } else {
         setCurrentCount(currentCount + 1)

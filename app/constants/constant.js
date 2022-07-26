@@ -146,3 +146,10 @@ export const CoachChallenegeApproveData = {
 }
 
 
+
+export const Court_ptr = {
+  "ptr3": ["court_1", "court_2", "court_3", "court_4", "court_5", "court_6"],
+  "ptr2": ["court_7", "court_8", "court_9", "court_10", "court_11", "court_12", "court_13"]
+
+}
+

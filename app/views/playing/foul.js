@@ -4,7 +4,8 @@ import { View } from 'react-native';
 import { ScoreActiveTeamPlayer } from '../../components/common/ActiveTeamPalyer';
 
 const FoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer, setFoulBy, setPlayerScore }) => {
+  currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer, setFoulBy, setPlayerScore,
+  event, setEvent, setTypeOfEvent, setIsEventCompleted }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -25,8 +26,17 @@ const FoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
 
   const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setFoulBy(e.id);
+    setTypeOfEvent('foul')
+    if (e == 'other team') {
+      setFoulBy(e);
+      setEvent([`foul_otherTeam`])
+    } else {
+      setFoulBy(e.playerId)
+      setEvent([`foul_${e.playerId}`])
+    }
+    // handleEventInsert('foul')
     setPlayerScore(e, 'fl');
+    setIsEventCompleted(true);
     setCurrentView('playing');
 
   }

@@ -8,8 +8,9 @@ import { Colors, Fonts } from "../../constants";
 
 const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, setSelectedPlayer, setAssistPlayer,
-  assistMadeOrMised, setAssistMadeOrMised, setCourtFoul, setCourtFreeThrow,
-  setPlayerScore }) => {
+  assistMadeOrMised, setAssistMadeOrMised, setCourtFoul, setCourtFreeThrow, courtFreeThrowPlayer,
+  setPlayerScore, event, setEvent, setTypeOfEvent,
+  setIsEventCompleted, setAssistFlowPtr }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const [onAssist, setOnAssist] = useState(false)
@@ -18,6 +19,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
   const [onThrow, setOnThrow] = useState(false)
   const [onFoul, setOnFoul] = useState(false)
   const [onFreeThrow, setOnFreeThrow] = useState(false)
+  const [shootPlayer, setShootPlayer] = useState('')
 
 
   const fullPlayerList = playersList;
@@ -36,8 +38,16 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
       toggleSwitch()
   };
 
-  const selectPlayer = (id) => {
-    setAssistPlayer(id);
+  const selectPlayer = (e) => {
+    setTypeOfEvent('assist_flow')
+    if (e == 'other team') {
+      setAssistPlayer(e);
+      setEvent([`assist_otherTeam`])
+    } else {
+      setAssistPlayer(e.playerId);
+      setEvent([`assist_${e.playerId}`])
+    }
+    setPlayerScore(e, "ast")
     setOnAssist(true)
   }
 
@@ -67,7 +77,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                 isBlueTeam={isBlueTeamPlaying}
                 activePlayer={selectedPlayer}
                 onPress={(e) => {
-                  selectPlayer(e.id)
+                  selectPlayer(e)
                   // setCurrentView('throwScreen')
                 }} />
 
@@ -83,7 +93,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                 isBlueTeam={isBlueTeamPlaying}
                 activePlayer={selectedPlayer}
                 onPress={(e) => {
-                  selectPlayer(e.id)
+                  selectPlayer(e)
                   // setCurrentView('throwScreen')
                 }} />
             }
@@ -101,6 +111,9 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
               toggleSwitch={toggleSwitch}
               setSelectedPlayer={setSelectedPlayer}
               setAssistPlayer={setAssistPlayer}
+              event={event}
+              setEvent={setEvent}
+              setShootPlayer={setShootPlayer}
             />
             :
             onPtr == false ?
@@ -113,7 +126,13 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                 currentView={currentView}
                 toggleSwitch={toggleSwitch}
                 setSelectedPlayer={setSelectedPlayer}
-                setAssistPlayer={setAssistPlayer} />
+                setAssistPlayer={setAssistPlayer}
+                setPlayerScore={setPlayerScore}
+                shootPlayer={shootPlayer}
+                event={event}
+                setEvent={setEvent}
+                setAssistFlowPtr={setAssistFlowPtr}
+              />
               :
               onThrow == false ?
                 <ThrowScreen
@@ -125,7 +144,11 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                   currentView={currentView}
                   toggleSwitch={toggleSwitch}
                   setSelectedPlayer={setSelectedPlayer}
-                  setAssistPlayer={setAssistPlayer} />
+                  setAssistPlayer={setAssistPlayer}
+                  event={event}
+                  setEvent={setEvent}
+                  setIsEventCompleted={setIsEventCompleted}
+                />
                 :
                 onFoul == false ?
                   <FoulBy
@@ -139,6 +162,9 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                     setSelectedPlayer={setSelectedPlayer}
                     setAssistPlayer={setAssistPlayer}
                     setCourtFoul={setCourtFoul}
+                    setPlayerScore={setPlayerScore}
+                    event={event}
+                    setEvent={setEvent}
                   />
                   :
                   onFreeThrow == false ?
@@ -153,9 +179,10 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                       setSelectedPlayer={setSelectedPlayer}
                       setAssistPlayer={setAssistPlayer}
                       setCourtFreeThrow={setCourtFreeThrow}
+                      event={event}
+                      setEvent={setEvent}
                     />
                     :
-
 
                     <MadeMissScreen
                       playersList={playersList}
@@ -168,6 +195,10 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                       setAssistPlayer={setAssistPlayer}
                       assistMadeOrMised={assistMadeOrMised}
                       setAssistMadeOrMised={setAssistMadeOrMised}
+                      courtFreeThrowPlayer={courtFreeThrowPlayer}
+                      event={event}
+                      setEvent={setEvent}
+                      setIsEventCompleted={setIsEventCompleted}
                     />
 
         }
@@ -179,7 +210,8 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
 
 
 const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, setOnScored }) => {
+  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, setOnScored,
+  event, setEvent, setShootPlayer }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -198,8 +230,16 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
 
   };
 
-  const selectPlayer = (id) => {
-    setSelectedPlayer(id);
+  const selectPlayer = (e) => {
+    debugger
+    setShootPlayer(e);
+    if (e == 'other team') {
+      setSelectedPlayer(e);
+      setEvent([...event, `scored_otherTeam`])
+    } else {
+      setSelectedPlayer(e.playerId);
+      setEvent([...event, `scored_${e.playerId}`])
+    }
     setOnScored(true);
   }
 
@@ -218,11 +258,9 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+
           }} />
 
         :
@@ -238,11 +276,11 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
       }
 
@@ -251,7 +289,8 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
 
 
 const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, setOnPtr }) => {
+  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, setOnPtr,
+  setAssistFlowPtr, setPlayerScore, shootPlayer }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -304,6 +343,8 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
                 backgroundColor: Colors.btnGren
               }}
               onPress={() => {
+                setAssistFlowPtr('ptr2')
+                setPlayerScore(shootPlayer, 'ast_pts')
                 setOnPtr(true)
               }}
             >
@@ -326,6 +367,8 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
                 marginLeft: width * 0.09
               }}
               onPress={() => {
+                setAssistFlowPtr('ptr3')
+                setPlayerScore(shootPlayer, 'ast_pts')
                 setOnPtr(true)
               }}
             >
@@ -350,7 +393,8 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
 }
 
 const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer, setOnThrow }) => {
+  currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
+  setOnThrow, event, setEvent, setIsEventCompleted }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -470,7 +514,13 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
                 backgroundColor: Colors.lightRed,
                 marginLeft: 30
               }}
-              onPress={() => setCurrentView('playing')}
+              onPress={() => {
+                setEvent([...event, `foul_no`])
+                setIsEventCompleted(true)
+                setCurrentView('playing')
+
+              }
+              }
             >
               <Text style={{
                 color: Colors.base,
@@ -494,7 +544,8 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
 
 const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
-  clickedCourtArea, setMadeOrMissed, madeOrMissed, assistMadeOrMised, setAssistMadeOrMised }) => {
+  clickedCourtArea, setMadeOrMissed, madeOrMissed, assistMadeOrMised, setAssistMadeOrMised,
+  event, setEvent, setIsEventCompleted, courtFreeThrowPlayer }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -622,6 +673,8 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                       "isMade": true
                     }
                   ])
+                  setEvent([...event, `free_throw_made_${courtFreeThrowPlayer}`])
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 } else {
                   debugger
@@ -632,6 +685,8 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                       "isMade": true
                     }
                   ])
+                  setEvent([...event, `free_throw_made_${courtFreeThrowPlayer}`])
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 }
 
@@ -666,6 +721,8 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                       "isMade": false
                     }
                   ])
+                  setEvent([...event, `free_throw_missed_${courtFreeThrowPlayer}`])
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 } else {
                   debugger
@@ -676,6 +733,8 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
                       "isMade": false
                     }
                   ])
+                  setEvent([...event, `free_throw_missed_${courtFreeThrowPlayer}`])
+                  setIsEventCompleted(true)
                   setCurrentView("playing")
                 }
               }}
@@ -702,7 +761,7 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
 
 const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
   currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer,
-  setCourtFoul }) => {
+  setCourtFoul, event, setEvent, setPlayerScore }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -721,9 +780,16 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
 
   };
 
-  const selectPlayer = (id) => {
+  const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setCourtFoul(id);
+    if (e == 'other team') {
+      setCourtFoul(e);
+      setEvent([...event, `foul_yes_otherTeam`])
+    } else {
+      setCourtFoul(e.playerId);
+      setEvent([...event, `foul_yes_${e.playerId}`])
+    }
+    setPlayerScore(e, 'fl')
     setOnFoul(true);
 
   }
@@ -743,11 +809,11 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
 
         :
@@ -763,11 +829,11 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
       }
 
@@ -776,7 +842,7 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
 
 
 const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow }) => {
+  currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow, event, setEvent }) => {
 
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
@@ -794,9 +860,13 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
 
   };
 
-  const selectPlayer = (id) => {
+  const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setCourtFreeThrow(id);
+    if (e == 'other team') {
+      setCourtFreeThrow(e);
+    } else {
+      setCourtFreeThrow(e.playerId);
+    }
     setOnFreeThrow(true);
 
   }
@@ -816,11 +886,11 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
 
         :
@@ -836,11 +906,11 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            if (e == 'other team') {
-              selectPlayer(e)
-            } else {
-              selectPlayer(e.id)
-            }
+            // if (e == 'other team') {
+            selectPlayer(e)
+            // } else {
+            //   selectPlayer(e.id)
+            // }
           }} />
       }
 

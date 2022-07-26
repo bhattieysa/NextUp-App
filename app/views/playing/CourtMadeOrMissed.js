@@ -5,7 +5,8 @@ import { Colors, Fonts } from "../../constants";
 
 
 const CourtMadeMissScreen = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, clickedCourtArea, setInitMadeOrMissed }) => {
+  currentView, toggleSwitch, clickedCourtArea, setInitMadeOrMissed, event, setEvent,
+  setTypeOfEvent }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -60,6 +61,8 @@ const CourtMadeMissScreen = ({ activePlayerId, isBlueTeamPlaying, setCurrentView
               }}
               onPress={() => {
                 setInitMadeOrMissed({ "isMade": true })
+                setEvent(["made"])
+                setTypeOfEvent('court_score')
                 setCurrentView('shootScore')
               }}
             >
@@ -83,6 +86,8 @@ const CourtMadeMissScreen = ({ activePlayerId, isBlueTeamPlaying, setCurrentView
               }}
               onPress={() => {
                 setInitMadeOrMissed({ "isMade": false })
+                setEvent(["missed"])
+                setTypeOfEvent('court_score')
                 setCurrentView('whoShot')
                 // setCurrentView('playing')
               }}

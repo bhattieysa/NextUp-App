@@ -16,6 +16,8 @@ function PlayGroundBox(props) {
   // }
   debugger
 
+
+
   return (
     <Svg
       width={props.width}
@@ -55,11 +57,11 @@ function PlayGroundBox(props) {
             </ForeignObject> */}
       {/* <Circle r={8} strokeWidth={4} stroke={Colors.btnGren} cx={67.66} cy={20.66} /> */}
 
-      {/* shape two */}
+      {/* shape two 2pt*/}
       <TouchableOpacityG
         // onPress={props.onPressShapeTwo}
         onPress={(e) =>
-          props.onPressShapeTwo(e)}
+          props.onPressShapeTwo(e, "court_7")}
       >
         <Path
           // fill={props.shapeTwoBGColor} 
@@ -69,38 +71,40 @@ function PlayGroundBox(props) {
       </TouchableOpacityG>
 
 
-      {/* shape four */}
+      {/* shape four 2pt */}
       <TouchableOpacityG
         // onPress={props.onPressShapeFour}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_13")
         }
 
       >
         <Path
           // fill={props.shapeFourBGColor} 
+
           d="M125 0H233V134H125z" />
       </TouchableOpacityG>
 
-      {/* shape left curve */}
+      {/* shape left curve 3pt */}
       <TouchableOpacityG
         // onPress={props.onPressShapeLeftCurve}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_2")
         }
       >
         <Path
           d="M.5 257V102.5h31c21.5 44.297 40.387 62.574 81 88.5l-32 66H.5z"
           // fill={props.shapeLeftCurveBGColor}
+
           stroke={props.background}
         />
       </TouchableOpacityG>
 
-      {/* shape right curve */}
+      {/* shape right curve 3pt*/}
       <TouchableOpacityG
         // onPress={props.onPressShapeRightCurve}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_5")
         }
       >
         <Path
@@ -110,11 +114,11 @@ function PlayGroundBox(props) {
         />
       </TouchableOpacityG>
 
-      {/* shape left curve 2 */}
+      {/* shape left curve 2 2pt */}
       <TouchableOpacityG
         // onPress={props.onPressShapeLeftCurve2}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_8")
         }
       >
         <Path
@@ -124,11 +128,11 @@ function PlayGroundBox(props) {
         />
       </TouchableOpacityG>
 
-      {/* shape right curve 2 */}
+      {/* shape right curve 2  2pt*/}
       <TouchableOpacityG
         // onPress={props.onPressShapeRightCurve2}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_11")
         }
       >
         <Path
@@ -138,11 +142,11 @@ function PlayGroundBox(props) {
         />
       </TouchableOpacityG>
 
-      {/* shape center circle holder */}
+      {/* shape center circle holder 2pt */}
       <TouchableOpacityG
         // onPress={props.onPressShapeCenterCircleHolder}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_9")
         }
       >
         <Path
@@ -151,11 +155,11 @@ function PlayGroundBox(props) {
         />
       </TouchableOpacityG>
 
-      {/* shape center circle */}
+      {/* shape center circle 2pt*/}
       <TouchableOpacityG
         // onPress={props.onPressShapeCenterCircle}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_10")
         }
       >
         <Path
@@ -165,24 +169,26 @@ function PlayGroundBox(props) {
         />
       </TouchableOpacityG>
 
-      {/* shape holder holder left */}
+      {/* shape holder holder left 3pt*/}
       <TouchableOpacityG
         // onPress={props.onPressShapeHolderLeft}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_3")
         }
       >
         <Path
           d="M112.5 191L81 257h97.5v-50l-16.5-1-27.5-5.5-22-9.5z"
+
         // fill={props.shapeHolderLeftBGColor}
+
         />
       </TouchableOpacityG>
 
-      {/* shape holder holder right */}
+      {/* shape holder holder right 3pt*/}
       <TouchableOpacityG
         // onPress={props.onPressShapeHolderRight} 
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "court_4")
         }
       >
         <Path
@@ -192,11 +198,11 @@ function PlayGroundBox(props) {
       </TouchableOpacityG>
 
       <G clipPath="url(#clip0_18_1977)">
-        {/* shape holder zero */}
+        {/* shape holder zero 3pt */}
         <TouchableOpacityG
           // onPress={props.onPressShapeZero}
           onPress={(e) =>
-            props.onPressShapeTwo(e)
+            props.onPressShapeTwo(e, "court_1")
           }
         >
           <Path
@@ -206,6 +212,7 @@ function PlayGroundBox(props) {
         <Path
           d="M0 0v-2h-2v2h2zm0 257.167h-2v2h2v-2zm179 0v2h2v-2h-2zM179 0h2v-2h-2v2zm-53.468 134.25h-2v2h2v-2zM32.255-2H0v4h32.255v-4zM-2 0v101.414h4V0h-4zm0 101.414v155.753h4V101.414h-4zm34.255-2H0v4h32.255v-4zM30.255 0v50.707h4V0h-4zm0 50.707v50.707h4V50.707h-4zm2 2h93.277v-4H32.255v4zM125.532-2H32.255v4h93.277v-4zm2 52.707V0h-4v50.707h4zM179-2h-39.519v4H179v-4zm-39.519 0h-13.949v4h13.949v-4zm-2 2v134.25h4V0h-4zm2 132.25h-13.949v4h13.949v-4zm-11.949 2V50.707h-4v83.543h4zm11.949 2H179v-4h-39.519v4zM0 259.167h80.782v-4H0v4zm80.782 0H179v-4H80.782v4zM181 174.641V134.25h-4v40.391h4zm-43.519-40.391c0 13.211 3.115 23.89 10.06 31.265 6.967 7.397 17.461 11.126 31.459 11.126v-4c-13.316 0-22.583-3.536-28.547-9.868-5.985-6.356-8.972-15.872-8.972-28.523h-4zm43.519 0V29.058h-4V134.25h4zm0-105.192V0h-4v29.058h4zm-21.179 2H179v-4h-19.179v4zM82.587 258.03l31.639-66.253-3.61-1.724-31.638 66.253 3.61 1.724zm31.639-66.253l27.059-56.664-3.609-1.724-27.06 56.664 3.61 1.724zM181 257.167v-50.561h-4v50.561h4zm0-50.561v-31.965h-4v31.965h4zm-69.421-13.878c12.555 5.832 22.293 9.718 32.477 12.183 10.191 2.468 20.741 3.492 34.915 3.694l.058-3.999c-14.01-.2-24.236-1.21-34.032-3.582-9.804-2.374-19.264-6.132-31.733-11.924l-1.685 3.628zm-81.146-90.489c9.68 21.383 18.792 37.003 31.097 50.789 12.296 13.776 27.697 25.623 49.824 39.578l2.134-3.384c-21.99-13.867-37.035-25.483-48.974-38.858-11.93-13.366-20.844-28.585-30.437-49.775l-3.644 1.65z"
           fill={props.background}
+
         />
         <Path
           d="M177.709 29.93a4.94 4.94 0 000 9.88v-9.88zM149.942 29.93a29.046 29.046 0 008.511 20.548A29.048 29.048 0 00179 58.988v-1.952a27.11 27.11 0 01-25.042-16.733 27.108 27.108 0 01-2.063-10.373h-1.953zM141.48 133.959c0-2.628.176-5.107.51-7.442l-3.96-.565a56.556 56.556 0 00-.55 8.007h4zm1.633-12.881c1.416-5.141 3.689-9.451 6.57-12.982l-3.099-2.529c-3.246 3.979-5.769 8.792-7.327 14.449l3.856 1.062zm10.369-16.908c3.687-3.216 8.035-5.544 12.752-7.01l-1.187-3.82c-5.199 1.616-10.05 4.201-14.194 7.815l2.629 3.015zm18.138-8.287a44.68 44.68 0 017.38-.605v-4c-2.709 0-5.402.217-8.041.66l.661 3.945z"
@@ -213,11 +220,11 @@ function PlayGroundBox(props) {
         />
       </G>
 
-      {/* shape six - right horizontal top */}
+      {/* shape six - right horizontal top  2pt*/}
       <TouchableOpacityG
         // onPress={props.onPressShapeRightHTop}
         onPress={(e) =>
-          props.onPressShapeTwo(e)
+          props.onPressShapeTwo(e, "couer_12")
         }
       >
         <Path
@@ -226,15 +233,16 @@ function PlayGroundBox(props) {
       </TouchableOpacityG>
       <G clipPath="url(#clip1_18_1977)">
 
-        {/* shape seven - right verticle top */}
+        {/* shape seven - right verticle top  3pt*/}
         <TouchableOpacityG
           // onPress={props.onPressShapeRightVTop}
           onPress={(e) =>
-            props.onPressShapeTwo(e)
+            props.onPressShapeTwo(e, "court_6")
           }
         >
           <Path
             transform="matrix(-1 0 0 1 354 .581)"
+
             // fill={props.shapeRightVTopBGColor}
 
             d="M0 0H31.9643V101.123H0z"

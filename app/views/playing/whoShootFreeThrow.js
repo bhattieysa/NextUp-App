@@ -4,7 +4,8 @@ import { View } from 'react-native';
 import { ScoreActiveTeamPlayer } from '../../components/common/ActiveTeamPalyer';
 
 const WhoShootFreeThrow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow, setPlayerScore }) => {
+  currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow, setPlayerScore,
+  event, setEvent }) => {
 
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
@@ -26,7 +27,11 @@ const WhoShootFreeThrow = ({ playersList, activePlayerId, isBlueTeamPlaying, set
 
   const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setCourtFreeThrow(e.id);
+    if (e == "other team") {
+      setCourtFreeThrow(e);
+    } else {
+      setCourtFreeThrow(e.playerId);
+    }
     // setPlayerScore(e, 'thr')
     setCurrentView('madeMissedScreen');
 

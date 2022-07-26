@@ -4,7 +4,8 @@ import { View } from 'react-native';
 import { ScoreActiveTeamPlayer } from '../../components/common/ActiveTeamPalyer';
 
 const DeffRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer, title, setPlayerScore }) => {
+  currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer,
+  title, setPlayerScore, event, setEvent, setTypeOfEvent, setIsEventCompleted }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -24,12 +25,17 @@ const DeffRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
   };
 
   const selectPlayer = (e) => {
+    setTypeOfEvent('deff_reb')
     if (e == 'other team') {
       setReboundPlayer(e)
+      setEvent([`deffRebounded_otherTeam`])
     } else {
-      setReboundPlayer(e.id)
+      setReboundPlayer(e.playerId)
+      setEvent([`deffRebounded_${e.playerId}`])
     }
     setPlayerScore(e, "reb")
+
+    setIsEventCompleted(true)
     setCurrentView('playing');
 
   }

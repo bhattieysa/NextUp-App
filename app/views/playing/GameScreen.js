@@ -31,7 +31,10 @@ import { WhoShootFreeThrow } from './whoShootFreeThrow';
 import { OffensiveFoulBy } from './offensiveFoul';
 import { FreeThrowPlayerSelect } from './freeThrowPlayerSelect';
 import { FreeThrowCount } from './freeThrowCount';
-import { addPlayerScoreData } from '../../middleware/localDb';
+import { insertEvent, insertPlayerScore, insertTeamScore } from '../../middleware/localDb';
+import { Court_ptr } from '../../constants/constant';
+import { CourtRebound } from './CourtRebound';
+import { OffRebound } from './OffRebound';
 
 
 const { width, height } = Dimensions.get('window');
@@ -103,8 +106,11 @@ const GameScreen = (props) => {
   const [blockBy, setBlockBy] = useState('');
   const [freeThrowPlayer, setFreeThrowPlayer] = useState('');
   const [freeThrowCount, setFreeThrowCount] = useState('');
+  const [assistFlowPtr, setAssistFlowPtr] = useState('');
 
-  const [event, setEvent] = useState('')
+  const [event, setEvent] = useState([])
+  const [isEventCompleted, setIsEventCompleted] = useState(false);
+  const [typeOfEvent, setTypeOfEvent] = useState('');
   const [playerScore, setPlayerScore] = useState('')
   const [blueTeamScore, setBlueTeamScore] = useState('')
   const [redTeamScore, setRedTeamScore] = useState('')
@@ -121,6 +127,26 @@ const GameScreen = (props) => {
     // StatusBar.setTranslucent(true);
     // StatusBar.setBackgroundColor("transparent");
   }, []);
+
+  useEffect(() => {
+    if (isEventCompleted == true) {
+      if (typeOfEvent != '') {
+        handleEventInsert(typeOfEvent)
+      }
+    }
+  }, [isEventCompleted])
+
+  useEffect(() => {
+    handleScoreInsert();
+  }, [playerScore])
+
+  useEffect(() => {
+    handleBlueTeamScoreInsert()
+  }, [blueTeamScore])
+
+  useEffect(() => {
+    handleRedTeamScoreInsert()
+  }, [redTeamScore])
 
   useEffect(() => {
     // const token = SyncStorage.get('token');
@@ -268,9 +294,25 @@ const GameScreen = (props) => {
 
   }
 
-
   const handlePlayerScore = (playerData, key) => {
     debugger
+    let pts_point = 0;
+    if (key == 'pts') {
+      if (courtAreaClick !== '' && courtAreaClick != undefined) {
+        let selected_court = courtAreaClick.court_nm;
+        if (Court_ptr.ptr2.includes(selected_court)) {
+          pts_point = 2;
+        } else {
+          pts_point = 3;
+        }
+      }
+    } else if (key == 'ast_pts') {
+      if (assistFlowPtr == 'ptr2') {
+        pts_point = 2;
+      } else {
+        pts_point = 3;
+      }
+    }
     if (playerScore != '' & playerScore != null) {
       let playerScoreData = playerScore;
       let newPlayerData = [];
@@ -281,7 +323,7 @@ const GameScreen = (props) => {
             "playerId": itm.playerId,
             "jerseyNumber": itm.jerseyNumber,
             "ast": key == 'ast' ? itm.ast + 1 : itm.ast,
-            "pts": key == 'pts' ? itm.pts + 1 : itm.pts,
+            "pts": key == 'pts' || key == 'ast_pts' ? itm.pts + pts_point : itm.pts,
             "reb": key == 'reb' ? itm.reb + 1 : itm.reb,
             "stl": key == 'stl' ? itm.stl + 1 : itm.stl,
             "blk": key == 'blk' ? itm.blk + 1 : itm.blk,
@@ -307,7 +349,7 @@ const GameScreen = (props) => {
               "playerId": blObj.playerId,
               "jerseyNumber": blObj.jerseyNumber,
               "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
-              "pts": key == 'pts' ? blObj.pts + 1 : blObj.pts,
+              "pts": key == 'pts' || key == 'ast_pts' ? blObj.pts + pts_point : blObj.pts,
               "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
               "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
               "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
@@ -319,7 +361,10 @@ const GameScreen = (props) => {
           }
         })
         debugger
-        setBlueTeamScore(blueTeamScore + 1)
+        if (key == 'pts' || key == "ast_pts") {
+          setBlueTeamScore(blueTeamScore + pts_point)
+        }
+
         blueTeamList = newBlueData;
 
       } else {
@@ -333,7 +378,7 @@ const GameScreen = (props) => {
               "playerId": rdObj.playerId,
               "jerseyNumber": rdObj.jerseyNumber,
               "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
-              "pts": key == 'pts' ? rdObj.pts + 1 : rdObj.pts,
+              "pts": key == 'pts' || key == 'ast_pts' ? rdObj.pts + pts_point : rdObj.pts,
               "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
               "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
               "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
@@ -344,7 +389,9 @@ const GameScreen = (props) => {
             newRedData.push(rdObj);
           }
         })
-        setRedTeamScore(redTeamScore + 1)
+        if (key == 'pts' || key == 'ast_pts') {
+          setRedTeamScore(redTeamScore + pts_point)
+        }
         redTeamList = newRedData;
       }
 
@@ -354,7 +401,7 @@ const GameScreen = (props) => {
         "playerId": playerData.playerId,
         "jerseyNumber": playerData.jerseyNumber,
         "ast": key == 'ast' ? 1 : 0,
-        "pts": key == 'pts' ? 1 : 0,
+        "pts": key == 'pts' || key == 'ast_pts' ? pts_point : 0,
         "reb": key == 'reb' ? 1 : 0,
         "stl": key == 'stl' ? 1 : 0,
         "blk": key == 'blk' ? 1 : 0,
@@ -362,7 +409,6 @@ const GameScreen = (props) => {
         // "profilePicUrl": playerData.profilePicUrl,
       }
       setPlayerScore([first_obj]);
-
       debugger
       if (isEnabled == false) {
         let blueTeamData = blueTeamList;
@@ -375,7 +421,7 @@ const GameScreen = (props) => {
               "playerId": blObj.playerId,
               "jerseyNumber": blObj.jerseyNumber,
               "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
-              "pts": key == 'pts' ? blObj.pts + 1 : blObj.pts,
+              "pts": key == 'pts' || key == 'ast_pts' ? blObj.pts + pts_point : blObj.pts,
               "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
               "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
               "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
@@ -390,7 +436,10 @@ const GameScreen = (props) => {
           }
         })
         debugger
-        setBlueTeamScore(1);
+        if (key == 'pts' || key == 'ast_pts') {
+          setBlueTeamScore(pts_point);
+
+        }
 
         blueTeamList = newBlueData;
 
@@ -405,7 +454,7 @@ const GameScreen = (props) => {
               "playerId": rdObj.playerId,
               "jerseyNumber": rdObj.jerseyNumber,
               "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
-              "pts": key == 'pts' ? rdObj.pts + 1 : rdObj.pts,
+              "pts": key == 'pts' || key == 'ast_pts' ? rdObj.pts + pts_point : rdObj.pts,
               "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
               "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
               "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
@@ -416,11 +465,188 @@ const GameScreen = (props) => {
             newRedData.push(rdObj);
           }
         })
-        setRedTeamScore(1);
+        if (key == 'pts' || key == 'ast_pts') {
+          setRedTeamScore(pts_point);
+        }
         redTeamList = newRedData;
       }
-
     }
+    // handleScoreInsert()
+  }
+
+  const handleScoreInsert = () => {
+    debugger
+    if (playerScore != '' && playerScore != null) {
+      playerScore.forEach(obj => {
+        debugger
+        let data = {
+          _id: parseInt(obj.playerId),
+          playerId: obj.playerId.toString(),
+          jerseyNumber: parseInt(obj.jerseyNumber),
+          ast: parseInt(obj.ast),
+          pts: parseInt(obj.pts),
+          reb: parseInt(obj.reb),
+          stl: parseInt(obj.stl),
+          blk: parseInt(obj.blk),
+          foul: parseInt(obj.fl),
+          // freeThrowCount: parseInt(obj.ast),
+          // freeThrowMadeCount: parseInt(obj.ast),
+          // freeThrowMissedCount: parseInt(obj.ast),
+          quarter: "Quarter1"
+        }
+        debugger
+        insertPlayerScore(data);
+      });
+    }
+  }
+
+  const handleBlueTeamScoreInsert = () => {
+    if (blueTeamScore != '' && blueTeamScore != null) {
+      let data = {
+        _id: parseInt(challengerTeam?.teamId),
+        teamId: challengerTeam?.teamId.toString(),
+        isChallenger: true,
+        currentScore: blueTeamScore,
+        quarter: "Quarter1"
+      }
+      debugger
+      insertTeamScore(data);
+    }
+  }
+
+  const handleRedTeamScoreInsert = () => {
+    if (redTeamScore != '' && redTeamScore != null) {
+      let data = {
+        _id: parseInt(defenderTeam?.teamId),
+        teamId: defenderTeam?.teamId.toString(),
+        isChallenger: false,
+        currentScore: redTeamScore,
+        quarter: "Quarter1"
+      }
+      debugger
+      insertTeamScore(data);
+    }
+  }
+
+
+  // [made -90909, SCORED-90909, ASSIST-01010, FOUL-YES-0101, FREE THROW-Made-01010, ]
+  const handleEventInsert = (key) => {
+    debugger
+    let data;
+    if (key == 'court_score') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(selectedPlayer),
+        secondPlayerId: parseInt(assistPlayer),
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        court: courtAreaClick.court_nm,
+        quarter: "quarter1"
+      }
+    } else if (key == 'court_score_missed') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(selectedPlayer),
+        secondPlayerId: parseInt(reboundPlayer),
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        court: courtAreaClick.court_nm,
+        quarter: "quarter1"
+      }
+    } else if (key == 'deff_reb') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(reboundPlayer),
+        // secondPlayerId: null,
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'off_reb') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(reboundPlayer),
+        // secondPlayerId: null,
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'assist') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(reboundPlayer),
+        // secondPlayerId: null,
+        gameAction: `[Def_REBOUND_${reboundPlayer}]`.toString(),
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'steal') {
+      debugger
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(stoleBy),
+        // secondPlayerId: null,
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'block') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(blockBy),
+        // secondPlayerId: null,
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'off_foul') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(offensiveFoul),
+        // secondPlayerId: null,
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'foul') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(foulBy),
+        // secondPlayerId: null,
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'freeThrow') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(freeThrowPlayer),
+        // secondPlayerId: null,
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: null,
+        quarter: "quarter1"
+      }
+    } else if (key == 'assist_flow') {
+      data = {
+        "_id": Date.now(),
+        firstPlayerId: parseInt(selectedPlayer),
+        secondPlayerId: parseInt(assistPlayer),
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        // court: courtAreaClick.court_nm,
+        quarter: "quarter1"
+      }
+    }
+    insertEvent(data);
+    setIsEventCompleted(false)
   }
 
 
@@ -474,7 +700,6 @@ const GameScreen = (props) => {
         return <ShootScore
           playersList={!isEnabled ? blueTeamList : redTeamList}
           // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
-
           isBlueTeamPlaying={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer}
@@ -484,7 +709,8 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           title={"Who Scored"}
           setPlayerScore={handlePlayerScore}
-
+          event={event}
+          setEvent={setEvent}
         />
 
       case "assistScreen":
@@ -501,6 +727,8 @@ const GameScreen = (props) => {
           setAssistPlayer={setAssistPlayer}
           selectedPlayer={selectedPlayer}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
         />
 
       case "throwScreen":
@@ -522,6 +750,10 @@ const GameScreen = (props) => {
           madeOrMissed={madeOrMised}
           setMadeOrMissed={setMadeOrMissed}
           initMadeOrMissed={initMadeOrMissed}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          setIsEventCompleted={setIsEventCompleted}
 
         />
 
@@ -537,6 +769,8 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           setCourtFoul={setCourtFoul}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
         />
 
       case "whoShootFreeThrow":
@@ -551,6 +785,8 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           setCourtFreeThrow={setCourtFreeThrow}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
         />
 
       case "madeMissedScreen":
@@ -570,6 +806,12 @@ const GameScreen = (props) => {
           madeOrMissed={madeOrMised}
           setMadeOrMissed={setMadeOrMissed}
           initMadeOrMissed={initMadeOrMissed}
+          courtFreeThrowPlayer={courtFreeThrow}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          // setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
 
         />
 
@@ -589,6 +831,34 @@ const GameScreen = (props) => {
           setReboundPlayer={setReboundPlayer}
           title={'Who Rebounded'}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
+
+        />
+
+      case "offRebound":
+        return <OffRebound
+          playersList={!isEnabled ? blueTeamList : redTeamList}
+          // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
+          isBlueTeamPlaying={isEnabled}
+          setCurrentView={setCurrentView}
+          // setActivePlayer={setActivePlayer}
+          currentView={currentView}
+          toggleSwitch={toggleSwitch}
+          // setSelectedPlayer={setSelectedPlayer}
+          selectedPlayer={activePlayer}
+          reboundPlayer={reboundPlayer}
+          setReboundPlayer={setReboundPlayer}
+          title={'Who Rebounded'}
+          setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
 
         />
 
@@ -600,7 +870,6 @@ const GameScreen = (props) => {
           // setActivePlayer={setActivePlayer}
           currentView={currentView}
           toggleSwitch={toggleSwitch}
-
           // setSelectedPlayer={setSelectedPlayer}
           // setAssistPlayer={setAssistPlayer}
           // selectedAssistPlayer={assistPlayer}
@@ -609,6 +878,9 @@ const GameScreen = (props) => {
           // madeOrMissed={madeOrMised}
           // setMadeOrMissed={setMadeOrMissed}
           setInitMadeOrMissed={setInitMadeOrMissed}
+          event={event}
+          setEvent={setEvent}
+          setTypeOfEvent={setTypeOfEvent}
         />
 
       case "whoShot":
@@ -625,10 +897,11 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           title={"Who shot the ball"}
           setPlayerScore={handlePlayerScore}
-
+          event={event}
+          setEvent={setEvent}
         />
       case "gotRebound":
-        return <DeffRebound
+        return <CourtRebound
           playersList={!isEnabled ? blueTeamList : redTeamList}
           // playersList={isEnabled ? redTeamPlayer : blueTeamPlayer}
 
@@ -643,6 +916,15 @@ const GameScreen = (props) => {
           setReboundPlayer={setReboundPlayer}
           title={'Who got the rebound'}
           setPlayerScore={handlePlayerScore}
+          clickedCourtArea={courtAreaClick}
+          madeOrMissed={madeOrMised}
+          setMadeOrMissed={setMadeOrMissed}
+          initMadeOrMissed={initMadeOrMissed}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
         />
 
       case "stoleBy":
@@ -662,6 +944,11 @@ const GameScreen = (props) => {
           // setReboundPlayer={setReboundPlayer}
           title={'Who stolen'}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
         />
 
       case "turnOverView":
@@ -687,6 +974,11 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           setOffensiveFoul={setOffensiveFoul}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
 
         />
 
@@ -706,7 +998,13 @@ const GameScreen = (props) => {
           setAssistMadeOrMised={setAssistMadeOrMised}
           setCourtFoul={setCourtFoul}
           setCourtFreeThrow={setCourtFreeThrow}
+          courtFreeThrowPlayer={courtFreeThrow}
           setPlayerScore={handlePlayerScore}
+          setAssistFlowPtr={setAssistFlowPtr}
+          event={event}
+          setEvent={setEvent}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
 
         />
 
@@ -727,6 +1025,11 @@ const GameScreen = (props) => {
           // setReboundPlayer={setReboundPlayer}
           // title={'Who stolen'}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
+          // handleEventInsert={handleEventInsert}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
         />
 
       case "foulType":
@@ -762,6 +1065,11 @@ const GameScreen = (props) => {
           // title={'Who got the rebound'}
           setBlockBy={setBlockBy}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
+          setTypeOfEvent={setTypeOfEvent}
+          setIsEventCompleted={setIsEventCompleted}
+        // handleEventInsert={handleEventInsert}
         />
 
       case "freeThrowPlayerSelect":
@@ -774,6 +1082,10 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           setFreeThrowPlayer={setFreeThrowPlayer}
           setPlayerScore={handlePlayerScore}
+          event={event}
+          setEvent={setEvent}
+          setTypeOfEvent={setTypeOfEvent}
+
         />
 
       case "freeThrowCount":
@@ -788,6 +1100,8 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           reboundPlayer={reboundPlayer}
           setFreeThrowCount={setFreeThrowCount}
+          event={event}
+          setEvent={setEvent}
         // title={'Who got the rebound'}
 
         />
@@ -804,6 +1118,10 @@ const GameScreen = (props) => {
           selectedPlayer={activePlayer}
           freeThrowCount={freeThrowCount}
           freeThrowPlayer={freeThrowPlayer}
+          event={event}
+          setEvent={setEvent}
+          handleEventInsert={handleEventInsert}
+          setIsEventCompleted={setIsEventCompleted}
         // title={'Who got the rebound'}
 
         />
@@ -864,7 +1182,7 @@ const GameScreen = (props) => {
 
         }}
       />
-      <View style={{ width: '90%', alignSelf: 'center', marginTop: 8 }}>
+      <View style={{ width: '92%', marginTop: 8, marginLeft: 20 }}>
         {switchView()}
       </View>
 
@@ -1726,10 +2044,10 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
         // handleBtnEnable()
 
       }}
-      onPressShapeTwo={(e) => {
+      onPressShapeTwo={(e, court) => {
         // onChangeColorHandler("shapeTwoBGColor");
         // setCourtArea("COURT_2")
-        setCourtAreaClick({ 'x': e.nativeEvent.locationX, 'y': e.nativeEvent.locationY })
+        setCourtAreaClick({ 'x': e.nativeEvent.locationX, 'y': e.nativeEvent.locationY, "court_nm": court })
         setCurrentView("initMadeMissedScreen")
         // setCurrentView('shootScore')
         // handleBtnEnable()
@@ -1810,7 +2128,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
 
 
 const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, title, setPlayerScore }) => {
+  currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, title, setPlayerScore, event, setEvent }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -1831,13 +2149,18 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
 
   const selectPlayer = (e) => {
     // setCurrentView('playing');
+    debugger
     if (e == 'other team') {
-      setSelectedPlayer(e.id);
+      setSelectedPlayer(e);
+      setEvent([...event, 'scored_otherTeam'])
     } else {
-      setSelectedPlayer(e.id);
+      setSelectedPlayer(e.playerId);
+      setEvent([...event, `scored_${e.playerId}`])
+
     }
-    setPlayerScore(e, 'pts')
+
     if (title == 'Who Scored') {
+      setPlayerScore(e, 'pts')
       setCurrentView('assistScreen');
     } else {
       setCurrentView('gotRebound');

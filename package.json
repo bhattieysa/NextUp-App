@@ -84,6 +84,7 @@
     "react-native-video": "^5.1.1",
     "react-native-websocket": "^1.0.2",
     "react-stomp": "^5.1.0",
+    "realm": "^10.19.5",
     "sockjs-client": "^1.5.2",
     "victory-native": "^36.2.0",
     "webstomp-client": "^1.2.6"

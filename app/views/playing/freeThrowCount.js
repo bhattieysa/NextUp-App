@@ -5,7 +5,8 @@ import { Colors, Fonts } from "../../constants";
 
 
 const FreeThrowCount = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, clickedCourtArea, setInitMadeOrMissed, setFreeThrowCount }) => {
+  currentView, toggleSwitch, clickedCourtArea, setInitMadeOrMissed, setFreeThrowCount,
+  event, setEvent }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -60,6 +61,7 @@ const FreeThrowCount = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
               }}
               onPress={() => {
                 setFreeThrowCount(1)
+                setEvent([...event, `countOfThrow_1`])
                 setCurrentView('freeThrow')
               }}
             >
@@ -84,6 +86,7 @@ const FreeThrowCount = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
               }}
               onPress={() => {
                 setFreeThrowCount(2)
+                setEvent([...event, `countOfThrow_2`])
                 setCurrentView('freeThrow')
               }}
             >
@@ -109,6 +112,7 @@ const FreeThrowCount = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
               }}
               onPress={() => {
                 setFreeThrowCount(3)
+                setEvent([...event, `countOfThrow_3`])
                 setCurrentView('freeThrow')
               }}
             >

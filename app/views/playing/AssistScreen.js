@@ -7,7 +7,8 @@ import { Colors, Fonts } from "../../constants";
 
 
 const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
-  currentView, toggleSwitch, selectedPlayer, setAssistPlayer, setPlayerScore }) => {
+  currentView, toggleSwitch, selectedPlayer, setAssistPlayer, setPlayerScore,
+  event, setEvent }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -28,11 +29,18 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
 
   const selectPlayer = (e) => {
     // setCurrentView('playing');
-    setAssistPlayer(e.id);
+    debugger
+    if (e == 'other team') {
+      setAssistPlayer(e);
+      setEvent([...event, `assist_otherTeam`])
+    } else {
+      setAssistPlayer(e.playerId);
+      setEvent([...event, `assist_${e.playerId}`])
+
+    }
+    debugger
     setPlayerScore(e, "ast")
     setCurrentView('throwScreen')
-
-
   }
 
   return (
@@ -44,9 +52,14 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
         flexDirection: 'row',
         width: '100%',
         height: '90%',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        // backgroundColor: 'red'
       }}>
-        <View style={{ width: '30%', justifyContent: 'center', marginBottom: 20, }}>
+        <View style={{
+          width: '20%', justifyContent: 'center',
+          marginBottom: 20,
+          // backgroundColor: 'green'
+        }}>
           <Text style={{
             color: Colors.newGrayFontColor, fontSize: 24,
             lineHeight: 28, fontFamily: Fonts.Regular
@@ -62,9 +75,12 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
             +3pt Shot
           </Text>
         </View>
-        <View style={{ width: 1, height: '70%', backgroundColor: Colors.newGrayFontColor, marginTop: 30 }} />
+        <View style={{
+          width: 1, height: '70%',
+          backgroundColor: Colors.newGrayFontColor, marginTop: 30
+        }} />
 
-        <View style={{ width: '65%', alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ width: '75%', alignItems: 'center', justifyContent: 'center' }}>
           {isBlueTeamPlaying ?
             <AssistTeamPlayer
               itemStyle={{
@@ -103,7 +119,8 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
       </View>
       <View style={{
         width: '100%', flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: -10,
       }}>
         <Pressable style={{
           width: 85, height: 25, backgroundColor: Colors.btnRed,

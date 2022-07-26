@@ -3,22 +3,21 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native';
 import { ScoreActiveTeamPlayer } from '../../components/common/ActiveTeamPalyer';
 
-const FreeThrowPlayerSelect = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, setFreeThrowPlayer, setPlayerScore,
-  event, setEvent, setTypeOfEvent }) => {
-
+const OffRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
+  currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer,
+  title, setPlayerScore, event, setEvent, setTypeOfEvent, setIsEventCompleted }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
 
   useEffect(() => {
     // console.log("is blueee", isBlueTeamPlaying, "..")
-    removeActivePlayerFromList();
+    //   removeActivePlayerFromList();
   }, []);
 
   const removeActivePlayerFromList = () => {
     debugger
-    currentView == "freeThrowPlayerSelect" ?
+    currentView == "offRebound" ?
       setActivePlayerList(fullPlayerList.filter(player => player.id !== activePlayerId))
       :
       toggleSwitch()
@@ -26,17 +25,17 @@ const FreeThrowPlayerSelect = ({ playersList, activePlayerId, isBlueTeamPlaying,
   };
 
   const selectPlayer = (e) => {
-    // setCurrentView('playing');
+    setTypeOfEvent('off_reb')
     if (e == 'other team') {
-      setFreeThrowPlayer(e);
-      setEvent([`freeThrowShootBy_otherTeam`])
+      setReboundPlayer(e)
+      setEvent([`offRebounded_otherTeam`])
     } else {
-      setFreeThrowPlayer(e.playerId);
-      setEvent([`freeThrowShootBy_${e.playerId}`])
+      setReboundPlayer(e.playerId)
+      setEvent([`offRebounded_${e.playerId}`])
     }
-    setTypeOfEvent('freeThrow')
-    // setPlayerScore(e, 'fr')
-    setCurrentView('freeThrowCount');
+    setPlayerScore(e, "reb")
+    setIsEventCompleted(true)
+    setCurrentView('playing');
 
   }
 
@@ -50,16 +49,12 @@ const FreeThrowPlayerSelect = ({ playersList, activePlayerId, isBlueTeamPlaying,
             marginTop: 30,
             borderRadius: (width / 8.5) / 2,
           }}
-          heading={'Who shooting the free throw ?'}
+          heading={title}
           list={activePlayerList}
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            // if (e == 'other team') {
             selectPlayer(e)
-            // } else {
-            //   selectPlayer(e.id)
-            // }
           }} />
 
         :
@@ -70,20 +65,16 @@ const FreeThrowPlayerSelect = ({ playersList, activePlayerId, isBlueTeamPlaying,
             marginTop: 30,
             borderRadius: (width / 8.5) / 2,
           }}
-          heading={'Who shooting the free throw ?'}
+          heading={title}
           list={activePlayerList}
           isBlueTeam={isBlueTeamPlaying}
           activePlayer={selectedPlayer}
           onPress={(e) => {
-            // if (e == 'other team') {
             selectPlayer(e)
-            // } else {
-            //   selectPlayer(e.id)
-            // }
           }} />
       }
 
     </View>)
 }
 
-export { FreeThrowPlayerSelect }
+export { OffRebound }
