@@ -2169,6 +2169,7 @@ export function getSchoolOrTeamList(city, state_name, type, cb) {
 }
 
 export function getCities(state_name, cb) {
+  debugger
   return (dispatch, getState) => {
 
     dispatch(myStandingRequest());
@@ -2181,8 +2182,8 @@ export function getCities(state_name, cb) {
           debugger
           let data = response.data.data
           debugger
-
-          dispatch(myStandingSuccess()), cb(true, data);
+          dispatch(myStandingSuccess())
+          cb(true, data)
         } else {
           dispatch(myStandingFailure(response.data.message));
           cb(false, response.data.message);

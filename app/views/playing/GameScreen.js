@@ -31,7 +31,7 @@ import { WhoShootFreeThrow } from './whoShootFreeThrow';
 import { OffensiveFoulBy } from './offensiveFoul';
 import { FreeThrowPlayerSelect } from './freeThrowPlayerSelect';
 import { FreeThrowCount } from './freeThrowCount';
-import { insertEvent, insertPlayerScore, insertTeamScore } from '../../middleware/localDb';
+import { insertEvent, insertBluePlayerScore, insertRedPlayerScore, insertTeamScore } from '../../middleware/localDb';
 import { Court_ptr } from '../../constants/constant';
 import { CourtRebound } from './CourtRebound';
 import { OffRebound } from './OffRebound';
@@ -160,7 +160,9 @@ const GameScreen = (props) => {
         const bTeam = r.challengerTeamKpi.filter(bTeam => bTeam.inSquad == true).map((bTeam) => {
           return {
             jerseyNumber: bTeam.jerseyNumber,
-            playerId: bTeam.playerId
+            playerId: bTeam.playerId,
+            playerProfilePictureUrl: bTeam.playerProfilePictureUrl,
+            playerName: bTeam.playerName,
           }
         })
 
@@ -172,6 +174,8 @@ const GameScreen = (props) => {
             "number": item.jerseyNumber,
             "playerId": item.playerId,
             "jerseyNumber": item.jerseyNumber,
+            "playerProfilePictureUrl": item.playerProfilePictureUrl,
+            "playerName": item.playerName,
             "ast": 0,
             "pts": 0,
             "reb": 0,
@@ -190,7 +194,9 @@ const GameScreen = (props) => {
         const rTeam = r.defenderTeamKpi.filter(rTeam => rTeam.inSquad == true).map((rTeam) => {
           return {
             jerseyNumber: rTeam.jerseyNumber,
-            playerId: rTeam.playerId
+            playerId: rTeam.playerId,
+            playerProfilePictureUrl: rTeam.playerProfilePictureUrl,
+            playerName: rTeam.playerName,
           }
         })
 
@@ -202,6 +208,8 @@ const GameScreen = (props) => {
             "number": item.jerseyNumber,
             "playerId": item.playerId,
             "jerseyNumber": item.jerseyNumber,
+            "playerProfilePictureUrl": item.playerProfilePictureUrl,
+            "playerName": item.playerName,
             "ast": 0,
             "pts": 0,
             "reb": 0,
@@ -232,7 +240,15 @@ const GameScreen = (props) => {
             "id": ++i,
             "number": item.jerseyNumber,
             "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber
+            "jerseyNumber": item.jerseyNumber,
+            "playerProfilePictureUrl": item.playerProfilePictureUrl,
+            "playerName": item.playerName,
+            "ast": 0,
+            "pts": 0,
+            "reb": 0,
+            "stl": 0,
+            "blk": 0,
+            "fl": 0
           });
         })
 
@@ -255,6 +271,14 @@ const GameScreen = (props) => {
             "number": item.jerseyNumber,
             "playerId": item.playerId,
             "jerseyNumber": item.jerseyNumber,
+            "playerProfilePictureUrl": item.playerProfilePictureUrl,
+            "playerName": item.playerName,
+            "ast": 0,
+            "pts": 0,
+            "reb": 0,
+            "stl": 0,
+            "blk": 0,
+            "fl": 0
           });
         })
         if (redTeamListSub != teamListSub)
@@ -476,13 +500,16 @@ const GameScreen = (props) => {
 
   const handleScoreInsert = () => {
     debugger
-    if (playerScore != '' && playerScore != null) {
-      playerScore.forEach(obj => {
+    // if (red != '' && playerScore != null) {
+
+    let playerScore_arr = []
+    if (isEnabled == false) {
+      blueTeamList.forEach(obj => {
         debugger
-        let data = {
-          _id: parseInt(obj.playerId),
+        let score_obj = {
           playerId: obj.playerId.toString(),
           jerseyNumber: parseInt(obj.jerseyNumber),
+          // playerProfilePictureUrl: obj.playerProfilePictureUrl,
           ast: parseInt(obj.ast),
           pts: parseInt(obj.pts),
           reb: parseInt(obj.reb),
@@ -494,10 +521,49 @@ const GameScreen = (props) => {
           // freeThrowMissedCount: parseInt(obj.ast),
           quarter: "Quarter1"
         }
+        playerScore_arr.push(JSON.stringify(score_obj));
+      });
+    } else {
+      redTeamList.forEach(obj => {
         debugger
-        insertPlayerScore(data);
+        let score_obj = {
+          playerId: obj.playerId.toString(),
+          jerseyNumber: parseInt(obj.jerseyNumber),
+          // playerProfilePictureUrl: obj.playerProfilePictureUrl,
+          ast: parseInt(obj.ast),
+          pts: parseInt(obj.pts),
+          reb: parseInt(obj.reb),
+          stl: parseInt(obj.stl),
+          blk: parseInt(obj.blk),
+          foul: parseInt(obj.fl),
+          // freeThrowCount: parseInt(obj.ast),
+          // freeThrowMadeCount: parseInt(obj.ast),
+          // freeThrowMissedCount: parseInt(obj.ast),
+          quarter: "Quarter1"
+        }
+        playerScore_arr.push(JSON.stringify(score_obj));
       });
     }
+
+    let data;
+    if (isEnabled == false) {
+      data = {
+        _id: 1,
+        teamId: challengerTeam?.teamId.toString(),
+        playerScore: playerScore_arr,
+        quarter: "Quarter1"
+      }
+      insertBluePlayerScore(data);
+    } else {
+      data = {
+        _id: 1,
+        teamId: defenderTeam?.teamId.toString(),
+        playerScore: playerScore_arr,
+        quarter: "Quarter1"
+      }
+      insertRedPlayerScore(data)
+    }
+    // }
   }
 
   const handleBlueTeamScoreInsert = () => {
@@ -536,18 +602,20 @@ const GameScreen = (props) => {
     if (key == 'court_score') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(selectedPlayer),
-        secondPlayerId: parseInt(assistPlayer),
+        firstPlayerId: parseInt(selectedPlayer.playerId),
+        secondPlayerId: parseInt(assistPlayer.playerId),
         gameAction: `[${event}]`,
         eventTime: Date.now(),
         court: courtAreaClick.court_nm,
+        courtXCoord: courtAreaClick.x.toString(),
+        courtYCoord: courtAreaClick.y.toString(),
         quarter: "quarter1"
       }
     } else if (key == 'court_score_missed') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(selectedPlayer),
-        secondPlayerId: parseInt(reboundPlayer),
+        firstPlayerId: parseInt(selectedPlayer.playerId),
+        secondPlayerId: parseInt(reboundPlayer.playerId),
         gameAction: `[${event}]`,
         eventTime: Date.now(),
         court: courtAreaClick.court_nm,
@@ -556,7 +624,7 @@ const GameScreen = (props) => {
     } else if (key == 'deff_reb') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(reboundPlayer),
+        firstPlayerId: parseInt(reboundPlayer.playerId),
         // secondPlayerId: null,
         gameAction: `[${event}]`,
         eventTime: Date.now(),
@@ -566,7 +634,7 @@ const GameScreen = (props) => {
     } else if (key == 'off_reb') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(reboundPlayer),
+        firstPlayerId: parseInt(reboundPlayer.playerId),
         // secondPlayerId: null,
         gameAction: `[${event}]`,
         eventTime: Date.now(),
@@ -576,9 +644,9 @@ const GameScreen = (props) => {
     } else if (key == 'assist') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(reboundPlayer),
+        firstPlayerId: parseInt(reboundPlayer.playerId),
         // secondPlayerId: null,
-        gameAction: `[Def_REBOUND_${reboundPlayer}]`.toString(),
+        gameAction: `[Def_REBOUND_${reboundPlayer.playerId}]`.toString(),
         eventTime: Date.now(),
         // court: null,
         quarter: "quarter1"
@@ -587,7 +655,7 @@ const GameScreen = (props) => {
       debugger
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(stoleBy),
+        firstPlayerId: parseInt(stoleBy.playerId),
         // secondPlayerId: null,
         gameAction: `[${event}]`,
         eventTime: Date.now(),
@@ -597,7 +665,7 @@ const GameScreen = (props) => {
     } else if (key == 'block') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(blockBy),
+        firstPlayerId: parseInt(blockBy.playerId),
         // secondPlayerId: null,
         gameAction: `[${event}]`,
         eventTime: Date.now(),
@@ -607,7 +675,7 @@ const GameScreen = (props) => {
     } else if (key == 'off_foul') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(offensiveFoul),
+        firstPlayerId: parseInt(offensiveFoul.playerId),
         // secondPlayerId: null,
         gameAction: `[${event}]`,
         eventTime: Date.now(),
@@ -617,7 +685,7 @@ const GameScreen = (props) => {
     } else if (key == 'foul') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(foulBy),
+        firstPlayerId: parseInt(foulBy.playerId),
         // secondPlayerId: null,
         gameAction: `[${event}]`,
         eventTime: Date.now(),
@@ -627,7 +695,7 @@ const GameScreen = (props) => {
     } else if (key == 'freeThrow') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(freeThrowPlayer),
+        firstPlayerId: parseInt(freeThrowPlayer.playerId),
         // secondPlayerId: null,
         gameAction: `[${event}]`,
         eventTime: Date.now(),
@@ -637,8 +705,8 @@ const GameScreen = (props) => {
     } else if (key == 'assist_flow') {
       data = {
         "_id": Date.now(),
-        firstPlayerId: parseInt(selectedPlayer),
-        secondPlayerId: parseInt(assistPlayer),
+        firstPlayerId: parseInt(selectedPlayer.playerId),
+        secondPlayerId: parseInt(assistPlayer.playerId),
         gameAction: `[${event}]`,
         eventTime: Date.now(),
         // court: courtAreaClick.court_nm,
@@ -1837,7 +1905,7 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
             list={isEnabled == false ? blueTeamList : redTeamList}
             isBlueTeam={isEnabled}
             onPress={(e) => {
-              setActivePlayer(e.id)
+              setActivePlayer(e.playerId)
             }} />
 
           <View style={{ marginTop: 20, flex: 1 }}>
@@ -2154,7 +2222,7 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
       setSelectedPlayer(e);
       setEvent([...event, 'scored_otherTeam'])
     } else {
-      setSelectedPlayer(e.playerId);
+      setSelectedPlayer(e);
       setEvent([...event, `scored_${e.playerId}`])
 
     }
@@ -2172,10 +2240,10 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
-            marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            width: width / 9.5,
+            height: width / 9.5,
+            marginTop: 35,
+            borderRadius: (width / 9.5) / 2,
           }}
           heading={title}
           list={activePlayerList}
@@ -2192,10 +2260,10 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
         :
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
-            marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            width: width / 9.5,
+            height: width / 9.5,
+            marginTop: 35,
+            borderRadius: (width / 9.5) / 2,
           }}
           heading={title}
           list={activePlayerList}

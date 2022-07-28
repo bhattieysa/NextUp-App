@@ -7372,6 +7372,11 @@ react-native-codegen@^0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
+react-native-cross-actionsheet@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-cross-actionsheet/-/react-native-cross-actionsheet-1.0.1.tgz#d9c58cf10aec512868c2d6eb0fd4644814a4e75f"
+  integrity sha512-GbLLHKNrdlm1AZm3EJO1AGclaYbbZEqpp4zGAFGuHclNg9O9z2RnHX6JwVj79SlfeYMc/cT+jM5KtJZU3x4eTg==
+
 react-native-device-info@^6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-6.2.1.tgz#6b63faeef833d8959d636c0413ccd5066eada2bf"

@@ -124,6 +124,9 @@ export class UserModel {
       isProfileUploaded,
       isBoy,
       isGirl,
+      isHighSchool,
+      ageGroup,
+      coachingType,
       coachTeam
   }
 

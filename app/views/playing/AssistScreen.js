@@ -34,7 +34,7 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
       setAssistPlayer(e);
       setEvent([...event, `assist_otherTeam`])
     } else {
-      setAssistPlayer(e.playerId);
+      setAssistPlayer(e);
       setEvent([...event, `assist_${e.playerId}`])
 
     }

@@ -121,17 +121,17 @@ class TellUsMore extends Component {
       // }
       // } 
       // else {
-
-      if (aboutMe.trim() !== '' && fname.trim() !== '' && lname.trim() !== '') {
+      // if (aboutMe.trim() !== '' && fname.trim() !== '' && lname.trim() !== '') {
+      if (fname.trim() !== '' && lname.trim() !== '') {
         debugger
-        if (aboutMe.length < 60) {
-          this.setState({ isbtnEnable: false })
-          return
-        } else {
-          debugger
-          this.setState({ isbtnEnable: true });
-          return
-        }
+        // if (aboutMe.length < 60) {
+        //   this.setState({ isbtnEnable: false })
+        //   return
+        // } else {
+        debugger
+        this.setState({ isbtnEnable: true });
+        //   return
+        // }
       } else {
         this.setState({ isbtnEnable: false });
         return
@@ -187,10 +187,10 @@ class TellUsMore extends Component {
           this.checkForButtonEnable(frm)
         })
         break;
-      case 'aboutMe':
-        this.setState({ aboutMe: txt }, () => {
-          this.checkForButtonEnable(frm)
-        })
+        // case 'aboutMe':
+        //   this.setState({ aboutMe: txt }, () => {
+        //     this.checkForButtonEnable(frm)
+        //   })
         break;
       default:
         break;
@@ -266,7 +266,12 @@ class TellUsMore extends Component {
       dob
     } = this.state;
     getObject('UserId').then((obj) => {
+      let coaching_typ;
+      if (UserModel.coachingType !== '' & UserModel.coachingType != undefined) {
+        coaching_typ = UserModel.coachingType;
+      } else {
 
+      }
       let params = {
         "typeOfUser": strSelectedMode.toUpperCase(),
         "firstName": fname,
@@ -281,6 +286,13 @@ class TellUsMore extends Component {
           name: school,
           classOff: classof,
           // typeOfPlayer: positions[strSelectedPosition]
+        },
+        "coachingType": {
+          typeOfCoaching: 'TRAVEL_TEAM',
+          schoolName: UserModel.coachTeam,
+          ageGroup: UserModel.ageGroup,
+          state: state,
+          city: city
         },
         "roleList": [
           `ROLE_${strSelectedMode.toUpperCase()}`
@@ -958,7 +970,7 @@ class TellUsMore extends Component {
                 onYearChoose={(e) => this.onYearChoose(e)}
                 onClose={() => this.onYearClose()}
               />
-              {
+              {/* {
                 strSelectedMode.toLowerCase() === 'coach' ? <View style={{ marginTop: 27 }}>
                   <Text style={{
                     fontFamily: Fonts.Bold,
@@ -990,7 +1002,7 @@ class TellUsMore extends Component {
                 </View>
                   :
                   null
-              }
+              } */}
 
 
               {/* End About me section  */}
