@@ -43,43 +43,38 @@ const ScoreActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPres
     }}>
       {numberList.map((e, index) => <View style={{
         justifyContent: 'center', alignItems: 'center',
-
-        // backgroundColor: 'red'
       }}>
-        {
-          e.playerProfilePictureUrl !== null && e.playerProfilePictureUrl !== undefined ?
-            <TouchableOpacity style={{
-              width: 80, height: 80, borderRadius: 80 / 2,
-              backgroundColor: Colors.newGrayFontColor,
-              alignItems: 'center', justifyContent: 'center',
-              marginTop: 35,
+        {e.playerProfilePictureUrl !== null && e.playerProfilePictureUrl !== undefined ?
+          <TouchableOpacity style={{
+            width: 80, height: 80, borderRadius: 80 / 2,
+            backgroundColor: Colors.newGrayFontColor,
+            alignItems: 'center', justifyContent: 'center',
+            marginTop: 35,
+          }}
+            onPress={() => onPress(e)}
+          >
+            <FastImage
+              source={e.playerProfilePictureUrl}
+              // source={require('../../Images/dummyImage.png')}
+              style={{ width: '95%', height: '95%', borderRadius: 80 / 2 }}
+            />
+          </TouchableOpacity>
+          :
+          <TextInCircle
+            key={index}
+            text={e.number}
+            onPress={() => onPress(e)}
+            style={{
+              ...{
+                width: 50,
+                height: 50,
+                borderRadius: 50 / 2,
+                // borderWidth: 1,
+                // borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
+                backgroundColor: e.id === activePlayer ? Colors.lightGreen : bgColor
+              }, ...itemStyle,
             }}
-              onPress={() => onPress(e)}
-            >
-              <FastImage
-                source={e.playerProfilePictureUrl}
-                // source={require('../../Images/dummyImage.png')}
-                style={{ width: '95%', height: '95%', borderRadius: 80 / 2 }}
-              />
-            </TouchableOpacity>
-
-
-            :
-            <TextInCircle
-              key={index}
-              text={e.number}
-              onPress={() => onPress(e)}
-              style={{
-                ...{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50 / 2,
-                  // borderWidth: 1,
-                  // borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
-                  backgroundColor: e.id === activePlayer ? Colors.lightGreen : bgColor
-                }, ...itemStyle,
-              }}
-              txtStyle={{ color: Colors.base, }} />
+            txtStyle={{ color: Colors.base, }} />
         }
         <Text style={{
           fontSize: 14, fontFamily: Fonts.Bold,
@@ -282,10 +277,12 @@ const ActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, it
 const AssistTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, itemStyle, containerStyle }) => {
   const [numberList, setNumberList] = useState([]);
   const [bgColor, setBgColor] = useState(Colors.lightBlue);
+  const { width, height } = useDimensions().window;
 
   useEffect(() => {
     setNumberList(list);
-    setBgColor(isBlueTeam ? Colors.lightBlue : Colors.lightRed)
+    debugger
+    setBgColor(isBlueTeam == false ? Colors.lightBlue : Colors.lightRed)
   }, [list]);
 
   const listContainer = {
@@ -308,25 +305,85 @@ const AssistTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, it
     <Text style={headingTxt}>
       {heading}
     </Text>
-    <View style={{ ...listContainer, ...containerStyle, justifyContent: 'space-around' }}>
+    <View style={{
+      ...listContainer, ...containerStyle,
+      justifyContent: 'space-around',
+    }}>
       {
-        numberList.map((e, index) => <TextInCircle
-          key={index}
-          text={e.number}
-          onPress={() => onPress(e)}
+        numberList.map((e, index) => <View style={{
+          justifyContent: 'center', alignItems: 'center',
+
+        }}>
+
+          {e.playerProfilePictureUrl !== null && e.playerProfilePictureUrl !== undefined ?
+            <TouchableOpacity style={{
+              width: 80, height: 80, borderRadius: 80 / 2,
+              backgroundColor: Colors.newGrayFontColor,
+              alignItems: 'center', justifyContent: 'center',
+              marginTop: 35,
+            }}
+              onPress={() => onPress(e)}
+            >
+              <FastImage
+                source={e.playerProfilePictureUrl}
+                // source={require('../../Images/dummyImage.png')}
+                style={{ width: '95%', height: '95%', borderRadius: 80 / 2 }}
+              />
+            </TouchableOpacity>
+            :
+            <TextInCircle
+              key={index}
+              text={e.number}
+              onPress={() => onPress(e)}
+              style={{
+                ...{
+                  width: 55,
+                  height: 55,
+                  marginTop: 10,
+                  borderRadius: 55 / 2,
+                  borderWidth: 1,
+                  borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
+                  backgroundColor: e.id === activePlayer ? Colors.lightGreen : bgColor
+                }, ...itemStyle
+              }}
+              txtStyle={{ color: Colors.base, }} />
+          }
+          <Text style={{
+            fontSize: 14, fontFamily: Fonts.Bold,
+            lineHeight: 24, color: Colors.light
+          }}>{e.playerName}</Text>
+        </View>
+        )
+      }
+
+      <View style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <TextInCircle
+          text={'Other Team'}
+          onPress={() => onPress('other team')}
           style={{
             ...{
-              width: 55,
-              height: 55,
-              marginTop: 10,
-              borderRadius: 55 / 2,
-              borderWidth: 1,
-              borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
-              backgroundColor: e.id === activePlayer ? Colors.lightGreen : bgColor
-            }, ...itemStyle
+              // width: 45,
+              // height: 45,
+              // borderRadius: 45 / 2,
+              width: width / 9.5,
+              height: width / 9.5,
+              marginTop: 6,
+              borderRadius: (width / 9.5) / 2,
+
+              // borderWidth: 1,
+              // borderColor: activePlayer == 'other team' ? Colors.darkYellow : bgColor,
+              backgroundColor: activePlayer == 'other team' ? Colors.lightGreen : bgColor
+            },
           }}
-          txtStyle={{ color: Colors.base, }} />)
-      }
+          txtStyle={{ color: Colors.base, }} />
+        <Text style={{
+          fontSize: 14, fontFamily: Fonts.Bold,
+          lineHeight: 24, color: Colors.base
+        }}></Text>
+      </View>
 
     </View>
   </View>

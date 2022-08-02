@@ -65,6 +65,7 @@ class TellUsMore extends Component {
   componentDidMount() {
     this.props.dispatch(onBoardPlayerPositionAPI(data => this.setState({ ...this.state, positions: data[0].values })));
     console.log("Did mount called ");
+    this.checkForButtonEnable()
 
     // this.props.navigation.addListener('didFocus', this.setTheState);
 
@@ -267,10 +268,10 @@ class TellUsMore extends Component {
     } = this.state;
     getObject('UserId').then((obj) => {
       let coaching_typ;
-      if (UserModel.coachingType !== '' & UserModel.coachingType != undefined) {
-        coaching_typ = UserModel.coachingType;
+      if (UserModel.isHighSchool == false) {
+        coaching_typ = UserModel.coachingType
       } else {
-
+        coaching_typ = 'TRAVEL_TEAM'
       }
       let params = {
         "typeOfUser": strSelectedMode.toUpperCase(),

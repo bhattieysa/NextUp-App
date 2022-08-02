@@ -146,7 +146,11 @@ class CoachAddPlayer extends Component {
             if (res) {
               //   this.setState({ isDataAllFetched: true })
               // }
-              this.setState({ loading: false, arrPlayers: resData, showInviteButton: false })
+              if (resData.length > 0) {
+                this.setState({ loading: false, arrPlayers: resData, showInviteButton: false })
+              } else {
+                this.setState({ loading: false, showInviteButton: true })
+              }
             }
           }))
         })
@@ -605,8 +609,8 @@ class CoachAddPlayer extends Component {
     const { arrPlayers } = this.state
     console.log("Dattaaaa", this.props.navigation.state.params);
     return (
-      <View style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base, }}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base }}>
+      <View style={{ flex: 1, backgroundColor: Colors.base, }}>
+        <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
           <View style={{ marginHorizontal: 15, backgroundColor: Colors.base, }}>
             <TouchableOpacity style={{ marginHorizontal: 15, width: wide * 0.1, }}
               onPress={() => Navigation.back()}>
@@ -714,7 +718,8 @@ class CoachAddPlayer extends Component {
                   }} onPress={() => {
                     Navigation.navigate('InvitePlayerToTeam', {
                       playerDetails: this.props.navigation.state.params.playerDetails,
-                      teamDetails: this.props.navigation.state.params.teamDetails
+                      teamDetails: this.props.navigation.state.params.teamDetails,
+                      selectedSeason: this.props.navigation.state.params.selectedSeason
                     })
                   }}>
                   <Text style={{

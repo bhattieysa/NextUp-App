@@ -127,6 +127,7 @@ export class UserModel {
       isHighSchool,
       ageGroup,
       coachingType,
+      selected_coachingTyp,
       coachTeam
   }
 

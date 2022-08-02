@@ -119,11 +119,8 @@ class UploadPhoto extends Component {
       this.uploadImage()
     }
     else if (UserModel.profileUrl !== avatar) {
-
       this.uploadImage()
-
     } else {
-
       if (UserModel.selectedUserType.toLowerCase() === 'coach') {
         Navigation.navigate('AddPhotoIdCoach')
       } else if (UserModel.selectedUserType.toLowerCase() === 'player' && UserModel.isAdult == false) {
@@ -167,7 +164,7 @@ class UploadPhoto extends Component {
             setObject('authData', onBoardData).then(() => {
 
               this.setState({ loading: false })
-              if (UserModel.selectedUserType === 'coach') {
+              if (UserModel.selectedUserType.toLowerCase() === 'coach') {
                 Navigation.navigate('AddPhotoIdCoach')
               } else if (UserModel.selectedUserType === 'player' && UserModel.isAdult == false) {
                 Navigation.navigate('ParentEmail')

@@ -53,14 +53,17 @@ class InvitePlayer extends Component {
     const { fullname, email, contactNumber, } = this.state;
     var outerIndex = this.props.navigation.state.params.playerDetails?.teamPlayersInfoList[0]?.index;
     var season = this.props.navigation.state.params.teamDetails?.seasonType;
+    var seasonName = this.props.navigation.state.params.selectedSeason;
     var teamId = this.props.navigation.state.params.teamDetails?.teamId;
+
+    debugger
 
     var objec = {
       "fullName": fullname,
       "emailId": email,
       "contactNumber": contactNumber,
       "sharedLink": "nextup.com",
-      "seasonName": season,
+      "seasonName": seasonName,
       "positionIndex": outerIndex,
       "teamPositionIndex": this.props.navigation.state.params.playerDetails.teamPlayersInfoList.length,
     }
@@ -103,7 +106,7 @@ class InvitePlayer extends Component {
     const { fullname, email, contactNumber, isbtnEnable } = this.state;
     return (
 
-      <View style={{ flex: 1, backgroundColor: Colors.lightGreen }}>
+      <View style={{ flex: 1, backgroundColor: Colors.base }}>
         <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
           <AppLoader visible={this.state.loading} />
           <KeyBoardDismissHandler>

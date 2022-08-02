@@ -47,6 +47,7 @@ class TellUsMoreIntro extends Component {
       school: UserModel.school !== undefined ? UserModel.school : '',
       coachTeam: UserModel.coachTeam !== undefined ? UserModel.coachTeam : '',
       coachingType: UserModel.coachingType !== undefined ? UserModel.coachingType : '',
+      selected_coachingType: UserModel.selected_coachingTyp !== undefined ? UserModel.selected_coachingTyp : '',
       ageGroup: UserModel.ageGroup !== undefined ? UserModel.ageGroup : '',
       isGirl: UserModel.isGirl !== undefined ? UserModel.isGirl : false,
       isHighSchool: UserModel.isHighSchool !== undefined ? UserModel.isHighSchool : false,
@@ -182,7 +183,7 @@ class TellUsMoreIntro extends Component {
   actionContinue = () => {
     const { strSelectedMode, isGirl, classof, school, isbtnEnable,
       city, selected_state, coachTeam,
-      isHighSchool, coachingType, ageGroup } = this.state;
+      isHighSchool, coachingType, ageGroup, selected_coachingType } = this.state;
     if (isbtnEnable) {
       // if (
       UserModel.selectedUserType = strSelectedMode
@@ -195,6 +196,7 @@ class TellUsMoreIntro extends Component {
       UserModel.isHighSchool = isHighSchool
       UserModel.ageGroup = ageGroup
       UserModel.coachingType = coachingType
+      UserModel.selected_coachingTyp = selected_coachingType
 
       // ) {
       //   this.onBoardInfo()
@@ -451,9 +453,9 @@ class TellUsMoreIntro extends Component {
     ActionSheet.options({
       message: 'Select an option',
       options: [
-        { text: 'Jr Varsity', onPress: () => this.setState({ coachingType: 'Jr Varsity' }) },
-        { text: 'Varsity', onPress: () => this.setState({ coachingType: 'Varsity' }) },
-        { text: 'Both', onPress: () => this.setState({ coachingType: 'Both' }) },
+        { text: 'Jr Varsity', onPress: () => this.setState({ coachingType: 'JV', selected_coachingType: 'Jr Varsity' }) },
+        { text: 'Varsity', onPress: () => this.setState({ coachingType: 'VARSITY', selected_coachingType: 'Varsity' }) },
+        { text: 'Both', onPress: () => this.setState({ coachingType: 'BOTH', selected_coachingType: 'Both' }) },
       ],
       tintColor: '#008888'
     })
@@ -483,6 +485,7 @@ class TellUsMoreIntro extends Component {
       coachTeam,
       isHighSchool,
       coachingType,
+      selected_coachingType,
       ageGroup,
       selected_state,
       city,
@@ -590,7 +593,7 @@ class TellUsMoreIntro extends Component {
                   }}>Boy</Text>
                   <SwitchToggle
                     switchOn={isGirl}
-                    onPress={() => this.setState({ isGirl: !isGirl })}
+                    onPress={() => this.setState({ isGirl: !isGirl, school: '', classof: '' })}
                     circleColorOff={Colors.togelCircleColor}
                     circleColorOn={Colors.togelCircleColor}
                     backgroundColorOn={Colors.togelBackground}
@@ -627,7 +630,7 @@ class TellUsMoreIntro extends Component {
                   }}>High School</Text>
                   <SwitchToggle
                     switchOn={isHighSchool}
-                    onPress={() => this.setState({ isHighSchool: !isHighSchool })}
+                    onPress={() => this.setState({ isHighSchool: !isHighSchool, selected_state: '', city: '' })}
                     circleColorOff={Colors.togelCircleColor}
                     circleColorOn={Colors.togelCircleColor}
                     backgroundColorOn={Colors.togelBackground}
@@ -664,6 +667,7 @@ class TellUsMoreIntro extends Component {
                         value={school.name}
                         onFocus={() => Navigation.navigate("School")}
                         disabled={school !== "" && school != undefined ? true : false}
+                        showSoftInputOnFocus={false}
                         sufix={
                           <Image
                             style={{
@@ -707,6 +711,7 @@ class TellUsMoreIntro extends Component {
                         placeholder="CLASS OF"
                         value={classof}
                         onFocus={() => Navigation.navigate("Year")}
+                        showSoftInputOnFocus={false}
                         sufix={
                           <Image
                             style={{
@@ -760,9 +765,10 @@ class TellUsMoreIntro extends Component {
                         <AnimatedInput
                           placeholder="SELECT"
                           // onChangeText={(e) => this.setState({coachingType: e})}
-                          value={coachingType}
+                          value={selected_coachingType}
                           onFocus={() => this.onClickCoaching()}
-                          disabled={coachingType !== "" && coachingType != undefined ? true : false}
+                          showSoftInputOnFocus={false}
+                          disabled={selected_coachingType !== "" && selected_coachingType != undefined ? true : false}
                           sufix={
                             <Image
                               style={{
@@ -772,7 +778,7 @@ class TellUsMoreIntro extends Component {
                                 top:
                                   Platform.OS === "android"
                                     ? 5
-                                    : coachingType != ""
+                                    : selected_coachingType != ""
                                       ? 30
                                       : 5,
                                 right: 7
@@ -806,6 +812,7 @@ class TellUsMoreIntro extends Component {
                           value={coachTeam.name}
                           onFocus={() => Navigation.navigate("TeamList")}
                           disabled={coachTeam !== "" && coachTeam != undefined ? true : false}
+                          showSoftInputOnFocus={false}
                           sufix={
                             <Image
                               style={{
@@ -879,9 +886,9 @@ class TellUsMoreIntro extends Component {
                             placeholder="STATE"
                             onChangeText={(e) => this.setTextofFields('school', e)}
                             value={selected_state}
-                            disabled
-                            // editable={false}
+                            disabled={selected_state !== "" && selected_state != undefined ? true : false}
                             onFocus={() => this.setState({ openStateModal: true })}
+                            showSoftInputOnFocus={false}
                             sufix={
                               <Image
                                 style={{
@@ -923,8 +930,9 @@ class TellUsMoreIntro extends Component {
                             placeholder="CITY"
                             onChangeText={(e) => this.setTextofFields('city', e)}
                             value={city}
-                            disabled
-                            // onFocus={() => setCityModal(true)}
+                            showSoftInputOnFocus={false}
+                            disabled={city !== "" && city != undefined ? true : false}
+                            onFocus={() => this.setState({ openCityModal: true })}
 
                             sufix={
                               <Image
@@ -1008,10 +1016,13 @@ class TellUsMoreIntro extends Component {
                       >
                         <AnimatedInput
                           placeholder="SELECT AGE"
+                          editable={false}
                           onChangeText={(e) => this.setTextofFields('team', e)}
                           value={ageGroup}
                           onFocus={() => this.onClickAgeGroup()}
+                          // disabled
                           disabled={ageGroup !== "" && ageGroup != undefined ? true : false}
+                          showSoftInputOnFocus={false}
                           sufix={
                             <Image
                               style={{

@@ -739,7 +739,7 @@ class CoachPlayerProfileView extends Component {
         </View>
         :
 
-        <View style={{ flex: 1, backgroundColor: Colors.lightGreen }} >
+        <View style={{ flex: 1, backgroundColor: Colors.base }} >
           <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
             {/* {this.state.playerId !== null ? */}
             <View style={[CommonStyles.headerBottomLine, {

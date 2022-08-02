@@ -35,6 +35,7 @@ class PlayerCategoryStyle extends Component {
       selectedPlayerCategory: null,
       selectedCategoryIndex: 0,
       isbtnEnable: true,
+      selectedPointScore: null,
       // strSelectedMode: UserModel.selectedUserType !== undefined ? UserModel.selectedUserType : 'player',
     };
     this.inputs = {};
@@ -43,7 +44,9 @@ class PlayerCategoryStyle extends Component {
     this.setState({ loading: true }, () => {
       this.props.dispatch(getPlayerStyle((res, data) => {
         if (res) {
-          this.setState({ loading: false, playerCategory: data, selectedPlayerCategory: data[0] })
+          this.setState({ loading: false, playerCategory: data, selectedPlayerCategory: data[0] }, () => {
+            this.setScorePoint(data[0])
+          })
         } else {
           this.setState({ loading: false, playerCategory: null })
         }
@@ -168,8 +171,21 @@ class PlayerCategoryStyle extends Component {
     // }
   }
 
+  setScorePoint = (item) => {
+    let obj = item?.scoreValues;
+    let arr = [];
+    for (const key in obj) {
+      debugger
+      arr.push({
+        point_label: key,
+        value: parseFloat(obj[key])
+      })
+    }
+    this.setState({ selectedPointScore: arr });
+  }
+
   renderPlayerCategory = (item, index) => {
-    console.log(item)
+    // console.log(item)
     const { selectedCategoryIndex } = this.state
     return (
       <TouchableOpacity
@@ -186,7 +202,9 @@ class PlayerCategoryStyle extends Component {
 
         }}
         activeOpacity={1}
-        onPress={() => this.setState({ selectedCategoryIndex: index, selectedPlayerCategory: item })}
+        onPress={() => this.setState({ selectedCategoryIndex: index, selectedPlayerCategory: item }, () => {
+          this.setScorePoint(item)
+        })}
       >
 
         <FastImage
@@ -221,12 +239,51 @@ class PlayerCategoryStyle extends Component {
     )
   }
 
+  renderStatsOfFocus = (item, index) => {
+    return (
+      <TouchableOpacity style={{
+        width: wide * 0.2,
+        height: wide * 0.15, borderRadius: 10,
+        flexDirection: 'column',
+        marginVertical: wide * 0.015,
+        marginHorizontal: wide * 0.01,
+        backgroundColor: Colors.lightDark,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+      }}>
+
+        <Text style={{
+          // marginTop: 16,
+          color: Colors.light, fontSize: 24,
+          fontFamily: Fonts.Bold, lineHeight: 30,
+          // marginHorizontal: 10
+        }}>
+          {item.value}
+        </Text>
+
+        <Text style={{
+          // marginTop: 16,
+          color: Colors.newGrayFontColor, fontSize: 14,
+          fontFamily: Fonts.SemiBold, lineHeight: 20,
+          // marginHorizontal: 10
+        }}>
+          {item.point_label}
+        </Text>
+
+
+      </TouchableOpacity>
+    )
+  }
+
 
   render() {
     const {
       isbtnEnable,
       playerCategory,
-      loading
+      loading,
+      selectedPlayerCategory,
+      selectedPointScore
     } = this.state;
 
     const navParams = this.props.navigation.state.params;
@@ -267,12 +324,12 @@ class PlayerCategoryStyle extends Component {
                   </Text>
                 </View>
               </View>
-              <KeyboardAwareScrollView
+              <ScrollView
                 showsVerticalScrollIndicator={false}
+                nestedScrollEnabled
                 enableOnAndroid={true}
                 style={{ marginTop: wide * 0.03, marginBottom: wide * 0.01 }}
                 bounces={false}
-
               >
 
 
@@ -329,6 +386,30 @@ class PlayerCategoryStyle extends Component {
                     }
                   </View>
 
+                  {selectedPointScore != null ?
+                    <View style={{ marginTop: wide * 0.1, width: wide * 0.89, }}>
+
+                      <Text style={{
+                        color: Colors.light, fontSize: 16,
+                        fontFamily: Fonts.Bold, lineHeight: 24,
+                        marginHorizontal: wide * 0.02
+                      }}>
+                        Stats of Focus
+                      </Text>
+
+                      {/* {selectedPlayerCategory.} */}
+                      <FlatList
+                        data={selectedPointScore}
+                        keyExtractor={item => item}
+                        renderItem={({ item, index }) => this.renderStatsOfFocus(item, index)}
+                        numColumns={4}
+                        scrollEnabled={false}
+                      />
+
+                    </View>
+                    : <></>
+                  }
+
 
                   <TouchableOpacity
                     key={isbtnEnable}
@@ -350,7 +431,7 @@ class PlayerCategoryStyle extends Component {
 
                 {/* </ScrollView> */}
 
-              </KeyboardAwareScrollView>
+              </ScrollView>
             </>
           }
           {/* </KeyboardAvoidingView> */}

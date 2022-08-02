@@ -489,14 +489,14 @@
 
 import React, { Component } from 'react';
 import {
-    View, TouchableOpacity, Text, SafeAreaView, Image, StyleSheet, key,
-    KeyboardAvoidingView, FlatList, Platform, Modal, Keyboard
+  View, TouchableOpacity, Text, SafeAreaView, Image, StyleSheet, key,
+  KeyboardAvoidingView, FlatList, Platform, Modal, Keyboard
 } from 'react-native';
 import {
-    Layout,
-    Colors,
-    Fonts,
-    CommonStyles
+  Layout,
+  Colors,
+  Fonts,
+  CommonStyles
 } from '../../constants';
 
 import Navigation from '../../lib/Navigation';
@@ -522,8 +522,8 @@ import Geolocation from '@react-native-community/geolocation';
 import { getObject, setObject } from '../../middleware';
 import { getComparePlayerss, getComparePlayerSrch, getPlayerCompare } from '../../actions/home';
 import {
-    VictoryTheme, VictoryLabel, VictoryContainer, VictoryPolarAxis, VictoryChart,
-    VictoryGroup, VictoryArea, VictoryBar, VictoryAxis
+  VictoryTheme, VictoryLabel, VictoryContainer, VictoryPolarAxis, VictoryChart,
+  VictoryGroup, VictoryArea, VictoryBar, VictoryAxis
 } from 'victory-native';
 import { BlurView } from "@react-native-community/blur";
 import SideBySideBarGraph from '../../components/common/SideBySideBar';
@@ -535,294 +535,304 @@ import { ScreenHeader } from '../../components/common/ScreenHeader'
 // ];
 
 const characterData = [
-    { "2PT% +20%": 10, "AST -10%": 0.8, "BPG -20%": 2, "FG% -10%": 4.8, "PTS +4%": 9, "RPG +3%": 5.7, "STL +10%": 3.6 },
-    { "2PT% +20%": 10, "AST -10%": 0.6, "BPG -20%": 2, "FG% -10%": 4.8, "PTS +4%": 9, "RPG +3%": 5.7, "STL +10%": 4.6 }
+  { "2PT% +20%": 10, "AST -10%": 0.8, "BPG -20%": 2, "FG% -10%": 4.8, "PTS +4%": 9, "RPG +3%": 5.7, "STL +10%": 3.6 },
+  { "2PT% +20%": 10, "AST -10%": 0.6, "BPG -20%": 2, "FG% -10%": 4.8, "PTS +4%": 9, "RPG +3%": 5.7, "STL +10%": 4.6 }
 ]
 
 let wide = Layout.width;
 let high = Layout.height;
 class Compare extends Component {
-    static navigationOptions = { header: null };
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            lastLat: 0,
-            lastLong: 0,
-            arrPlayers: [],
-            showModel: false,
-            secondPlayerSelected: {},
-            firstPlayerSelected: {},
-            comparePlayer: {},
-            radarChartData: [],
-            data: [],//this.processData(characterData),
-            maxima: [], //this.getMaxima(characterData)
-            sideBySideBarData: [],
-            initialRadarData: [],
-            srchTxt: ''
-        };
-    }
-    componentDidMount() {
-        getObject('userLoc').then((res) => {
-            if (res) {
-                this.setState({ lastLat: res.lat, lastLong: res.lng }, () => {
-                    this.getPlayers('')
-                })
-
-            } else {
-                this.getUserCurrentLocation()
-            }
+  static navigationOptions = { header: null };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      lastLat: 0,
+      lastLong: 0,
+      arrPlayers: [],
+      showModel: false,
+      secondPlayerSelected: {},
+      firstPlayerSelected: {},
+      comparePlayer: {},
+      radarChartData: [],
+      data: [],//this.processData(characterData),
+      maxima: [], //this.getMaxima(characterData)
+      sideBySideBarData: [],
+      initialRadarData: [],
+      srchTxt: ''
+    };
+  }
+  componentDidMount() {
+    getObject('userLoc').then((res) => {
+      if (res) {
+        this.setState({ lastLat: res.lat, lastLong: res.lng }, () => {
+          this.getPlayers('')
         })
-        this.setInitialData();
+
+      } else {
+        this.getUserCurrentLocation()
+      }
+    })
+    this.setInitialData();
+  }
+  getUserCurrentLocation = () => {
+    try {
+
+      // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      this.watchID = Geolocation.getCurrentPosition((position) => {
+        this.setState({
+          lastLat: position.coords.latitude, lastLong: position.coords.longitude
+        }, () => {
+          this.getPlayers('')
+        })
+        setObject('userLoc', {
+
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
+
+      }, (error) => {
+        console.log(error)
+        alert(error.message);
+        this.getPlayers('');
+        debugger
+      }, {
+
+      });
     }
-    getUserCurrentLocation = () => {
-        try {
-
-            // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            this.watchID = Geolocation.getCurrentPosition((position) => {
-                this.setState({
-                    lastLat: position.coords.latitude, lastLong: position.coords.longitude
-                }, () => {
-                    this.getPlayers('')
-                })
-                setObject('userLoc', {
-
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                })
-
-            }, (error) => {
-                console.log(error)
-                alert(error.message);
-                this.getPlayers('');
-                debugger
-            }, {
-
-            });
-        }
-        catch (err) {
-            debugger
-            // console.warn(err)
-        }
+    catch (err) {
+      debugger
+      // console.warn(err)
     }
-    getPlayers = (strSearch) => {
-        const {
+  }
+  getPlayers = (strSearch) => {
+    const {
+      lastLat
+      , lastLong } = this.state;
+    // if (!this.state.isDataAllFetched) {
+
+    // this.setState({ loading: true }, () => {
+    const { params } = this.props.navigation.state;
+    if (strSearch === '' || strSearch === null || strSearch === undefined) {
+      this.props.dispatch(getComparePlayerss(params.playerId, strSearch, {
+        "name": "Loc",
+        "loc": {
+          "type": "Point",
+          "coordinates": [
+            lastLong,
             lastLat
-            , lastLong } = this.state;
-        // if (!this.state.isDataAllFetched) {
-
-        // this.setState({ loading: true }, () => {
-        const { params } = this.props.navigation.state;
-        if (strSearch === '' || strSearch === null || strSearch === undefined) {
-            this.props.dispatch(getComparePlayerss(params.playerId, strSearch, {
-                "name": "Loc",
-                "loc": {
-                    "type": "Point",
-                    "coordinates": [
-                        lastLong,
-                        lastLat
-                    ]
-                }
-            }, (res, resData) => {
-                //console.log(resData);
-                if (res) {
-                    //   this.setState({ isDataAllFetched: true })
-                    // }
-
-                    this.setState({ arrPlayers: resData })
-
-
-                }
-            }))
-        } else {
-            this.props.dispatch(getComparePlayerSrch(params.playerId, strSearch, {
-                "name": "Loc",
-                "loc": {
-                    "type": "Point",
-                    "coordinates": [
-                        lastLong,
-                        lastLat
-                    ]
-                }
-            }, (res, resData) => {
-                //console.log(resData);
-                if (res) {
-                    //   this.setState({ isDataAllFetched: true })
-                    // }
-
-                    this.setState({ arrPlayers: resData })
-
-                }
-
-            }))
+          ]
         }
-    }
+      }, (res, resData) => {
+        //console.log(resData);
+        if (res) {
+          //   this.setState({ isDataAllFetched: true })
+          // }
 
-    setInitialData = () => {
-        const { params } = this.props.navigation.state;
-        if (params?.userBarGraphComparisonDto?.userKpi !== null && params?.userBarGraphComparisonDto?.userKpi !== undefined) {
-            // this.setState({ loading: true });
-            var usrRadarVal = params?.userBarGraphComparisonDto?.userRadarValues;
-            var kpiLabel = params?.userBarGraphComparisonDto?.radarKpi;
-            debugger
-            var arr = [];
-            arr.push(params?.userBarGraphComparisonDto?.userKpi)
-            var arr1 = [];
-            var dataObj1 = {};
-            // var arr = [];
-            for (let i = 0; i < kpiLabel.length; i++) {
-                var lbl = kpiLabel[i];
-                // var tObj = {};
-                dataObj1[`${lbl}`] = usrRadarVal[i];
-                // console.log("lbllll", typeof lbl);
-                debugger
-                // dataObj1 = {
-                //     ...dataObj1, [`${lbl}`]: usrRadarVal[i]
-                // }
-            }
-            debugger
-            arr1.push(dataObj1);
-            // console.log('arrInit: --', this.processData(characterData));
-            console.log('arrInit: --', arr1)
-            this.setState({ sideBySideBarData: arr, radarChartData: arr1, data: this.processData(arr1), maxima: this.getMaxima(arr1) })
+          this.setState({ arrPlayers: resData })
+
+
         }
+      }))
+    } else {
+      this.props.dispatch(getComparePlayerSrch(params.playerId, strSearch, {
+        "name": "Loc",
+        "loc": {
+          "type": "Point",
+          "coordinates": [
+            lastLong,
+            lastLat
+          ]
+        }
+      }, (res, resData) => {
+        //console.log(resData);
+        if (res) {
+          //   this.setState({ isDataAllFetched: true })
+          // }
+
+          this.setState({ arrPlayers: resData })
+
+        }
+
+      }))
     }
+  }
 
-    getNewComparePlayerData = (secondPlayer) => {
-        const { params } = this.props.navigation.state;
-        this.props.dispatch(getPlayerCompare(params.playerId,
-            secondPlayer.playerId, (res, resData) => {
-                if (res) {
-                    debugger
-                    var firstPlayer, secondPlayer;
-                    var playerArr = resData?.compareResponseList;
-                    playerArr.forEach(element => {
-                        if (element.playerId === params.playerId) {
-                            firstPlayer = element;
-                        } else {
-                            secondPlayer = element;
-                        }
-                    })
-                    debugger;
-                    this.setState({
-                        showModel: false,
-                        firstPlayerSelected: firstPlayer,//resData.compareResponseList[0],
-                        secondPlayerSelected: secondPlayer//resData.compareResponseList[1]
-                    }, () => {
-                        this.prepareRadarChartData(resData);
-                    })
-                }
-            }))
+  setInitialData = () => {
+    const { params } = this.props.navigation.state;
+    debugger
+    if (params?.userBarGraphComparisonDto?.radarKpi !== null && params?.userBarGraphComparisonDto?.radarKpi !== undefined) {
+      // this.setState({ loading: true });
+      var usrRadarVal = params?.userBarGraphComparisonDto?.userRadarValues;
+      var kpiLabel = params?.userBarGraphComparisonDto?.radarKpi;
+      debugger
+
+      var arr1 = [];
+      var dataObj1 = {};
+      // var arr = [];
+      if (kpiLabel != null && kpiLabel != undefined) {
+        for (let i = 0; i < kpiLabel.length; i++) {
+          var lbl = kpiLabel[i];
+          // var tObj = {};
+          dataObj1[`${lbl}`] = usrRadarVal[i];
+          // console.log("lbllll", typeof lbl);
+          debugger
+          // dataObj1 = {
+          //     ...dataObj1, [`${lbl}`]: usrRadarVal[i]
+          // }
+        }
+        debugger
+        arr1.push(dataObj1);
+
+      }
+
+      // console.log('arrInit: --', this.processData(characterData));
+      console.log('arrInit: --', arr1)
+      this.setState({ radarChartData: arr1, data: this.processData(arr1), maxima: this.getMaxima(arr1) })
     }
+    if (params?.userBarGraphComparisonDto?.userKpi != null && params?.userBarGraphComparisonDto?.userKpi != undefined) {
+      var arr = [];
+      arr.push(params?.userBarGraphComparisonDto?.userKpi)
+      this.setState({ sideBySideBarData: arr, })
+    }
+  }
 
-    prepareRadarChartData = (data) => {
-        debugger
-        const { params } = this.props.navigation.state;
-        var arr = [];
-        var arr1 = [];
-        var firstPlayerKpi, secondPlayerKpi;
-        this.setState({ radarChartData: [], data: [], maxima: [] })
-        // var playerArr = data?.compareResponseList;
-        // playerArr.forEach(element => {
-
-        // })
-
-
-        // var obj1 = data.compareResponseList[0]?.compareKpis
-        // var obj2 = data.compareResponseList[1]?.compareKpis
-        // obj1['RPG'] = 9.5;
-        // obj2['PPG'] = 9.5
-        // obj1['RPG1'] = 9.5;
-        // obj2['PPG1'] = 9.5
-        // obj1['RPG2'] = 9.5;
-        // obj2['PPG2'] = 9.5
-        // obj1['RPG3'] = 9.5;
-        // obj2['PPG3'] = 9.5
-        // obj1['RPG4'] = 9.5;
-        // obj2['PPG4'] = 9.5
-        // arr1.push(obj1);
-        // arr1.push(obj2);
-        // arr1.push(data.compareResponseList[0]?.compareKpis);
-        // arr1.push(data.compareResponseList[1]?.compareKpis);
-        debugger
-        data.compareResponseList.forEach((obj) => {
-            var rdVal = obj.radarValue;
-            var dataObj = {};
-            debugger
-            for (let i = 0; i < data.radarProKpi.length; i++) {
-                var lbl = data.radarProKpi[i];
-                dataObj[lbl] = rdVal[i];
-                // dataObj = { ...dataObj, [lbl]: rdVal[i] }
-            }
-            arr.push(dataObj);
-            if (obj.playerId === params.playerId) {
-                firstPlayerKpi = obj.compareKpis;
-                console.log("kppppiii---", firstPlayerKpi);
+  getNewComparePlayerData = (secondPlayer) => {
+    const { params } = this.props.navigation.state;
+    this.props.dispatch(getPlayerCompare(params.playerId,
+      secondPlayer.playerId, (res, resData) => {
+        if (res) {
+          debugger
+          var firstPlayer = null;
+          var secondPlayer = null;
+          var playerArr = resData?.compareResponseList;
+          playerArr.forEach(element => {
+            if (element.playerId === params.playerId) {
+              firstPlayer = element;
             } else {
-                secondPlayerKpi = obj.compareKpis;
+              secondPlayer = element;
             }
-            // arr.push(dataObj);
-        })
-        debugger
-        arr1.push(firstPlayerKpi);
-        arr1.push(secondPlayerKpi);
+          })
+          debugger;
+          this.setState({
+            showModel: false,
+            firstPlayerSelected: firstPlayer,//resData.compareResponseList[0],
+            secondPlayerSelected: secondPlayer//resData.compareResponseList[1]
+          }, () => {
+            this.prepareRadarChartData(resData);
+          })
+        }
+      }))
+  }
+
+  prepareRadarChartData = (data) => {
+    debugger
+    const { params } = this.props.navigation.state;
+    var arr = [];
+    var arr1 = [];
+    var firstPlayerKpi, secondPlayerKpi;
+    this.setState({ radarChartData: [], data: [], maxima: [] })
+    // var playerArr = data?.compareResponseList;
+    // playerArr.forEach(element => {
+
+    // })
 
 
-        console.log("arrraaayyy", arr);
-        this.setState({ radarChartData: arr, sideBySideBarData: arr1, data: this.processData(arr), maxima: this.getMaxima(arr) })
-    }
+    // var obj1 = data.compareResponseList[0]?.compareKpis
+    // var obj2 = data.compareResponseList[1]?.compareKpis
+    // obj1['RPG'] = 9.5;
+    // obj2['PPG'] = 9.5
+    // obj1['RPG1'] = 9.5;
+    // obj2['PPG1'] = 9.5
+    // obj1['RPG2'] = 9.5;
+    // obj2['PPG2'] = 9.5
+    // obj1['RPG3'] = 9.5;
+    // obj2['PPG3'] = 9.5
+    // obj1['RPG4'] = 9.5;
+    // obj2['PPG4'] = 9.5
+    // arr1.push(obj1);
+    // arr1.push(obj2);
+    // arr1.push(data.compareResponseList[0]?.compareKpis);
+    // arr1.push(data.compareResponseList[1]?.compareKpis);
+    debugger
+    data.compareResponseList.forEach((obj) => {
+      var rdVal = obj.radarValue;
+      var dataObj = {};
+      debugger
+      for (let i = 0; i < data.radarProKpi.length; i++) {
+        var lbl = data.radarProKpi[i];
+        dataObj[lbl] = rdVal[i];
+        // dataObj = { ...dataObj, [lbl]: rdVal[i] }
+      }
+      arr.push(dataObj);
+      if (obj.playerId === params.playerId) {
+        firstPlayerKpi = obj.compareKpis;
+        console.log("kppppiii---", firstPlayerKpi);
+      } else {
+        secondPlayerKpi = obj.compareKpis;
+      }
+      // arr.push(dataObj);
+    })
+    debugger
+    arr1.push(firstPlayerKpi);
+    arr1.push(secondPlayerKpi);
 
 
-    _renderTrainer = ({ item }) => {
-        console.log(item);
-        return (
-            <View>
-                <TouchableOpacity style={{ marginTop: wide * 0.01, }}
-                    onPress={() => this.getNewComparePlayerData(item)}
-                >
-                    {/* <Image style={{
+    console.log("arrraaayyy", arr);
+    this.setState({ radarChartData: arr, sideBySideBarData: arr1, data: this.processData(arr), maxima: this.getMaxima(arr) })
+  }
+
+
+  _renderTrainer = ({ item }) => {
+    console.log(item);
+    return (
+      <View>
+        <TouchableOpacity style={{ marginTop: wide * 0.01, }}
+          onPress={() => this.getNewComparePlayerData(item)}
+        >
+          {/* <Image style={{
                         position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%'
                     }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} /> */}
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10, justifyContent: 'space-around' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10, justifyContent: 'space-around' }}>
 
-                        <View style={{
-                            width: wide * 0.15, height: wide * 0.15,
-                            borderRadius: wide * 0.15 / 2, borderWidth: 3,
-                            borderColor: Colors.borderColor,
-                            justifyContent: 'center', alignItems: 'center',
-                        }}>
-                            {item.profilePictureUrl === null || item.profilePictureUrl === '500 Error' ?
-                                <Image
-                                    style={{
-                                        width: '95%', height: '95%',
-                                        borderRadius: wide * 0.15 / 2,
-                                    }}
-                                    resizeMode={'contain'} source={require('../../Images/placeHolderProf.png')}
-                                />
-                                :
-                                <FastImage style={{
-                                    width: '95%', height: '95%',
-                                    borderRadius: wide * 0.15 / 2,
-                                }}
-                                    // resizeMode={'contain'}
-                                    source={{ uri: item.profilePictureUrl }} />
-                            }
-                        </View>
+            <View style={{
+              width: wide * 0.15, height: wide * 0.15,
+              borderRadius: wide * 0.15 / 2, borderWidth: 3,
+              borderColor: Colors.borderColor,
+              justifyContent: 'center', alignItems: 'center',
+            }}>
+              {item.profilePictureUrl === null || item.profilePictureUrl === '500 Error' ?
+                <Image
+                  style={{
+                    width: '95%', height: '95%',
+                    borderRadius: wide * 0.15 / 2,
+                  }}
+                  resizeMode={'contain'} source={require('../../Images/placeHolderProf.png')}
+                />
+                :
+                <FastImage style={{
+                  width: '95%', height: '95%',
+                  borderRadius: wide * 0.15 / 2,
+                }}
+                  // resizeMode={'contain'}
+                  source={{ uri: item.profilePictureUrl }} />
+              }
+            </View>
 
-                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '35%', right: 20 }}>
-                            <Text style={{
-                                color: Colors.light, fontSize: 18, fontFamily: Fonts.Bold,
-                                marginLeft: 5
-                            }}>{item.firstName}</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{
-                                    color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
-                                    marginLeft: 5, marginVertical: 6
-                                }}>
-                                    #{item.playerCategory}
-                                </Text>
-                                {/* <Text style={{
+            <View style={{ justifyContent: 'center', alignItems: 'center', width: '35%', right: 20 }}>
+              <Text style={{
+                color: Colors.light, fontSize: 18, fontFamily: Fonts.Bold,
+                marginLeft: 5
+              }}>{item.firstName}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{
+                  color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
+                  marginLeft: 5, marginVertical: 6
+                }}>
+                  #{item.playerCategory}
+                </Text>
+                {/* <Text style={{
                                     color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
                                     marginLeft: 5, marginVertical: 6
                                 }}>
@@ -837,157 +847,158 @@ class Compare extends Component {
                                     </Text>
                                     : <></>
                                 } */}
-                                {item.teamName !== null ?
-                                    <Text style={{
-                                        color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
-                                        marginLeft: 5, marginVertical: 6
-                                    }}>
-                                        | {item.teamName}
-                                    </Text>
-                                    : <></>
-                                }
-                            </View>
-
-                        </View>
-
-                        <View style={{
-                            width: wide * 0.1, height: wide * 0.1,
-                            borderRadius: wide * 0.1 / 2,
-                            // borderWidth: 3,
-                            // borderColor: Colors.borderColor,
-                            justifyContent: 'center', alignItems: 'center',
-                        }}>
-                            {item.teamLogo === null || item.teamLogo === '500 Error' ?
-                                <></>
-                                :
-                                <FastImage style={{
-                                    width: '95%', height: '95%',
-                                    borderRadius: wide * 0.15 / 2,
-                                }}
-                                    // resizeMode={'contain'}
-                                    source={{ uri: item.teamLogo }} />
-                            }
-                        </View>
-
-
-                        {/* <View style={{ flex: 1 }} /> */}
-                        <View style={{ paddingHorizontal: 15, }}>
-                            <Text style={{
-                                color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
-                                marginLeft: 5
-                            }}>RANK</Text>
-
-                            <Text style={{
-                                color: Colors.light, fontSize: 26, fontFamily: Fonts.Bold,
-                                marginLeft: 5, marginVertical: 6, textAlign: 'right'
-                            }}>
-                                {item.ranking}
-                            </Text>
-
-                        </View>
-                    </View>
-                </TouchableOpacity>
+                {item.teamName !== null ?
+                  <Text style={{
+                    color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
+                    marginLeft: 5, marginVertical: 6
+                  }}>
+                    | {item.teamName}
+                  </Text>
+                  : <></>
+                }
+              </View>
 
             </View>
-        )
-    }
 
-    getMaxima(data) {
-        const groupedData = Object.keys(data[0]).reduce((memo, key) => {
-            memo[key] = data.map((d) => d[key]);
-            return memo;
-        }, {});
-        return Object.keys(groupedData).reduce((memo, key) => {
-            memo[key] = Math.max(...groupedData[key]);
-            return memo;
-        }, {});
-    }
-
-    processData(data) {
-        const maxByGroup = this.getMaxima(data);
-        const makeDataArray = (d) => {
-            return Object.keys(d).map((key) => {
-                return { x: key, y: d[key] / maxByGroup[key] };
-            });
-        };
-
-        return data.map((datum) => makeDataArray(datum));
-    }
-
-    // _renderInitialBars = () => {
-    //     return (
-
-    //     )
-    // }
+            <View style={{
+              width: wide * 0.1, height: wide * 0.1,
+              borderRadius: wide * 0.1 / 2,
+              // borderWidth: 3,
+              // borderColor: Colors.borderColor,
+              justifyContent: 'center', alignItems: 'center',
+            }}>
+              {item.teamLogo === null || item.teamLogo === '500 Error' ?
+                <></>
+                :
+                <FastImage style={{
+                  width: '95%', height: '95%',
+                  borderRadius: wide * 0.15 / 2,
+                }}
+                  // resizeMode={'contain'}
+                  source={{ uri: item.teamLogo }} />
+              }
+            </View>
 
 
-    render() {
-        const { params } = this.props.navigation.state;
-        // const params = params.data;
-        const { arrPlayers, secondPlayerSelected, firstPlayerSelected, data } = this.state;
-        console.log('param data----->>>  ', params);
-        debugger
+            {/* <View style={{ flex: 1 }} /> */}
+            <View style={{ paddingHorizontal: 15, }}>
+              <Text style={{
+                color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
+                marginLeft: 5
+              }}>RANK</Text>
 
-        return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.base, }}>
-                <View style={[CommonStyles.headerBottomLine]}>
-                    <ScreenHeader
-                        title={'Compare'}
-                        backButtonAction={() => Navigation.back()}
-                    />
-                    {/* <TouchableOpacity style={{ marginHorizontal: 15, width: wide * 0.1, }} onPress={() => Navigation.back()}>
+              <Text style={{
+                color: Colors.light, fontSize: 26, fontFamily: Fonts.Bold,
+                marginLeft: 5, marginVertical: 6, textAlign: 'right'
+              }}>
+                {item.ranking}
+              </Text>
+
+            </View>
+          </View>
+        </TouchableOpacity>
+
+      </View>
+    )
+  }
+
+  getMaxima(data) {
+    const groupedData = Object.keys(data[0]).reduce((memo, key) => {
+      memo[key] = data.map((d) => d[key]);
+      return memo;
+    }, {});
+    return Object.keys(groupedData).reduce((memo, key) => {
+      memo[key] = Math.max(...groupedData[key]);
+      return memo;
+    }, {});
+  }
+
+  processData(data) {
+    const maxByGroup = this.getMaxima(data);
+    const makeDataArray = (d) => {
+      return Object.keys(d).map((key) => {
+        return { x: key, y: d[key] / maxByGroup[key] };
+      });
+    };
+
+    return data.map((datum) => makeDataArray(datum));
+  }
+
+  // _renderInitialBars = () => {
+  //     return (
+
+  //     )
+  // }
+
+
+  render() {
+    const { params } = this.props.navigation.state;
+    // const params = params.data;
+    const { arrPlayers, secondPlayerSelected, firstPlayerSelected, data, radarChartData } = this.state;
+    console.log('param data----->>>  ', radarChartData);
+    debugger
+
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.base }}>
+        <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base, }}>
+          <View style={[CommonStyles.headerBottomLine]}>
+            <ScreenHeader
+              title={'Compare'}
+              backButtonAction={() => Navigation.back()}
+            />
+            {/* <TouchableOpacity style={{ marginHorizontal: 15, width: wide * 0.1, }} onPress={() => Navigation.back()}>
                         <Image style={{
                             width: wide * 0.1, height: wide * 0.1,
                             marginTop: 24, borderRadius: wide * 0.03, borderWidth: 1, borderColor: Colors.borderColor
                         }} source={require('../../Images/back_ico.png')} />
                     </TouchableOpacity> */}
-                </View>
-                {/* <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onPress={() => this.setState({ showModel: false })}> */}
-                <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-                    <ScrollView showsVerticalScrollIndicator={false}
-                        bounces={false}
-                        contentContainerStyle={{
-                            // marginHorizontal: 15,
-                            // opacity: this.state.showModel === true ? 0.5 : 1,
-                            // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100, 
-                            paddingBottom: 20,
-                            marginTop: 25,
-                        }}>
+          </View>
+          {/* <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onPress={() => this.setState({ showModel: false })}> */}
+          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+            <ScrollView showsVerticalScrollIndicator={false}
+              bounces={false}
+              contentContainerStyle={{
+                // marginHorizontal: 15,
+                // opacity: this.state.showModel === true ? 0.5 : 1,
+                // minHeight: isNotch ? Layout.height - 170 : Layout.height - 100, 
+                paddingBottom: 20,
+                marginTop: 25,
+              }}>
 
-                        <View style={{ marginBottom: 15, }}>
-                            {/* <View style={{ backgroundColor: Colors.base, marginTop: wide * 0.06, marginHorizontal: 15 }}>
+              <View style={{ marginBottom: 15, }}>
+                {/* <View style={{ backgroundColor: Colors.base, marginTop: wide * 0.06, marginHorizontal: 15 }}>
                                 <Text style={{ color: Colors.light, fontSize: 32, lineHeight: 36, fontFamily: Fonts.SemiBold }}>
                                     Compare  </Text>
                             </View> */}
-                            <View style={{
-                                // marginTop: wide * 0.05,
-                                marginHorizontal: 24,
-                                flexDirection: 'row', alignItems: 'center',
-                                justifyContent: 'space-between',
-                                // backgroundColor: 'red',
-                                width: '90%'
+                <View style={{
+                  // marginTop: wide * 0.05,
+                  marginHorizontal: 24,
+                  flexDirection: 'row', alignItems: 'center',
+                  justifyContent: 'space-between',
+                  // backgroundColor: 'red',
+                  width: '90%'
 
-                            }}>
+                }}>
 
-                                <View style={{
-                                    alignSelf: 'center',
-                                    marginBottom: Platform.OS === 'android' ? wide * 0.04 : null,
-                                    alignItems: "center", borderWidth: 3,
-                                    borderColor: Colors.compareFirstPlayerBorder,
-                                    borderRadius: wide * 0.02,
-                                    width: wide * 0.28, height: wide * 0.4,
-                                    justifyContent: 'center'
-                                }}>
+                  <View style={{
+                    alignSelf: 'center',
+                    marginBottom: Platform.OS === 'android' ? wide * 0.04 : null,
+                    alignItems: "center", borderWidth: 3,
+                    borderColor: Colors.compareFirstPlayerBorder,
+                    borderRadius: wide * 0.02,
+                    width: wide * 0.28, height: wide * 0.4,
+                    justifyContent: 'center'
+                  }}>
 
-                                    <FastImage
-                                        // resizeMode="cover"
-                                        style={{
-                                            width: '99%', height: '99%',
-                                            borderRadius: wide * 0.01,
-                                        }}
-                                        source={{ uri: params.profilePictureUrl }}
-                                    />
-                                    {/* <TouchableOpacity style={{
+                    <FastImage
+                      // resizeMode="cover"
+                      style={{
+                        width: '99%', height: '99%',
+                        borderRadius: wide * 0.01,
+                      }}
+                      source={{ uri: params.profilePictureUrl }}
+                    />
+                    {/* <TouchableOpacity style={{
                                         width: wide * 0.27, height: wide * 0.18,
                                         bottom: 0, position: 'absolute', alignItems: 'center'
                                     }}>
@@ -1003,57 +1014,57 @@ class Compare extends Component {
                                         </View>
                                     </TouchableOpacity> */}
 
-                                </View>
+                  </View>
 
-                                <View>
-                                    <Text style={{
-                                        color: Colors.light, fontSize: 24, lineHeight: 24, fontFamily: Fonts.Bold
-                                    }}>
-                                        VS
-                                    </Text>
-                                </View>
+                  <View>
+                    <Text style={{
+                      color: Colors.light, fontSize: 24, lineHeight: 24, fontFamily: Fonts.Bold
+                    }}>
+                      VS
+                    </Text>
+                  </View>
 
-                                {secondPlayerSelected === null || !secondPlayerSelected.hasOwnProperty('firstName') ?
-                                    <View style={{
-                                        alignSelf: 'center',
-                                        marginBottom: Platform.OS === 'android' ? wide * 0.04 : null,
-                                        alignItems: "center", borderWidth: 3, borderColor: Colors.comparePlayerEmptyBorder,
-                                        borderRadius: wide * 0.02, width: wide * 0.28, height: wide * 0.4,
-                                    }}>
+                  {secondPlayerSelected == null || !secondPlayerSelected.hasOwnProperty('firstName') ?
+                    <View style={{
+                      alignSelf: 'center',
+                      marginBottom: Platform.OS === 'android' ? wide * 0.04 : null,
+                      alignItems: "center", borderWidth: 3, borderColor: Colors.comparePlayerEmptyBorder,
+                      borderRadius: wide * 0.02, width: wide * 0.28, height: wide * 0.4,
+                    }}>
 
-                                        <TouchableOpacity style={{
-                                            width: '90%', height: '90%',
-                                            justifyContent: "center", alignItems: "center"
-                                        }}
-                                            onPress={() => this.setState({ showModel: true })}
-                                        >
-                                            <Text style={{
-                                                color: Colors.light, fontSize: 24, lineHeight: 30, fontFamily: Fonts.Bold
-                                            }}>+</Text>
-                                        </TouchableOpacity>
-                                    </View>
+                      <TouchableOpacity style={{
+                        width: '90%', height: '90%',
+                        justifyContent: "center", alignItems: "center"
+                      }}
+                        onPress={() => this.setState({ showModel: true })}
+                      >
+                        <Text style={{
+                          color: Colors.light, fontSize: 24, lineHeight: 30, fontFamily: Fonts.Bold
+                        }}>+</Text>
+                      </TouchableOpacity>
+                    </View>
 
-                                    :
-                                    <TouchableOpacity style={{
-                                        alignSelf: 'center',
-                                        marginBottom: Platform.OS === 'android' ? wide * 0.04 : null,
-                                        alignItems: "center", borderWidth: 3,
-                                        borderColor: Colors.compareSecondPlayerBorder,
-                                        borderRadius: wide * 0.02,
-                                        width: wide * 0.28, height: wide * 0.4,
-                                        justifyContent: 'center'
-                                    }}
-                                        activeOpacity={1}
-                                        onPress={() => this.setState({ showModel: true })}
-                                    >
-                                        <FastImage
-                                            // resizeMode="cover"
-                                            style={{
-                                                width: '99%', height: '99%',
-                                                borderRadius: wide * 0.01,
+                    :
+                    <TouchableOpacity style={{
+                      alignSelf: 'center',
+                      marginBottom: Platform.OS === 'android' ? wide * 0.04 : null,
+                      alignItems: "center", borderWidth: 3,
+                      borderColor: Colors.compareSecondPlayerBorder,
+                      borderRadius: wide * 0.02,
+                      width: wide * 0.28, height: wide * 0.4,
+                      justifyContent: 'center'
+                    }}
+                      activeOpacity={1}
+                      onPress={() => this.setState({ showModel: true })}
+                    >
+                      <FastImage
+                        // resizeMode="cover"
+                        style={{
+                          width: '99%', height: '99%',
+                          borderRadius: wide * 0.01,
 
-                                            }} source={{ uri: secondPlayerSelected.profilePictureUrl }} />
-                                        {/* <TouchableOpacity style={{
+                        }} source={{ uri: secondPlayerSelected.profilePictureUrl }} />
+                      {/* <TouchableOpacity style={{
                                             width: wide * 0.27, height: wide * 0.18,
                                             bottom: 0, position: 'absolute', alignItems: 'center'
                                         }}>
@@ -1069,195 +1080,195 @@ class Compare extends Component {
                                         </TouchableOpacity> */}
 
 
-                                    </TouchableOpacity>
-                                }
-                            </View>
+                    </TouchableOpacity>
+                  }
+                </View>
 
-                            <View style={{
-                                height: wide * 0.25,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                // backgroundColor: 'red'
-                            }}>
-                                <View style={{
-                                    // justifyContent: 'space-between',
-                                    // justifyContent: 'center',
-                                    alignItems: 'center',
-                                    marginHorizontal: wide * 0.02,
-                                    width: wide * 0.35, height: wide * 0.25,
-                                    // backgroundColor: "green",
-                                }}>
-                                    <View style={{ marginHorizontal: wide * 0.01 }}>
-                                        <Text style={{
-                                            color: Colors.light, fontSize: 18, lineHeight: 36,
-                                            fontFamily: Fonts.Bold,
-                                        }}>
-                                            {params.firstName} {params.lastName}
+                <View style={{
+                  height: wide * 0.25,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  // backgroundColor: 'red'
+                }}>
+                  <View style={{
+                    // justifyContent: 'space-between',
+                    // justifyContent: 'center',
+                    alignItems: 'center',
+                    marginHorizontal: wide * 0.02,
+                    width: wide * 0.35, height: wide * 0.25,
+                    // backgroundColor: "green",
+                  }}>
+                    <View style={{ marginHorizontal: wide * 0.01 }}>
+                      <Text style={{
+                        color: Colors.light, fontSize: 18, lineHeight: 36,
+                        fontFamily: Fonts.Bold,
+                      }}>
+                        {params.firstName} {params.lastName}
 
-                                        </Text>
-                                    </View>
+                      </Text>
+                    </View>
 
-                                    {params.playerCategory !== null ?
-                                        <View style={{ marginTop: wide * 0.01 }}>
-                                            <Text style={{
-                                                color: Colors.compareRankColor, fontSize: 12,
-                                                lineHeight: 14, fontFamily: Fonts.Bold,
-                                            }}>
-                                                {params.playerCategory}
-                                                {/* Rank #{params.ranking} | {params.position} */}
-                                            </Text>
+                    {params.playerCategory !== null ?
+                      <View style={{ marginTop: wide * 0.01 }}>
+                        <Text style={{
+                          color: Colors.compareRankColor, fontSize: 12,
+                          lineHeight: 14, fontFamily: Fonts.Bold,
+                        }}>
+                          {params.playerCategory}
+                          {/* Rank #{params.ranking} | {params.position} */}
+                        </Text>
 
-                                        </View>
-                                        : null
-                                    }
+                      </View>
+                      : null
+                    }
 
-                                    {/* Team Logo */}
-                                    {firstPlayerSelected.teamLogo !== null ?
-                                        <View style={{ justifyContent: 'center', alignItems: "center", marginTop: wide * 0.02 }}>
-                                            <FastImage
-                                                resizeMode="cover"
-                                                style={{
-                                                    width: 30, height: 30,
-                                                    borderRadius: 15,
-                                                }} source={{ uri: firstPlayerSelected.teamLogo }} />
+                    {/* Team Logo */}
+                    {firstPlayerSelected.teamLogo !== null ?
+                      <View style={{ justifyContent: 'center', alignItems: "center", marginTop: wide * 0.02 }}>
+                        <FastImage
+                          resizeMode="cover"
+                          style={{
+                            width: 30, height: 30,
+                            borderRadius: 15,
+                          }} source={{ uri: firstPlayerSelected.teamLogo }} />
 
-                                        </View>
-                                        : null
-                                    }
-                                </View>
-
-
-
-                                {secondPlayerSelected === null || !secondPlayerSelected.hasOwnProperty('firstName') ?
-                                    <View style={{
-                                        width: wide * 0.35,
-                                        height: wide * 0.08,
-                                        marginTop: wide * 0.01,
-                                        right: 5, alignItems: 'center',
-                                        // backgroundColor: 'green'
-                                    }}>
-                                        <Text style={{
-                                            color: Colors.light, fontSize: 16, lineHeight: 36,
-                                            fontFamily: Fonts.Bold,
-                                        }}>Add to Compare</Text>
-                                    </View>
-                                    :
-
-                                    <View style={{
-                                        // justifyContent: 'space-between',
-                                        // justifyContent: 'center',
-                                        alignItems: 'center',
-                                        marginRight: wide * 0.02,
-                                        width: wide * 0.35,
-                                        height: wide * 0.23,
-                                        // bottom: 10,
-                                        // backgroundColor: 'blue'
-                                    }}>
-                                        <View style={{ marginTop: wide * 0.01 }}>
-                                            <Text style={{
-                                                color: Colors.light, fontSize: 18, lineHeight: 36,
-                                                fontFamily: Fonts.Bold,
-                                            }}>
-                                                {secondPlayerSelected.firstName} {secondPlayerSelected.lastName}
-                                            </Text>
-                                        </View>
-                                        {secondPlayerSelected.playerCategory !== null ?
-                                            <View style={{ marginTop: wide * 0.01 }}>
-                                                <Text style={{
-                                                    color: Colors.fontColorGray, fontSize: 12, lineHeight: 14,
-                                                    fontFamily: Fonts.Bold,
-                                                    // marginLeft: 5,
-                                                }}>
-                                                    {secondPlayerSelected.playerCategory}
-                                                    {/* Rank #{secondPlayerSelected.ranking} | {secondPlayerSelected.position} */}
-                                                </Text>
-
-                                            </View>
-                                            : <></>
-                                        }
-
-                                        {/* Team Logo */}
-                                        {secondPlayerSelected.teamLogo != null ?
-                                            <View style={{
-                                                justifyContent: 'center',
-                                                alignItems: "center", marginTop: wide * 0.02
-                                            }}>
-                                                <FastImage
-                                                    resizeMode="cover"
-                                                    style={{
-                                                        width: 30, height: 30,
-                                                        borderRadius: 15,
-                                                    }} source={{ uri: secondPlayerSelected.teamLogo }} />
-
-                                            </View>
-                                            : null
-                                        }
-                                    </View>
-                                }
-
-                            </View>
-
-                            {/* ComareBars  */}
-                            <View style={{
-                                // height: wide * 0.5,
-                                width: '90%',
-                                // marginTop: 30,
-                                // marginTop: this.state.sideBySideBarData[0] !== undefined ? (
-                                //     Object.keys(this.state.sideBySideBarData[0]).length < 8 ? 30
-                                //         : 35)
-                                //     : 0,
-                                marginHorizontal: 20,
-                                // backgroundColor: 'red',
-                                // overflow: 'hidden',
-                                // justifyContent: this.state.sideBySideBarData[0] !== undefined ? (
-                                //     Object.keys(this.state.sideBySideBarData[0]).length < 8 ? 'center'
-                                //         : null)
-                                //     : null
+                      </View>
+                      : null
+                    }
+                  </View>
 
 
 
-                            }}>
-                                {this.state.sideBySideBarData !== undefined && this.state.sideBySideBarData.length > 0 ?
-                                    <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
-                                    : null
-                                }
+                  {secondPlayerSelected === null || !secondPlayerSelected.hasOwnProperty('firstName') ?
+                    <View style={{
+                      width: wide * 0.35,
+                      height: wide * 0.08,
+                      marginTop: wide * 0.01,
+                      right: 5, alignItems: 'center',
+                      // backgroundColor: 'green'
+                    }}>
+                      <Text style={{
+                        color: Colors.light, fontSize: 16, lineHeight: 36,
+                        fontFamily: Fonts.Bold,
+                      }}>Add to Compare</Text>
+                    </View>
+                    :
 
-                                {/* new dynamic side by side bar graph */}
+                    <View style={{
+                      // justifyContent: 'space-between',
+                      // justifyContent: 'center',
+                      alignItems: 'center',
+                      marginRight: wide * 0.02,
+                      width: wide * 0.35,
+                      height: wide * 0.23,
+                      // bottom: 10,
+                      // backgroundColor: 'blue'
+                    }}>
+                      <View style={{ marginTop: wide * 0.01 }}>
+                        <Text style={{
+                          color: Colors.light, fontSize: 18, lineHeight: 36,
+                          fontFamily: Fonts.Bold,
+                        }}>
+                          {secondPlayerSelected.firstName} {secondPlayerSelected.lastName}
+                        </Text>
+                      </View>
+                      {secondPlayerSelected.playerCategory !== null ?
+                        <View style={{ marginTop: wide * 0.01 }}>
+                          <Text style={{
+                            color: Colors.fontColorGray, fontSize: 12, lineHeight: 14,
+                            fontFamily: Fonts.Bold,
+                            // marginLeft: 5,
+                          }}>
+                            {secondPlayerSelected.playerCategory}
+                            {/* Rank #{secondPlayerSelected.ranking} | {secondPlayerSelected.position} */}
+                          </Text>
+
+                        </View>
+                        : <></>
+                      }
+
+                      {/* Team Logo */}
+                      {secondPlayerSelected.teamLogo != null ?
+                        <View style={{
+                          justifyContent: 'center',
+                          alignItems: "center", marginTop: wide * 0.02
+                        }}>
+                          <FastImage
+                            resizeMode="cover"
+                            style={{
+                              width: 30, height: 30,
+                              borderRadius: 15,
+                            }} source={{ uri: secondPlayerSelected.teamLogo }} />
+
+                        </View>
+                        : null
+                      }
+                    </View>
+                  }
+
+                </View>
+
+                {/* ComareBars  */}
+                <View style={{
+                  // height: wide * 0.5,
+                  width: '90%',
+                  // marginTop: 30,
+                  // marginTop: this.state.sideBySideBarData[0] !== undefined ? (
+                  //     Object.keys(this.state.sideBySideBarData[0]).length < 8 ? 30
+                  //         : 35)
+                  //     : 0,
+                  marginHorizontal: 20,
+                  // backgroundColor: 'red',
+                  // overflow: 'hidden',
+                  // justifyContent: this.state.sideBySideBarData[0] !== undefined ? (
+                  //     Object.keys(this.state.sideBySideBarData[0]).length < 8 ? 'center'
+                  //         : null)
+                  //     : null
 
 
-                            </View>
-                            {/* {this.state.radarChartData.length > 0 ? */}
-                            <View style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                // backgroundColor: 'green',
-                                marginTop: 50,//Object.keys(this.state.sideBySideBarData[0]).length > 8 ? 50 : 20,
-                            }}>
-                                <VictoryChart
-                                    polar
-                                    theme={VictoryTheme.material}
-                                    domain={{ y: [0, 1] }}
-                                    height={280}
-                                    width={320}
-                                    // animate
-                                    backgroundComponent={<VictoryContainer responsive={false} />}
 
-                                // containerComponent={<VictoryContainer responsive={false} />}
+                }}>
+                  {this.state.sideBySideBarData !== undefined && this.state.sideBySideBarData.length > 0 ?
+                    <SideBySideBarGraph pgsData={this.state.sideBySideBarData} />
+                    : null
+                  }
 
-                                >
+                  {/* new dynamic side by side bar graph */}
 
-                                    <VictoryGroup
-                                        colorScale={["#D8A433", '#74C896',]}
-                                        // colorScale={["green", 'red']}
-                                        // color='#D8A433'
-                                        style={{ data: { fillOpacity: 0.3, strokeWidth: 2, } }}
-                                    >
-                                        {this.state.data.map((data, i) => {
-                                            debugger
-                                            return <VictoryArea key={i} data={data} />;
-                                        })}
 
-                                        {/* {this.state.data.map((data, i) => {
+                </View>
+                {this.state.radarChartData.length > 0 ?
+                  <View style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // backgroundColor: 'green',
+                    marginTop: 50,//Object.keys(this.state.sideBySideBarData[0]).length > 8 ? 50 : 20,
+                  }}>
+                    <VictoryChart
+                      polar
+                      theme={VictoryTheme.material}
+                      domain={{ y: [0, 1] }}
+                      height={280}
+                      width={320}
+                      // animate
+                      backgroundComponent={<VictoryContainer responsive={false} />}
+
+                    // containerComponent={<VictoryContainer responsive={false} />}
+
+                    >
+
+                      <VictoryGroup
+                        colorScale={["#D8A433", '#74C896',]}
+                        // colorScale={["green", 'red']}
+                        // color='#D8A433'
+                        style={{ data: { fillOpacity: 0.3, strokeWidth: 2, } }}
+                      >
+                        {this.state.data.map((data, i) => {
+                          debugger
+                          return <VictoryArea key={i} data={data} />;
+                        })}
+
+                        {/* {this.state.data.map((data, i) => {
 
 
                                             if (i == 0 || i == 1) {
@@ -1277,39 +1288,39 @@ class Compare extends Component {
                                             }
 
                                         })} */}
-                                    </VictoryGroup>
+                      </VictoryGroup>
 
 
-                                    {
-                                        Object.keys(this.state.maxima).map((key, i) => {
-                                            return (
-                                                <VictoryPolarAxis
-                                                    key={i}
-                                                    dependentAxis
-                                                    labelPlacement="vertical"
-                                                    tickFormat={() => ""}
-                                                    style={{
-                                                        axisLabel: { fontSize: 14, lineHeight: 16, fill: Colors.light, padding: 40 },
-                                                        axis: { stroke: "grey", opacity: 0.1, },
-                                                        grid: { stroke: Colors.base, opacity: 0.01 },
-                                                    }}
-                                                    // tickLabelComponent={
-                                                    //     <VictoryLabel labelPlacement="vertical"
+                      {
+                        Object.keys(this.state.maxima).map((key, i) => {
+                          return (
+                            <VictoryPolarAxis
+                              key={i}
+                              dependentAxis
+                              labelPlacement="vertical"
+                              tickFormat={() => ""}
+                              style={{
+                                axisLabel: { fontSize: 14, lineHeight: 16, fill: Colors.light, padding: 40 },
+                                axis: { stroke: "grey", opacity: 0.1, },
+                                grid: { stroke: Colors.base, opacity: 0.01 },
+                              }}
+                              // tickLabelComponent={
+                              //     <VictoryLabel labelPlacement="vertical"
 
-                                                    //     />
-                                                    // }
-                                                    // labelPlacement="perpendicular"
-                                                    axisValue={i + 1}
-                                                    label={key}
-                                                // tickFormat={(t) => Math.ceil(t * this.state.maxima[key])}
-                                                // tickValues={[0.25, 0.5, 0.75]}
+                              //     />
+                              // }
+                              // labelPlacement="perpendicular"
+                              axisValue={i + 1}
+                              label={key}
+                            // tickFormat={(t) => Math.ceil(t * this.state.maxima[key])}
+                            // tickValues={[0.25, 0.5, 0.75]}
 
-                                                />
-                                            );
+                            />
+                          );
 
-                                        })
-                                    }
-                                    {/* <VictoryPolarAxis
+                        })
+                      }
+                      {/* <VictoryPolarAxis
                                         labelPlacement="parallel"
                                         tickFormat={() => ""}
                                         style={{
@@ -1318,51 +1329,52 @@ class Compare extends Component {
                                         }}
                                     /> */}
 
-                                </VictoryChart>
+                    </VictoryChart>
 
-                            </View>
-                            {/* : null
-                            } */}
+                  </View>
 
-                        </View>
+                  : null
+                }
 
-                    </ScrollView>
+              </View>
 
-                    {this.state.showModel === true ?
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={this.state.showModel}
-                        >
-                            <TouchableOpacity
-                                onPress={() => this.setState({ showModel: false })}
-                                style={{
-                                    width: wide,
-                                    height: high,
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
+            </ScrollView>
 
-                                }}
-                            >
+            {this.state.showModel === true ?
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={this.state.showModel}
+              >
+                <TouchableOpacity
+                  onPress={() => this.setState({ showModel: false })}
+                  style={{
+                    width: wide,
+                    height: high,
+                    justifyContent: 'center',
+                    alignItems: 'center'
 
-                                <BlurView style={{
-                                    width: wide,
-                                    height: high,
-                                    position: 'absolute'
-                                }}
+                  }}
+                >
 
-                                    blurAmount={10}
-                                    blurRadius={10}
-                                // reducedTransparencyFallbackColor="white"
+                  <BlurView style={{
+                    width: wide,
+                    height: high,
+                    position: 'absolute'
+                  }}
 
-                                />
+                    blurAmount={10}
+                    blurRadius={10}
+                  // reducedTransparencyFallbackColor="white"
 
-                                <View style={{
-                                    width: '90%', height: wide * 1.7,
-                                    backgroundColor: Colors.ractangelCardColor,
-                                    marginTop: 20, borderRadius: 20, alignItems: 'center'
-                                }}>
-                                    {/* <View style={{
+                  />
+
+                  <View style={{
+                    width: '90%', height: wide * 1.7,
+                    backgroundColor: Colors.ractangelCardColor,
+                    marginTop: 20, borderRadius: 20, alignItems: 'center'
+                  }}>
+                    {/* <View style={{
                                             width: '100%', height: '15%', marginTop: 10,
                                             alignItems: 'center', justifyContent: 'center',
                                             borderBottomColor: Colors.newGrayFontColor, borderBottomWidth: 1
@@ -1371,98 +1383,98 @@ class Compare extends Component {
                                                 color: Colors.light, fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16
                                             }}>Select</Text>
                                         </View> */}
-                                    <View style={{ width: '90%', margin: wide * 0.05 }}>
-                                        <TextInput style={{
-                                            borderWidth: 3, borderColor: Colors.borderColor,
-                                            fontFamily: Fonts.Bold, height: 60, paddingLeft: 10, paddingRight: wide * 0.1,
-                                            borderRadius: 5, color: Colors.light, fontSize: 16
-                                        }}
-                                            placeholder={"SEARCH"}
-                                            placeholderTextColor={Colors.borderColor}
-                                            autoCorrect={false}
-                                            autoCapitalize='none'
-                                            value={this.state.srchTxt}
-                                            // onChangeText={(e) => this.getPlayers(e)}
-                                            onChangeText={(e) => {
-                                                this.setState({ srchTxt: e }, () => {
-                                                    if (e.length == 0) {
-                                                        Keyboard.dismiss();
-                                                    }
-                                                    this.getPlayers(e)
-                                                })
-                                            }}
-                                        />
+                    <View style={{ width: '90%', margin: wide * 0.05 }}>
+                      <TextInput style={{
+                        borderWidth: 3, borderColor: Colors.borderColor,
+                        fontFamily: Fonts.Bold, height: 60, paddingLeft: 10, paddingRight: wide * 0.1,
+                        borderRadius: 5, color: Colors.light, fontSize: 16
+                      }}
+                        placeholder={"SEARCH"}
+                        placeholderTextColor={Colors.borderColor}
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                        value={this.state.srchTxt}
+                        // onChangeText={(e) => this.getPlayers(e)}
+                        onChangeText={(e) => {
+                          this.setState({ srchTxt: e }, () => {
+                            if (e.length == 0) {
+                              Keyboard.dismiss();
+                            }
+                            this.getPlayers(e)
+                          })
+                        }}
+                      />
 
-                                        {this.state.srchTxt == '' ?
-                                            <TouchableOpacity style={{
-                                                position: 'absolute',
-                                                width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
-                                                justifyContent: 'center', alignItems: 'center'
-                                            }}
-                                                activeOpacity={1}
-                                            >
-                                                <Image
-                                                    style={{
-                                                        // position: 'absolute',
-                                                        width: 20, height: 20, //right: wide * 0.05, //top: wide * 0.05
-                                                    }}
-                                                    source={require('../../Images/search_ico.png')}
-                                                    resizeMode={'contain'}
-                                                />
-                                            </TouchableOpacity>
-                                            :
-                                            <TouchableOpacity style={{
-                                                position: 'absolute',
-                                                width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
-                                                justifyContent: 'center', alignItems: 'center',
-                                                // backgroundColor: 'green'
-                                            }}
-                                                activeOpacity={1}
-                                                onPress={() => {
-                                                    this.setState({
-                                                        srchTxt: ''
-                                                    }, () => {
-                                                        Keyboard.dismiss();
-                                                        this.getPlayers('')
-                                                    })
-                                                }}
-                                            >
-                                                <Text style={{
-                                                    fontSize: 16,
-                                                    lineHeight: 24, fontFamily: Fonts.Bold,
-                                                    color: Colors.light
-                                                }}>X</Text>
-                                            </TouchableOpacity>
-                                        }
-                                        {/* <Image style={{
+                      {this.state.srchTxt == '' ?
+                        <TouchableOpacity style={{
+                          position: 'absolute',
+                          width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
+                          justifyContent: 'center', alignItems: 'center'
+                        }}
+                          activeOpacity={1}
+                        >
+                          <Image
+                            style={{
+                              // position: 'absolute',
+                              width: 20, height: 20, //right: wide * 0.05, //top: wide * 0.05
+                            }}
+                            source={require('../../Images/search_ico.png')}
+                            resizeMode={'contain'}
+                          />
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity style={{
+                          position: 'absolute',
+                          width: 20, height: 20, right: wide * 0.04, top: wide * 0.04,
+                          justifyContent: 'center', alignItems: 'center',
+                          // backgroundColor: 'green'
+                        }}
+                          activeOpacity={1}
+                          onPress={() => {
+                            this.setState({
+                              srchTxt: ''
+                            }, () => {
+                              Keyboard.dismiss();
+                              this.getPlayers('')
+                            })
+                          }}
+                        >
+                          <Text style={{
+                            fontSize: 16,
+                            lineHeight: 24, fontFamily: Fonts.Bold,
+                            color: Colors.light
+                          }}>X</Text>
+                        </TouchableOpacity>
+                      }
+                      {/* <Image style={{
                                             position: 'absolute',
                                             width: 20, height: 20, right: wide * 0.05, top: wide * 0.05
                                         }} source={require('../../Images/search_ico.png')} /> */}
-                                    </View>
+                    </View>
 
 
-                                    <View style={{ flex: 1, width: wide * 0.8 }}>
+                    <View style={{ flex: 1, width: wide * 0.8 }}>
 
-                                        <FlatList
-                                            style={{ marginTop: wide * 0.02 }}
-                                            data={arrPlayers}
-                                            renderItem={(item, index) => this._renderTrainer(item, index)}
-                                            showsHorizontalScrollIndicator={false}
+                      <FlatList
+                        style={{ marginTop: wide * 0.02 }}
+                        data={arrPlayers}
+                        renderItem={(item, index) => this._renderTrainer(item, index)}
+                        showsHorizontalScrollIndicator={false}
 
-                                        />
-                                    </View>
-
-
-                                </View>
-
-                            </TouchableOpacity>
-                        </Modal>
-                        : null
-                    }
+                      />
+                    </View>
 
 
+                  </View>
 
-                    {/* {this.state.showModel === true ?
+                </TouchableOpacity>
+              </Modal>
+              : null
+            }
+
+
+
+            {/* {this.state.showModel === true ?
 
 
 
@@ -1508,12 +1520,13 @@ class Compare extends Component {
                             </View>
                         </View>
                         : null} */}
-                </KeyboardAvoidingView>
-                {/* </TouchableOpacity> */}
+          </KeyboardAvoidingView>
+          {/* </TouchableOpacity> */}
 
-            </SafeAreaView >
-        );
-    }
+        </SafeAreaView >
+      </View>
+    );
+  }
 }
 
 // export const LeftBars = ({ pgsData }) => {
@@ -1795,40 +1808,40 @@ class Compare extends Component {
 
 
 function mapStateToProps(state) {
-    const { entities } = state;
-    return {
-        authReducer: state.authReducer,
-        User: entities.user,
-        Home: entities.home
-    };
+  const { entities } = state;
+  return {
+    authReducer: state.authReducer,
+    User: entities.user,
+    Home: entities.home
+  };
 }
 
 export default connect(mapStateToProps)(Compare);
 const styles = StyleSheet.create({
-    BackIcon: {
-        width: wide * 0.09, height: wide * 0.09,
-        marginTop: 20, borderRadius: wide * 0.03, borderWidth: 1,
-        borderColor: Colors.borderColor, marginHorizontal: 10
-    },
-    headerText: {
+  BackIcon: {
+    width: wide * 0.09, height: wide * 0.09,
+    marginTop: 20, borderRadius: wide * 0.03, borderWidth: 1,
+    borderColor: Colors.borderColor, marginHorizontal: 10
+  },
+  headerText: {
 
-        color: Colors.light, fontSize: 32, lineHeight: 36, fontFamily: Fonts.SemiBold
+    color: Colors.light, fontSize: 32, lineHeight: 36, fontFamily: Fonts.SemiBold
 
-    },
-    mediumHeaderText: {
+  },
+  mediumHeaderText: {
 
-        color: Colors.light, fontSize: 25, lineHeight: 26, fontFamily: Fonts.SemiBold
+    color: Colors.light, fontSize: 25, lineHeight: 26, fontFamily: Fonts.SemiBold
 
-    },
-    textPoint: {
-        color: Colors.light, fontSize: 20, fontFamily: Fonts.Bold,
-        marginTop: 6,
-    },
-    textPointHeading: {
-        color: Colors.fontColorGray, fontSize: 15, fontFamily: Fonts.SemiBold,
-    },
-    textPointCenter: {
-        color: Colors.light, fontSize: 18, fontFamily: Fonts.Bold,
-        marginTop: 6, textAlign: 'center'
-    },
+  },
+  textPoint: {
+    color: Colors.light, fontSize: 20, fontFamily: Fonts.Bold,
+    marginTop: 6,
+  },
+  textPointHeading: {
+    color: Colors.fontColorGray, fontSize: 15, fontFamily: Fonts.SemiBold,
+  },
+  textPointCenter: {
+    color: Colors.light, fontSize: 18, fontFamily: Fonts.Bold,
+    marginTop: 6, textAlign: 'center'
+  },
 });

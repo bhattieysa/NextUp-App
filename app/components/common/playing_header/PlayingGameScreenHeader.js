@@ -20,7 +20,10 @@ const PlayingGameScreenHeader = ({
   nav,
   setView,
   blueTeamNewScore,
-  redTeamNewScore
+  redTeamNewScore,
+  assistFlowCurrentView,
+  setAssistFlowCurrentView
+
 
 }) => {
 
@@ -39,7 +42,7 @@ const PlayingGameScreenHeader = ({
       width: '95%',
 
     }}>
-      {renderBackArrow(nav, setView)}
+      {renderBackArrow(nav, setView, assistFlowCurrentView, setAssistFlowCurrentView)}
       <View style={{ flex: 1, flexDirection: 'row', }}>
         <Text style={{ ...styles.scoreTxt }}>{blueTeamNewScore}</Text>
         {blueTeamDetails()}
@@ -58,7 +61,7 @@ const PlayingGameScreenHeader = ({
   </View>
 
 
-  function renderBackArrow(nav, setView) {
+  function renderBackArrow(nav, setView, assistFlowCurrentView, setAssistFlowCurrentView) {
     return <TouchableOpacity
       onPress={nav == "playing" ? () => Navigation.back() :
         nav == "shootScore" ? () => setView("initMadeMissedScreen") :
@@ -66,7 +69,22 @@ const PlayingGameScreenHeader = ({
             nav == "throwScreen" ? () => setView("assistScreen") :
               nav == "madeMissedScreen" ? () => setView("throwScreen") :
                 nav == "gotRebound" ? () => setView("whoShot") :
-                  () => setView("playing")
+                  nav == "foulBy" ? () => setView("foulType") :
+                    nav == "stoleByTurnOver" ? () => setView("turnOverView") :
+                      nav == "offensiveFoulBy" ? () => setView("turnOverView") :
+                        nav == "freeThrowCount" ? () => setView("freeThrowPlayerSelect") :
+                          nav == "freeThrow" ? () => setView("freeThrowCount") :
+                            nav == "assistFlow" ?
+                              assistFlowCurrentView == 'assistFlow_ast' ? () => setView("playing")
+                                : assistFlowCurrentView == 'assistFlow_score' ? setAssistFlowCurrentView('assistFlow_ast')
+                                  : assistFlowCurrentView == 'assistFlow_Ptr' ? setAssistFlowCurrentView('assistFlow_score')
+                                    : assistFlowCurrentView == 'assistFlow_wasItFoul' ? setAssistFlowCurrentView('assistFlow_Ptr')
+                                      : assistFlowCurrentView == 'assistFlow_foul' ? setAssistFlowCurrentView('assistFlow_wasItFoul')
+                                        : assistFlowCurrentView == 'assistFlow_freeThrow' ? setAssistFlowCurrentView('assistFlow_foul')
+                                          : assistFlowCurrentView == 'assistFlow_madeMiss' ? setAssistFlowCurrentView('assistFlow_freeThrow')
+                                            : () => setView("playing")
+
+                              : () => setView("playing")
       }
     // onPress={() => Navigation.back()}    Navigation.navigate('ExploreSearch', { to: true })
     >

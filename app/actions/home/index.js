@@ -1220,40 +1220,36 @@ export function getNewCoachTeam(obj, cb) {
           //data.currentLevelState = 1//line to comment
 
           console.log("Coach team data is ", getState().entities.homePlayer.coachTeam);
-
+          debugger
           // bind stats
-          if (data.teamTabInfoDtoList && Array.isArray(data.teamTabInfoDtoList)) {
-            console.log("in for loop");
-            for (let i = 0; i < data.teamTabInfoDtoList.length; i++) {
-              console.log("for loop working");
-              let teamId = data.teamTabInfoDtoList[i].teamId;
-              let ownerId = obj;
-              // dispatch(getTeamStats(getState().entities.homePlayer.coachTeam.teamTabInfoDtoList[i].teamId, obj, getState().entities.homePlayer.coachTeam.seasonLists.length > 0 ? getState().entities.homePlayer.coachTeam.seasonLists[0] : null));
-              let requestURL = `${AppURLs.teamStats}${teamId}/${ownerId}`;
+          // if (data.teamTabInfoDtoList && Array.isArray(data.teamTabInfoDtoList)) {
+          //   console.log("in for loop");
+          //   for (let i = 0; i < data.teamTabInfoDtoList.length; i++) {
+          //     console.log("for loop working");
+          //     let teamId = data.teamTabInfoDtoList[i].teamId;
+          //     let ownerId = obj;
+          //     // dispatch(getTeamStats(getState().entities.homePlayer.coachTeam.teamTabInfoDtoList[i].teamId, obj, getState().entities.homePlayer.coachTeam.seasonLists.length > 0 ? getState().entities.homePlayer.coachTeam.seasonLists[0] : null));
+          //     let requestURL = `${AppURLs.teamStats}${teamId}/${ownerId}`;
+          //     if (data.seasonLists && data.seasonLists.length > 0) {
+          //       requestURL += `?season=${data.seasonLists[0]}`;
+          //     }
+          //     debugger
 
+          //     let statResponse = await axios.get(requestURL);
+          //     let statResponseData = statResponse.data.data;
+          //     debugger
 
-              if (data.seasonLists && data.seasonLists.length > 0) {
-                requestURL += `?season=${data.seasonLists[0]}`;
-              }
-              debugger
+          //     data.teamTabInfoDtoList[i].statsSummary = statResponseData.statsSummary;
+          //     data.teamTabInfoDtoList[i].teamPositionsList = statResponseData.teamPositionsList;
+          //     data.teamTabInfoDtoList[i].kpi = statResponseData.kpi;
+          //     data.teamTabInfoDtoList[i].teamStats = statResponseData.teamStats;
+          //     data.teamTabInfoDtoList[i].teamStatsTabDto = statResponseData.teamStatsTabDto;
+          //     data.teamTabInfoDtoList[i].seasonType = statResponseData.seasonType;
+          //     data.teamTabInfoDtoList[i].bannerInfo = statResponseData.bannerInfo;
+          //     data.teamTabInfoDtoList[i].premiumPurchased = statResponseData.premiumPurchased;
 
-              let statResponse = await axios.get(requestURL);
-              let statResponseData = statResponse.data.data;
-              debugger
-
-              data.teamTabInfoDtoList[i].statsSummary = statResponseData.statsSummary;
-              data.teamTabInfoDtoList[i].teamPositionsList = statResponseData.teamPositionsList;
-              data.teamTabInfoDtoList[i].kpi = statResponseData.kpi;
-              data.teamTabInfoDtoList[i].teamStats = statResponseData.teamStats;
-              data.teamTabInfoDtoList[i].teamStatsTabDto = statResponseData.teamStatsTabDto;
-              data.teamTabInfoDtoList[i].seasonType = statResponseData.seasonType;
-              data.teamTabInfoDtoList[i].bannerInfo = statResponseData.bannerInfo;
-              data.teamTabInfoDtoList[i].premiumPurchased = statResponseData.premiumPurchased;
-
-              //now populate the stats
-
-            }
-          }
+          //   }
+          // }
 
           console.log("Team data is ", JSON.stringify(data));
 
@@ -1261,6 +1257,32 @@ export function getNewCoachTeam(obj, cb) {
 
           //end stats
 
+          dispatch(myStandingSuccess());
+          cb(true, data)
+
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+export function getNewTeamStats(teamId, ownerId, season, cb) {
+  return (dispatch, getState) => {
+    dispatch(myStandingRequest());
+    return axios
+      .get(`${AppURLs.teamStats}${teamId}/${ownerId}?season=${season}`) //'162522113111002'
+      .then(async (response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          debugger
           dispatch(myStandingSuccess());
           cb(true, data)
 
@@ -2199,7 +2221,7 @@ export function getCities(state_name, cb) {
 
 export function getGameInitialData(cb) {
   return (dispatch, getState) => {
-
+    debugger
     dispatch(gamesRequest());
     //162367717958303 //162330894799504 //162643359596706
     return axios

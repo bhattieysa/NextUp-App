@@ -30,7 +30,8 @@ import {
   getCoachRoles,
   getCoachTeamRoles,
   checkSubscription,
-  removeCoachRole
+  removeCoachRole,
+  getNewTeamStats
 } from '../../actions/home';
 import FastImage from 'react-native-fast-image';
 import AnimatedInput from '../../Helpers/react-native-animated-input';
@@ -119,7 +120,8 @@ class MyTeams extends Component {
       isSessionDropShow: false,
       isPlayerStatShow: false,
       // isTeamNull: false,
-      showRoleEdit: false
+      showRoleEdit: false,
+      coachTeamStats: null,
 
     };
   }
@@ -212,10 +214,11 @@ class MyTeams extends Component {
               console.log("In team else part is ", coachTeam);
               // this.state.selectedKpi.push(coachTeam?.teamTabInfoDtoList[0].kpi[0]);
               this.setState({
-                loading: false,
+                // loading: false,
                 isAddTeam: false,
+                teamDetailsArr: coachTeam?.teamTabInfoDtoList,
                 // removeLoading: false,
-                defaultKpi: coachTeam?.teamTabInfoDtoList[0].kpi[0],
+                // defaultKpi: coachTeam?.teamTabInfoDtoList[0].kpi[0],
                 dropDownSelectedVal: coachTeam?.seasonLists[0],
               }
                 , () => {
@@ -235,34 +238,54 @@ class MyTeams extends Component {
 
                   console.log("End else team");
                   debugger
-                  this._filterTeamSeasonWise();
-                  this.filterBarChartData(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStatsTabDto);
+
+                  //Old
+                  // this._filterTeamSeasonWise();
+                  // this.filterBarChartData(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStatsTabDto);
+
                   // this._filterGameStatBarData();
+                  this._handleTabPress(this.state.selectedTabIndex, this.state.selectedTab,
+                    coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId)
                   // this._callPlayerTabApi(coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamId);
 
                 })
-
             }
 
           } else {
             this.setState({ loading: false })
           }
-
-
         }))
       })
 
     })
   }
 
+  _callStatsApi = (teamID) => {
+    this.setState({ loading: true }, () => {
+      getObject('UserId').then((obj) => {
+        this.props.dispatch(getNewTeamStats(teamID, obj, '2020-21', (res, data) => {
+          if (res) {
+            this.setState({ coachTeamStats: data }, () => {
+              this._filterTeamSeasonWise();
+            });
+          } else {
+            this.setState({ loading: false });
+          }
+        }))
+      })
+    })
+
+  }
+
   _filterTeamSeasonWise = () => {
     debugger
-    const { dropDownSelectedVal, selectedIndex } = this.state;
+    const { dropDownSelectedVal, selectedIndex, coachTeamStats } = this.state;
     const { coachTeam } = this.props.Home
-    const teamStats = coachTeam?.teamTabInfoDtoList[selectedIndex].statsWithSeasonsList;
+    // const teamStats = coachTeam?.teamTabInfoDtoList[selectedIndex].statsWithSeasonsList;
+    const teamStats = coachTeamStats?.statsWithSeasonsList;
     var isSesDropShow = false;
     var statsObj = {};
-    console.log("Selected Team is ", JSON.stringify(coachTeam?.teamTabInfoDtoList[selectedIndex]));
+    // console.log("Selected Team is ", JSON.stringify(coachTeam?.teamTabInfoDtoList[selectedIndex]));
     if (teamStats !== null && teamStats !== undefined) {
       teamStats.map(obj => {
         if (obj.seasonList == dropDownSelectedVal) {
@@ -274,17 +297,27 @@ class MyTeams extends Component {
     debugger
     console.log('arrr11111111', isSesDropShow);
     var selectedKpiArr = [];
+    var defKpi = null
+    // old code
     // selectedKpiArr.push(coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0])
     // this.state.selectedKpi.push(coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0]);
+    if (coachTeamStats?.kpi !== null) {
+      selectedKpiArr.push(coachTeamStats?.kpi)
+      defKpi = coachTeamStats?.kpi[0];
+
+    }
+    debugger
     this.setState({
-      teamDetailsArr: coachTeam?.teamTabInfoDtoList,
+      // teamDetailsArr: coachTeam?.teamTabInfoDtoList,
       showSessionDropDown: false,
       selectedTeamStats: statsObj,
       // defaultKpi: coachTeam?.teamTabInfoDtoList[selectedIndex]?.kpi[0],
+      defaultKpi: defKpi,
       selectedKpi: selectedKpiArr,
       isSessionDropShow: isSesDropShow
     }, () => {
-      this._callPlayerTabApi(coachTeam?.teamTabInfoDtoList[selectedIndex].teamId);
+      this.filterBarChartData(coachTeamStats?.teamStatsTabDto);
+      // this._callPlayerTabApi(coachTeam?.teamTabInfoDtoList[selectedIndex].teamId);
     });
 
   }
@@ -393,7 +426,7 @@ class MyTeams extends Component {
     });
     debugger
     this._filterGameStatBarData();
-    // this.setState({ loading: false });
+    this.setState({ loading: false });
   }
 
   // coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStatsTabDto
@@ -401,11 +434,13 @@ class MyTeams extends Component {
   _filterGameStatBarData = () => {
     // const { coachTeam } = this.state;
     debugger
-    const { coachTeam } = this.props.Home
+    // old code 
+    // const { coachTeam } = this.props.Home
+    const { coachTeamStats } = this.state
     var arr = []
-    if (Object.keys(coachTeam).length !== 0) {
+    if (Object.keys(coachTeamStats).length !== 0) {
       debugger
-      const statObj = coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.teamStats;
+      const statObj = coachTeamStats?.teamStats;
       console.log("Filter game tab data working new ", statObj);
       for (const key in statObj) {
         debugger
@@ -527,7 +562,6 @@ class MyTeams extends Component {
 
   _checkForSubscription = () => {
     getObject('UserId').then(obj => {
-
       this.props.dispatch(checkSubscription(obj, (res) => {
         if (res) {
           console.log("Subscription info is ", res);
@@ -715,6 +749,7 @@ class MyTeams extends Component {
 
   _renderMessageUserCat = ({ item, index }) => {
     console.log(item, "ll");
+    const { coachTeam } = this.props.Home
     return (
       <>
         {/* {item.season === this.state.dropDownSelectedVal ? */}
@@ -727,7 +762,9 @@ class MyTeams extends Component {
         }}
           activeOpacity={1}
           onPress={() => this.setState({ selectedIndex: index }, () => {
-            this._filterTeamSeasonWise();
+            this._handleTabPress(this.state.selectedTabIndex, this.state.selectedTab,
+              coachTeam?.teamTabInfoDtoList[index]?.teamId)
+            // this._filterTeamSeasonWise();
           })}
         >
 
@@ -1471,7 +1508,11 @@ class MyTeams extends Component {
 
               <TouchableOpacity onPress={() =>
                 Navigation.navigate('CoachAddPlayer',
-                  { playerDetails: item, teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex] })}
+                  {
+                    playerDetails: item,
+                    teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex],
+                    selectedSeason: this.state.dropDownSelectedVal
+                  })}
                 style={{
                   width: 63, height: 63,
                   borderRadius: 63 / 2, borderWidth: 2,
@@ -1649,7 +1690,8 @@ class MyTeams extends Component {
                               Navigation.navigate('CoachAddPlayer',
                                 {
                                   playerDetails: item,
-                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex],
+                                  selectedSeason: this.state.dropDownSelectedVal
                                 })}
                               style={{
                                 width: 63, height: 63,
@@ -1803,7 +1845,8 @@ class MyTeams extends Component {
                               Navigation.navigate('CoachAddPlayer',
                                 {
                                   playerDetails: item,
-                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex],
+                                  selectedSeason: this.state.dropDownSelectedVal
                                 })}
                               style={{
                                 width: 63, height: 63,
@@ -1998,7 +2041,8 @@ class MyTeams extends Component {
                               Navigation.navigate('CoachAddPlayer',
                                 {
                                   playerDetails: item,
-                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex],
+                                  selectedSeason: this.state.dropDownSelectedVal
                                 })}
                               style={{
                                 width: 63, height: 63,
@@ -2189,7 +2233,8 @@ class MyTeams extends Component {
                               Navigation.navigate('CoachAddPlayer',
                                 {
                                   playerDetails: item,
-                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                                  teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex],
+                                  selectedSeason: this.state.dropDownSelectedVal
                                 })}
                               style={{
                                 width: 63, height: 63,
@@ -2242,7 +2287,8 @@ class MyTeams extends Component {
                       Navigation.navigate('CoachAddPlayer',
                         {
                           playerDetails: item,
-                          teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex]
+                          teamDetails: coachTeam?.teamTabInfoDtoList[selectedIndex],
+                          selectedSeason: this.state.dropDownSelectedVal
                         })}
                       style={{
                         width: 63, height: 63,
@@ -2674,8 +2720,9 @@ class MyTeams extends Component {
         this._callGameTabApi(teamId);
       }
       if (tabNm === 'Stats') {
-        this.getInitialData(false);
-        this.filterBarChartData();
+        // this.getInitialData(false);
+        this._callStatsApi(teamId);
+        // this.filterBarChartData();
         // this._filterGameStatBarData();
       }
       if (tabNm === 'Roles') {
@@ -2935,12 +2982,12 @@ class MyTeams extends Component {
     const { coachTeam, coachTeamPlayer, teamRoles } = this.props.Home
     const { selectedIndex, teamName, avatar, playerList,
       gameTabData, teamDetailsArr, dropDownSelectedVal, playerCatSelectedVal, pieChartData,
-      loading, isAddTeam, isMsgSendEnable, isSessionDropShow } = this.state;
+      loading, isAddTeam, isMsgSendEnable, isSessionDropShow, coachTeamStats } = this.state;
     // const countries = ["Egypt", "Canada", "Australia", "Ireland"]
-    console.log("Coach team", this.state.teamDetailsArr);
+    console.log("Coach team", teamDetailsArr);
     debugger
     return (
-      <View style={{ flex: 1, backgroundColor: Colors.lightGreen }}>
+      <View style={{ flex: 1, backgroundColor: Colors.base }}>
         <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 20 : 0, backgroundColor: Colors.base }}>
           {/* <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onPress={() => this.setState({ showStatModal: false })}> */}
           {/* loading == null ? <></> : */}
@@ -3002,6 +3049,7 @@ class MyTeams extends Component {
                 marginBottom: 5,
                 // backgroundColor: "red",
                 height: 40,
+                marginTop: Platform.OS == 'android' ? 10 : 0,
                 // alignItems: "center"
               }}>
 
@@ -3108,7 +3156,7 @@ class MyTeams extends Component {
                         : null
                       }
                     </View>
-
+                    {/* this.state.isAddTeam === false && this.state.teamDetailsArr.length > 0 ? */}
                     {this.state.isAddTeam === false && this.state.teamDetailsArr.length > 0 ?
                       <TouchableOpacity style={{
                         width: 40,
@@ -3174,9 +3222,12 @@ class MyTeams extends Component {
 
                           {this.state.selectedTab === 'Stats' ?
                             <>
-
-                              <StatPlanCard bannerInfo={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.bannerInfo} premium={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.premiumPurchased} />
-
+                              {/* Old code */}
+                              {/* <StatPlanCard bannerInfo={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.bannerInfo} premium={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.premiumPurchased} /> */}
+                              {coachTeamStats != '' && coachTeamStats != undefined ?
+                                <StatPlanCard bannerInfo={coachTeamStats?.bannerInfo} premium={coachTeamStats?.premiumPurchased} />
+                                : <></>
+                              }
                               {this.state.isPlayerStatShow ?
                                 <>
                                   {this.state.bar1_Data.length > 0 || this.state.bar2_Data.length > 0 ?
@@ -3327,7 +3378,8 @@ class MyTeams extends Component {
                                         // display: 'flex'
 
                                       }}>
-                                        <EmptyBarChart kpi={coachTeam?.teamTabInfoDtoList[0]?.kpi} />
+                                        {/* <EmptyBarChart kpi={coachTeam?.teamTabInfoDtoList[0]?.kpi} /> */}
+                                        <EmptyBarChart kpi={coachTeamStats?.kpi} />
 
                                       </View>
                                     </View>
@@ -3800,7 +3852,7 @@ class MyTeams extends Component {
 
                                 {
                                   this.state.gameTabData && this.state.gameTabData.recentGamesInfoList && this.state.gameTabData.recentGamesInfoList.map((game, index) => (
-                                    <TeamStats key={`game-${index}`} data={game} />
+                                    <TeamStats key={`game-${index}`} data={game} onPress={() => Navigation.navigate('MyTeamRecentGamesDetails')} />
                                   ))
                                 }
 

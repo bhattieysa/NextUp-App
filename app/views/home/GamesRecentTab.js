@@ -893,15 +893,21 @@ class GamesRecentTab extends Component {
 
                       </View>
                       <ScrollView
-                        horizontal showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}
+                        horizontal showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
                         bounces={false}
                       >
+                        {/* <View style={{ width: '90%', alignSelf: 'center', backgroundColor: 'green' }}> */}
 
                         {
                           strSelectedTab === 0 || strSelectedTab === 1 ?
                             <FlatList
                               bounces={false}
-                              style={{ flex: 1, paddingHorizontal: wide * 0.05 }}
+                              style={{
+                                flex: 1, paddingHorizontal: wide * 0.14,
+                                width: '90%',
+                                // backgroundColor: 'green'
+                              }}
                               // data={strSelectedTab === 0 ? gameDetailData?.gameSummaryInfo?.scoreCardKpi?.challengerScoreCardValue
                               //     : gameDetailData?.gameSummaryInfo?.scoreCardKpi?.defenderScoreCardValue}
                               data={strSelectedTab === 0 ? gameDetailData?.gameSummaryInfo?.challengerTeamKpi
@@ -1007,6 +1013,7 @@ class GamesRecentTab extends Component {
                               :
                               null
                         }
+                        {/* </View> */}
                       </ScrollView>
                     </View>
                   </View>

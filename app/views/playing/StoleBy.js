@@ -17,7 +17,7 @@ const StoleBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentVie
 
   const removeActivePlayerFromList = () => {
     debugger
-    currentView == "stoleBy" ?
+    currentView == "stoleBy" || currentView == "stoleByTurnOver" ?
       setActivePlayerList(fullPlayerList.filter(player => player.id !== activePlayerId))
       :
       toggleSwitch()

@@ -59,7 +59,7 @@ const TurnOver = ({ activePlayerId, isBlueTeamPlaying, setCurrentView,
                 backgroundColor: Colors.btnGren
               }}
               onPress={() => {
-                setCurrentView('stoleBy')
+                setCurrentView('stoleByTurnOver')
               }}
             >
               <Text style={{

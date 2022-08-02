@@ -4,13 +4,17 @@ import { Pressable, Text, View } from "react-native";
 import { ScoreActiveTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import { AssistTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import { Colors, Fonts } from "../../constants";
+import PlayGroundBox from "../../components/common/cort/PlayGroundBox";
 
 
 const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, setSelectedPlayer, setAssistPlayer,
-  assistMadeOrMised, setAssistMadeOrMised, setCourtFoul, setCourtFreeThrow, courtFreeThrowPlayer,
+  assistMadeOrMised, setAssistMadeOrMised, setCourtFoul,
+  setCourtFreeThrow, courtFreeThrowPlayer,
   setPlayerScore, event, setEvent, setTypeOfEvent,
-  setIsEventCompleted, setAssistFlowPtr }) => {
+  setIsEventCompleted, setAssistFlowPtr, setAssistFlowCurrentView,
+  assistFlowCurrentView, setCourtAreaClick, courtAreaClick }) => {
+
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const [onAssist, setOnAssist] = useState(false)
@@ -20,13 +24,15 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
   const [onFoul, setOnFoul] = useState(false)
   const [onFreeThrow, setOnFreeThrow] = useState(false)
   const [shootPlayer, setShootPlayer] = useState('')
+  const [assistFlowView, setAssistFlowView] = useState(assistFlowCurrentView)
 
 
   const fullPlayerList = playersList;
 
   useEffect(() => {
 
-    // console.log("is blueee", isBlueTeamPlaying, "..")
+
+    setAssistFlowView('assistFlow_ast')
     removeActivePlayerFromList();
   }, []);
 
@@ -38,16 +44,39 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
       toggleSwitch()
   };
 
+  useEffect(() => {
+    console.log("assistViewRoot", assistFlowView)
+    console.log("assistView", assistFlowView)
+    debugger
+    if (assistFlowView == "assistFlow_ast") {
+      setOnAssist(false);
+    } else if (assistFlowView == "assistFlow_score") {
+      setOnScored(false);
+    } else if (assistFlowView == "assistFlow_Ptr") {
+      setOnPtr(false);
+    } else if (assistFlowView == "assistFlow_wasItFoul") {
+      setOnThrow(false);
+    } else if (assistFlowView == "assistFlow_foul") {
+      setOnFoul(false);
+    } else if (assistFlowView == "assistFlow_freeThrow") {
+      setOnFreeThrow(false);
+    } else if (assistFlowView == "assistFlow_madeMiss") {
+      setOnFreeThrow(false);
+    }
+
+  }, [assistFlowView])
+
   const selectPlayer = (e) => {
     setTypeOfEvent('assist_flow')
     if (e == 'other team') {
       setAssistPlayer(e);
       setEvent([`assist_otherTeam`])
     } else {
-      setAssistPlayer(e.playerId);
+      setAssistPlayer(e);
       setEvent([`assist_${e.playerId}`])
     }
     setPlayerScore(e, "ast")
+    setAssistFlowCurrentView('assistFlow_score')
     setOnAssist(true)
   }
 
@@ -114,6 +143,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
               event={event}
               setEvent={setEvent}
               setShootPlayer={setShootPlayer}
+              setAssistFlowCurrentView={setAssistFlowCurrentView}
             />
             :
             onPtr == false ?
@@ -132,6 +162,8 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                 event={event}
                 setEvent={setEvent}
                 setAssistFlowPtr={setAssistFlowPtr}
+                setAssistFlowCurrentView={setAssistFlowCurrentView}
+                setCourtAreaClick={setCourtAreaClick}
               />
               :
               onThrow == false ?
@@ -148,6 +180,8 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                   event={event}
                   setEvent={setEvent}
                   setIsEventCompleted={setIsEventCompleted}
+                  setAssistFlowCurrentView={setAssistFlowCurrentView}
+
                 />
                 :
                 onFoul == false ?
@@ -165,6 +199,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                     setPlayerScore={setPlayerScore}
                     event={event}
                     setEvent={setEvent}
+                    setAssistFlowCurrentView={setAssistFlowCurrentView}
                   />
                   :
                   onFreeThrow == false ?
@@ -181,6 +216,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                       setCourtFreeThrow={setCourtFreeThrow}
                       event={event}
                       setEvent={setEvent}
+                      setAssistFlowCurrentView={setAssistFlowCurrentView}
                     />
                     :
 
@@ -199,6 +235,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                       event={event}
                       setEvent={setEvent}
                       setIsEventCompleted={setIsEventCompleted}
+                      setAssistFlowCurrentView={setAssistFlowCurrentView}
                     />
 
         }
@@ -211,7 +248,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
 
 const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, setOnScored,
-  event, setEvent, setShootPlayer }) => {
+  event, setEvent, setShootPlayer, setAssistFlowCurrentView }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -237,10 +274,11 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
       setSelectedPlayer(e);
       setEvent([...event, `scored_otherTeam`])
     } else {
-      setSelectedPlayer(e.playerId);
+      setSelectedPlayer(e);
       setEvent([...event, `scored_${e.playerId}`])
     }
     setOnScored(true);
+    setAssistFlowCurrentView('assistFlow_Ptr')
   }
 
   return (
@@ -290,9 +328,37 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
 
 const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, setSelectedPlayer, selectedPlayer, setOnPtr,
-  setAssistFlowPtr, setPlayerScore, shootPlayer }) => {
+  setAssistFlowPtr, setPlayerScore, shootPlayer, setAssistFlowCurrentView, setCourtAreaClick }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
+
+  const playGroundWidth = width * 0.45;
+  const background = '#363A47';
+  const foreground = '#fff';//Text Color
+  const shapeDefaultBG = '#85ADFF';
+
+  const redColor = Colors.base; //'#FF5E5E';
+  const blueColor = Colors.base;//'#85ADFF';
+  const yellow1Color = Colors.base; //'#E0BD90';
+  const yellow2Color = Colors.base; //'#FFD884';
+  const yellow3Color = Colors.base; //'#FDB927';
+  //PlaygroundColor list
+  const [playgroundShapesColorList, setPlaygroundShapesColorList] = useState({
+    shapeTwoBGColor: Colors.base,
+    shapeFourBGColor: Colors.base,
+    shapeLeftCurveBGColor: Colors.base,
+    shapeRightCurveBGColor: Colors.base,
+    shapeLeftCurve2BGColor: Colors.base,
+    shapeRightCurve2BGColor: Colors.base,
+    shapeCenterCircleHolderBGColor: Colors.base,
+    shapeCenterCircleBGColor: Colors.base,
+    shapeHolderLeftBGColor: Colors.base,
+    shapeHolderRightBGColor: Colors.base,
+    shapeZeroBGColor: Colors.base,
+    shapeRightHTopBGColor: Colors.base,
+    shapeRightVTopBGColor: Colors.base,
+  });
+
   // const fullPlayerList = playersList;
 
   useEffect(() => {
@@ -316,25 +382,37 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
   return (
     <View style={{
       width: '100%',
-      height: '90%',
+      height: '100%',
     }}>
       <View style={{
         // flexDirection: 'row',
         width: '100%',
-        height: '90%',
-        justifyContent: 'center'
+        justifyContent: 'center',
+
 
       }}>
+        <Text style={{
+          color: Colors.newGrayFontColor, fontSize: 24,
+          lineHeight: 28, fontFamily: Fonts.Regular, marginTop: 15,
+        }}
+        >
+          Was it 2Pt or 3Pt?
+        </Text>
 
-        <View style={{ width: '90%', alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{
-            color: Colors.newGrayFontColor, fontSize: 24,
-            lineHeight: 28, fontFamily: Fonts.Regular
-          }}
-          >
-            Was it 2Pt or 3Pt?
-          </Text>
-          <View style={{ flexDirection: 'row', marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{
+          width: '100%', alignItems: 'center',
+          justifyContent: 'center',
+          // marginTop: 8
+        }}>
+          {renderPlayground()}
+
+        </View>
+        {/* <View style={{
+          width: '90%', alignItems: 'center',
+          justifyContent: 'center'
+        }}> */}
+
+        {/* <View style={{ flexDirection: 'row', marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
             <Pressable
               style={{
                 width: width * 0.15, height: width * 0.15,
@@ -346,6 +424,7 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
                 setAssistFlowPtr('ptr2')
                 setPlayerScore(shootPlayer, 'ast_pts')
                 setOnPtr(true)
+                setAssistFlowCurrentView('assistFlow_score')
               }}
             >
               <Text style={{
@@ -383,18 +462,139 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
                 3PT
               </Text>
             </Pressable>
-          </View>
+          </View> */}
 
-        </View>
+
+        {/* </View> */}
 
       </View>
 
     </View>)
+
+  function renderPlayground() {
+    return <PlayGroundBox
+
+      // clickedCourtArea={madeOrMised}
+      // configs
+      width={playGroundWidth}
+      background={background}
+      forground={foreground}
+      shapeBG={shapeDefaultBG}
+
+      //background color
+      //1st row
+      shapeZeroBGColor={playgroundShapesColorList.shapeZeroBGColor}// 1st row 1st vertical shape
+      shapeTwoBGColor={playgroundShapesColorList.shapeTwoBGColor}// 1st row 2nd shape (horizontal width rectangular)
+      shapeFourBGColor={playgroundShapesColorList.shapeFourBGColor}// 1st row center shape
+      shapeRightHTopBGColor={playgroundShapesColorList.shapeRightHTopBGColor}// 2nd row 1st shape
+      shapeRightVTopBGColor={playgroundShapesColorList.shapeRightVTopBGColor}// 2nd row 2nd shape
+      //2nd row
+      shapeLeftCurve2BGColor={playgroundShapesColorList.shapeLeftCurve2BGColor}//center 2nd row row left
+      shapeRightCurve2BGColor={playgroundShapesColorList.shapeRightCurve2BGColor}//center 2nd row right
+      shapeCenterCircleBGColor={playgroundShapesColorList.shapeCenterCircleBGColor}//center 2nd row row mid half circle
+      shapeCenterCircleHolderBGColor={playgroundShapesColorList.shapeCenterCircleHolderBGColor}//center 2nd row row mid half circle container
+      //3rd row
+      shapeLeftCurveBGColor={playgroundShapesColorList.shapeLeftCurveBGColor}//bottom 3rd row left
+      shapeRightCurveBGColor={playgroundShapesColorList.shapeRightCurveBGColor}// bottom 3rd row right
+      shapeHolderLeftBGColor={playgroundShapesColorList.shapeHolderLeftBGColor} //bottom 3rd row center shape left half
+      shapeHolderRightBGColor={playgroundShapesColorList.shapeHolderRightBGColor}//bottom 3rd row center shape right half
+
+      // on click events
+      onPressShapeZero={() => {
+        // alert('onPressShapeZero');
+        onChangeColorHandler("shapeZeroBGColor");
+        setCourtArea("COURT_1")
+        // handleBtnEnable()
+
+      }}
+      onPressShapeTwo={(e, court) => {
+        // onChangeColorHandler("shapeTwoBGColor");
+        // setCourtArea("COURT_2")
+        debugger
+        setCourtAreaClick({ 'x': e.nativeEvent.locationX, 'y': e.nativeEvent.locationY, "court_nm": court })
+        // setAssistFlowPtr('ptr2')
+        setOnPtr(true)
+        setPlayerScore(shootPlayer, 'pts')
+        setAssistFlowCurrentView('assistFlow_wasItFoul')
+
+      }}
+
+      onPressShapeFour={() => {
+        //top 1st row center shape
+        onChangeColorHandler("shapeFourBGColor");
+        setCourtArea("COURT_3")
+        // handleBtnEnable()
+      }}
+      //top 2nd row 1st shape
+      onPressShapeLeftCurve={() => {
+        // alert('onPressShapeLeftCurve');
+        onChangeColorHandler("shapeLeftCurveBGColor");
+        setCourtArea("COURT_4")
+        // handleBtnEnable()
+      }}
+      onPressShapeRightCurve={() => {
+        // alert('onPressShapeRightCurve');
+        onChangeColorHandler("shapeRightCurveBGColor");
+        setCourtArea("COURT_5")
+        // handleBtnEnable()
+      }}
+
+      onPressShapeLeftCurve2={() => {
+        // alert('onPressShapeLeftCurve2');
+        onChangeColorHandler("shapeLeftCurve2BGColor");
+        setCourtArea("COURT_6")
+        // handleBtnEnable()
+      }}
+      onPressShapeRightCurve2={() => {
+        // alert('onPressShapeRightCurve2');
+        onChangeColorHandler("shapeRightCurve2BGColor");
+        setCourtArea("COURT_7")
+        // handleBtnEnable()
+      }}
+      onPressShapeCenterCircleHolder={() => {
+        // alert('onPressShapeCenterCircleHolder');
+        onChangeColorHandler("shapeCenterCircleHolderBGColor");
+        setCourtArea("COURT_8")
+        // handleBtnEnable()
+      }}
+      onPressShapeCenterCircle={() => {
+        // alert('onPressShapeCenterCircle');
+        onChangeColorHandler("shapeCenterCircleBGColor");
+        setCourtArea("COURT_9")
+        // handleBtnEnable()
+      }}
+      onPressShapeHolderLeft={() => {
+        // alert('onPressShapeHolderLeft');
+        onChangeColorHandler("shapeHolderLeftBGColor");
+        setCourtArea("COURT_10")
+        // handleBtnEnable()
+      }}
+      onPressShapeHolderRight={() => {
+        // alert('onPressShapeHolderRight');
+        onChangeColorHandler("shapeHolderRightBGColor");
+        setCourtArea("COURT_11")
+        // handleBtnEnable()
+      }}
+      onPressShapeRightHTop={() => {
+        // alert('onPressShapeRightHTop');
+        onChangeColorHandler("shapeRightHTopBGColor");
+        setCourtArea("COURT_12")
+        // handleBtnEnable()
+      }}
+      onPressShapeRightVTop={() => {
+        // alert('onPressShapeRightVTop');
+        onChangeColorHandler("shapeRightVTopBGColor");
+        setCourtArea("COURT_13")
+        // handleBtnEnable()
+      }}
+
+    />
+  }
 }
 
 const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
-  setOnThrow, event, setEvent, setIsEventCompleted }) => {
+  setOnThrow, event, setEvent, setIsEventCompleted, setAssistFlowCurrentView }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -494,7 +694,11 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
                 alignItems: 'center', justifyContent: 'center',
                 backgroundColor: Colors.btnGren
               }}
-              onPress={() => setOnThrow(true)}
+              onPress={() => {
+                setAssistFlowCurrentView('assistFlow_foul')
+                setOnThrow(true)
+              }
+              }
             >
               <Text style={{
                 color: Colors.base,
@@ -545,7 +749,7 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
 const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
   clickedCourtArea, setMadeOrMissed, madeOrMissed, assistMadeOrMised, setAssistMadeOrMised,
-  event, setEvent, setIsEventCompleted, courtFreeThrowPlayer }) => {
+  event, setEvent, setIsEventCompleted, courtFreeThrowPlayer, setAssistFlowCurrentView }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   // const fullPlayerList = playersList;
@@ -761,7 +965,7 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
 
 const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
   currentView, toggleSwitch, selectedPlayer, reboundPlayer, setReboundPlayer,
-  setCourtFoul, event, setEvent, setPlayerScore }) => {
+  setCourtFoul, event, setEvent, setPlayerScore, setAssistFlowCurrentView }) => {
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
@@ -786,11 +990,12 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
       setCourtFoul(e);
       setEvent([...event, `foul_yes_otherTeam`])
     } else {
-      setCourtFoul(e.playerId);
+      setCourtFoul(e);
       setEvent([...event, `foul_yes_${e.playerId}`])
     }
     setPlayerScore(e, 'fl')
     setOnFoul(true);
+    setAssistFlowCurrentView('assistFlow_freeThrow')
 
   }
 
@@ -842,7 +1047,8 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
 
 
 const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
-  currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow, event, setEvent }) => {
+  currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow, event, setEvent,
+  setAssistFlowCurrentView }) => {
 
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
@@ -857,7 +1063,6 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
     debugger
     setActivePlayerList(fullPlayerList.filter(player => player.id !== activePlayerId))
 
-
   };
 
   const selectPlayer = (e) => {
@@ -865,9 +1070,10 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
     if (e == 'other team') {
       setCourtFreeThrow(e);
     } else {
-      setCourtFreeThrow(e.playerId);
+      setCourtFreeThrow(e);
     }
     setOnFreeThrow(true);
+    setAssistFlowCurrentView('assistFlow_madeMiss')
 
   }
 
@@ -916,6 +1122,7 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
 
     </View>)
 }
+
 
 
 

@@ -215,7 +215,11 @@ class WelcomeScreen extends Component {
           this.setState({ loading: false });
           if (resData.typeOfUser == null || resData.onBoardingDone == false) {
             debugger
-            Navigation.navigate('TellUsMore')
+            Navigation.navigate('TellUsMoreIntro', {
+              state: "",
+              year: ""
+            })
+            // Navigation.navigate('TellUsMore')
           } else {
             debugger
             if (resData.parentApprovalRequired === false) {

@@ -17,6 +17,7 @@ const AnimatedInput = ({
   styleContent,
   styleBodyContent,
   keyboardType,
+  showSoftInputOnFocus,
   // isAutoFocus,
   ...others
 }) => {
@@ -153,6 +154,9 @@ const AnimatedInput = ({
                 //onEndEditing={() => onBlur()}
                 textAlignVertical={'top'}
                 keyboardType={keyboardType}
+                showSoftInputOnFocus={showSoftInputOnFocus}
+
+
               />
             </View>
           )}
