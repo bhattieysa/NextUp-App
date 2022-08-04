@@ -23,6 +23,7 @@ const totalScore = [
 
 const QuickBoxScoreTable = ({ heading, point, title, rowId, teamId, data }) => {
   const [defenderWithEachQuarter, setDefenderWithEachQuarter] = useState(data);
+  debugger
 
   // useEffect(() => {
   //     // addingPlayerIdToObjects();
@@ -60,6 +61,7 @@ const QuickBoxScoreTable = ({ heading, point, title, rowId, teamId, data }) => {
     </View>
     {renderHeadingRow(rowHeadingList)}
     {defenderWithEachQuarter.map((item, index) => {
+      debugger
       return (
         renderResultsRow(item, index)
       )

@@ -5,9 +5,10 @@ import { Colors, Fonts } from '../../constants';
 const HeadingWithLine = ({ heading, txtStyle, lineStyle, containerStyle, teamId }) => {
   return (
     <View style={{ ...styles.container, ...containerStyle }}>
+      <View style={{ width: 20, height: 1, backgroundColor: Colors.lightGray, }} />
       {teamId ? teamId == 1 ?
         <>
-          <Text style={{ ...styles.heading, ...txtStyle, color: Colors.lightBlue }}>{heading}</Text>
+          <Text style={{ ...styles.heading, ...txtStyle, color: Colors.lightBlue, marginHorizontal: 2 }}>{heading}</Text>
           <Text style={{ ...styles.heading, ...txtStyle }}> Quick Box Score</Text>
         </>
         :
@@ -18,6 +19,28 @@ const HeadingWithLine = ({ heading, txtStyle, lineStyle, containerStyle, teamId 
         :
         <Text style={{ ...styles.heading, ...txtStyle }}>{heading}</Text>
       }
+      <View style={{ ...styles.line, ...lineStyle }} />
+    </View>
+  );
+};
+
+export const PlayerStatHeadingWithLine = ({ heading, txtStyle, lineStyle, containerStyle, }) => {
+  return (
+    <View style={{ ...styles.container, ...containerStyle }}>
+      <View style={{ width: 20, height: 1, backgroundColor: Colors.lightGray, }} />
+      {/* {teamId ? teamId == 1 ? */}
+      <>
+        <Text style={{ ...styles.heading, ...txtStyle, color: Colors.lightBlue, marginHorizontal: 2 }}>{heading}</Text>
+        <Text style={{ ...styles.heading, ...txtStyle }}> Stats</Text>
+      </>
+      {/* :
+        <>
+          <Text style={{ ...styles.heading, ...txtStyle, color: Colors.lightRed }}>{heading}</Text>
+          <Text style={{ ...styles.heading, ...txtStyle }}> Quick Box Score</Text>
+        </>
+        :
+        <Text style={{ ...styles.heading, ...txtStyle }}>{heading}</Text>
+      } */}
       <View style={{ ...styles.line, ...lineStyle }} />
     </View>
   );

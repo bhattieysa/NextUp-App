@@ -2244,4 +2244,54 @@ export function getGameInitialData(cb) {
   };
 }
 
+export function getAdvanceStats(gameId, cb) {
+  return (dispatch, getState) => {
+    dispatch(myStandingRequest());
+    return axios
+      .get(`${AppURLs.getGameAdvanceStats}${gameId}`) //'162522113111002'
+      .then(async (response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          debugger
+          dispatch(myStandingSuccess());
+          cb(true, data)
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+export function getTeamAdvanceStat(teamId, season, cb) {
+  return (dispatch, getState) => {
+    dispatch(myStandingRequest());
+    return axios
+      .get(`${AppURLs.getTeamAdvanceStats}${teamId}/${season}`) //'162522113111002'
+      .then(async (response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          debugger
+          let data = response.data.data
+          debugger
+          dispatch(myStandingSuccess());
+          cb(true, data)
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  }; s
+}
+
 

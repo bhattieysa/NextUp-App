@@ -38,7 +38,11 @@ function StatPlanCard({ premium = false, bannerInfo = null }) {
       marginTop: 25,
       borderRadius: 10,
     }}>
-      <TouchableOpacity activeOpacity={true} onPress={() => Navigation.navigate("CoachRoadToPro")}>
+      <TouchableOpacity activeOpacity={true}
+        // onPress={() => Navigation.navigate("CoachRoadToPro")}
+        onPress={() => Navigation.navigate("MyTeamAdvanceStats")}
+
+      >
         <ImageBackground
           source={require('../../../Images/plan_bk_1.png')}
           style={{

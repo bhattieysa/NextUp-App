@@ -83,7 +83,8 @@ export const AppURLs = {
   sendPlayerInvitation: 'team/invite/player/',
   getMoreRecentGames: 'player/more/game/list/',
   getGameInitData: 'log/start/',
-
+  getGameAdvanceStats: 'game/advance/stats/',
+  getTeamAdvanceStats: 'team/get/advance/analytics/',
 
 };
 
