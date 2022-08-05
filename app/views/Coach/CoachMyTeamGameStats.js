@@ -172,7 +172,9 @@ class CoachGameStat extends Component {
         selectedTeamId: value,
         players: null,
         selectedPlayer: 'All Players',
-        selectedPlayerName: 'All Players'
+        selectedPlayerName: 'All Players',
+        turnOverChartData: gameStatData?.turnoverChart,
+
       })
     } else if (value == 1) {
       this.setState({
@@ -180,7 +182,8 @@ class CoachGameStat extends Component {
         selectedTeamId: value,
         players: gameStatData?.challengerPlayerInfo,
         selectedPlayer: 'All Players',
-        selectedPlayerName: 'All Players'
+        selectedPlayerName: 'All Players',
+        turnOverChartData: gameStatData?.challengerTurnOverChart,
       })
     } else {
       this.setState({
@@ -188,7 +191,8 @@ class CoachGameStat extends Component {
         selectedTeamId: value,
         players: gameStatData?.defenderPlayerInfo,
         selectedPlayer: 'All Players',
-        selectedPlayerName: 'All Players'
+        selectedPlayerName: 'All Players',
+        turnOverChartData: gameStatData?.defenderTurnOverChart,
       })
     }
   }
@@ -473,7 +477,6 @@ class CoachGameStat extends Component {
                                     }, () => {
                                       this.teamChange(2)
                                     })
-
                                   }}
                                 >
                                   <Text style={{

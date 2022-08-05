@@ -301,7 +301,7 @@ const AssistTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, it
     fontFamily: Fonts.SemiBold,
   }
 
-  return <View style={{ width: '100%', marginBottom: 40 }}>
+  return <View style={{ width: '100%', }}>
     <Text style={headingTxt}>
       {heading}
     </Text>

@@ -80,13 +80,18 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
           backgroundColor: Colors.newGrayFontColor, marginTop: 30
         }} />
 
-        <View style={{ width: '75%', alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{
+          width: '75%', alignItems: 'center',
+          justifyContent: 'center', marginTop: 10
+        }}>
           {isBlueTeamPlaying ?
             <AssistTeamPlayer
               itemStyle={{
-                width: width / 9.5,
-                height: width / 9.5,
-                borderRadius: (width / 9.5) / 2,
+                // width: width / 9.5,
+                // height: width / 9.5,
+                // borderRadius: (width / 9.5) / 2,
+                width: 90, height: 90, borderRadius: 90 / 2,
+
               }}
               heading={"Who Assisted"}
               list={activePlayerList}
@@ -100,9 +105,10 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
             :
             <AssistTeamPlayer
               itemStyle={{
-                width: width / 9.5,
-                height: width / 9.5,
-                borderRadius: (width / 9.5) / 2,
+                // width: width / 9.5,
+                // height: width / 9.5,
+                // borderRadius: (width / 9.5) / 2,
+                width: 90, height: 90, borderRadius: 90 / 2,
               }}
               heading={"Who Assisted"}
               list={activePlayerList}
@@ -120,12 +126,12 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
       <View style={{
         width: '100%', flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: -10,
+        // marginTop: -10,
       }}>
         <Pressable style={{
           width: 85, height: 25, backgroundColor: Colors.btnRed,
           borderRadius: 8, justifyContent: 'center', alignItems: 'center',
-          marginLeft: width * 0.1
+          // marginLeft: width * 0.01
         }}
           onPress={() => setCurrentView('throwScreen')}
         >

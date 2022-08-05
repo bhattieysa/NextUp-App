@@ -97,9 +97,10 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
             {isBlueTeamPlaying ?
               <AssistTeamPlayer
                 itemStyle={{
-                  width: width / 9.5,
-                  height: width / 9.5,
-                  borderRadius: (width / 9.5) / 2,
+                  // width: width / 9.5,
+                  // height: width / 9.5,
+                  // borderRadius: (width / 9.5) / 2,
+                  width: 90, height: 90, borderRadius: 90 / 2,
                 }}
                 heading={"Who Assisted"}
                 list={activePlayerList}
@@ -113,9 +114,10 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
               :
               <AssistTeamPlayer
                 itemStyle={{
-                  width: width / 9.5,
-                  height: width / 9.5,
-                  borderRadius: (width / 9.5) / 2,
+                  // width: width / 9.5,
+                  // height: width / 9.5,
+                  // borderRadius: (width / 9.5) / 2,
+                  width: 90, height: 90, borderRadius: 90 / 2,
                 }}
                 heading={"Who Assisted"}
                 list={activePlayerList}
@@ -286,10 +288,11 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={'Who Scored'}
           list={activePlayerList}
@@ -304,10 +307,11 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
         :
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={'Who Scored'}
           list={activePlayerList}
@@ -1004,10 +1008,11 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={'Who fouled'}
           list={activePlayerList}
@@ -1024,10 +1029,11 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
         :
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={'Who fouled'}
           list={activePlayerList}
@@ -1082,10 +1088,11 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={'Who shooting the free throw ?'}
           list={activePlayerList}
@@ -1102,10 +1109,11 @@ const WhoShootFreeThrow = ({ setOnFreeThrow, playersList, activePlayerId, isBlue
         :
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={'Who shooting the free throw ?'}
           list={activePlayerList}

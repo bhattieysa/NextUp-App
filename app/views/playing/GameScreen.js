@@ -6,7 +6,7 @@ import DropDownModal from "../../components/common/playing_header/DropDownModal"
 import PlayGroundBox from "../../components/common/cort/PlayGroundBox";
 import { ActiveTeamPlayer, ScoreActiveTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import PlaygroundScreenBtn from "../../components/common/PlaygroundScreenBtn";
-import { getGameInitialData } from '../../actions/home';
+import { getGameInitialData, sendEventData } from '../../actions/home';
 import { connect } from 'react-redux';
 // import axios from "axios";
 // import SyncStorage from 'sync-storage';
@@ -31,34 +31,37 @@ import { WhoShootFreeThrow } from './whoShootFreeThrow';
 import { OffensiveFoulBy } from './offensiveFoul';
 import { FreeThrowPlayerSelect } from './freeThrowPlayerSelect';
 import { FreeThrowCount } from './freeThrowCount';
-import { insertEvent, insertBluePlayerScore, insertRedPlayerScore, insertTeamScore } from '../../middleware/localDb';
+import {
+  insertEvent, insertBluePlayerScore, insertRedPlayerScore,
+  insertTeamScore, getEventDataFromRealm
+} from '../../middleware/localDb';
 import { Court_ptr } from '../../constants/constant';
 import { CourtRebound } from './CourtRebound';
 import { OffRebound } from './OffRebound';
 
 
 const { width, height } = Dimensions.get('window');
-const quarterList = [
-  {
-    name: 'Quarter 1',
-    value: "1st quarter"
-  },
-  {
-    name: 'Quarter 2',
-    value: '2nd quarter',
-  },
-  {
-    name: 'Quarter 3',
-    value: '3rd quarter'
-  },
-  {
-    name: 'Quarter 4',
-    value: '4th quarter'
-  }, {
-    name: 'end',
-    value: 'End of Game'
-  }
-]
+// const quarterList = [
+//   {
+//     name: 'Quarter 1',
+//     value: "1st quarter"
+//   },
+//   {
+//     name: 'Quarter 2',
+//     value: '2nd quarter',
+//   },
+//   {
+//     name: 'Quarter 3',
+//     value: '3rd quarter'
+//   },
+//   {
+//     name: 'Quarter 4',
+//     value: '4th quarter'
+//   }, {
+//     name: 'end',
+//     value: 'End of Game'
+//   }
+// ]
 
 
 //Team List
@@ -79,7 +82,7 @@ const GameScreen = (props) => {
   const [redTeamPlayer, setRedTeamPlayer] = useState('')
   const [dropDownVisibility, setDropDownVisibility] = useState(false);
   const { btnEnable, setBtnEnable } = useState(false);
-  const [preSelectedQuarter, setPreSelectedQuarter] = useState('1st quarter');
+  const [preSelectedQuarter, setPreSelectedQuarter] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [challengerTeam, setChallengerTeam] = useState('');
@@ -112,9 +115,13 @@ const GameScreen = (props) => {
   const [isEventCompleted, setIsEventCompleted] = useState(false);
   const [typeOfEvent, setTypeOfEvent] = useState('');
   const [playerScore, setPlayerScore] = useState('')
-  const [blueTeamScore, setBlueTeamScore] = useState('')
-  const [redTeamScore, setRedTeamScore] = useState('')
+  const [blueTeamScore, setBlueTeamScore] = useState(0)
+  const [redTeamScore, setRedTeamScore] = useState(0)
   const [assistFlowCurrentView, setAssistFlowCurrentView] = useState('')
+  const [quarterList, setQuarterList] = useState('');
+  const [gameId, setGameId] = useState('');
+  // const [selected_quarter, setSelectedQuarter] = useState('');
+
 
   useEffect(() => {
     debugger
@@ -166,6 +173,9 @@ const GameScreen = (props) => {
         totalResponse = r;
         await setChallengerTeam(r.challengerTeamInfo)
         await setDefenderTeam(r.defenderTeamInfo)
+        await setQuarterList(r.quarters)
+        await setPreSelectedQuarter(r.quarters[0])
+        await setGameId(r.gameId)
         const bTeam = r.challengerTeamKpi.filter(bTeam => bTeam.inSquad == true).map((bTeam) => {
           return {
             jerseyNumber: bTeam.jerseyNumber,
@@ -321,6 +331,22 @@ const GameScreen = (props) => {
 
 
   }, [])
+
+  const sendDataToServer = () => {
+    getEventDataFromRealm((res, dbData) => {
+      if (res) {
+        if (dbData.length > 0) {
+          console.log("Event Data_arrr--", dbData.length);
+          props.dispatch(sendEventData(gameId, dbData, (res, resData) => {
+            if (res) {
+              console.log("ResData", resData);
+            }
+          }))
+        }
+
+      }
+    })
+  }
 
   const handleBtnEnable = () => {
     if (activePlayer !== '' && activePlayer !== undefined && courtArea !== '' && courtArea !== undefined) {
@@ -1371,7 +1397,8 @@ const GameScreen = (props) => {
                     ]}
                     // key={inde}
                     onPress={() => {
-                      setPreSelectedQuarter(item.value);
+                      setPreSelectedQuarter(item);
+                      sendDataToServer();
                       setDropDownVisibility(false);
                     }}>
                     <Text
@@ -1380,9 +1407,9 @@ const GameScreen = (props) => {
                           fontFamily: Fonts.Regular,
                           color: Colors.light,
                         },
-                        preSelectedQuarter === item.value && { color: '#74C896' },
+                        preSelectedQuarter.name === item.name && { color: '#74C896' },
                       ]}>
-                      {item.name}
+                      {item.value}
                     </Text>
                   </TouchableOpacity>
                 );
@@ -2309,10 +2336,11 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 9.5,
-            height: width / 9.5,
+            // width: width / 9.5,
+            // height: width / 9.5,
             marginTop: 35,
-            borderRadius: (width / 9.5) / 2,
+            // borderRadius: (width / 9.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={title}
           list={activePlayerList}
@@ -2329,10 +2357,11 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
         :
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 9.5,
-            height: width / 9.5,
+            // width: width / 9.5,
+            // height: width / 9.5,
             marginTop: 35,
-            borderRadius: (width / 9.5) / 2,
+            // borderRadius: (width / 9.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={title}
           list={activePlayerList}

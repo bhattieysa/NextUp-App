@@ -154,7 +154,7 @@ const PlayingGameScreenHeader = ({
       onPress={onPressQuarter}
       activeOpacity={1}
     >
-      <Text style={styles.roundTxt}>{round}</Text>
+      <Text style={styles.roundTxt}>{round.value}</Text>
       <Svg
         width={24}
         height={24}

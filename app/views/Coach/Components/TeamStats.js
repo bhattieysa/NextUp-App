@@ -3,19 +3,26 @@ import { View, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-nati
 import { Title } from '../../../components/common/titleLabel';
 import { Colors } from '../../../constants';
 import moment from 'moment';
+import { getFontScaleSync } from 'react-native-device-info';
 
 function TeamStats({ data, onPress }) {
+  console.log("RecentGameDatat---", data)
   return (
 
     <TouchableOpacity
-      style={{ marginTop: 30 }}
+      style={{ marginTop: 30, }}
       onPress={onPress}
     >
 
       {/* <Title data={"Saturday, 1st July 2020"} /> */}
       <Title data={moment.unix(data.playedDate).format("dddd, Do MMMM YYYY")} />
 
-      <View style={{ flex: 1 }}>
+      <View style={{
+        flex: 1,
+        //  backgroundColor: 'red',
+        width: '94%',
+        alignSelf: 'center'
+      }}>
         <View style={{
           marginTop: 20,
           marginHorizontal: 10,
@@ -24,7 +31,8 @@ function TeamStats({ data, onPress }) {
           backgroundColor: '#23262F',
           borderRadius: 10,
           justifyContent: 'space-between',
-          flexDirection: 'row'
+          flexDirection: 'row',
+
         }}>
           <View style={{}} >
             <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -100,73 +108,49 @@ function TeamStats({ data, onPress }) {
 
           <View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: 10 }}>
             <View style={{
-              width: Dimensions.get("screen").width * 0.2
+              width: Dimensions.get("screen").width * 0.15,
+              marginHorizontal: Dimensions.get("screen").width * 0.015
             }}>
               <Text style={{ color: '#ffffff', }}>Team</Text>
             </View>
 
+            <ScrollView scrollEnabled={true} horizontal={true} showsHorizontalScrollIndicator={false}>
 
-            <ScrollView scrollEnabled={true} horizontal={true}>
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#ffffff" }}> 1 </Text>
-              </View>
+              {Object.keys(data?.defenderQuarterInfo).map((key) => {
+                return (
+                  <View style={{
+                    width: Dimensions.get("screen").width * 0.12,
+                    marginHorizontal: Dimensions.get("screen").width * 0.015,
+                  }}>
+                    <Text style={{ color: "#ffffff" }}>{key}</Text>
+                  </View>
+                )
+              })}
 
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#ffffff" }}> 2 </Text>
-              </View>
-
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#ffffff" }}> 3 </Text>
-              </View>
-
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#ffffff" }}> 4 </Text>
-
-              </View>
             </ScrollView>
           </View>
-
         </View>
-        <View style={{ marginLeft: 18, marginRight: 10, marginTop: 20 }} >
 
+        <View style={{ marginLeft: 18, marginRight: 10, marginTop: 20 }} >
           <View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: 10 }}>
             <View style={{
-              width: Dimensions.get("screen").width * 0.2
+              width: Dimensions.get("screen").width * 0.15,
+              marginHorizontal: Dimensions.get("screen").width * 0.015
             }}>
               <Text style={{ color: '#85ADFF', fontWeight: "bold" }}>{data.defenderName}</Text>
             </View>
 
-            <ScrollView scrollEnabled={true} horizontal={true}>
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.QUARTER_1} </Text>
-              </View>
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.QUARTER_2} </Text>
-              </View>
-
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.QUARTER_3} </Text>
-              </View>
-
-              <View style={{
-                width: Dimensions.get("screen").width * 0.2
-              }}>
-                <Text style={{ color: "#85ADFF", fontWeight: "bold" }}> {data?.defenderQuarterInfo?.Final} </Text>
-              </View>
+            <ScrollView scrollEnabled={true} horizontal={true} showsHorizontalScrollIndicator={false}>
+              {Object.keys(data?.defenderQuarterInfo).map((key) => {
+                return (
+                  <View style={{
+                    width: Dimensions.get("screen").width * 0.12,
+                    marginHorizontal: Dimensions.get("screen").width * 0.015,
+                  }}>
+                    <Text style={{ color: "#85ADFF", fontWeight: "bold" }}>{data?.defenderQuarterInfo[key]} </Text>
+                  </View>
+                )
+              })}
 
             </ScrollView>
           </View>
@@ -178,15 +162,28 @@ function TeamStats({ data, onPress }) {
           <View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: 10 }}>
 
             <View style={{
-              width: Dimensions.get("screen").width * 0.2
+              width: Dimensions.get("screen").width * 0.15,
+              marginHorizontal: Dimensions.get("screen").width * 0.015
             }}>
-              <Text style={{ color: '#ffffff', }}>{data.challengerName}</Text>
+              <Text style={{ color: '#ffffff', }}>{data?.challengerName}</Text>
             </View>
 
 
 
-            <ScrollView scrollEnabled={true} horizontal={true}>
-              <View style={{
+            <ScrollView scrollEnabled={true} horizontal={true} showsHorizontalScrollIndicator={false}>
+
+              {Object.keys(data?.defenderQuarterInfo).map((key) => {
+                return (
+                  <View style={{
+                    width: Dimensions.get("screen").width * 0.12,
+                    marginHorizontal: Dimensions.get("screen").width * 0.015,
+                  }}>
+                    <Text style={{ color: "#ffffff", fontWeight: "bold" }}>{data?.challengerQuarterInfo[key]} </Text>
+                  </View>
+                )
+              })}
+
+              {/* <View style={{
                 width: Dimensions.get("screen").width * 0.2
               }}>
                 <Text style={{ color: "#ffffff" }}> {data?.challengerQuarterInfo?.QUARTER_1} </Text>
@@ -208,7 +205,7 @@ function TeamStats({ data, onPress }) {
                 width: Dimensions.get("screen").width * 0.2
               }}>
                 <Text style={{ color: "#ffffff" }}> {data?.challengerQuarterInfo?.Final} </Text>
-              </View>
+              </View> */}
             </ScrollView>
           </View>
 

@@ -85,6 +85,7 @@ export const AppURLs = {
   getGameInitData: 'log/start/',
   getGameAdvanceStats: 'game/advance/stats/',
   getTeamAdvanceStats: 'team/get/advance/analytics/',
+  logEventData: 'log/event/'
 
 };
 

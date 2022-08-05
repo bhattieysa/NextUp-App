@@ -65,10 +65,11 @@ const CourtRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={title}
           list={activePlayerList}
@@ -81,10 +82,11 @@ const CourtRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
         :
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={title}
           list={activePlayerList}

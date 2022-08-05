@@ -261,4 +261,44 @@ async function insertTeamScore(data) {
   realm.close();
 }
 
-export { insertEvent, insertBluePlayerScore, insertRedPlayerScore, insertTeamScore }
+
+async function getEventDataFromRealm(cb) {
+  const realm = await Realm.open({
+    path: 'NextUpLocalDB/Events',
+    schema: [EventSchema],
+  })
+
+  if (realm) {
+    let task;
+    const res = realm.objects('game_event')
+
+    // console.log("event data retrive---", res)
+    let resData = []
+    if (res) {
+      res.forEach((obj) => {
+        let res_obj = {
+          _id: obj._id,
+          firstPlayerId: obj.firstPlayerId,
+          secondPlayerId: obj.secondPlayerId,
+          gameAction: obj.gameAction,
+          eventTime: obj.eventTime,
+          court: obj.court,
+          courtXCoord: obj.courtXCoord,
+          courtYCoord: obj.courtYCoord,
+          quarter: obj.quarter,
+        }
+        resData.push(res_obj)
+      })
+
+    }
+    realm.close();
+    cb(true, resData);
+  }
+}
+
+
+export {
+  insertEvent, insertBluePlayerScore,
+  insertRedPlayerScore, insertTeamScore,
+  getEventDataFromRealm
+}

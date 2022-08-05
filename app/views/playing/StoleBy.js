@@ -47,10 +47,11 @@ const StoleBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentVie
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={title}
           list={activePlayerList}
@@ -67,10 +68,11 @@ const StoleBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentVie
         :
         <ScoreActiveTeamPlayer
           itemStyle={{
-            width: width / 8.5,
-            height: width / 8.5,
+            // width: width / 8.5,
+            // height: width / 8.5,
             marginTop: 30,
-            borderRadius: (width / 8.5) / 2,
+            // borderRadius: (width / 8.5) / 2,
+            width: 90, height: 90, borderRadius: 90 / 2,
           }}
           heading={title}
           list={activePlayerList}
