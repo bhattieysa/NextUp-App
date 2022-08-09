@@ -238,7 +238,7 @@ class CoachAddPlayer extends Component {
     var season = this.props.navigation.state.params.teamDetails?.seasonType;
     // getObject('UserId').then((obj) => {
     this.setState({ loading: true }, () => {
-      this.props.dispatch(addPlayerToTeam(teamId, objec, outerIndex, season, (res, resData) => {
+      this.props.dispatch(addPlayerToTeam(teamId, objec, outerIndex, "2020-21", (res, resData) => {
         // console.log(resData); // Need to change here showing alert on api fail also
         // this.setState({ loading: false }, () => {
         // setTimeout(() => {

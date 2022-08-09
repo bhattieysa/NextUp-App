@@ -7,7 +7,7 @@ const WhoShootFreeThrow = ({ playersList, activePlayerId, isBlueTeamPlaying, set
   currentView, toggleSwitch, selectedPlayer, setCourtFreeThrow, setPlayerScore,
   event, setEvent }) => {
 
-  const [activePlayerList, setActivePlayerList] = useState(playersList);
+  const [activePlayerList, setActivePlayerList] = useState(null);
   const { width, height } = useDimensions().window;
   const fullPlayerList = playersList;
 
@@ -30,7 +30,7 @@ const WhoShootFreeThrow = ({ playersList, activePlayerId, isBlueTeamPlaying, set
     if (e == "other team") {
       setCourtFreeThrow(e);
     } else {
-      setCourtFreeThrow(e.playerId);
+      setCourtFreeThrow(e);
     }
     // setPlayerScore(e, 'thr')
     setCurrentView('madeMissedScreen');
@@ -38,51 +38,58 @@ const WhoShootFreeThrow = ({ playersList, activePlayerId, isBlueTeamPlaying, set
   }
 
   return (
-    <View style={{ paddingVertical: 20, }}>
-      {isBlueTeamPlaying ?
-        <ScoreActiveTeamPlayer
-          itemStyle={{
-            // width: width / 8.5,
-            // height: width / 8.5,
-            marginTop: 30,
-            // borderRadius: (width / 8.5) / 2,
-            width: 90, height: 90, borderRadius: 90 / 2,
-          }}
-          heading={'Who shooting the free throw ?'}
-          list={activePlayerList}
-          isBlueTeam={isBlueTeamPlaying}
-          activePlayer={selectedPlayer}
-          onPress={(e) => {
-            // if (e == 'other team') {
-            selectPlayer(e)
-            // } else {
-            //   selectPlayer(e.id)
-            // }
-          }} />
+    <>
+      {activePlayerList != null ?
+        <View style={{ paddingVertical: 20, }}>
+          {isBlueTeamPlaying ?
+            <ScoreActiveTeamPlayer
+              itemStyle={{
+                // width: width / 8.5,
+                // height: width / 8.5,
+                marginTop: 30,
+                // borderRadius: (width / 8.5) / 2,
+                width: 90, height: 90, borderRadius: 90 / 2,
+              }}
+              heading={'Who shooting the free throw ?'}
+              list={activePlayerList}
+              isBlueTeam={isBlueTeamPlaying}
+              activePlayer={selectedPlayer}
+              onPress={(e) => {
+                // if (e == 'other team') {
+                selectPlayer(e)
+                // } else {
+                //   selectPlayer(e.id)
+                // }
+              }} />
 
+            :
+            <ScoreActiveTeamPlayer
+              itemStyle={{
+                // width: width / 8.5,
+                // height: width / 8.5,
+                marginTop: 30,
+                // borderRadius: (width / 8.5) / 2,
+                width: 90, height: 90, borderRadius: 90 / 2,
+              }}
+              heading={'Who shooting the free throw ?'}
+              list={activePlayerList}
+              isBlueTeam={isBlueTeamPlaying}
+              activePlayer={selectedPlayer}
+              onPress={(e) => {
+                // if (e == 'other team') {
+                selectPlayer(e)
+                // } else {
+                //   selectPlayer(e.id)
+                // }
+              }} />
+          }
+
+        </View>
         :
-        <ScoreActiveTeamPlayer
-          itemStyle={{
-            // width: width / 8.5,
-            // height: width / 8.5,
-            marginTop: 30,
-            // borderRadius: (width / 8.5) / 2,
-            width: 90, height: 90, borderRadius: 90 / 2,
-          }}
-          heading={'Who shooting the free throw ?'}
-          list={activePlayerList}
-          isBlueTeam={isBlueTeamPlaying}
-          activePlayer={selectedPlayer}
-          onPress={(e) => {
-            // if (e == 'other team') {
-            selectPlayer(e)
-            // } else {
-            //   selectPlayer(e.id)
-            // }
-          }} />
+        <></>
       }
-
-    </View>)
+    </>
+  )
 }
 
 export { WhoShootFreeThrow }

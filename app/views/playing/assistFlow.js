@@ -5,6 +5,7 @@ import { ScoreActiveTeamPlayer } from "../../components/common/ActiveTeamPalyer"
 import { AssistTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import { Colors, Fonts } from "../../constants";
 import PlayGroundBox from "../../components/common/cort/PlayGroundBox";
+import { Court_ptr } from "../../constants/constant";
 
 
 const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
@@ -13,7 +14,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
   setCourtFreeThrow, courtFreeThrowPlayer,
   setPlayerScore, event, setEvent, setTypeOfEvent,
   setIsEventCompleted, setAssistFlowPtr, setAssistFlowCurrentView,
-  assistFlowCurrentView, setCourtAreaClick, courtAreaClick }) => {
+  assistFlowCurrentView, setCourtAreaClick, courtAreaClick, selectedAssistPlayer }) => {
 
   const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
@@ -30,8 +31,6 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
   const fullPlayerList = playersList;
 
   useEffect(() => {
-
-
     setAssistFlowView('assistFlow_ast')
     removeActivePlayerFromList();
   }, []);
@@ -93,7 +92,10 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
       }}>
 
         {onAssist == false ?
-          <View style={{ width: '90%', alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{
+            width: '100%', alignItems: 'center',
+            justifyContent: 'center'
+          }}>
             {isBlueTeamPlaying ?
               <AssistTeamPlayer
                 itemStyle={{
@@ -183,7 +185,9 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                   setEvent={setEvent}
                   setIsEventCompleted={setIsEventCompleted}
                   setAssistFlowCurrentView={setAssistFlowCurrentView}
-
+                  selectedPlayer={selectedPlayer}
+                  selectedAssistPlayer={selectedAssistPlayer}
+                  courtAreaClick={courtAreaClick}
                 />
                 :
                 onFoul == false ?
@@ -284,13 +288,16 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
   }
 
   return (
-    <View style={{ paddingVertical: 20, }}>
+    <View style={{
+      width: '100%', alignItems: 'center',
+      justifyContent: 'center'
+    }}>
       {isBlueTeamPlaying ?
         <ScoreActiveTeamPlayer
           itemStyle={{
             // width: width / 8.5,
             // height: width / 8.5,
-            marginTop: 30,
+            marginTop: 10,
             // borderRadius: (width / 8.5) / 2,
             width: 90, height: 90, borderRadius: 90 / 2,
           }}
@@ -309,7 +316,7 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
           itemStyle={{
             // width: width / 8.5,
             // height: width / 8.5,
-            marginTop: 30,
+            marginTop: 10,
             // borderRadius: (width / 8.5) / 2,
             width: 90, height: 90, borderRadius: 90 / 2,
           }}
@@ -598,14 +605,25 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
 
 const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
-  setOnThrow, event, setEvent, setIsEventCompleted, setAssistFlowCurrentView }) => {
+  setOnThrow, event, setEvent, setIsEventCompleted, setAssistFlowCurrentView,
+  courtAreaClick }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
+  const [ptsPoints, setPtsPoints] = useState("");
   // const fullPlayerList = playersList;
 
   useEffect(() => {
     // console.log("is blueee", isBlueTeamPlaying, "..")
     // removeActivePlayerFromList();
+    if (courtAreaClick !== '' && courtAreaClick != undefined) {
+      debugger
+      let selected_court = courtAreaClick.court_nm;
+      if (Court_ptr.ptr2.includes(selected_court)) {
+        setPtsPoints(2)
+      } else {
+        setPtsPoints(3)
+      }
+    }
   }, []);
 
   const removeActivePlayerFromList = () => {
@@ -638,22 +656,27 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
           alignItems: 'center'
           // backgroundColor: 'green'
         }}>
-          <View style={{ marginTop: 20, }}>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              Pippen Jr.
-            </Text>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              +3pt Shot
-            </Text>
-          </View>
+          {selectedPlayer != '' & selectedPlayer != undefined ?
+            <View style={{ marginTop: 20, }}>
+              <Text style={{
+                color: Colors.newGrayFontColor, fontSize: 24,
+                lineHeight: 28, fontFamily: Fonts.Regular
+              }}
+              >
+                {`+${ptsPoints}pt Shot By`}
+              </Text>
+              <Text style={{
+                color: Colors.newGrayFontColor, fontSize: 24,
+                lineHeight: 28, fontFamily: Fonts.Regular
+              }}
+              >
+                {selectedPlayer?.playerName}
+              </Text>
+
+            </View>
+            :
+            <></>
+          }
           {selectedAssistPlayer != '' & selectedAssistPlayer != undefined ?
             <View style={{ marginTop: 20, }}>
               <Text style={{
@@ -668,7 +691,7 @@ const ThrowScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
                 lineHeight: 28, fontFamily: Fonts.Regular
               }}
               >
-                Chris Paul
+                {selectedAssistPlayer?.playerName}
               </Text>
             </View>
             : <></>
@@ -794,23 +817,26 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
           alignItems: 'center'
           // backgroundColor: 'green'
         }}>
-          <View style={{ marginTop: 20, }}>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              Pippen Jr.
-            </Text>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              +3pt Shot
-            </Text>
-          </View>
-          {selectedAssistPlayer != '' & selectedAssistPlayer != undefined ?
+          {courtFreeThrowPlayer != '' && courtFreeThrowPlayer != undefined ?
+            <View style={{ marginTop: 20, alignItems: 'center' }}>
+              <Text style={{
+                color: Colors.newGrayFontColor, fontSize: 24,
+                lineHeight: 28, fontFamily: Fonts.Regular
+              }}
+              >
+                Free Throw Shot By
+              </Text>
+              <Text style={{
+                color: Colors.newGrayFontColor, fontSize: 24,
+                lineHeight: 28, fontFamily: Fonts.Regular
+              }}
+              >
+                {courtFreeThrowPlayer?.playerName}
+              </Text>
+            </View>
+            : <></>
+          }
+          {/* {selectedAssistPlayer != '' & selectedAssistPlayer != undefined ?
             <View style={{ marginTop: 20, }}>
               <Text style={{
                 color: Colors.newGrayFontColor, fontSize: 24,
@@ -828,7 +854,7 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
               </Text>
             </View>
             : <></>
-          }
+          } */}
 
           {/* <View style={{
             justifyContent: 'center',

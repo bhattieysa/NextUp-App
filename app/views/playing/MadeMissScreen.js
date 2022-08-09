@@ -50,23 +50,30 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
           alignItems: 'center'
           // backgroundColor: 'green'
         }}>
-          <View style={{ marginTop: 20, }}>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              Pippen Jr.
-            </Text>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              +3pt Shot
-            </Text>
-          </View>
-          {selectedAssistPlayer != '' & selectedAssistPlayer != undefined ?
+
+          {courtFreeThrowPlayer != '' && courtFreeThrowPlayer != undefined ?
+            <View style={{ marginTop: 20, alignItems: 'center' }}>
+              <Text style={{
+                color: Colors.newGrayFontColor, fontSize: 24,
+                lineHeight: 28, fontFamily: Fonts.Regular
+              }}
+              >
+                Free Throw Shot By
+              </Text>
+              <Text style={{
+                color: Colors.newGrayFontColor, fontSize: 24,
+                lineHeight: 28, fontFamily: Fonts.Regular
+              }}
+              >
+                {courtFreeThrowPlayer?.playerName}
+              </Text>
+            </View>
+            : <></>
+          }
+
+
+
+          {/* {selectedAssistPlayer != '' & selectedAssistPlayer != undefined ?
             <View style={{ marginTop: 20, }}>
               <Text style={{
                 color: Colors.newGrayFontColor, fontSize: 24,
@@ -84,7 +91,7 @@ const MadeMissScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCur
               </Text>
             </View>
             : <></>
-          }
+          } */}
 
           {/* <View style={{
             justifyContent: 'center',

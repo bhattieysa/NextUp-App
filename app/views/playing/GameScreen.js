@@ -6,7 +6,7 @@ import DropDownModal from "../../components/common/playing_header/DropDownModal"
 import PlayGroundBox from "../../components/common/cort/PlayGroundBox";
 import { ActiveTeamPlayer, ScoreActiveTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import PlaygroundScreenBtn from "../../components/common/PlaygroundScreenBtn";
-import { getGameInitialData, sendEventData } from '../../actions/home';
+import { getGameInitialData, getTeamCurrentLineUp, sendEventData, sendPlayerScoreData } from '../../actions/home';
 import { connect } from 'react-redux';
 // import axios from "axios";
 // import SyncStorage from 'sync-storage';
@@ -33,7 +33,10 @@ import { FreeThrowPlayerSelect } from './freeThrowPlayerSelect';
 import { FreeThrowCount } from './freeThrowCount';
 import {
   insertEvent, insertBluePlayerScore, insertRedPlayerScore,
-  insertTeamScore, getEventDataFromRealm
+  insertTeamScore, getEventDataFromRealm, getPlayerScoreFromRealm,
+  insertInitialData,
+  getInitialData,
+  getTeamScore,
 } from '../../middleware/localDb';
 import { Court_ptr } from '../../constants/constant';
 import { CourtRebound } from './CourtRebound';
@@ -114,27 +117,23 @@ const GameScreen = (props) => {
   const [event, setEvent] = useState([])
   const [isEventCompleted, setIsEventCompleted] = useState(false);
   const [typeOfEvent, setTypeOfEvent] = useState('');
-  const [playerScore, setPlayerScore] = useState('')
+  const [bluePlayerScore, setBluePlayerScore] = useState('')
+  const [redPlayerScore, setRedPlayerScore] = useState('')
   const [blueTeamScore, setBlueTeamScore] = useState(0)
   const [redTeamScore, setRedTeamScore] = useState(0)
   const [assistFlowCurrentView, setAssistFlowCurrentView] = useState('')
   const [quarterList, setQuarterList] = useState('');
   const [gameId, setGameId] = useState('');
+  const [eventId, setEventId] = useState('');
   // const [selected_quarter, setSelectedQuarter] = useState('');
 
 
-  useEffect(() => {
-    debugger
-    StatusBar.setHidden(true)
-    Orientation.lockToLandscapeRight()
-    return () => {
-      StatusBar.setHidden(false)
-      Orientation.lockToPortrait()
-    };
+  // useEffect(() => {
+  //   debugger
 
-    // StatusBar.setTranslucent(true);
-    // StatusBar.setBackgroundColor("transparent");
-  }, []);
+
+
+  // }, []);
 
   useEffect(() => {
     if (isEventCompleted == true) {
@@ -145,15 +144,20 @@ const GameScreen = (props) => {
   }, [isEventCompleted])
 
   useEffect(() => {
-    if (playerScore !== '' && playerScore !== undefined) {
+    if (bluePlayerScore !== '' && bluePlayerScore !== undefined) {
       handleScoreInsert();
     }
-  }, [playerScore])
+  }, [bluePlayerScore])
+
+  useEffect(() => {
+    if (redPlayerScore !== '' && redPlayerScore !== undefined) {
+      handleScoreInsert();
+    }
+  }, [redPlayerScore])
 
   useEffect(() => {
     if (blueTeamScore !== '' && blueTeamScore !== undefined) {
       handleBlueTeamScoreInsert()
-
     }
   }, [blueTeamScore])
 
@@ -163,189 +167,304 @@ const GameScreen = (props) => {
     }
   }, [redTeamScore])
 
-  useEffect(() => {
-    // const token = SyncStorage.get('token');
+  const setDataToState = async (resData, cb) => {
     debugger
-    props.dispatch(getGameInitialData(async (res, response) => {
-      if (res) {
+    const r = resData?.initialData;
+    totalResponse = r;
+    await setChallengerTeam(r.challengerTeamInfo)
+    await setDefenderTeam(r.defenderTeamInfo)
+    await setQuarterList(r.quarters)
+    await setPreSelectedQuarter(resData?.currentQuarter)
+    await setGameId(r.gameId)
+    await setEventId(r.eventId)
+    debugger
+
+    setBlueTeamPlayer(resData?.activePlayer?.blueTeamList);
+    blueTeamList = resData?.activePlayer?.blueTeamList;
+    blueTeamListSub = resData?.activePlayer?.blueTeamListSub
+
+    setRedTeamPlayer(resData?.activePlayer?.redTeamList);
+    redTeamList = resData?.activePlayer?.redTeamList;
+    redTeamListSub = resData?.activePlayer?.redTeamListSub
+    cb(true);
+  }
+
+  useEffect(() => {
+    debugger
+    StatusBar.setHidden(true)
+    Orientation.lockToLandscapeRight()
+    getInitialData(async (initRes, resData) => {
+      if (initRes) {
         debugger
-        const r = response.data.data;
-        totalResponse = r;
-        await setChallengerTeam(r.challengerTeamInfo)
-        await setDefenderTeam(r.defenderTeamInfo)
-        await setQuarterList(r.quarters)
-        await setPreSelectedQuarter(r.quarters[0])
-        await setGameId(r.gameId)
-        const bTeam = r.challengerTeamKpi.filter(bTeam => bTeam.inSquad == true).map((bTeam) => {
-          return {
-            jerseyNumber: bTeam.jerseyNumber,
-            playerId: bTeam.playerId,
-            playerProfilePictureUrl: bTeam.playerProfilePictureUrl,
-            playerName: bTeam.playerName,
+        await setDataToState(resData, (res1) => {
+          if (res1) {
+            getTeamScore((score_res, scoreData) => {
+              if (score_res) {
+                scoreData.map((obj1) => {
+                  if (obj1?.isChallenger == true) {
+                    setBlueTeamScore(obj1?.currentScore);
+                  } else {
+                    setRedTeamScore(obj1?.currentScore);
+                  }
+                })
+                setCurrentView('playing')
+              } else {
+                setCurrentView('playing')
+              }
+            })
+
           }
         })
-
-        let i = 0
-        let teamList = []
-        await bTeam.map(function (item) {
-          teamList.push({
-            "id": ++i,
-            "number": item.jerseyNumber,
-            "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber,
-            "playerProfilePictureUrl": item.playerProfilePictureUrl,
-            "playerName": item.playerName,
-            "ast": 0,
-            "pts": 0,
-            "reb": 0,
-            "stl": 0,
-            "blk": 0,
-            "fl": 0
-          });
-        })
-
-        if (blueTeamList != teamList) {
-          setBlueTeamPlayer(teamList);
-          // setBlueTeamScore(0)
-          blueTeamList = teamList
-        }
-
-        const rTeam = r.defenderTeamKpi.filter(rTeam => rTeam.inSquad == true).map((rTeam) => {
-          return {
-            jerseyNumber: rTeam.jerseyNumber,
-            playerId: rTeam.playerId,
-            playerProfilePictureUrl: rTeam.playerProfilePictureUrl,
-            playerName: rTeam.playerName,
-          }
-        })
-
-        i = 0
-        teamList = []
-        await rTeam.map(function (item) {
-          teamList.push({
-            "id": ++i,
-            "number": item.jerseyNumber,
-            "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber,
-            "playerProfilePictureUrl": item.playerProfilePictureUrl,
-            "playerName": item.playerName,
-            "ast": 0,
-            "pts": 0,
-            "reb": 0,
-            "stl": 0,
-            "blk": 0,
-            "fl": 0
-          });
-        })
-        if (redTeamList != teamList) {
-          setRedTeamPlayer(redTeamList)
-          // setRedTeamScore(0)
-          redTeamList = teamList
-
-        }
-
-
-        const bTeamSub = r.challengerTeamKpi.filter(bTeam => bTeam.inSquad == false).map((bTeam) => {
-          return {
-            jerseyNumber: bTeam.jerseyNumber,
-            playerId: bTeam.playerId,
-            playerProfilePictureUrl: bTeam.playerProfilePictureUrl,
-            playerName: bTeam.playerName,
-          }
-        })
-
-        i = 0
-        let teamListSub = []
-        await bTeamSub.map(function (item) {
-          teamListSub.push({
-            "id": ++i,
-            "number": item.jerseyNumber,
-            "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber,
-            "playerProfilePictureUrl": item.playerProfilePictureUrl,
-            "playerName": item.playerName,
-            "ast": 0,
-            "pts": 0,
-            "reb": 0,
-            "stl": 0,
-            "blk": 0,
-            "fl": 0
-          });
-        })
-
-        if (blueTeamListSub != teamListSub)
-          blueTeamListSub = teamListSub
-
-
-        const rTeamSub = r.defenderTeamKpi.filter(rTeam => rTeam.inSquad == false).map((rTeam) => {
-          return {
-            jerseyNumber: rTeam.jerseyNumber,
-            playerId: rTeam.playerId,
-            playerProfilePictureUrl: rTeam.playerProfilePictureUrl,
-            playerName: rTeam.playerName,
-          }
-        })
-
-        i = 0
-        teamListSub = []
-        await rTeamSub.map(function (item) {
-          teamListSub.push({
-            "id": ++i,
-            "number": item.jerseyNumber,
-            "playerId": item.playerId,
-            "jerseyNumber": item.jerseyNumber,
-            "playerProfilePictureUrl": item.playerProfilePictureUrl,
-            "playerName": item.playerName,
-            "ast": 0,
-            "pts": 0,
-            "reb": 0,
-            "stl": 0,
-            "blk": 0,
-            "fl": 0
-          });
-        })
-        if (redTeamListSub != teamListSub)
-          redTeamListSub = teamListSub
-
-
-
-        setCurrentView('playing')
 
       } else {
-        console.log('Error', error)
-      }
-    }))
-    // axios.post('http://35.184.198.142:8085/v1/log/start/165584329697608/165584356686406/1652921974198', {}, {
-    //     headers: {
-    //         'Authorization': `Bearer ${token}`
-    //     }
-    // })
-    //     .then(async (response) => {
+        props.dispatch(getGameInitialData(async (res, response) => {
+          if (res) {
+            debugger
+            const r = response.data.data;
+            totalResponse = r;
+            await setChallengerTeam(r.challengerTeamInfo)
+            await setDefenderTeam(r.defenderTeamInfo)
+            await setQuarterList(r.quarters)
+            await setPreSelectedQuarter(r.quarters[0])
+            await setGameId(r.gameId)
+            await setEventId(r.id)
+            const bTeam = r.challengerTeamKpi.filter(bTeam => bTeam.inSquad == true).map((bTeam) => {
+              return {
+                jerseyNumber: bTeam.jerseyNumber,
+                playerId: bTeam.playerId,
+                playerProfilePictureUrl: bTeam.playerProfilePictureUrl,
+                playerName: bTeam.playerName,
+              }
+            })
 
+            let i = 0
+            let teamList = []
+            await bTeam.map(function (item) {
+              teamList.push({
+                "id": ++i,
+                "number": item.jerseyNumber,
+                "playerId": item.playerId,
+                "jerseyNumber": item.jerseyNumber,
+                "playerProfilePictureUrl": item.playerProfilePictureUrl,
+                "playerName": item.playerName,
+                "ast": 0,
+                "pts": 0,
+                "reb": 0,
+                "stl": 0,
+                "blk": 0,
+                "fl": 0
+              });
+            })
 
-    //     })
-    //     .catch(function (error) {
-    //         console.log('Error', error)
-    //     });
-
-
-
-  }, [])
-
-  const sendDataToServer = () => {
-    getEventDataFromRealm((res, dbData) => {
-      if (res) {
-        if (dbData.length > 0) {
-          console.log("Event Data_arrr--", dbData.length);
-          props.dispatch(sendEventData(gameId, dbData, (res, resData) => {
-            if (res) {
-              console.log("ResData", resData);
+            if (blueTeamList != teamList) {
+              setBlueTeamPlayer(teamList);
+              // setBlueTeamScore(0)
+              blueTeamList = teamList
             }
-          }))
-        }
+
+            const rTeam = r.defenderTeamKpi.filter(rTeam => rTeam.inSquad == true).map((rTeam) => {
+              return {
+                jerseyNumber: rTeam.jerseyNumber,
+                playerId: rTeam.playerId,
+                playerProfilePictureUrl: rTeam.playerProfilePictureUrl,
+                playerName: rTeam.playerName,
+              }
+            })
+
+            i = 0
+            teamList = []
+            await rTeam.map(function (item) {
+              teamList.push({
+                "id": ++i,
+                "number": item.jerseyNumber,
+                "playerId": item.playerId,
+                "jerseyNumber": item.jerseyNumber,
+                "playerProfilePictureUrl": item.playerProfilePictureUrl,
+                "playerName": item.playerName,
+                "ast": 0,
+                "pts": 0,
+                "reb": 0,
+                "stl": 0,
+                "blk": 0,
+                "fl": 0
+              });
+            })
+            if (redTeamList != teamList) {
+              setRedTeamPlayer(redTeamList)
+              // setRedTeamScore(0)
+              redTeamList = teamList
+
+            }
+
+
+            const bTeamSub = r.challengerTeamKpi.filter(bTeam => bTeam.inSquad == false).map((bTeam) => {
+              return {
+                jerseyNumber: bTeam.jerseyNumber,
+                playerId: bTeam.playerId,
+                playerProfilePictureUrl: bTeam.playerProfilePictureUrl,
+                playerName: bTeam.playerName,
+              }
+            })
+
+            i = 0
+            let teamListSub = []
+            await bTeamSub.map(function (item) {
+              teamListSub.push({
+                "id": ++i,
+                "number": item.jerseyNumber,
+                "playerId": item.playerId,
+                "jerseyNumber": item.jerseyNumber,
+                "playerProfilePictureUrl": item.playerProfilePictureUrl,
+                "playerName": item.playerName,
+                "ast": 0,
+                "pts": 0,
+                "reb": 0,
+                "stl": 0,
+                "blk": 0,
+                "fl": 0
+              });
+            })
+
+            if (blueTeamListSub != teamListSub)
+              blueTeamListSub = teamListSub
+
+
+            const rTeamSub = r.defenderTeamKpi.filter(rTeam => rTeam.inSquad == false).map((rTeam) => {
+              return {
+                jerseyNumber: rTeam.jerseyNumber,
+                playerId: rTeam.playerId,
+                playerProfilePictureUrl: rTeam.playerProfilePictureUrl,
+                playerName: rTeam.playerName,
+              }
+            })
+
+            i = 0
+            teamListSub = []
+            await rTeamSub.map(function (item) {
+              teamListSub.push({
+                "id": ++i,
+                "number": item.jerseyNumber,
+                "playerId": item.playerId,
+                "jerseyNumber": item.jerseyNumber,
+                "playerProfilePictureUrl": item.playerProfilePictureUrl,
+                "playerName": item.playerName,
+                "ast": 0,
+                "pts": 0,
+                "reb": 0,
+                "stl": 0,
+                "blk": 0,
+                "fl": 0
+              });
+            })
+            if (redTeamListSub != teamListSub)
+              redTeamListSub = teamListSub
+
+
+            let initData = {
+              "challengerTeamInfo": r?.challengerTeamInfo,
+              "challengerTeamKpi": r?.challengerTeamKpi,
+              "coachId": r?.coachId,
+              "court": r?.court,
+              "defenderTeamInfo": r?.defenderTeamInfo,
+              "defenderTeamKpi": r?.defenderTeamKpi,
+              "gameId": r?.gameId,
+              "eventId": r?.id,
+              "gamesPoint": r?.gamesPoint,
+              "loggingDate": r?.loggingDate,
+              "quarters": r?.quarters,
+            }
+
+            let activePlayers = {
+              "blueTeamList": blueTeamList,
+              "redTeamList": redTeamList,
+              "blueTeamListSub": blueTeamListSub,
+              "redTeamListSub": redTeamListSub,
+            }
+            let initDataObj = {
+              _id: 1,
+              initialData: [JSON.stringify(initData)],
+              activePlayer: [JSON.stringify(activePlayers)],
+              isGameStarted: true,
+              currentQuarter: JSON.stringify(r?.quarters[0]),
+            }
+            insertInitialData(initDataObj);
+            setCurrentView('playing')
+
+          } else {
+            console.log('Error', error)
+          }
+        }))
 
       }
     })
+
+    return () => {
+      StatusBar.setHidden(false)
+      Orientation.lockToPortrait()
+    };
+  }, [])
+
+  const sendDataToServer = () => {
+    updateInitData()
+    setTimeout(() => {
+      getEventDataFromRealm((res, dbData) => {
+        if (res) {
+          if (dbData.length > 0) {
+            console.log("Event Data_arrr--", dbData.length);
+            props.dispatch(sendEventData(eventId, dbData, (res1, resData) => {
+              if (res1) {
+                console.log("PlayerEventtt send")
+                getPlayerScoreFromRealm((res2, playerData) => {
+                  if (res2) {
+                    if (playerData.length > 0) {
+                      props.dispatch(sendPlayerScoreData(eventId, playerData, (res3, resData1) => {
+                        if (res3) {
+                          console.log("PlayerScore send")
+                        }
+                      }))
+                    }
+                    console.log("PlayerScoreee", resData)
+                  }
+                })
+              }
+            }))
+          }
+        }
+      })
+    }, 2000);
+
+  }
+
+
+  const updateInitData = () => {
+    let initData = {
+      "challengerTeamInfo": totalResponse?.challengerTeamInfo,
+      "challengerTeamKpi": totalResponse?.challengerTeamKpi,
+      "coachId": totalResponse?.coachId,
+      "court": totalResponse?.court,
+      "defenderTeamInfo": totalResponse?.defenderTeamInfo,
+      "defenderTeamKpi": totalResponse?.defenderTeamKpi,
+      "gameId": totalResponse?.gameId,
+      "gamesPoint": totalResponse?.gamesPoint,
+      "loggingDate": totalResponse?.loggingDate,
+      "quarters": totalResponse?.quarters,
+    }
+
+    let activePlayers = {
+      "blueTeamList": blueTeamList,
+      "redTeamList": redTeamList,
+      "blueTeamListSub": blueTeamListSub,
+      "redTeamListSub": redTeamListSub,
+    }
+    let initDataObj = {
+      _id: 1,
+      initialData: [JSON.stringify(initData)],
+      activePlayer: [JSON.stringify(activePlayers)],
+      isGameStarted: true,
+      currentQuarter: JSON.stringify(preSelectedQuarter),
+    }
+    debugger
+    insertInitialData(initDataObj);
   }
 
   const handleBtnEnable = () => {
@@ -357,8 +476,7 @@ const GameScreen = (props) => {
 
   }
 
-  const handlePlayerScore = (playerData, key) => {
-    debugger
+  const handleBlueTeamScore = (playerData, key) => {
     let pts_point = 0;
     if (key == 'pts') {
       if (courtAreaClick !== '' && courtAreaClick != undefined) {
@@ -371,15 +489,9 @@ const GameScreen = (props) => {
       }
     }
     debugger
-    //  else if (key == 'ast_pts') {
-    //   if (assistFlowPtr == 'ptr2') {
-    //     pts_point = 2;
-    //   } else {
-    //     pts_point = 3;
-    //   }
-    // }
-    if (playerScore != '' & playerScore != null) {
-      let playerScoreData = playerScore;
+
+    if (bluePlayerScore != '' && bluePlayerScore != null) {
+      let playerScoreData = bluePlayerScore;
       let newPlayerData = [];
       debugger
       playerScoreData.forEach((itm) => {
@@ -403,69 +515,37 @@ const GameScreen = (props) => {
         }
       })
 
-      if (isEnabled == false) {
-        let blueTeamData = blueTeamList;
-        let newBlueData = [];
-        debugger
-        blueTeamList.forEach((blObj) => {
-          if (blObj.playerId == playerData.playerId) {
-            let obj = {
-              "id": blObj.id,
-              "number": blObj.number,
-              "playerId": blObj.playerId,
-              "jerseyNumber": blObj.jerseyNumber,
-              "playerProfilePictureUrl": blObj.playerProfilePictureUrl,
-              "playerName": blObj.playerName,
-              "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
-              "pts": key == 'pts' ? blObj.pts + pts_point : blObj.pts,
-              "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
-              "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
-              "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
-              "fl": key == 'fl' ? blObj.fl + 1 : blObj.fl,
-            }
-            debugger
-            newBlueData.push(obj);
-          } else {
-            newBlueData.push(blObj);
-          }
-        })
-        debugger
-        if (key == 'pts') {
-          setBlueTeamScore(blueTeamScore + pts_point)
-        }
-        blueTeamList = newBlueData;
-      } else {
-        let redTeamData = redTeamList;
-        let newRedData = [];
-        redTeamList.forEach((rdObj) => {
-          if (rdObj.playerId == playerData.playerId) {
-            let obj = {
-              "id": rdObj.id,
-              "number": rdObj.number,
-              "playerId": rdObj.playerId,
-              "jerseyNumber": rdObj.jerseyNumber,
-              "playerProfilePictureUrl": rdObj.playerProfilePictureUrl,
-              "playerName": rdObj.playerName,
-              "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
-              "pts": key == 'pts' ? rdObj.pts + pts_point : rdObj.pts,
-              "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
-              "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
-              "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
-              "fl": key == 'fl' ? rdObj.fl + 1 : rdObj.fl,
-            }
-            newRedData.push(obj);
-          } else {
-            newRedData.push(rdObj);
-          }
-        })
-        if (key == 'pts') {
-          setRedTeamScore(redTeamScore + pts_point)
-        }
-        redTeamList = newRedData;
-      }
-
+      let newBlueData = [];
       debugger
-      setPlayerScore(newPlayerData);
+      blueTeamList.forEach((blObj) => {
+        if (blObj.playerId == playerData.playerId) {
+          let obj = {
+            "id": blObj.id,
+            "number": blObj.number,
+            "playerId": blObj.playerId,
+            "jerseyNumber": blObj.jerseyNumber,
+            "playerProfilePictureUrl": blObj.playerProfilePictureUrl,
+            "playerName": blObj.playerName,
+            "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
+            "pts": key == 'pts' ? blObj.pts + pts_point : blObj.pts,
+            "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
+            "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
+            "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
+            "fl": key == 'fl' ? blObj.fl + 1 : blObj.fl,
+          }
+          debugger
+          newBlueData.push(obj);
+        } else {
+          newBlueData.push(blObj);
+        }
+      })
+      debugger
+      if (key == 'pts') {
+        setBlueTeamScore(blueTeamScore + pts_point)
+      }
+      blueTeamList = newBlueData;
+      debugger
+      setBluePlayerScore(newPlayerData);
 
     } else {
       debugger
@@ -480,88 +560,181 @@ const GameScreen = (props) => {
         "stl": key == 'stl' ? 1 : 0,
         "blk": key == 'blk' ? 1 : 0,
         "fl": key == 'fl' ? 1 : 0,
-        // "profilePicUrl": playerData.profilePicUrl,
       }
       debugger
 
-      if (isEnabled == false) {
-        let blueTeamData = blueTeamList;
-        let newBlueData = [];
-        blueTeamList.forEach((blObj) => {
-          if (blObj.playerId == playerData.playerId) {
-            let obj = {
-              "id": blObj.id,
-              "number": blObj.number,
-              "playerId": blObj.playerId,
-              "jerseyNumber": blObj.jerseyNumber,
-              "playerProfilePictureUrl": blObj.playerProfilePictureUrl,
-              "playerName": blObj.playerName,
-              "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
-              "pts": key == 'pts' ? blObj.pts + pts_point : blObj.pts,
-              "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
-              "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
-              "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
-              "fl": key == 'fl' ? blObj.fl + 1 : blObj.fl,
-            }
-            debugger
-            newBlueData.push(obj);
-
-          } else {
-            debugger
-            newBlueData.push(blObj);
+      // if (isEnabled == false) {
+      let blueTeamData = blueTeamList;
+      let newBlueData = [];
+      blueTeamList.forEach((blObj) => {
+        if (blObj.playerId == playerData.playerId) {
+          let obj = {
+            "id": blObj.id,
+            "number": blObj.number,
+            "playerId": blObj.playerId,
+            "jerseyNumber": blObj.jerseyNumber,
+            "playerProfilePictureUrl": blObj.playerProfilePictureUrl,
+            "playerName": blObj.playerName,
+            "ast": key == 'ast' ? blObj.ast + 1 : blObj.ast,
+            "pts": key == 'pts' ? blObj.pts + pts_point : blObj.pts,
+            "reb": key == 'reb' ? blObj.reb + 1 : blObj.reb,
+            "stl": key == 'stl' ? blObj.stl + 1 : blObj.stl,
+            "blk": key == 'blk' ? blObj.blk + 1 : blObj.blk,
+            "fl": key == 'fl' ? blObj.fl + 1 : blObj.fl,
           }
-        })
-        debugger
-        if (key == 'pts') {
-          setBlueTeamScore(pts_point);
+          debugger
+          newBlueData.push(obj);
 
+        } else {
+          debugger
+          newBlueData.push(blObj);
         }
-
-        blueTeamList = newBlueData;
-
-      } else {
-        let redTeamData = redTeamList;
-        let newRedData = [];
-        redTeamList.forEach((rdObj) => {
-          if (rdObj.playerId == playerData.playerId) {
-            let obj = {
-              "id": rdObj.id,
-              "number": rdObj.number,
-              "playerId": rdObj.playerId,
-              "jerseyNumber": rdObj.jerseyNumber,
-              "playerProfilePictureUrl": rdObj.playerProfilePictureUrl,
-              "playerName": rdObj.playerName,
-              "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
-              "pts": key == 'pts' ? rdObj.pts + pts_point : rdObj.pts,
-              "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
-              "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
-              "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
-              "fl": key == 'fl' ? rdObj.fl + 1 : rdObj.fl,
-            }
-            newRedData.push(obj);
-          } else {
-            newRedData.push(rdObj);
-          }
-        })
-        if (key == 'pts') {
-          setRedTeamScore(pts_point);
-        }
-        redTeamList = newRedData;
-      }
-
+      })
       debugger
-      setPlayerScore([first_obj]);
+      if (key == 'pts') {
+        setBlueTeamScore(pts_point);
+
+      }
+      blueTeamList = newBlueData;
+      setBluePlayerScore([first_obj]);
     }
     // handleScoreInsert()
+  }
+
+  const handleRedTeamScore = (playerData, key) => {
+    let pts_point = 0;
+    if (key == 'pts') {
+      if (courtAreaClick !== '' && courtAreaClick != undefined) {
+        let selected_court = courtAreaClick.court_nm;
+        if (Court_ptr.ptr2.includes(selected_court)) {
+          pts_point = 2;
+        } else {
+          pts_point = 3;
+        }
+      }
+    }
+    debugger
+
+    if (redPlayerScore != '' && redPlayerScore != null) {
+      let playerScoreData = redPlayerScore;
+      let newPlayerData = [];
+      debugger
+      playerScoreData.forEach((itm) => {
+        if (itm.playerId == playerData.playerId) {
+          let obj = {
+            "playerId": itm.playerId,
+            "jerseyNumber": itm.jerseyNumber,
+            "playerProfilePictureUrl": itm.playerProfilePictureUrl,
+            "playerName": itm.playerName,
+            "ast": key == 'ast' ? itm.ast + 1 : itm.ast,
+            "pts": key == 'pts' ? itm.pts + pts_point : itm.pts,
+            "reb": key == 'reb' ? itm.reb + 1 : itm.reb,
+            "stl": key == 'stl' ? itm.stl + 1 : itm.stl,
+            "blk": key == 'blk' ? itm.blk + 1 : itm.blk,
+            "fl": key == 'fl' ? itm.fl + 1 : itm.fl,
+          }
+          debugger
+          newPlayerData.push(obj);
+        } else {
+          newPlayerData.push(itm);
+        }
+      })
+
+
+      // let redTeamData = redTeamList;
+      let newRedData = [];
+      redTeamList.forEach((rdObj) => {
+        if (rdObj.playerId == playerData.playerId) {
+          let obj = {
+            "id": rdObj.id,
+            "number": rdObj.number,
+            "playerId": rdObj.playerId,
+            "jerseyNumber": rdObj.jerseyNumber,
+            "playerProfilePictureUrl": rdObj.playerProfilePictureUrl,
+            "playerName": rdObj.playerName,
+            "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
+            "pts": key == 'pts' ? rdObj.pts + pts_point : rdObj.pts,
+            "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
+            "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
+            "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
+            "fl": key == 'fl' ? rdObj.fl + 1 : rdObj.fl,
+          }
+          newRedData.push(obj);
+        } else {
+          newRedData.push(rdObj);
+        }
+      })
+      if (key == 'pts') {
+        setRedTeamScore(redTeamScore + pts_point)
+      }
+      redTeamList = newRedData;
+      // }
+      debugger
+      setRedPlayerScore(newPlayerData);
+
+    } else {
+      debugger
+      let first_obj = {
+        "playerId": playerData.playerId,
+        "jerseyNumber": playerData.jerseyNumber,
+        "playerProfilePictureUrl": playerData.playerProfilePictureUrl,
+        "playerName": playerData.playerName,
+        "ast": key == 'ast' ? 1 : 0,
+        "pts": key == 'pts' ? pts_point : 0,
+        "reb": key == 'reb' ? 1 : 0,
+        "stl": key == 'stl' ? 1 : 0,
+        "blk": key == 'blk' ? 1 : 0,
+        "fl": key == 'fl' ? 1 : 0,
+      }
+      debugger
+      // let redTeamData = redTeamList;
+      let newRedData = [];
+      redTeamList.forEach((rdObj) => {
+        if (rdObj.playerId == playerData.playerId) {
+          let obj = {
+            "id": rdObj.id,
+            "number": rdObj.number,
+            "playerId": rdObj.playerId,
+            "jerseyNumber": rdObj.jerseyNumber,
+            "playerProfilePictureUrl": rdObj.playerProfilePictureUrl,
+            "playerName": rdObj.playerName,
+            "ast": key == 'ast' ? rdObj.ast + 1 : rdObj.ast,
+            "pts": key == 'pts' ? rdObj.pts + pts_point : rdObj.pts,
+            "reb": key == 'reb' ? rdObj.reb + 1 : rdObj.reb,
+            "stl": key == 'stl' ? rdObj.stl + 1 : rdObj.stl,
+            "blk": key == 'blk' ? rdObj.blk + 1 : rdObj.blk,
+            "fl": key == 'fl' ? rdObj.fl + 1 : rdObj.fl,
+          }
+          newRedData.push(obj);
+        } else {
+          newRedData.push(rdObj);
+        }
+      })
+      if (key == 'pts') {
+        setRedTeamScore(pts_point);
+      }
+      redTeamList = newRedData;
+      debugger
+      setRedPlayerScore([first_obj]);
+    }
+
+  }
+
+  const handlePlayerScore = (playerData, key) => {
+    if (isEnabled == false) {
+      handleBlueTeamScore(playerData, key);
+    } else {
+      handleRedTeamScore(playerData, key);
+    }
+
   }
 
   const handleScoreInsert = () => {
     debugger
     // if (red != '' && playerScore != null) {
-
     let playerScore_arr = []
     if (isEnabled == false) {
-      blueTeamList.forEach(obj => {
+      bluePlayerScore.forEach(obj => {
         debugger
         let score_obj = {
           playerId: obj.playerId.toString(),
@@ -580,12 +753,12 @@ const GameScreen = (props) => {
           // freeThrowCount: parseInt(obj.ast),
           // freeThrowMadeCount: parseInt(obj.ast),
           // freeThrowMissedCount: parseInt(obj.ast),
-          quarter: "Quarter1"
+          quarter: preSelectedQuarter.name
         }
         playerScore_arr.push(JSON.stringify(score_obj));
       });
     } else {
-      redTeamList.forEach(obj => {
+      redPlayerScore.forEach(obj => {
         debugger
         let score_obj = {
           playerId: obj.playerId.toString(),
@@ -604,7 +777,7 @@ const GameScreen = (props) => {
           // freeThrowCount: parseInt(obj.ast),
           // freeThrowMadeCount: parseInt(obj.ast),
           // freeThrowMissedCount: parseInt(obj.ast),
-          quarter: "Quarter1"
+          quarter: preSelectedQuarter.name
         }
         playerScore_arr.push(JSON.stringify(score_obj));
       });
@@ -612,19 +785,20 @@ const GameScreen = (props) => {
 
     let data;
     if (isEnabled == false) {
+      let id = 0;
       data = {
-        _id: 1,
+        _id: preSelectedQuarter.name,
         teamId: challengerTeam?.teamId.toString(),
         playerScore: playerScore_arr,
-        quarter: "Quarter1"
+        quarter: preSelectedQuarter.name
       }
       insertBluePlayerScore(data);
     } else {
       data = {
-        _id: 1,
+        _id: preSelectedQuarter.name,
         teamId: defenderTeam?.teamId.toString(),
         playerScore: playerScore_arr,
-        quarter: "Quarter1"
+        quarter: preSelectedQuarter.name
       }
       insertRedPlayerScore(data)
     }
@@ -804,9 +978,28 @@ const GameScreen = (props) => {
           redTeamScore={redTeamScore}
         />
       case "substitute":
-        return <SubstitutePlayer setCurrentView={setCurrentView} isEnabled={isEnabled} />
+        return <SubstitutePlayer
+          setCurrentView={setCurrentView}
+          isEnabled={isEnabled}
+          event={event}
+          setEvent={setEvent}
+          preSelectedQuarter={preSelectedQuarter}
+          handleScoreInsert={handleScoreInsert}
+          handleRedTeamScoreInsert={handleRedTeamScoreInsert}
+          handleBlueTeamScoreInsert={handleBlueTeamScoreInsert}
+
+
+        />
       case "changelineup":
-        return <ChangeLineUp setCurrentView={setCurrentView} isEnabled={isEnabled} />
+        return <ChangeLineUp
+          setCurrentView={setCurrentView}
+          isEnabled={isEnabled}
+          mainProp={props}
+          eventId={eventId}
+          gameId={gameId}
+          teamID={isEnabled == false ? challengerTeam?.teamId : defenderTeam?.teamId}
+
+        />
       case "pass":
         return <PassScreen
           activePlayerId={activePlayer}
@@ -862,6 +1055,7 @@ const GameScreen = (props) => {
           setPlayerScore={handlePlayerScore}
           event={event}
           setEvent={setEvent}
+          clickedCourtArea={courtAreaClick}
 
         />
 
@@ -1167,6 +1361,9 @@ const GameScreen = (props) => {
           assistFlowCurrentView={assistFlowCurrentView}
           setCourtAreaClick={setCourtAreaClick}
           courtAreaClick={courtAreaClick}
+          selectedPlayer={selectedPlayer}
+          selectedAssistPlayer={assistPlayer}
+
 
         />
 
@@ -1318,36 +1515,42 @@ const GameScreen = (props) => {
       {/* <GameAppStatusBar hidden /> */}
       {/* <StatusBar hidden backgroundColor="transparent" translucent /> */}
 
-      <PlayingGameScreenHeader
-        blueTeamScore={challengerTeam.score}
-        redTeamScore={defenderTeam.score}
-        blueTeamNewScore={blueTeamScore}
-        redTeamNewScore={redTeamScore}
-        blueTeamCaptain={challengerTeam.name}
-        redTeamCaptain={defenderTeam.name}
-        // redTeamClubName=""
-        // blueTeamClubName=""
-        nav={currentView}
-        setView={setCurrentView}
-        assistFlowCurrentView={assistFlowCurrentView}
-        setAssistFlowCurrentView={setAssistFlowCurrentView}
-        round={preSelectedQuarter}
-        onPressQuarter={() => {
-          setDropDownVisibility(true)
-        }}
-        toggleSwitch={toggleSwitch}
-        isEnabled={isEnabled}
-        style={{
-          height: 60,
-          alignSelf: 'center',
-          justifyContent: 'center',
-          alignItems: 'center'
+      {preSelectedQuarter != undefined && preSelectedQuarter != '' ?
+        <PlayingGameScreenHeader
+          blueTeamScore={challengerTeam.score}
+          redTeamScore={defenderTeam.score}
+          blueTeamNewScore={blueTeamScore}
+          redTeamNewScore={redTeamScore}
+          blueTeamCaptain={challengerTeam.name}
+          redTeamCaptain={defenderTeam.name}
+          // redTeamClubName=""
+          // blueTeamClubName=""
+          nav={currentView}
+          setView={setCurrentView}
+          assistFlowCurrentView={assistFlowCurrentView}
+          setAssistFlowCurrentView={setAssistFlowCurrentView}
+          round={preSelectedQuarter}
+          onPressQuarter={() => {
+            setDropDownVisibility(true)
+          }}
+          toggleSwitch={toggleSwitch}
+          isEnabled={isEnabled}
+          style={{
+            height: 60,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            alignItems: 'center'
 
-        }}
-      />
-      <View style={{ width: '92%', marginTop: 8, marginLeft: 20 }}>
-        {switchView()}
-      </View>
+          }}
+        />
+        : <></>
+      }
+      {currentView != '' ?
+        <View style={{ width: '92%', marginTop: 8, marginLeft: 20 }}>
+          {switchView()}
+        </View>
+        : <></>
+      }
 
       {dropDownVisibility == true ?
         <TouchableOpacity style={{
@@ -1567,7 +1770,9 @@ const PassScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
     </View>)
 }
 
-const SubstitutePlayer = ({ setCurrentView, isEnabled, response }) => {
+const SubstitutePlayer = ({ setCurrentView, isEnabled, response,
+  preSelectedQuarter, handleScoreInsert, handleRedTeamScoreInsert,
+  handleBlueTeamScoreInsert }) => {
   const styles = StyleSheet.create({
     bottomLineWhiteTxt: {
       color: Colors.light,
@@ -1582,30 +1787,89 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response }) => {
   const [active, setActive] = useState('')
   const [substitute, setSubstitute] = useState('')
 
-  const updateSubstitute = () => {
-
-
+  const updateLocalData = (cb) => {
     let activeCheck = active;
     activeCheck = activeCheck - 1;
     let substituteCheck = substitute;
     substituteCheck = substituteCheck - 1;
+    debugger
 
     let player1
     let player2
     let teamId
+    let firstPlayer
+    let secondPlayer
 
     if (isEnabled) {
       player1 = redTeamList[activeCheck]?.playerId
-      player2 = redTeamList[substituteCheck]?.playerId
+      let playerObj = redTeamList[activeCheck]
+      firstPlayer = {
+        "id": substitute,
+        "number": playerObj?.jerseyNumber,
+        "playerId": playerObj?.playerId,
+        "jerseyNumber": playerObj?.jerseyNumber,
+        "playerProfilePictureUrl": playerObj?.playerProfilePictureUrl,
+        "playerName": playerObj?.playerName,
+        "ast": playerObj?.ast,
+        "pts": playerObj?.pts,
+        "reb": playerObj?.reb,
+        "stl": playerObj?.stl,
+        "blk": playerObj?.blk,
+        "fl": playerObj?.fl,
+      }
+      player2 = redTeamListSub[substituteCheck]?.playerId
+      let subPlayerObj = redTeamListSub[substituteCheck]
+      secondPlayer = {
+        "id": active,
+        "number": subPlayerObj?.jerseyNumber,
+        "playerId": subPlayerObj?.playerId,
+        "jerseyNumber": subPlayerObj?.jerseyNumber,
+        "playerProfilePictureUrl": subPlayerObj?.playerProfilePictureUrl,
+        "playerName": subPlayerObj?.playerName,
+        "ast": subPlayerObj?.ast,
+        "pts": subPlayerObj?.pts,
+        "reb": subPlayerObj?.reb,
+        "stl": subPlayerObj?.stl,
+        "blk": subPlayerObj?.blk,
+        "fl": subPlayerObj?.fl,
+      }
       teamId = totalResponse?.defenderTeamInfo.teamId
-
-
     } else {
       player1 = blueTeamList[activeCheck]?.playerId
-      player2 = blueTeamList[substituteCheck]?.playerId
+      let playerObj = blueTeamList[activeCheck]
+      firstPlayer = {
+        "id": substitute,
+        "number": playerObj?.jerseyNumber,
+        "playerId": playerObj?.playerId,
+        "jerseyNumber": playerObj?.jerseyNumber,
+        "playerProfilePictureUrl": playerObj?.playerProfilePictureUrl,
+        "playerName": playerObj?.playerName,
+        "ast": playerObj?.ast,
+        "pts": playerObj?.pts,
+        "reb": playerObj?.reb,
+        "stl": playerObj?.stl,
+        "blk": playerObj?.blk,
+        "fl": playerObj?.fl,
+      }
+      player2 = blueTeamListSub[substituteCheck]?.playerId
+      let subPlayerObj = blueTeamListSub[substituteCheck]
+      secondPlayer = {
+        "id": active,
+        "number": subPlayerObj?.jerseyNumber,
+        "playerId": subPlayerObj?.playerId,
+        "jerseyNumber": subPlayerObj?.jerseyNumber,
+        "playerProfilePictureUrl": subPlayerObj?.playerProfilePictureUrl,
+        "playerName": subPlayerObj?.playerName,
+        "ast": subPlayerObj?.ast,
+        "pts": subPlayerObj?.pts,
+        "reb": subPlayerObj?.reb,
+        "stl": subPlayerObj?.stl,
+        "blk": subPlayerObj?.blk,
+        "fl": subPlayerObj?.fl,
+      }
       teamId = totalResponse?.challengerTeamInfo.teamId
     }
-
+    debugger
     // const token = SyncStorage.get('token');
 
     const data = {
@@ -1617,41 +1881,102 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response }) => {
       "quarter": "QUARTER_1",
       "teamID": teamId
     }
+    if (isEnabled == false) {
+      let newBlueTeam = blueTeamList.filter(obj => {
+        return obj.playerId != player1;
+      })
+      let newBlueSubTeam = blueTeamListSub.filter(obj1 => {
+        return obj1.playerId != player2
+      })
+      debugger
 
+      newBlueTeam.push(secondPlayer);
+      newBlueSubTeam.push(firstPlayer);
+      debugger
+      blueTeamList = newBlueTeam;
+      blueTeamListSub = newBlueSubTeam;
+    } else {
+      let newRedTeam = redTeamList.filter(obj => {
+        return obj.playerId != player1;
+      })
+      let newRedSubTeam = redTeamListSub.filter(obj1 => {
+        return obj1.playerId != player2
+      })
 
-    // axios.post('http://35.184.198.142:8085/v1/log/event/165584893449104', data, {
-    //     headers: {
-    //         'Authorization': `Bearer ${token}`
-    //     }
-    // })
-    //     .then((response) => {
-    //         setCurrentView("playing")
-    //     })
-    //     .catch(function (error) {
-    //         console.log('Error', error)
-    //     });
+      newRedTeam.push(secondPlayer);
+      newRedSubTeam.push(firstPlayer);
+      redTeamList = newRedTeam;
+      redTeamListSub = newRedSubTeam;
+    }
+    cb(true)
 
+  }
 
+  const updateSubstitute = () => {
+    updateLocalData((res) => {
+      if (res) {
+        debugger
+        let initData = {
+          "challengerTeamInfo": totalResponse?.challengerTeamInfo,
+          "challengerTeamKpi": totalResponse?.challengerTeamKpi,
+          "coachId": totalResponse?.coachId,
+          "court": totalResponse?.court,
+          "defenderTeamInfo": totalResponse?.defenderTeamInfo,
+          "defenderTeamKpi": totalResponse?.defenderTeamKpi,
+          "gameId": totalResponse?.gameId,
+          "gamesPoint": totalResponse?.gamesPoint,
+          "loggingDate": totalResponse?.loggingDate,
+          "quarters": totalResponse?.quarters,
+        }
+
+        let activePlayers = {
+          "blueTeamList": blueTeamList,
+          "redTeamList": redTeamList,
+          "blueTeamListSub": blueTeamListSub,
+          "redTeamListSub": redTeamListSub,
+        }
+        let initDataObj = {
+          _id: 1,
+          initialData: [JSON.stringify(initData)],
+          activePlayer: [JSON.stringify(activePlayers)],
+          isGameStarted: true,
+          currentQuarter: JSON.stringify(preSelectedQuarter),
+        }
+        debugger
+        insertInitialData(initDataObj);
+        handleScoreInsert()
+        handleRedTeamScoreInsert()
+        handleBlueTeamScoreInsert()
+        setCurrentView('playing')
+      }
+    })
   }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: 'row', paddingVertical: 10, width: '100%' }}>
         <View style={{ flex: 1.5 }}>
-          <ScoreActiveTeamPlayer heading={"Select Player"} list={isEnabled ? redTeamList : blueTeamList} isBlueTeam={!isEnabled}
+          <ScoreActiveTeamPlayer heading={"Select Player"}
+            list={isEnabled == false ? blueTeamList : redTeamList}
+            isBlueTeam={isEnabled}
             onPress={
               (e) => setActive(e.id)
             }
             activePlayer={active}
+            isOtherShow={false}
           />
         </View>
         <View style={{ height: '100%', width: 1, backgroundColor: Colors.fontColorGray }} />
         <View style={{ flex: 3, paddingHorizontal: 30 }}>
-          <ScoreActiveTeamPlayer heading={"Select Substitute"} list={isEnabled ? redTeamListSub : blueTeamListSub} isBlueTeam={!isEnabled}
+          <ScoreActiveTeamPlayer
+            heading={"Select Substitute"}
+            list={isEnabled == false ? blueTeamListSub : redTeamListSub}
+            isBlueTeam={isEnabled}
             onPress={
               (e) => setSubstitute(e.id)
             }
             activePlayer={substitute}
+            isOtherShow={false}
           />
 
         </View>
@@ -1679,7 +2004,7 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response }) => {
 
 }
 
-const ChangeLineUp = ({ setCurrentView, isEnabled }) => {
+const ChangeLineUp = ({ eventId, teamID, gameId, setCurrentView, isEnabled, mainProp }) => {
   const styles = StyleSheet.create({
     container: {
       // flex: 1,
@@ -1722,6 +2047,12 @@ const ChangeLineUp = ({ setCurrentView, isEnabled }) => {
     // const token = SyncStorage.get('token');
 
     console.log(blueTeamList)
+
+    mainProp.dispatch(getTeamCurrentLineUp(eventId, teamID, gameId, (res, resData) => {
+      if (res) {
+        setLineUpList(resData.lineupList);
+      }
+    }))
 
     // axios.get('http://35.184.198.142:8085/v1/log/lineup/165584893449104/165225962766807/165584356686406', {
     //     headers: {
@@ -2322,7 +2653,7 @@ const ShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
       setEvent([...event, `scored_${e.playerId}`])
 
     }
-
+    debugger
     if (title == 'Who Scored') {
       setPlayerScore(e, 'pts')
       setCurrentView('assistScreen');

@@ -4,18 +4,29 @@ import { Pressable, Text, View } from "react-native";
 import { ScoreActiveTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import { AssistTeamPlayer } from "../../components/common/ActiveTeamPalyer";
 import { Colors, Fonts } from "../../constants";
+import { Court_ptr } from "../../constants/constant";
 
 
 const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView, setActivePlayer,
   currentView, toggleSwitch, selectedPlayer, selectedAssistPlayer, setAssistPlayer,
   clickedCourtArea, madeOrMissed, setMadeOrMissed, initMadeOrMissed, event, setEvent,
-  setIsEventCompleted
+  setIsEventCompleted,
 }) => {
   // const [activePlayerList, setActivePlayerList] = useState(playersList);
   const { width, height } = useDimensions().window;
+  const [ptsPoints, setPtsPoints] = useState("");
   // const fullPlayerList = playersList;
 
   useEffect(() => {
+    if (clickedCourtArea !== '' && clickedCourtArea != undefined) {
+      debugger
+      let selected_court = clickedCourtArea.court_nm;
+      if (Court_ptr.ptr2.includes(selected_court)) {
+        setPtsPoints(2)
+      } else {
+        setPtsPoints(3)
+      }
+    }
     // console.log("is blueee", isBlueTeamPlaying, "..")
     // removeActivePlayerFromList();
   }, []);
@@ -50,22 +61,30 @@ const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
           alignItems: 'center'
           // backgroundColor: 'green'
         }}>
-          <View style={{ marginTop: 20, }}>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              Pippen Jr.
-            </Text>
-            <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 24,
-              lineHeight: 28, fontFamily: Fonts.Regular
-            }}
-            >
-              +3pt Shot
-            </Text>
-          </View>
+          {ptsPoints != '' ?
+            selectedPlayer != '' && selectedPlayer != undefined ?
+              <View style={{ marginTop: 20, }}>
+                <Text style={{
+                  color: Colors.newGrayFontColor, fontSize: 24,
+                  lineHeight: 28, fontFamily: Fonts.Regular
+                }}
+                >
+                  {`+${ptsPoints}pt Shot By`}
+                </Text>
+                <Text style={{
+                  color: Colors.newGrayFontColor, fontSize: 24,
+                  lineHeight: 28, fontFamily: Fonts.Regular
+                }}
+                >
+                  {selectedPlayer?.playerName}
+                </Text>
+
+              </View>
+              :
+              <></>
+
+            : <></>
+          }
           {selectedAssistPlayer != '' & selectedAssistPlayer != undefined ?
             <View style={{ marginTop: 20, }}>
               <Text style={{
@@ -80,7 +99,7 @@ const WasItFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
                 lineHeight: 28, fontFamily: Fonts.Regular
               }}
               >
-                Chris Paul
+                {selectedAssistPlayer?.playerName}
               </Text>
             </View>
             : <></>

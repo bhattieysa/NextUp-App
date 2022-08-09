@@ -53,6 +53,7 @@ class GamesRecentTab extends Component {
       this.props.dispatch(gameDetailRecentTab(this.props.navigation.state.params.gameId, (res) => {
         if (res) {
           const { gameDetailData } = this.props.Home
+          debugger
           this._filterBarChartData(gameDetailData);
         }
         this.setState({ loading: false })
@@ -77,9 +78,13 @@ class GamesRecentTab extends Component {
       // obj2['MPG2'] = 8.4
       // arr.push(obj1)
       // arr.push(obj2)
-      arr.push(data?.gameSummaryInfo?.gameStats[0]?.kpi)
-      arr.push(data?.gameSummaryInfo?.gameStats[1]?.kpi)
+      //Key Chnage
+      // arr.push(data?.gameSummaryInfo?.gameStats[0]?.kpi)
+      // arr.push(data?.gameSummaryInfo?.gameStats[1]?.kpi)
+      arr.push(data?.gameSummaryInfo?.gameStats[0]?.averageKpi)
+      arr.push(data?.gameSummaryInfo?.gameStats[1]?.averageKpi)
     }
+    debugger
     this.setState({ sideBySideBarData: arr, loading: false })
 
   }
@@ -238,7 +243,7 @@ class GamesRecentTab extends Component {
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', }}>
 
           {gameDetailData?.gameSummaryInfo?.kpiValue?.forEach(val => {
-            if (item.item.playerKpi.hasOwnProperty(val)) {
+            if (item.item.averageKpi.hasOwnProperty(val)) {
               // console.log('jjj', item.item.playerKpi[val])
               content.push(
                 < Text style={{
@@ -248,7 +253,7 @@ class GamesRecentTab extends Component {
                   height: 20,
                   textAlign: 'center',
                   // backgroundColor: 'green'
-                }}>{item.item.playerKpi[val]}</Text>
+                }}>{item.item.averageKpi[val]}</Text>
               )
             } else {
               content.push(

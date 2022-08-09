@@ -85,7 +85,9 @@ export const AppURLs = {
   getGameInitData: 'log/start/',
   getGameAdvanceStats: 'game/advance/stats/',
   getTeamAdvanceStats: 'team/get/advance/analytics/',
-  logEventData: 'log/event/'
+  logEventData: 'log/event/',
+  logPlayerScore: 'log/player/',
+  getCurrentLineUp: 'log/lineup/'
 
 };
 

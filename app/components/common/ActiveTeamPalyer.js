@@ -5,7 +5,8 @@ import FastImage from 'react-native-fast-image';
 import { Colors, Fonts, CommonStyles } from "../../constants";
 import TextInCircle from "./TextInCircle";
 
-const ScoreActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, itemStyle, containerStyle }) => {
+const ScoreActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
+  onPress, itemStyle, containerStyle, isOtherShow }) => {
   const [numberList, setNumberList] = useState([]);
   const [bgColor, setBgColor] = useState(Colors.lightBlue);
   const { width, height } = useDimensions().window;
@@ -84,34 +85,37 @@ const ScoreActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPres
 
       )
       }
-      <View style={{
-        justifyContent: 'center', alignItems: 'center',
+      {isOtherShow != false ?
+        <View style={{
+          justifyContent: 'center', alignItems: 'center',
 
-      }}>
-        <TextInCircle
-          text={'Other Team'}
-          onPress={() => onPress('other team')}
-          style={{
-            ...{
-              // width: 45,
-              // height: 45,
-              // borderRadius: 45 / 2,
-              width: width / 9.5,
-              height: width / 9.5,
-              marginTop: 35,
-              borderRadius: (width / 9.5) / 2,
+        }}>
+          <TextInCircle
+            text={'Other Team'}
+            onPress={() => onPress('other team')}
+            style={{
+              ...{
+                // width: 45,
+                // height: 45,
+                // borderRadius: 45 / 2,
+                width: width / 9.5,
+                height: width / 9.5,
+                marginTop: 35,
+                borderRadius: (width / 9.5) / 2,
 
-              // borderWidth: 1,
-              // borderColor: activePlayer == 'other team' ? Colors.darkYellow : bgColor,
-              backgroundColor: activePlayer == 'other team' ? Colors.lightGreen : bgColor
-            },
-          }}
-          txtStyle={{ color: Colors.base, }} />
-        <Text style={{
-          fontSize: 14, fontFamily: Fonts.Bold,
-          lineHeight: 24, color: Colors.base
-        }}> </Text>
-      </View>
+                // borderWidth: 1,
+                // borderColor: activePlayer == 'other team' ? Colors.darkYellow : bgColor,
+                backgroundColor: activePlayer == 'other team' ? Colors.lightGreen : bgColor
+              }, ...itemStyle
+            }}
+            txtStyle={{ color: Colors.base, }} />
+          <Text style={{
+            fontSize: 14, fontFamily: Fonts.Bold,
+            lineHeight: 24, color: Colors.base
+          }}> </Text>
+        </View>
+        : <></>
+      }
     </View>
   </View>
 }
@@ -274,7 +278,8 @@ const ActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, it
 }
 
 
-const AssistTeamPlayer = ({ heading, list, activePlayer, isBlueTeam, onPress, itemStyle, containerStyle }) => {
+const AssistTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
+  onPress, itemStyle, containerStyle }) => {
   const [numberList, setNumberList] = useState([]);
   const [bgColor, setBgColor] = useState(Colors.lightBlue);
   const { width, height } = useDimensions().window;
