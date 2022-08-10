@@ -955,6 +955,7 @@ import { Card } from '../../components/common/DashBoardCard'
 import NotifService from '../../utils/notificationService/service';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { EmptyPieChart } from './Components/EmptyPieChart';
+import Orientation from 'react-native-orientation-locker';
 
 
 let wide = Layout.width;
@@ -1514,7 +1515,11 @@ class CoachProfile extends Component {
           width: wide * 0.64
         }}
           activeOpacity={1}
-          onPress={() => Navigation.navigate('GamesRecentTab', { 'gameId': item.id })}
+          onPress={() => {
+            // Orientation.lockToLandscapeRight()
+            Navigation.navigate('GamesRecentTab', { 'gameId': item.id })
+          }
+          }
         >
           <View style={{
             marginTop: 24,

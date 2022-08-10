@@ -5,7 +5,7 @@ const EventSchema = {
   name: "game_event",
   properties: {
     _id: { type: 'int' },
-    firstPlayerId: { type: 'int' },
+    firstPlayerId: { type: 'int', optional: true },
     secondPlayerId: { type: 'int', optional: true, },
     gameAction: { type: 'string' },
     eventTime: { type: 'int' },
@@ -131,29 +131,6 @@ async function insertBluePlayerScore(data) {
       // console.log(task._id)
       // console.log(task.playerId)
     })
-
-    const res = realm.objects("blue_team_player_score")
-    console.log("data retrive---", res.length)
-    let resData = []
-    res.forEach((obj) => {
-      let playerScore = []
-      console.log("scorelen", obj.playerScore.length)
-
-      obj.playerScore.map((obj1) => {
-        playerScore.push(JSON.parse(obj1));
-      })
-      // console.log("playerrr", playerScore)
-
-      let dataObj = {
-        _id: obj._id,
-        teamId: obj.teamId,
-        playerScore: playerScore,
-        quarter: obj.quarter,
-      }
-      console.log("data objj---", dataObj);
-    })
-    console.log("Data_arrr--", resData);
-
     realm.close();
   }
   realm.close();
@@ -165,18 +142,7 @@ const RedTeamPlayerScoreSchema = {
     _id: { type: 'string' },
     teamId: { type: 'string', optional: true },
     playerScore: { type: 'list', objectType: 'string' },
-    // playerId: { type: 'string' },
 
-    // jerseyNumber: { type: 'int' },
-    // ast: { type: 'int', optional: true },
-    // pts: { type: 'int', optional: true },
-    // reb: { type: 'int', optional: true },
-    // stl: { type: 'int', optional: true },
-    // blk: { type: 'int', optional: true },
-    // foul: { type: 'int', optional: true },
-    // freeThrowCount: { type: 'int', optional: true },
-    // freeThrowMadeCount: { type: 'int', optional: true },
-    // freeThrowMissedCount: { type: 'int', optional: true },
     quarter: { type: 'string' },
   },
   primaryKey: "_id",
@@ -207,8 +173,6 @@ async function insertRedPlayerScore(data) {
     realm.write(() => {
       task = realm.create("red_team_player_score", data, "modified")
       console.log("player data inserted---", task)
-      // console.log(task._id)
-      // console.log(task.playerId)
     })
     realm.close();
   }
@@ -305,7 +269,6 @@ async function getPlayerScoreFromRealm(cb) {
 
   if (realm) {
     const res = realm.objects('blue_team_player_score')
-
     if (res) {
       res.forEach((obj) => {
         let playerSocreArr = [];
@@ -425,8 +388,6 @@ async function getInitialData(cb) {
       realm.close();
       cb(false, []);
     }
-
-
   }
 }
 

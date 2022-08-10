@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, Switch, StyleSheet, StatusBar } fr
 import Navigation from "../../../lib/Navigation";
 import { Colors, CommonStyles, Fonts, Layout } from "../../../constants";
 import Svg, { Path } from "react-native-svg"
+import Orientation from 'react-native-orientation-locker';
 let wide = Layout.width;
 
 const PlayingGameScreenHeader = ({
@@ -22,7 +23,8 @@ const PlayingGameScreenHeader = ({
   blueTeamNewScore,
   redTeamNewScore,
   assistFlowCurrentView,
-  setAssistFlowCurrentView
+  setAssistFlowCurrentView,
+  onBackNavigation
 
 
 }) => {
@@ -63,7 +65,7 @@ const PlayingGameScreenHeader = ({
 
   function renderBackArrow(nav, setView, assistFlowCurrentView, setAssistFlowCurrentView) {
     return <TouchableOpacity
-      onPress={nav == "playing" ? () => Navigation.back() :
+      onPress={nav == "playing" ? onBackNavigation :
         nav == "shootScore" ? () => setView("initMadeMissedScreen") :
           nav == "assistScreen" ? () => setView("shootScore") :
             nav == "throwScreen" ? () => setView("assistScreen") :

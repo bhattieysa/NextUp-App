@@ -102,6 +102,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                   // width: width / 9.5,
                   // height: width / 9.5,
                   // borderRadius: (width / 9.5) / 2,
+                  marginTop: 30,
                   width: 90, height: 90, borderRadius: 90 / 2,
                 }}
                 heading={"Who Assisted"}
@@ -119,6 +120,7 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
                   // width: width / 9.5,
                   // height: width / 9.5,
                   // borderRadius: (width / 9.5) / 2,
+                  marginTop: 30,
                   width: 90, height: 90, borderRadius: 90 / 2,
                 }}
                 heading={"Who Assisted"}
@@ -297,7 +299,7 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
           itemStyle={{
             // width: width / 8.5,
             // height: width / 8.5,
-            marginTop: 10,
+            marginTop: 30,
             // borderRadius: (width / 8.5) / 2,
             width: 90, height: 90, borderRadius: 90 / 2,
           }}
@@ -316,7 +318,7 @@ const AssistShootScore = ({ playersList, activePlayerId, isBlueTeamPlaying, setC
           itemStyle={{
             // width: width / 8.5,
             // height: width / 8.5,
-            marginTop: 10,
+            marginTop: 30,
             // borderRadius: (width / 8.5) / 2,
             width: 90, height: 90, borderRadius: 90 / 2,
           }}
@@ -525,7 +527,7 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
         setCourtAreaClick({ 'x': e.nativeEvent.locationX, 'y': e.nativeEvent.locationY, "court_nm": court })
         // setAssistFlowPtr('ptr2')
         setOnPtr(true)
-        setPlayerScore(shootPlayer, 'pts')
+        setPlayerScore(shootPlayer, 'pts', court)
         setAssistFlowCurrentView('assistFlow_wasItFoul')
 
       }}
@@ -1057,7 +1059,7 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
           itemStyle={{
             // width: width / 8.5,
             // height: width / 8.5,
-            marginTop: 30,
+            marginTop: 10,
             // borderRadius: (width / 8.5) / 2,
             width: 90, height: 90, borderRadius: 90 / 2,
           }}
