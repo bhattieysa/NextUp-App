@@ -33,9 +33,10 @@ const FoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
     } else {
       setFoulBy(e.playerId)
       setEvent([`foul_${e.playerId}`])
+      setPlayerScore(e, 'fl');
+
     }
     // handleEventInsert('foul')
-    setPlayerScore(e, 'fl');
     setIsEventCompleted(true);
     setCurrentView('playing');
 

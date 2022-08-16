@@ -53,10 +53,9 @@ const AssistScreen = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
     } else {
       setAssistPlayer(e);
       setEvent([...event, `assist_${e.playerId}`])
-
+      setPlayerScore(e, "ast")
     }
     debugger
-    setPlayerScore(e, "ast")
     setCurrentView('throwScreen')
   }
 

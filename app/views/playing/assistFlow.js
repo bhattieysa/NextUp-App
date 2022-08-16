@@ -73,8 +73,9 @@ const AssistFlow = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
     } else {
       setAssistPlayer(e);
       setEvent([`assist_${e.playerId}`])
+      setPlayerScore(e, "ast")
     }
-    setPlayerScore(e, "ast")
+
     setAssistFlowCurrentView('assistFlow_score')
     setOnAssist(true)
   }
@@ -527,7 +528,9 @@ const TwiPtr = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView
         setCourtAreaClick({ 'x': e.nativeEvent.locationX, 'y': e.nativeEvent.locationY, "court_nm": court })
         // setAssistFlowPtr('ptr2')
         setOnPtr(true)
-        setPlayerScore(shootPlayer, 'pts', court)
+        if (shootPlayer != 'other team') {
+          setPlayerScore(shootPlayer, 'pts', court)
+        }
         setAssistFlowCurrentView('assistFlow_wasItFoul')
 
       }}
@@ -1024,8 +1027,9 @@ const FoulBy = ({ setOnFoul, playersList, activePlayerId, isBlueTeamPlaying, set
     } else {
       setCourtFoul(e);
       setEvent([...event, `foul_yes_${e.playerId}`])
+      setPlayerScore(e, 'fl')
     }
-    setPlayerScore(e, 'fl')
+
     setOnFoul(true);
     setAssistFlowCurrentView('assistFlow_freeThrow')
 

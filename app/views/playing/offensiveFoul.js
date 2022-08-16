@@ -33,8 +33,9 @@ const OffensiveFoulBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCu
     } else {
       setOffensiveFoul(e.playerId);
       setEvent([`offensiveFoul_${e.playerId}`])
+      setPlayerScore(e, 'fl');
+
     }
-    setPlayerScore(e, 'fl');
     setIsEventCompleted(true)
     setCurrentView('playing');
 

@@ -32,8 +32,9 @@ const OffRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrent
     } else {
       setReboundPlayer(e.playerId)
       setEvent([`offRebounded_${e.playerId}`])
+      setPlayerScore(e, "reb")
+
     }
-    setPlayerScore(e, "reb")
     setIsEventCompleted(true)
     setCurrentView('playing');
 

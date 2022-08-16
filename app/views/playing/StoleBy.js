@@ -34,8 +34,9 @@ const StoleBy = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentVie
     } else {
       setStoleBy(e.playerId);
       setEvent([`steal_${e.playerId}`])
+      setPlayerScore(e, 'stl')
+
     }
-    setPlayerScore(e, 'stl')
     // handleEventInsert('steal')
     setIsEventCompleted(true)
     setCurrentView('playing');

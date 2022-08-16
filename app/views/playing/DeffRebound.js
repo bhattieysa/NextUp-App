@@ -11,7 +11,8 @@ const DeffRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
   const fullPlayerList = playersList;
 
   useEffect(() => {
-    // console.log("is blueee", isBlueTeamPlaying, "..")
+    console.log("is blueee", isBlueTeamPlaying, "..")
+    debugger
     //   removeActivePlayerFromList();
   }, []);
 
@@ -32,8 +33,9 @@ const DeffRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurren
     } else {
       setReboundPlayer(e.playerId)
       setEvent([`deffRebounded_${e.playerId}`])
+      setPlayerScore(e, "reb")
     }
-    setPlayerScore(e, "reb")
+
 
     setIsEventCompleted(true)
     setCurrentView('playing');

@@ -35,8 +35,9 @@ const Block = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentView,
     } else {
       setBlockBy(e.playerId);
       setEvent([`block_${e.playerId}`])
+      setPlayerScore(e, 'blk')
+
     }
-    setPlayerScore(e, 'blk')
     setIsEventCompleted(true)
     // handleEventInsert('block')
     setCurrentView('playing');

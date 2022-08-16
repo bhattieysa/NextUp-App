@@ -105,7 +105,7 @@ const ScoreActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
 
                 // borderWidth: 1,
                 // borderColor: activePlayer == 'other team' ? Colors.darkYellow : bgColor,
-                backgroundColor: activePlayer == 'other team' ? Colors.lightGreen : bgColor
+                backgroundColor: bgColor
               }, ...itemStyle
             }}
             txtStyle={{ color: Colors.base, }} />
@@ -383,7 +383,7 @@ const AssistTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
 
               // borderWidth: 1,
               // borderColor: activePlayer == 'other team' ? Colors.darkYellow : bgColor,
-              backgroundColor: activePlayer == 'other team' ? Colors.lightGreen : bgColor
+              backgroundColor: bgColor
             }, ...itemStyle,
           }}
           txtStyle={{ color: Colors.base, }} />
@@ -510,7 +510,7 @@ const SubActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
 
                 // borderWidth: 1,
                 // borderColor: activePlayer == 'other team' ? Colors.darkYellow : bgColor,
-                backgroundColor: activePlayer == 'other team' ? Colors.lightGreen : bgColor
+                backgroundColor: bgColor
               }, ...itemStyle
             }}
             txtStyle={{ color: Colors.base, }} />
@@ -636,7 +636,7 @@ const SubNonActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
 
                 // borderWidth: 1,
                 // borderColor: activePlayer == 'other team' ? Colors.darkYellow : bgColor,
-                backgroundColor: activePlayer == 'other team' ? Colors.lightGreen : bgColor
+                backgroundColor: bgColor
               }, ...itemStyle
             }}
             txtStyle={{ color: Colors.base, }} />

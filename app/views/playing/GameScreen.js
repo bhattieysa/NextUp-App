@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, StatusBar, Modal, FlatList, Platform } from 'react-native'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, StatusBar, Modal, FlatList, Platform, Alert } from 'react-native'
 import { Colors, CommonStyles, Fonts, Layout } from "../../constants";
 import PlayingGameScreenHeader from "../../components/common/playing_header/PlayingGameScreenHeader";
 import DropDownModal from "../../components/common/playing_header/DropDownModal";
@@ -135,6 +135,12 @@ const GameScreen = (props) => {
 
 
   // }, []);
+  // useLayoutEffect(() => {
+  //   props.navigation.setParams({
+  //     headerTitle: 'some other title',
+  //     headerMode: 'none'
+  //   })
+  // }, [])
 
   useEffect(() => {
     if (isEventCompleted == true) {
@@ -170,6 +176,7 @@ const GameScreen = (props) => {
 
   const setDataToState = async (resData, cb) => {
     debugger
+    // console.log("Resdata", resData);
     const r = resData?.initialData;
     totalResponse = r;
     await setChallengerTeam(r.challengerTeamInfo)
@@ -417,19 +424,70 @@ const GameScreen = (props) => {
 
   const handleBackNavigation = () => {
     debugger
-    sendDataToServer();
+    sendDataToServer(preSelectedQuarter);
     setTimeout(() => {
       Navigation.back()
     }, 100);
   }
 
-  const sendDataToServer = () => {
+  const sendDataToServer = (item) => {
+    if (item.name != "END_GAME") {
+      updateInitData()
+      setTimeout(() => {
+        getEventDataFromRealm((res, dbData) => {
+          if (res) {
+            if (dbData.length > 0) {
+              console.log("Event Data_arrr--", dbData);
+              props.dispatch(sendEventData(eventId, dbData, (res1, resData) => {
+                if (res1) {
+                  console.log("PlayerEventtt send")
+                  getPlayerScoreFromRealm((res2, playerData) => {
+                    if (res2) {
+                      if (playerData.length > 0) {
+                        props.dispatch(sendPlayerScoreData(eventId, playerData, (res3, resData1) => {
+                          if (res3) {
+                            console.log("PlayerScore send")
+                          }
+                        }))
+                      }
+                      console.log("PlayerScoreee", resData)
+                    }
+                  })
+                }
+              }))
+            }
+          }
+        })
+      }, 200);
+    } else {
+      setTypeOfEvent('end_game')
+      setEvent([`END_GAME_${gameId}`])
+      Alert.alert(
+        'Info',
+        "Are you sure you want to end this game?",
+        [
+          { text: 'YES', onPress: () => endGame(item) },
+          {
+            text: 'NO',
+            onPress: () => {
+              return;
+            }
+          }],
+        { cancelable: true });
+    }
+  }
+
+  const endGame = (item) => {
+    debugger
+    setPreSelectedQuarter(item);
+    setIsEventCompleted(true)
     updateInitData()
     setTimeout(() => {
       getEventDataFromRealm((res, dbData) => {
         if (res) {
+          debugger
           if (dbData.length > 0) {
-            console.log("Event Data_arrr--", dbData.length);
+            console.log("Event Data_arrr--", dbData);
             props.dispatch(sendEventData(eventId, dbData, (res1, resData) => {
               if (res1) {
                 console.log("PlayerEventtt send")
@@ -450,7 +508,7 @@ const GameScreen = (props) => {
           }
         }
       })
-    }, 200);
+    }, 500);
 
   }
 
@@ -1027,6 +1085,13 @@ const GameScreen = (props) => {
         eventTime: Date.now(),
         quarter: preSelectedQuarter.name
       }
+    } else if (key == 'end_game') {
+      data = {
+        "_id": Date.now(),
+        gameAction: `[${event}]`,
+        eventTime: Date.now(),
+        quarter: preSelectedQuarter.name
+      }
     }
     insertEvent(data);
     setIsEventCompleted(false)
@@ -1042,7 +1107,8 @@ const GameScreen = (props) => {
         return <PlayingGameScreen isEnabled={isEnabled}
           setCurrentView={setCurrentView}
           setActivePlayer={setActivePlayer} activePlayer={activePlayer}
-          quarter={preSelectedQuarter} setCourtArea={setCourtArea}
+          quarter={preSelectedQuarter}
+          setCourtArea={setCourtArea}
           courtArea={courtArea}
           handleBtnEnable={handleBtnEnable}
           btnEnable={btnEnable}
@@ -1053,7 +1119,6 @@ const GameScreen = (props) => {
           blueTeamScore={blueTeamScore}
           redTeamScore={redTeamScore}
           sendDataToServer={sendDataToServer}
-
         />
       case "substitute":
         return <SubstitutePlayer
@@ -1682,8 +1747,12 @@ const GameScreen = (props) => {
                     ]}
                     // key={inde}
                     onPress={() => {
-                      setPreSelectedQuarter(item);
-                      sendDataToServer();
+                      if (item.name != 'END_GAME') {
+                        setPreSelectedQuarter(item);
+                        sendDataToServer(item);
+                      } else {
+                        sendDataToServer(item);
+                      }
                       setDropDownVisibility(false);
                     }}>
                     <Text
@@ -2501,10 +2570,9 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
                 style={{ backgroundColor: Colors.darkGray, width: '45%', }}
                 txtStyle={{ color: Colors.light }}
                 onPress={() => {
-                  sendDataToServer()
+                  sendDataToServer(quarter)
                   setTimeout(() => {
                     setCurrentView("changelineup")
-
                   }, 1000);
                 }}
               />
@@ -2889,5 +2957,8 @@ const mapStateToProps = (state) => {
     Home: entities.homePlayer
   };
 }
+GameScreen.navigationOptions = {
+  headerMode: 'none'
+};
 
 export default connect(mapStateToProps)(GameScreen)

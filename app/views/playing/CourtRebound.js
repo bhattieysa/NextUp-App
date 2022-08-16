@@ -53,8 +53,9 @@ const CourtRebound = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurre
     } else {
       setReboundPlayer(e.playerId)
       setEvent([...event, `rebounded_${e.playerId}`])
+      setPlayerScore(e, "reb")
+
     }
-    setPlayerScore(e, "reb")
     setIsEventCompleted(true)
     setCurrentView('playing');
 

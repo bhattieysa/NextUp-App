@@ -33,8 +33,9 @@ const CourtFoul = ({ playersList, activePlayerId, isBlueTeamPlaying, setCurrentV
     } else {
       setCourtFoul(e.playerId);
       setEvent([...event, `foul_yes_${e.playerId}`])
+      setPlayerScore(e, "fl")
+
     }
-    setPlayerScore(e, "fl")
     setCurrentView('whoShootFreeThrow');
 
   }

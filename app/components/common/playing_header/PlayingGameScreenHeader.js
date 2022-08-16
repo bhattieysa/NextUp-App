@@ -67,26 +67,28 @@ const PlayingGameScreenHeader = ({
     return <TouchableOpacity
       onPress={nav == "playing" ? onBackNavigation :
         nav == "shootScore" ? () => setView("initMadeMissedScreen") :
-          nav == "assistScreen" ? () => setView("shootScore") :
-            nav == "throwScreen" ? () => setView("assistScreen") :
-              nav == "madeMissedScreen" ? () => setView("throwScreen") :
-                nav == "gotRebound" ? () => setView("whoShot") :
-                  nav == "foulBy" ? () => setView("foulType") :
-                    nav == "stoleByTurnOver" ? () => setView("turnOverView") :
-                      nav == "offensiveFoulBy" ? () => setView("turnOverView") :
-                        nav == "freeThrowCount" ? () => setView("freeThrowPlayerSelect") :
-                          nav == "freeThrow" ? () => setView("freeThrowCount") :
-                            nav == "assistFlow" ?
-                              assistFlowCurrentView == 'assistFlow_ast' ? () => setView("playing")
-                                : assistFlowCurrentView == 'assistFlow_score' ? setAssistFlowCurrentView('assistFlow_ast')
-                                  : assistFlowCurrentView == 'assistFlow_Ptr' ? setAssistFlowCurrentView('assistFlow_score')
-                                    : assistFlowCurrentView == 'assistFlow_wasItFoul' ? setAssistFlowCurrentView('assistFlow_Ptr')
-                                      : assistFlowCurrentView == 'assistFlow_foul' ? setAssistFlowCurrentView('assistFlow_wasItFoul')
-                                        : assistFlowCurrentView == 'assistFlow_freeThrow' ? setAssistFlowCurrentView('assistFlow_foul')
-                                          : assistFlowCurrentView == 'assistFlow_madeMiss' ? setAssistFlowCurrentView('assistFlow_freeThrow')
-                                            : () => setView("playing")
+          nav == "whoShot" ? () => setView("initMadeMissedScreen") :
+            nav == "assistScreen" ? () => setView("shootScore") :
+              nav == "throwScreen" ? () => setView("assistScreen") :
+                nav == "courtFoul" ? () => setView("throwScreen") :
+                  nav == "whoShootFreeThrow" ? () => setView("courtFoul") :
+                    nav == "madeMissedScreen" ? () => setView("whoShootFreeThrow") :
+                      nav == "gotRebound" ? () => setView("whoShot") :
+                        nav == "foulBy" ? () => setView("foulType") :
+                          nav == "stoleByTurnOver" ? () => setView("turnOverView") :
+                            nav == "offensiveFoulBy" ? () => setView("turnOverView") :
+                              nav == "freeThrowCount" ? () => setView("freeThrowPlayerSelect") :
+                                nav == "freeThrow" ? () => setView("freeThrowCount") :
+                                  nav == "assistFlow" ? assistFlowCurrentView == 'assistFlow_ast' ? () => setView("playing")
+                                    : assistFlowCurrentView == 'assistFlow_score' ? setAssistFlowCurrentView('assistFlow_ast')
+                                      : assistFlowCurrentView == 'assistFlow_Ptr' ? setAssistFlowCurrentView('assistFlow_score')
+                                        : assistFlowCurrentView == 'assistFlow_wasItFoul' ? setAssistFlowCurrentView('assistFlow_Ptr')
+                                          : assistFlowCurrentView == 'assistFlow_foul' ? setAssistFlowCurrentView('assistFlow_wasItFoul')
+                                            : assistFlowCurrentView == 'assistFlow_freeThrow' ? setAssistFlowCurrentView('assistFlow_foul')
+                                              : assistFlowCurrentView == 'assistFlow_madeMiss' ? setAssistFlowCurrentView('assistFlow_freeThrow')
+                                                : () => setView("playing")
 
-                              : () => setView("playing")
+                                    : () => setView("playing")
       }
     // onPress={() => Navigation.back()}    Navigation.navigate('ExploreSearch', { to: true })
     >
