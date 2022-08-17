@@ -106,7 +106,7 @@ const BlueTeamPlayerScoreSchema = {
 async function insertBluePlayerScore(data) {
   debugger
   const realm = await Realm.open({
-    path: 'NextUpLocalDB/PlayerScore',
+    path: 'NextUpLocalDB/BluePlayerScore',
     schema: [BlueTeamPlayerScoreSchema],
     deleteRealmIfMigrationNeeded: true,
     // schemaVersion: 1,
@@ -151,7 +151,7 @@ const RedTeamPlayerScoreSchema = {
 async function insertRedPlayerScore(data) {
   debugger
   const realm = await Realm.open({
-    path: 'NextUpLocalDB/PlayerScore',
+    path: 'NextUpLocalDB/RedPlayerScore',
     schema: [RedTeamPlayerScoreSchema],
     deleteRealmIfMigrationNeeded: true,
     // schemaVersion: 1,
@@ -263,7 +263,7 @@ async function getEventDataFromRealm(cb) {
 async function getPlayerScoreFromRealm(cb) {
   let resData = []
   const realm = await Realm.open({
-    path: 'NextUpLocalDB/PlayerScore',
+    path: 'NextUpLocalDB/BluePlayerScore',
     schema: [BlueTeamPlayerScoreSchema],
   })
 
@@ -290,7 +290,7 @@ async function getPlayerScoreFromRealm(cb) {
     // cb(true, resData);
   }
   const realm1 = await Realm.open({
-    path: 'NextUpLocalDB/PlayerScore',
+    path: 'NextUpLocalDB/RedPlayerScore',
     schema: [RedTeamPlayerScoreSchema],
   })
 
@@ -433,6 +433,116 @@ async function getTeamScore(cb) {
   }
 }
 
+async function removeAllLocalData(cb) {
+  removeEventData((ev_res) => {
+    if (ev_res) {
+      debugger
+      removePlayerScore((res) => {
+        if (res) {
+          debugger
+          removeRedPlayerScore((rd_res) => {
+            if (rd_res) {
+              debugger
+              removeTeamScore((res1) => {
+                if (res1) {
+                  debugger
+                  removeInitData((res2) => {
+                    if (res2) {
+                      debugger
+                      cb(true)
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+      })
+    }
+  })
+}
+
+async function removeEventData(cb) {
+  //remove events
+  debugger
+  const realm = Realm.open({
+    path: 'NextUpLocalDB/Events',
+    schema: [EventSchema],
+  });
+  if (realm) {
+    // realm.write(() => {
+    // Delete all instances of Cat from the realm.
+    realm.delete(realm.objects("game_event"));
+    // });
+    // (await realm).deleteAll
+
+  }
+  (await realm).close
+  cb(true);
+}
+
+
+async function removePlayerScore(cb) {
+  debugger
+  const realm = Realm.open({
+    path: 'NextUpLocalDB/BluePlayerScore',
+    schema: [BlueTeamPlayerScoreSchema],
+  });
+  if (realm) {
+    // (await realm).deleteAll
+    realm.delete(realm.objects("blue_team_player_score"));
+  }
+  (await realm).close
+  cb(true);
+}
+
+async function removeRedPlayerScore(cb) {
+  debugger
+  const realm = Realm.open({
+    path: 'NextUpLocalDB/RedPlayerScore',
+    schema: [RedTeamPlayerScoreSchema],
+  });
+  if (realm) {
+    // (await realm).deleteAll
+    realm.delete(realm.objects("red_team_player_score"));
+  }
+  (await realm).close
+  cb(true);
+}
+
+async function removeTeamScore(cb) {
+  debugger
+  //remove team score
+  const realm = Realm.open({
+    path: 'NextUpLocalDB/TeamScore',
+    schema: [TeamScoreSchema],
+  });
+  if (realm) {
+    (await realm).deleteAll
+  }
+  (await realm3).close
+  cb(true);
+}
+
+async function removeInitData(cb) {
+  debugger
+  //remove team score
+  const realm = Realm.open({
+    path: 'NextUpLocalDB/InitialData',
+    schema: [InitialDataSchema],
+  });
+  if (realm) {
+    // (await realm4).deleteAll
+    realm.delete(realm.objects("initial_data"));
+  }
+  (await realm).close
+
+  cb(true);
+}
+
+
+
+
 
 export {
   insertEvent, insertBluePlayerScore,
@@ -441,5 +551,6 @@ export {
   getEventDataFromRealm,
   getPlayerScoreFromRealm,
   getInitialData,
-  getTeamScore
+  getTeamScore,
+  removeAllLocalData
 }

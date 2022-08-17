@@ -444,48 +444,47 @@ const SubActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
         data={numberList}
         // horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={(item, index) =>
-          <View style={{
-            justifyContent: 'center', alignItems: 'center',
-            marginHorizontal: 5, marginVertical: 4
-          }}>
-            {item?.item.playerProfilePictureUrl !== null && item?.item.playerProfilePictureUrl !== undefined ?
-              <TouchableOpacity style={{
-                width: 50, height: 50, borderRadius: 50 / 2,
-                backgroundColor: Colors.newGrayFontColor,
-                alignItems: 'center', justifyContent: 'center',
-                // marginTop: 30,
+        renderItem={(item, index) => <View style={{
+          justifyContent: 'center', alignItems: 'center',
+          marginHorizontal: 5, marginVertical: 4
+        }}>
+          {item?.item.playerProfilePictureUrl !== null && item?.item.playerProfilePictureUrl !== undefined ?
+            <TouchableOpacity style={{
+              width: 50, height: 50, borderRadius: 50 / 2,
+              backgroundColor: Colors.newGrayFontColor,
+              alignItems: 'center', justifyContent: 'center',
+              // marginTop: 30,
+            }}
+              onPress={() => onPress(item.item)}
+            >
+              <FastImage
+                source={{ uri: item?.item.playerProfilePictureUrl }}
+                // source={require('../../Images/dummyImage.png')}
+                style={{ width: '98%', height: '98%', borderRadius: 50 / 2 }}
+              />
+            </TouchableOpacity>
+            :
+            <TextInCircle
+              key={index}
+              text={item?.item.number}
+              onPress={() => onPress(item.item)}
+              style={{
+                ...{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50 / 2,
+                  // borderWidth: 1,
+                  // borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
+                  backgroundColor: item?.item.playerId === activePlayer ? Colors.lightGreen : bgColor
+                }, ...itemStyle,
               }}
-                onPress={() => onPress(item.item)}
-              >
-                <FastImage
-                  source={{ uri: item?.item.playerProfilePictureUrl }}
-                  // source={require('../../Images/dummyImage.png')}
-                  style={{ width: '98%', height: '98%', borderRadius: 50 / 2 }}
-                />
-              </TouchableOpacity>
-              :
-              <TextInCircle
-                key={index}
-                text={item?.item.number}
-                onPress={() => onPress(e)}
-                style={{
-                  ...{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 50 / 2,
-                    // borderWidth: 1,
-                    // borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
-                    backgroundColor: item?.item.playerId === activePlayer ? Colors.lightGreen : bgColor
-                  }, ...itemStyle,
-                }}
-                txtStyle={{ color: Colors.base, }} />
-            }
-            <Text style={{
-              fontSize: 12, fontFamily: Fonts.Bold,
-              lineHeight: 18, color: Colors.light
-            }}>{item?.item.playerName}</Text>
-          </View>
+              txtStyle={{ color: Colors.base, }} />
+          }
+          <Text style={{
+            fontSize: 12, fontFamily: Fonts.Bold,
+            lineHeight: 18, color: Colors.light
+          }}>{item?.item.playerName}</Text>
+        </View>
         }
 
       />
@@ -570,48 +569,47 @@ const SubNonActiveTeamPlayer = ({ heading, list, activePlayer, isBlueTeam,
         data={numberList}
         // horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={(item, index) =>
-          <View style={{
-            justifyContent: 'center', alignItems: 'center',
-            marginHorizontal: 8, marginVertical: 4
-          }}>
-            {item?.item.playerProfilePictureUrl !== null && item?.item.playerProfilePictureUrl !== undefined ?
-              <TouchableOpacity style={{
-                width: 50, height: 50, borderRadius: 50 / 2,
-                backgroundColor: Colors.newGrayFontColor,
-                alignItems: 'center', justifyContent: 'center',
-                // marginTop: 30,
+        renderItem={(item, index) => <View style={{
+          justifyContent: 'center', alignItems: 'center',
+          marginHorizontal: 8, marginVertical: 4
+        }}>
+          {item?.item.playerProfilePictureUrl !== null && item?.item.playerProfilePictureUrl !== undefined ?
+            <TouchableOpacity style={{
+              width: 50, height: 50, borderRadius: 50 / 2,
+              backgroundColor: Colors.newGrayFontColor,
+              alignItems: 'center', justifyContent: 'center',
+              // marginTop: 30,
+            }}
+              onPress={() => onPress(item.item)}
+            >
+              <FastImage
+                source={{ uri: item?.item.playerProfilePictureUrl }}
+                // source={require('../../Images/dummyImage.png')}
+                style={{ width: '98%', height: '98%', borderRadius: 50 / 2 }}
+              />
+            </TouchableOpacity>
+            :
+            <TextInCircle
+              key={index}
+              text={item?.item.number}
+              onPress={() => onPress(item.item)}
+              style={{
+                ...{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50 / 2,
+                  // borderWidth: 1,
+                  // borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
+                  backgroundColor: item?.item.playerId === activePlayer ? Colors.lightGreen : bgColor
+                }, ...itemStyle,
               }}
-                onPress={() => onPress(item.item)}
-              >
-                <FastImage
-                  source={{ uri: item?.item.playerProfilePictureUrl }}
-                  // source={require('../../Images/dummyImage.png')}
-                  style={{ width: '98%', height: '98%', borderRadius: 50 / 2 }}
-                />
-              </TouchableOpacity>
-              :
-              <TextInCircle
-                key={index}
-                text={item?.item.number}
-                onPress={() => onPress(e)}
-                style={{
-                  ...{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 50 / 2,
-                    // borderWidth: 1,
-                    // borderColor: e.id === activePlayer ? Colors.darkYellow : bgColor,
-                    backgroundColor: item?.item.playerId === activePlayer ? Colors.lightGreen : bgColor
-                  }, ...itemStyle,
-                }}
-                txtStyle={{ color: Colors.base, }} />
-            }
-            <Text style={{
-              fontSize: 12, fontFamily: Fonts.Bold,
-              lineHeight: 18, color: Colors.light
-            }}>{item?.item.playerName}</Text>
-          </View>
+              txtStyle={{ color: Colors.base, }} />
+          }
+          <Text style={{
+            fontSize: 12, fontFamily: Fonts.Bold,
+            lineHeight: 18, color: Colors.light
+          }}>{item?.item.playerName}</Text>
+        </View>
         }
 
       />

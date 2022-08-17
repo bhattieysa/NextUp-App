@@ -37,6 +37,7 @@ import {
   insertInitialData,
   getInitialData,
   getTeamScore,
+  removeAllLocalData
 } from '../../middleware/localDb';
 import { Court_ptr } from '../../constants/constant';
 import { CourtRebound } from './CourtRebound';
@@ -201,8 +202,7 @@ const GameScreen = (props) => {
 
   useEffect(() => {
     debugger
-    StatusBar.setHidden(true)
-    Orientation.lockToLandscapeRight()
+
     setTimeout(() => {
       getInitialData(async (initRes, resData) => {
         if (initRes) {
@@ -416,18 +416,30 @@ const GameScreen = (props) => {
     }, 50);
 
 
+
+  }, [])
+
+  useEffect(() => {
+    StatusBar.setHidden(true)
+    Orientation.lockToLandscapeRight()
     return () => {
-      StatusBar.setHidden(false)
       Orientation.lockToPortrait()
+      StatusBar.setHidden(false)
+
     };
   }, [])
 
   const handleBackNavigation = () => {
-    debugger
     sendDataToServer(preSelectedQuarter);
+    // setTimeout(() => {
     setTimeout(() => {
+      // }, 50);
+      // Orientation.lockToPortrait()
+      // setTimeout(() => {
       Navigation.back()
-    }, 100);
+
+      // }, 100);
+    }, 200);
   }
 
   const sendDataToServer = (item) => {
@@ -479,6 +491,11 @@ const GameScreen = (props) => {
 
   const endGame = (item) => {
     debugger
+    // removeAllLocalData((del_res) => {
+    //   if (del_res) {
+    //     console.log("All data delete")
+    //   }
+    // })
     setPreSelectedQuarter(item);
     setIsEventCompleted(true)
     updateInitData()
@@ -496,7 +513,12 @@ const GameScreen = (props) => {
                     if (playerData.length > 0) {
                       props.dispatch(sendPlayerScoreData(eventId, playerData, (res3, resData1) => {
                         if (res3) {
-                          console.log("PlayerScore send")
+                          // removeAllLocalData((del_res) => {
+                          //   if (del_res) {
+                          //     console.log("All data delete")
+                          //   }
+                          // })
+
                         }
                       }))
                     }
@@ -509,8 +531,9 @@ const GameScreen = (props) => {
         }
       })
     }, 500);
-
   }
+
+
 
 
   const updateInitData = () => {
@@ -1119,6 +1142,7 @@ const GameScreen = (props) => {
           blueTeamScore={blueTeamScore}
           redTeamScore={redTeamScore}
           sendDataToServer={sendDataToServer}
+          updateInitData={updateInitData}
         />
       case "substitute":
         return <SubstitutePlayer
@@ -2056,9 +2080,10 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response,
               width: 50, height: 50, borderRadius: 50 / 2,
             }}
             isBlueTeam={isEnabled}
-            onPress={
-              (e) => setActive(e.playerId)
-            }
+            onPress={(e) => {
+              debugger
+              setActive(e.playerId)
+            }}
             activePlayer={active}
             isOtherShow={false}
           />
@@ -2073,9 +2098,7 @@ const SubstitutePlayer = ({ setCurrentView, isEnabled, response,
               // marginTop: 30,
               width: 50, height: 50, borderRadius: 50 / 2,
             }}
-            onPress={
-              (e) => setSubstitute(e.playerId)
-            }
+            onPress={(e) => setSubstitute(e.playerId)}
             activePlayer={substitute}
             isOtherShow={false}
           />
@@ -2433,7 +2456,7 @@ const ChangeLineUp = ({ eventId, teamID, gameId, setCurrentView, isEnabled, main
 const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
   activePlayer, quarter, setCourtArea, courtArea,
   btnEnable, handleBtnEnable, setCourtAreaClick, courtAreaClick, madeOrMised,
-  blueTeamScore, redTeamScore, sendDataToServer }) => {
+  blueTeamScore, redTeamScore, sendDataToServer, updateInitData }) => {
 
 
 
@@ -2563,7 +2586,12 @@ const PlayingGameScreen = ({ isEnabled, setCurrentView, setActivePlayer,
                 // title="Substitute Player"
                 title="Sub Player"
                 // onPress={() => handleDataInser()}
-                onPress={() => setCurrentView("substitute")}
+                onPress={() => {
+                  updateInitData()
+                  setTimeout(() => {
+                    setCurrentView("substitute")
+                  }, 500);
+                }}
               />
               <PlaygroundScreenBtn
                 title="Lineup"
