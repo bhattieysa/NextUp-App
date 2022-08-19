@@ -256,6 +256,19 @@ class Backend {
         cb(false);
       });
   }
+
+  resetUserPassword(email, cb) {
+    debugger
+    auth().sendPasswordResetEmail(email)
+      .then(() => {
+        debugger
+        cb(true);
+      })
+      .catch(error => {
+        debugger
+        cb(false);
+      })
+  }
 }
 
 export default new Backend

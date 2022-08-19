@@ -46,20 +46,17 @@ class Login extends Component {
     this.inputs = {};
   }
 
-  checkLocationPermission
+  // checkLocationPermission
 
   componentDidMount() {
 
   }
   checkEmailExist = () => {
-
     const { email } = this.state;
     let valid = isValidEmail(email);
     if (valid) {
       backend.isEmailExist(email, (status, e) => {
-
         console.log("Email status is ", status);
-
         debugger
         if (status) {
           this.setState({ isConfirmPass: false }, () => {
@@ -236,8 +233,8 @@ class Login extends Component {
         break;
     }
   }
-  setTextofEmailAndPass = (frm, txt) => {
 
+  setTextofEmailAndPass = (frm, txt) => {
     const { email, password, isConfirmPass, cpassword } = this.state;
     if (frm === 'email') {
       let valid = isValidEmail(txt);
@@ -310,10 +307,9 @@ class Login extends Component {
                   fontFamily: Fonts.Bold, lineHeight: 24,
                   marginHorizontal: 10
                 }}>
-                  Sign in with Email
+                  Continue with email
                 </Text>
               </View>
-
               <Progress.Bar
                 progress={0.1}
                 width={wide * 0.8}
@@ -323,21 +319,7 @@ class Login extends Component {
               />
             </View>
             <KeyboardAvoidingView keyboardVerticalOffset={0} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-              {/* <KeyboardAwareScrollView contentContainerStyle={{ minHeight: isNotch ? Layout.height - 170 : Layout.height - 100 }}> */}
-              {/* <KeyboardAwareScrollView contentContainerStyle={{ minHeight: isNotch ? Layout.height - 170 : Layout.height - 100 }}
-            showsVerticalScrollIndicator={false} enableOnAndroid={true}> */}
               <View style={{ flex: 1, marginHorizontal: 32, marginTop: 40 }} >
-                {/* <Text style={{
-                marginTop: 16,
-                color: Colors.light, fontSize: 32,
-                fontFamily: Fonts.B, lineHeight: 36
-              }}>
-                Sign in
-              </Text>
-              <Text style={{ color: Colors.light, fontSize: 32, lineHeight: 36, fontFamily: Fonts.Bold }}>
-                with Email
-              </Text> */}
-
                 <View style={{ marginTop: wide * 0.1 }}>
                   <AnimatedInput
                     onEndEditing={() => this.checkEmailExist()}
@@ -351,7 +333,10 @@ class Login extends Component {
                       fontSize: 16, lineHeight: 18
                     }}
                     // isAutoFoucs={true}
-                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                    styleLabel={{
+                      fontFamily: Fonts.SemiBold,
+                      color: Colors.txtFieldPlaceHolder, fontSize: 16, lineHeight: 18,
+                    }}
                     styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
                     keyboardType={'email-address'}
                   />
@@ -365,7 +350,10 @@ class Login extends Component {
                     value={this.state.password}
                     // isAutoFoucs={true}
                     styleInput={{ fontFamily: Fonts.Bold, color: Colors.light, fontSize: 16, lineHeight: 18 }}
-                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                    styleLabel={{
+                      fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder,
+                      fontSize: 16, lineHeight: 18,
+                    }}
                     styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
                     secureTextEntry={true}
 
@@ -386,14 +374,39 @@ class Login extends Component {
                             lineHeight: 18
                           }}
                           // isAutoFoucs={true}
-                          styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                          styleLabel={{
+                            fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder,
+                            fontSize: 16, lineHeight: 18,
+                          }}
                           styleBodyContent={{ borderBottomWidth: 1.5, borderBottomColor: Colors.borderColor, width: wide * 0.8 }}
                           secureTextEntry={true}
 
                         />
                       </View>
                       :
-                      null
+                      <View style={{
+                        width: '100%', height: wide * 0.08,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                      }}>
+
+                        <TouchableOpacity style={{
+                          width: '55%', height: '90%',
+                          marginRight: wide * 0.01,
+                          alignItems: 'center', justifyContent: 'center',
+                          // backgroundColor: 'red'
+                        }}
+                          activeOpacity={1}
+                          onPress={() => Navigation.navigate('ForgotPassword')}
+                        >
+                          <Text style={{
+                            color: Colors.btnBg,
+                            fontFamily: Fonts.SemiBold,
+                            fontSize: 16, lineHeight: 18, fontWeight: '600',
+                          }}>FORGOT PASSWORD? </Text>
+                        </TouchableOpacity>
+                      </View>
                   }
                 </View>
 

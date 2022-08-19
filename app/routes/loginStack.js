@@ -86,6 +86,9 @@ const LoginStack = createStackNavigator(
         EditProfile: {
             getScreen: () => require('../views/home/EditProfile').default,
         },
+        ForgotPassword: {
+            getScreen: () => require('../views/auth/forgotPassword').default,
+        },
     },
     {
         defaultNavigationOptions,

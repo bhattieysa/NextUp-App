@@ -191,7 +191,7 @@ class PlayerCategoryStyle extends Component {
       <TouchableOpacity
         style={{
           borderWidth: 1.5,
-          borderColor: Colors.compareFirstPlayerBorder,
+          borderColor: selectedCategoryIndex == index ? null : Colors.compareFirstPlayerBorder,
           borderRadius: wide * 0.02,
           width: wide * 0.25,
           height: wide * 0.4,

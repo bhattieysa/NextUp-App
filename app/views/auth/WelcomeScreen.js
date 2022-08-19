@@ -349,10 +349,15 @@ TrainerHome */}
               Navigation.navigate('Login')
 
             }}>
+              {/* <Text style={{
+                alignSelf: 'center', color: Colors.light,
+                fontFamily: Fonts.Bold,
+              }}>Sign in with Email </Text> */}
               <Text style={{
                 alignSelf: 'center', color: Colors.light,
                 fontFamily: Fonts.Bold,
-              }}>Sign in with Email </Text>
+                fontSize: 14, lineHeight: 16, fontWeight: '700',
+              }}>Continue with Email </Text>
             </TouchableOpacity>
             <View style={{
               width: Platform.OS === 'ios' ? wide * 0.8 : wide * 0.55,
@@ -407,14 +412,34 @@ TrainerHome */}
 
               }}>
               <View style={{ flexDirection: 'row' }}>
-                <Text style={{ color: Colors.borderColor, fontSize: 13, lineHeight: 16 }}>By continuing you agree Next Up</Text>
-                <Text style={{ color: Colors.btnBg, fontSize: 12, lineHeight: 16, textDecorationLine: 'underline' }}> Terms of
+                <Text style={{
+                  color: Colors.greyTxtColor,
+                  fontSize: 13, lineHeight: 16,
+                  fontWeight: '500', fontFamily: Fonts.Medium
+                }}>By continuing you agree Next Up</Text>
+                <Text style={{
+                  color: Colors.btnBg, fontSize: 12,
+                  lineHeight: 16, textDecorationLine: 'underline',
+                  fontWeight: '500', fontFamily: Fonts.Medium
+                }}>  Terms of
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: Colors.btnBg, fontSize: 12, lineHeight: 16, textDecorationLine: 'underline' }}>Services </Text>
-                <Text style={{ color: Colors.btnBg, fontSize: 12, lineHeight: 16, }}>& </Text>
-                <Text style={{ color: Colors.btnBg, fontSize: 12, lineHeight: 16, textDecorationLine: 'underline' }}>Privacy Policy</Text>
+                <Text style={{
+                  color: Colors.btnBg,
+                  fontSize: 12, lineHeight: 16, textDecorationLine: 'underline',
+                  fontWeight: '500', fontFamily: Fonts.Medium
+                }}>Services </Text>
+                <Text style={{
+                  color: Colors.greyTxtColor,
+                  fontSize: 12, lineHeight: 16,
+                  fontWeight: '500', fontFamily: Fonts.Medium
+                }}> & </Text>
+                <Text style={{
+                  color: Colors.btnBg, fontSize: 12,
+                  lineHeight: 16, textDecorationLine: 'underline',
+                  fontWeight: '500', fontFamily: Fonts.Medium
+                }}> Privacy Policy</Text>
               </View>
             </TouchableOpacity>
 

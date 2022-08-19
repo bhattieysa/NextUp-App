@@ -57,5 +57,8 @@ export const Colors = {
   lightGreen: "#74C896",
   btnRed: '#FD2727',
   btnGren: '#48C81B',
+  greyTxtColor: '#9598A1',
+  txtFieldPlaceHolder: '#75777D',
+  radioBtnBorder: '#373C47',
 
 };
