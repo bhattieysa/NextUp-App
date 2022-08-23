@@ -4,7 +4,8 @@ import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import Navigation from '../lib/Navigation';
 import {
   CalenderStack, ExploreStack,
-  CoachHomeStack, CoachManageStack, CoachMyTeamStack, MessageStack, CoachChallengeStack
+  CoachHomeStack, CoachManageStack, CoachMyTeamStack, MessageStack, CoachChallengeStack,
+  AccountStack
 } from './index';
 import { Colors, Layout, CommonStyles } from '../constants';
 
@@ -12,14 +13,16 @@ import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 import { SvgUri } from 'react-native-svg';
 
-let home = require('../Images/homeNew.png');
+let home = require('../Images/newBottomDashboard_icon.png');
 // let Explore = require('../Images/Search_tab.png');
-let Explore = require('../Images/explore_tab_icon.png');
+// let Explore = require('../Images/explore_tab_icon.png');
+let Explore = require('../Images/newBottomCalender_icon.png');
 // let Calender = require('../Images/Calender.png');
 let manage = require('../Images/tab_Manage.png');
-let myTeam = require('../Images/Standing.png');
-let message = require('../Images/tab_message_icon.png');
-let challenge = require('../Images/tabChallenege_icon.png');
+let myTeam = require('../Images/newBottomMyTeam_icon.png');
+let message = require('../Images/newBottomMessage_icon.png');
+// let challenge = require('../Images/tabChallenege_icon.png');
+let account = require('../Images/bottomAccount_icon.png');
 
 let wide = Layout.width;
 // const AppTabBar = (props) => (
@@ -58,13 +61,15 @@ function renderTabBarIcon(focused, iconSource) {
 
 const TabNavigatorCoach = createBottomTabNavigator(
   {
-    Home: CoachHomeStack,
-    Explore: ExploreStack,
+    Dashboard: CoachHomeStack,
+    // Explore: ExploreStack,
+    Calendar: ExploreStack,
+    MyTeam: CoachMyTeamStack,
     // Manage: CoachManageStack,
-    Challenge: CoachChallengeStack,
+    Inbox: MessageStack,
+    // Challenge: CoachChallengeStack,
+    Account: AccountStack,
     // Calender: CalenderStack,
-    Message: MessageStack,
-    MyTeam: CoachMyTeamStack
   },
 
   {
@@ -72,20 +77,20 @@ const TabNavigatorCoach = createBottomTabNavigator(
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         switch (routeName) {
-          case 'Home':
+          case 'Dashboard':
             icon = renderTabBarIcon(focused, home);
             break;
-          case 'Explore':
+          case 'Calendar':
             icon = renderTabBarIcon(focused, Explore);
-            break;
-          case 'Message':
-            icon = renderTabBarIcon(focused, message);
-            break;
-          case 'Challenge':
-            icon = renderTabBarIcon(focused, challenge);
             break;
           case 'MyTeam':
             icon = renderTabBarIcon(focused, myTeam);
+            break;
+          case 'Inbox':
+            icon = renderTabBarIcon(focused, message);
+            break;
+          case 'Account':
+            icon = renderTabBarIcon(focused, account);
             break;
 
           default:

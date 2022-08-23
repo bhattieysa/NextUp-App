@@ -8,14 +8,16 @@ import PlayerMyTeamStack from './PlayerMyTeamStack';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-let home = require('../Images/homeNew.png');
-// let Explore = require('../Images/Search_tab.png');
-let Explore = require('../Images/explore_tab_icon.png');
+let home = require('../Images/newBottomDashboard_icon.png');
+// let Explore = require('../Images/explore_tab_icon.png');
+let Explore = require('../Images/newBottomCalender_icon.png');
 // let Calender = require('../Images/Calender.png');
-let MyStanding = require('../Images/Standing.png');
-let Pro = require('../Images/Pro_tab.png');
-let message = require('../Images/tab_message_icon.png');
-let myTeam = require('../Images/Standing.png');
+// let MyStanding = require('../Images/Standing.png');
+let myTeam = require('../Images/newBottomMyTeam_icon.png');
+// let Pro = require('../Images/Pro_tab.png');
+// let message = require('../Images/tab_message_icon.png');
+let message = require('../Images/newBottomMessage_icon.png');
+let account = require('../Images/bottomAccount_icon.png');
 
 let wide = Layout.width;
 // const AppTabBar = (props) => (
@@ -52,12 +54,13 @@ function renderTabBarIcon(focused, iconSource) {
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: HomeStack,
-    Explore: ExploreStack,
+    Dashboard: HomeStack,
+    Calendar: ExploreStack,
     // Calender: CalenderStack,
-    Message: MessageStack,
-    MyStanding: MyStandingStack,
-    Pro: ProStack,
+    MyTeam: MyStandingStack,
+    Inbox: MessageStack,
+    // MyStanding: MyStandingStack,
+    Account: ProStack,
     // MyTeam: PlayerMyTeamStack
   },
   {
@@ -65,24 +68,34 @@ const TabNavigator = createBottomTabNavigator(
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         switch (routeName) {
-          case 'Home':
+          case 'Dashboard':
             icon = renderTabBarIcon(focused, home);
             break;
-          case 'Explore':
+          case 'Calendar':
             icon = renderTabBarIcon(focused, Explore);
             break;
           // case 'Calender':
           //   icon = renderTabBarIcon(focused, Calender);
           //   break;
-          case 'Message':
+          case 'Inbox':
             icon = renderTabBarIcon(focused, message);
             break;
-          case 'MyStanding':
-            icon = renderTabBarIcon(focused, MyStanding);
+          // case 'MyStanding':
+          //   icon = renderTabBarIcon(focused, MyStanding);
+          //   break;
+          case 'MyTeam':
+            icon = renderTabBarIcon(focused, myTeam);
             break;
-          case 'Pro':
-            icon = renderTabBarIcon(focused, Pro);
+
+          // case 'Pro':
+          //   icon = renderTabBarIcon(focused, Pro);
+          //   break;
+
+          case 'Account':
+            icon = renderTabBarIcon(focused, account);
             break;
+
+
 
           default:
             console.log("re")

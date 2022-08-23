@@ -94,6 +94,8 @@ class PlayerCategoryStyle extends Component {
         "dob": moment(UserModel.dob).format('MM/DD/YYYY'),
         "onBoardingTeamName": UserModel.coachTeam, //when coach selected
         "typeOfPlayer": selectedPlayerCategory.name,
+        "height": UserModel.selected_height,
+        "weight": UserModel.weight,
         "schoolInfo": {
           city: UserModel.city,
           state: UserModel.state,
@@ -135,7 +137,9 @@ class PlayerCategoryStyle extends Component {
               fid: UserModel.fid,
               isSocialLogin: UserModel.isSocialLogin,
               isProfileUploaded: UserModel.isProfileUploaded,
-              dob: UserModel.dob
+              dob: UserModel.dob,
+              selected_height: UserModel.selected_height,
+              weight: UserModel.weight
             }
             UserModel.fname = UserModel.fname
             UserModel.lname = UserModel.lname
@@ -148,6 +152,8 @@ class PlayerCategoryStyle extends Component {
             UserModel.aboutMe = UserModel.aboutMe
             UserModel.selectedUserType = UserModel.selectedUserType
             UserModel.dob = UserModel.dob
+            UserModel.selected_height = UserModel.selected_height
+            UserModel.weight = UserModel.weight
 
             setObject('authData', onBoardData).then(() => {
               this.setState({ loading: false })

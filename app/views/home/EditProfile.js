@@ -732,7 +732,6 @@ class EditProfile extends Component {
 
     })
 
-
   }
 
   render() {
@@ -766,7 +765,7 @@ class EditProfile extends Component {
                 title={'Edit Profile'}
                 backButtonAction={() => Navigation.back()}
               />
-              <TouchableOpacity style={{
+              {/* <TouchableOpacity style={{
                 flexDirection: 'row',
                 marginRight: wide * 0.06,
                 alignItems: 'center',
@@ -794,7 +793,7 @@ class EditProfile extends Component {
                   marginLeft: wide * 0.03,
 
                 }}>Log Out</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
             </View>
 
@@ -807,7 +806,7 @@ class EditProfile extends Component {
               <TouchableOpacity style={{
                 alignItems: 'center',
                 borderBottomColor: selectedTabIndex == 1 ? Colors.light : null,
-                borderBottomWidth: selectedTabIndex == 1 ? 1 : null,
+                borderBottomWidth: selectedTabIndex == 1 ? 1.2 : null,
               }}
                 activeOpacity={1}
                 onPress={() => this.setState({ selectedTabIndex: 1, })}
@@ -826,8 +825,8 @@ class EditProfile extends Component {
               <TouchableOpacity style={{
                 alignItems: 'center',
                 borderBottomColor: selectedTabIndex == 2 ? Colors.light : null,
-                borderBottomWidth: selectedTabIndex == 2 ? 1 : null,
-                marginLeft: wide * 0.06
+                borderBottomWidth: selectedTabIndex == 2 ? 1.2 : null,
+                marginLeft: wide * 0.08
               }}
                 activeOpacity={1}
                 onPress={() => this.setState({ selectedTabIndex: 2, })}
@@ -842,14 +841,27 @@ class EditProfile extends Component {
                 </Text>
 
               </TouchableOpacity>
-            </View>
 
-            {/* <TouchableOpacity style={{ width: wide * 0.1 }} onPress={() => Navigation.back()}>
-                                <Image style={{
-                                    width: wide * 0.1, height: wide * 0.1,
-                                    marginTop: 24, borderRadius: wide * 0.03, borderWidth: 1, borderColor: Colors.borderColor
-                                }} source={require('../../Images/back_ico.png')} />
-                            </TouchableOpacity> */}
+              <TouchableOpacity style={{
+                alignItems: 'center',
+                borderBottomColor: selectedTabIndex == 3 ? Colors.light : null,
+                borderBottomWidth: selectedTabIndex == 3 ? 1.2 : null,
+                marginLeft: wide * 0.08
+              }}
+                activeOpacity={1}
+                onPress={() => this.setState({ selectedTabIndex: 3, })}
+              >
+                <Text style={{
+                  color: selectedTabIndex == 3 ? Colors.light : Colors.newGrayFontColor,
+                  fontSize: 16, lineHeight: 24,
+                  fontFamily: Fonts.Bold,
+
+                }}>
+                  Other Details
+                </Text>
+
+              </TouchableOpacity>
+            </View>
 
             <KeyboardAvoidingView keyboardVerticalOffset={45}
               style={{ flex: 1, }}
@@ -1304,121 +1316,136 @@ class EditProfile extends Component {
 
 
                 </ScrollView>
-                :
-                <View style={{
-                  alignItems: 'center', marginTop: wide * 0.1,
-                }}>
-                  <TouchableOpacity onPress={() => this.pickIdSingle(true, false, 'ava')}>
-                    {
-                      this.state.idProofUrl == '' || this.state.idProofUrl == null
-                        ?
+                : selectedTabIndex == 2 ?
+                  <View style={{
+                    alignItems: 'center',
+                    marginTop: wide * 0.1,
+                    // backgroundColor: 'red',
+                  }}>
+                    <View style={{ width: '90%', alignItems: 'center', alignSelf: 'center' }}>
 
-                        <Image source={require('../../Images/Placeholder_PhotoId.png')} resizeMode='cover' />
+                      <TouchableOpacity onPress={() => this.pickIdSingle(true, false, 'ava')}>
+                        {
+                          this.state.idProofUrl == '' || this.state.idProofUrl == null
+                            ?
 
-                        :
-
-                        <View style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          paddingVertical: 10
-                        }}>
-                          <FastImage style={{
-                            height: wide * 0.3, width: wide * 0.46,
-                            borderRadius: 5
-                          }}
-                            source={{ uri: this.state.idProofUrl }}
-                            resizeMode='cover'
-                          />
-
-                          <Image source={require('../../Images/placeHolder_photoid_border.png')}
-                            style={{ position: 'absolute' }} />
-                        </View>
-
-                    }
-                    <Text style={{
-                      paddingTop: 10,
-                      color: Colors.newGrayFontColor, fontSize: 12,
-                      fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
-                      textAlign: 'center', alignSelf: 'center'
-                    }}>
-                      For profile verification, try not to skip the process
-
-                    </Text>
-                  </TouchableOpacity>
-                  <View style={{ position: 'absolute', top: wide * 0.18, bottom: wide * 0.18, left: wide * 0.04, alignItems: 'center', justifyContent: 'center' }}>
-
-                    <Image style={{
-                      width: 40, height: 40
-
-                    }} source={this.state.idProofUrl === '' || this.state.idProofUrl === null ?
-                      require('../../Images/tick_unselected.png') : require('../../Images/tick_selected.png')}
-                    />
-
-                    {this.state.userData?.typeOfUser == 'COACH' ?
-                      <Image style={{
-                        flex: 1
-
-                      }} source={require('../../Images/seperator_dash.png')}
-                        resizeMode='stretch'
-                      />
-                      : null
-                    }
-                    {this.state.userData?.typeOfUser == 'COACH' ?
-                      <Image style={{
-                        width: 40, height: 40
-
-                      }}
-                        source={this.state.certificateIdUrl === '' || this.state.certificateIdUrl === null
-                          ? require('../../Images/tick_unselected.png') : require('../../Images/tick_selected.png')}
-                      />
-                      : null
-                    }
-                  </View>
-                  {this.state.userData?.typeOfUser == 'COACH' ?
-                    <TouchableOpacity style={{ marginTop: wide * 0.1 }} onPress={() => this.pickIdSingle(true, false, 'certi')}>
-                      {
-                        this.state.certificateIdUrl == '' || this.state.certificateIdUrl == null
-                          ?
-
-                          <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 10 }}>
-                            <Image source={require('../../Images/CochingCerti.png')} resizeMode='cover' />
-                            <View style={{ position: 'absolute', alignItems: 'center', paddingVertical: 10 }}>
-                              <Text style={{
-                                color: Colors.borderColor, fontSize: 14,
-                                fontFamily: Fonts.Bold, lineHeight: 18
-                              }}>COACHING</Text>
-                              <Text style={{
-                                color: Colors.borderColor, fontSize: 14,
-                                fontFamily: Fonts.Bold, lineHeight: 18
-                              }}>CERTIFICATE</Text>
-                            </View>
-                          </View>
-
-                          :
-
-                          <View style={{
-
-                            justifyContent: 'center',
-                            alignItems: 'center', paddingVertical: 10
-                          }}>
-                            <FastImage style={{
-                              height: wide * 0.3, width: wide * 0.46,
-                              borderRadius: 5
-                            }}
-                              source={{ uri: this.state.certificateIdUrl }}
+                            <Image source={require('../../Images/Placeholder_PhotoId.png')}
                               resizeMode='cover'
+                              style={{ tintColor: Colors.photIdRactangle }}
                             />
 
-                            <Image source={require('../../Images/placeHolder_photoid_border.png')}
-                              style={{ position: 'absolute' }} />
-                          </View>
+                            :
 
+                            <View style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              paddingVertical: 10
+                            }}>
+                              <FastImage style={{
+                                height: wide * 0.3, width: wide * 0.46,
+                                borderRadius: 5
+                              }}
+                                source={{ uri: this.state.idProofUrl }}
+                                resizeMode='cover'
+                              />
+
+                              <Image source={require('../../Images/placeHolder_photoid_border.png')}
+                                style={{ position: 'absolute', tintColor: Colors.photIdRactangle }} />
+                            </View>
+
+                        }
+                        <Text style={{
+                          paddingTop: 10,
+                          color: Colors.greyTxtColor, fontSize: 12,
+                          fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                          textAlign: 'center', alignSelf: 'center'
+                        }}>
+                          For profile verification, try not to skip the process
+
+                        </Text>
+                      </TouchableOpacity>
+                      <View style={{ position: 'absolute', top: wide * 0.18, bottom: wide * 0.18, left: wide * 0.04, alignItems: 'center', justifyContent: 'center' }}>
+
+                        <Image style={{
+                          width: 40, height: 40
+
+                        }} source={this.state.idProofUrl === '' || this.state.idProofUrl === null ?
+                          require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')}
+                        />
+
+                        {this.state.userData?.typeOfUser == 'COACH' ?
+                          <Image style={{
+                            flex: 1,
+                            tintColor: Colors.photIdRactangle
+
+                          }} source={require('../../Images/seperator_dash.png')}
+                            resizeMode='stretch'
+                          />
+                          : null
+                        }
+                        {this.state.userData?.typeOfUser == 'COACH' ?
+                          <Image style={{
+                            width: 40, height: 40
+
+                          }}
+                            source={this.state.certificateIdUrl === '' || this.state.certificateIdUrl === null
+                              ? require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')}
+                          />
+                          : null
+                        }
+                      </View>
+                      {this.state.userData?.typeOfUser == 'COACH' ?
+                        <TouchableOpacity style={{ marginTop: wide * 0.1 }} onPress={() => this.pickIdSingle(true, false, 'certi')}>
+                          {
+                            this.state.certificateIdUrl == '' || this.state.certificateIdUrl == null
+                              ?
+
+                              <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 10 }}>
+                                <Image source={require('../../Images/CochingCerti.png')}
+                                  resizeMode='cover'
+                                  style={{ tintColor: Colors.photIdRactangle }}
+                                />
+                                <View style={{ position: 'absolute', alignItems: 'center', paddingVertical: 10 }}>
+                                  <Text style={{
+                                    color: Colors.photIdRactangle, fontSize: 14,
+                                    fontFamily: Fonts.Bold, lineHeight: 18
+                                  }}>COACHING</Text>
+                                  <Text style={{
+                                    color: Colors.photIdRactangle, fontSize: 14,
+                                    fontFamily: Fonts.Bold, lineHeight: 18
+                                  }}>CERTIFICATE</Text>
+                                </View>
+                              </View>
+
+                              :
+
+                              <View style={{
+
+                                justifyContent: 'center',
+                                alignItems: 'center', paddingVertical: 10
+                              }}>
+                                <FastImage style={{
+                                  height: wide * 0.3, width: wide * 0.46,
+                                  borderRadius: 5
+                                }}
+                                  source={{ uri: this.state.certificateIdUrl }}
+                                  resizeMode='cover'
+                                />
+
+                                <Image source={require('../../Images/placeHolder_photoid_border.png')}
+                                  style={{ position: 'absolute', tintColor: Colors.photIdRactangle }} />
+                              </View>
+
+                          }
+
+                        </TouchableOpacity>
+                        : null
                       }
+                    </View>
 
-                    </TouchableOpacity>
-                    : null
-                  }
-                </View>
+                  </View>
+                  :
+                  <></>
               }
 
 

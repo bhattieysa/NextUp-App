@@ -100,16 +100,30 @@ function SchoolList(props) {
 
   }, [school_search]);
 
+
+
   const getCityData = (stat) => {
     if (stat) {
       debugger
       dispatch(getCities(stat, (res, city_dt) => {
         if (res) {
           setCity(city_dt);
+          setSelectedCity(city_dt[0])
           setCityList(city_dt);
+          getSchoolDataFromCity(city_dt[0], stat)
         }
       }))
     }
+  }
+
+  const getSchoolDataFromCity = (city, stat) => {
+    dispatch(getSchoolOrTeamList(city, stat, "SCHOOL", (res, school_dt) => {
+      if (res) {
+        // setLoading(false)
+        setSchool(school_dt)
+        setSchoolList(school_dt)
+      }
+    }))
   }
 
   const getSchoolData = (city) => {
@@ -124,6 +138,8 @@ function SchoolList(props) {
       }))
     }
   }
+
+
 
   const setTextofFields = (frm, txt) => {
     switch (frm) {
@@ -212,25 +228,25 @@ function SchoolList(props) {
             flexDirection: 'row', justifyContent: 'space-between',
             marginTop: wide * 0.06,
             width: '85%', alignSelf: 'center',
+            alignItems: "center"
             // backgroundColor: "red"
           }}>
             <TouchableOpacity onPress={() => setStateModal(true)} activeOpacity={1}>
               <DropDownSelect
                 containerStyle={{
                   width: wide * 0.4,
-                  height: 60,
                   borderBottomWidth: 1,
                   borderBottomColor: Colors.borderColor,
                   alignItems: "center",
                   justifyContent: 'center',
-                  // backgroundColor: 'green'
 
                 }}
                 placeHolderContainerStyl={{
                   flexDirection: 'row', width: '98%',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginTop: wide * 0.015,
+                  marginBottom: state_selected == '' || state_selected == undefined ? wide * 0.025 : wide * 0.008
+
                   // backgroundColor: 'green'
                 }}
                 placeHolderLabelStyl={{
@@ -249,8 +265,8 @@ function SchoolList(props) {
                   color: Colors.light,
                   fontSize: 16, lineHeight: 18,
                   fontWeight: '600',
-                  marginTop: wide * 0.04,
-                  marginBottom: wide * 0.02,
+                  marginTop: wide * 0.02,
+                  marginBottom: wide * 0.03,
                   alignSelf: 'center'
                 }}
                 placeHolder={'STATE'}
@@ -266,7 +282,6 @@ function SchoolList(props) {
               <DropDownSelect
                 containerStyle={{
                   width: wide * 0.4,
-                  height: 60,
                   borderBottomWidth: 1,
                   borderBottomColor: Colors.borderColor,
                   alignItems: "center",
@@ -277,7 +292,8 @@ function SchoolList(props) {
                   flexDirection: 'row', width: '98%',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginTop: wide * 0.015,
+                  marginBottom: city_selected == '' || city_selected == undefined ? wide * 0.025 : wide * 0.008
+
                 }}
                 placeHolderLabelStyl={{
                   fontFamily: Fonts.Bold,
@@ -295,8 +311,8 @@ function SchoolList(props) {
                   color: Colors.light,
                   fontSize: 16, lineHeight: 18,
                   fontWeight: '600',
-                  marginTop: wide * 0.04,
-                  marginBottom: wide * 0.02,
+                  marginTop: wide * 0.02,
+                  marginBottom: wide * 0.03,
                   alignSelf: 'center'
                 }}
                 placeHolder={'CITY'}
@@ -318,7 +334,7 @@ function SchoolList(props) {
               {
                 schoolList.map((st, index) => (
                   <TouchableOpacity key={`state-${index}`} style={{ marginTop: 15 }} onPress={() => {
-                    Navigation.navigate("TellUsMoreIntro", { school: st, selected_state: state_selected, city: city_selected })
+                    Navigation.navigate("TellUsMoreIntro", { fromRoute: 'school', school: st, selected_state: state_selected, city: city_selected })
                   }}>
                     <Text style={{ color: Colors.lightshade, fontSize: 16 }}>{st.name}</Text>
                   </TouchableOpacity>
@@ -402,8 +418,9 @@ function SchoolList(props) {
                     <TouchableOpacity onPress={() => {
 
                       // if (res) {
+                      setSchoolList([])
                       setSelectedState(el)
-                      setSelectedCity('')
+                      // setSelectedCity('')
                       getCityData(el)
                       setStateModal(false)
 
@@ -501,6 +518,7 @@ function SchoolList(props) {
                 >
                   {cityList.map(el => (
                     <TouchableOpacity onPress={() => {
+                      setSchoolList([])
                       setSelectedCity(el)
                       getSchoolData(el)
                       setCityModal(false)

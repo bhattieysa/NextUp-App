@@ -63,8 +63,8 @@ class TellUsMore extends Component {
       pickerDate: new Date(),
       years: [],
       showYearPicker: false,
-      selected_height: '',
-      weight: '',
+      selected_height: UserModel.selected_height !== undefined ? UserModel.selected_height : '',
+      weight: UserModel.weight !== undefined ? UserModel.weight : '',
     };
     this.inputs = {};
   }
@@ -113,7 +113,9 @@ class TellUsMore extends Component {
       lname,
       email,
       aboutMe,
-      strSelectedMode
+      strSelectedMode,
+      selected_height,
+      weight
     } = this.state;
 
 
@@ -150,7 +152,7 @@ class TellUsMore extends Component {
     }
 
     if (strSelectedMode === 'player') {
-      if (fname.trim() !== '' && lname.trim() !== '' && email.trim() !== '') {
+      if (fname.trim() !== '' && lname.trim() !== '' && email.trim() !== '' && selected_height.trim() != '' && weight.trim() !== '') {
         this.setState({ isbtnEnable: true });
         return;
       }
@@ -160,6 +162,7 @@ class TellUsMore extends Component {
       }
     }
   }
+
   setTextofFields = (frm, txt) => {
     switch (frm) {
       case 'fname':
@@ -199,18 +202,19 @@ class TellUsMore extends Component {
         break;
       case 'height':
         this.setState({ selected_height: txt }, () => {
-          // this.checkForButtonEnable(frm)
+          this.checkForButtonEnable(frm)
         })
         break;
       case 'weight':
         this.setState({ weight: txt }, () => {
-          // this.checkForButtonEnable(frm)
+          this.checkForButtonEnable(frm)
         })
         break;
       default:
         break;
     }
   }
+
   calculate_age = (date) => {
     var today = new Date();
     var birthDate = new Date(date);
@@ -223,13 +227,15 @@ class TellUsMore extends Component {
     console.log('my age', age_now);
     return age_now;
   }
+
   actionContinue = () => {
     const { fname,
       lname,
       dob,
       email,
       strSelectedPosition,
-      aboutMe, strSelectedMode, isbtnEnable, positions, city, state, classof, school } = this.state;
+      aboutMe, strSelectedMode, isbtnEnable, positions, city, state, classof, school,
+      selected_height, weight } = this.state;
     if (isbtnEnable) {
       debugger
       if (
@@ -254,6 +260,8 @@ class TellUsMore extends Component {
           UserModel.aboutMe = aboutMe
           UserModel.selectedUserType = strSelectedMode
           UserModel.dob = dob
+          UserModel.selected_height = selected_height
+          UserModel.weight = weight
           Navigation.navigate('SelectPlayerCategory')
         } else {
           debugger
@@ -561,10 +569,7 @@ class TellUsMore extends Component {
             }}
             bounces={false}
 
-
           >
-
-
 
             <View style={{
               backgroundColor: Colors.base,
@@ -641,12 +646,11 @@ class TellUsMore extends Component {
 
               <View style={{
                 flexDirection: 'row', justifyContent: 'space-between',
-                marginTop: wide * 0.1
+                marginTop: wide * 0.12
               }}>
                 <DropDownSelect
                   containerStyle={{
                     width: wide * 0.4,
-                    height: 60,
                     borderBottomWidth: 1,
                     borderBottomColor: Colors.borderColor,
                     alignItems: "center",
@@ -657,8 +661,9 @@ class TellUsMore extends Component {
                     flexDirection: 'row', width: '98%',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginTop: wide * 0.015,
-                    // backgroundColor: 'green'
+                    marginBottom: state == '' || state == undefined ? wide * 0.025 : wide * 0.008
+
+
                   }}
                   placeHolderLabelStyl={{
                     fontFamily: Fonts.Bold,
@@ -676,8 +681,8 @@ class TellUsMore extends Component {
                     color: Colors.light,
                     fontSize: 16, lineHeight: 18,
                     fontWeight: '600',
-                    marginTop: wide * 0.03,
-                    marginBottom: wide * 0.015,
+                    marginTop: wide * 0.02,
+                    marginBottom: wide * 0.03,
                     alignSelf: 'center'
                   }}
                   placeHolder={'STATE'}
@@ -687,7 +692,6 @@ class TellUsMore extends Component {
                 <DropDownSelect
                   containerStyle={{
                     width: wide * 0.4,
-                    height: 60,
                     borderBottomWidth: 1,
                     borderBottomColor: Colors.borderColor,
                     alignItems: "center",
@@ -698,7 +702,8 @@ class TellUsMore extends Component {
                     flexDirection: 'row', width: '98%',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginTop: wide * 0.015,
+                    marginBottom: city == '' || city == undefined ? wide * 0.025 : wide * 0.008
+
                   }}
                   placeHolderLabelStyl={{
                     fontFamily: Fonts.Bold,
@@ -716,8 +721,8 @@ class TellUsMore extends Component {
                     color: Colors.light,
                     fontSize: 16, lineHeight: 18,
                     fontWeight: '600',
-                    marginTop: wide * 0.03,
-                    marginBottom: wide * 0.015,
+                    marginTop: wide * 0.02,
+                    marginBottom: wide * 0.03,
                     alignSelf: 'center'
                   }}
                   placeHolder={'CITY'}
@@ -730,10 +735,10 @@ class TellUsMore extends Component {
                 <View style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  marginTop: wide * 0.12
+                  marginTop: wide * 0.15
                 }}>
                   <AnimatedInput
-                    placeholder="HEIGHT"
+                    placeholder="HEIGHT (IN CM)"
                     onChangeText={(e) => this.setTextofFields('height', e)}
                     value={selected_height}
                     styleInput={{
@@ -751,10 +756,11 @@ class TellUsMore extends Component {
                       width: wide * 0.4,
                     }}
                     keyboardType={'decimal-pad'}
+
                   />
 
                   <AnimatedInput
-                    placeholder="WEIGHT"
+                    placeholder="WEIGHT (IN LBS)"
                     onChangeText={(e) => this.setTextofFields('weight', e)}
                     value={weight}
                     styleInput={{

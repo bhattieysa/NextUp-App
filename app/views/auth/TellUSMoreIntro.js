@@ -93,7 +93,7 @@ class TellUsMoreIntro extends Component {
     debugger
     this.props.dispatch(getCities(st, (res, city_dt) => {
       if (res) {
-        this.setState({ cityList: city_dt, cityDt: city_dt, })
+        this.setState({ cityList: city_dt, cityDt: city_dt, city: city_dt[0] })
       }
     }))
   }
@@ -101,36 +101,50 @@ class TellUsMoreIntro extends Component {
   componentDidUpdate(prevProps) {
     console.log("Did focus called");
     if (prevProps !== this.props) {
+      debugger
       // if (this.props?.navigation?.state?.params?.state) {
-      //     console.log("Did focus called state found, ", this.props.navigation?.state?.params?.state);
+      console.log("Did focus called state found, ", this.props.navigation?.state?.params?.state);
 
       //     this.setTextofFields('state', this.props.navigation?.state?.params?.state);
 
       // }
-
-      if (this.props?.navigation?.state?.params?.year) {
-        console.log("Did focus called year found");
-        this.setState({
-          classof: this.props.navigation.state.params.year
-        })
+      if (this.props?.navigation?.state?.params?.fromRoute == "year") {
+        if (this.props?.navigation?.state?.params?.year) {
+          console.log("Did focus called year found");
+          this.setState({
+            classof: this.props.navigation.state.params.year
+          }, () => {
+            this.checkForButtonEnable()
+          })
+        }
+      }
+      else if (this.props?.navigation?.state?.params?.fromRoute == "school") {
+        if (this.props?.navigation?.state?.params?.school) {
+          this.setState({
+            school: this.props.navigation.state.params.school,
+            selected_state: this.props.navigation.state.params.selected_state,
+            city: this.props.navigation.state.params.city,
+          }, () => {
+            this.checkForButtonEnable()
+          })
+        }
+      }
+      else if (this.props?.navigation?.state?.params?.fromRoute == "teamList") {
+        if (this.props?.navigation?.state?.params?.team) {
+          debugger
+          this.setState({
+            coachTeam: this.props.navigation.state.params.team,
+            selected_state: this.props.navigation.state.params.selected_state,
+            city: this.props.navigation.state.params.city,
+          }, () => {
+            this.checkForButtonEnable()
+          })
+        }
       }
 
-      if (this.props?.navigation?.state?.params?.school) {
-        this.setState({
-          school: this.props.navigation.state.params.school,
-          selected_state: this.props.navigation.state.params.selected_state,
-          city: this.props.navigation.state.params.city,
-        })
-      }
 
-      if (this.props?.navigation?.state?.params?.team) {
-        debugger
-        this.setState({
-          coachTeam: this.props.navigation.state.params.team,
-          selected_state: this.props.navigation.state.params.selected_state,
-          city: this.props.navigation.state.params.city,
-        })
-      }
+
+
 
     }
   }
@@ -140,24 +154,62 @@ class TellUsMoreIntro extends Component {
     const {
       isBoy,
       isGirl,
-      strSelectedMode
+      strSelectedMode,
+      isHighSchool,
+      school,
+      selected_coachingType,
+      coachTeam,
+      selected_state, city,
+      ageGroup, classof
+
     } = this.state;
 
-
+    debugger
     if (strSelectedMode === 'coach') {
-      if (key === 'coachSelected') {
-        this.setState({ isbtnEnable: true })
-        return
+      debugger
+      // if (key === 'coachSelected') {
+      // if (isHighSchool != '') {
+      if (isHighSchool == true) {
+        debugger
+        if (coachTeam != '' && selected_coachingType != '') {
+          this.setState({ isbtnEnable: true })
+          return
+        } else {
+          this.setState({ isbtnEnable: false })
+          return
+        }
       } else {
-        this.setState({ isbtnEnable: false });
-        return
+        debugger
+        if (coachTeam != '' && selected_state != '' && city != '' && ageGroup != '') {
+          this.setState({ isbtnEnable: true })
+          return
+        } else {
+          this.setState({ isbtnEnable: false })
+          return
+        }
       }
+      // } else {
+      //   this.setState({ isbtnEnable: false });
+      //   return
+      // }
+
+      // } else {
+      //   this.setState({ isbtnEnable: false });
+      //   return
+      // }
     }
 
     if (strSelectedMode === 'player') {
       if (isGirl !== '') {
-        this.setState({ isbtnEnable: true });
-        return;
+        if (school != '' && classof != '') {
+          this.setState({ isbtnEnable: true });
+          return;
+        } else {
+          this.setState({ isbtnEnable: false });
+          return;
+
+        }
+
       }
       else {
         this.setState({ isbtnEnable: false });
@@ -404,7 +456,13 @@ class TellUsMoreIntro extends Component {
         }}
         onPress={() => {
           debugger
-          this.setState({ strSelectedMode: item.toLowerCase() }, () => {
+          this.setState({
+            strSelectedMode: item.toLowerCase(),
+            school: '', coachTeam: '', classof: '',
+            isHighSchool: true, isGirl: false,
+            selected_state: '', city: '', ageGroup: '',
+            coachingType: '', selected_coachingType: ''
+          }, () => {
             this.checkForButtonEnable(item)
           })
         }
@@ -482,9 +540,21 @@ class TellUsMoreIntro extends Component {
     ActionSheet.options({
       message: 'Select an option',
       options: [
-        { text: 'Jr Varsity', onPress: () => this.setState({ coachingType: 'JV', selected_coachingType: 'Jr Varsity' }) },
-        { text: 'Varsity', onPress: () => this.setState({ coachingType: 'VARSITY', selected_coachingType: 'Varsity' }) },
-        { text: 'Both', onPress: () => this.setState({ coachingType: 'BOTH', selected_coachingType: 'Both' }) },
+        {
+          text: 'Jr Varsity', onPress: () => this.setState({ coachingType: 'JV', selected_coachingType: 'Jr Varsity' }, () => {
+            this.checkForButtonEnable()
+          })
+        },
+        {
+          text: 'Varsity', onPress: () => this.setState({ coachingType: 'VARSITY', selected_coachingType: 'Varsity' }, () => {
+            this.checkForButtonEnable()
+          })
+        },
+        {
+          text: 'Both', onPress: () => this.setState({ coachingType: 'BOTH', selected_coachingType: 'Both' }, () => {
+            this.checkForButtonEnable()
+          })
+        },
       ],
       tintColor: '#008888'
     })
@@ -494,9 +564,21 @@ class TellUsMoreIntro extends Component {
     ActionSheet.options({
       message: 'Select an option',
       options: [
-        { text: '14 & Under', onPress: () => this.setState({ ageGroup: '14 & Under' }) },
-        { text: '15 & Under', onPress: () => this.setState({ ageGroup: '15 & Under' }) },
-        { text: '18 & Under', onPress: () => this.setState({ ageGroup: '18 & Under' }) },
+        {
+          text: '14 & Under', onPress: () => this.setState({ ageGroup: '14 & Under' }, () => {
+            this.checkForButtonEnable()
+          })
+        },
+        {
+          text: '15 & Under', onPress: () => this.setState({ ageGroup: '15 & Under' }, () => {
+            this.checkForButtonEnable()
+          })
+        },
+        {
+          text: '18 & Under', onPress: () => this.setState({ ageGroup: '18 & Under' }, () => {
+            this.checkForButtonEnable()
+          })
+        },
       ],
       tintColor: '#008888'
     })
@@ -721,7 +803,7 @@ class TellUsMoreIntro extends Component {
                       onPress={() => this.setState({
                         isHighSchool: true, coachTeam: '',
                         classof: '', selected_state: '', city: '', ageGroup: '',
-                        coachingType: '',
+                        coachingType: '', selected_coachingType: ''
                       })}
                     >
                       <RadioButton
@@ -744,7 +826,7 @@ class TellUsMoreIntro extends Component {
                           isHighSchool: true,
                           coachTeam: '',
                           classof: '', selected_state: '', city: '', ageGroup: '',
-                          coachingType: '',
+                          coachingType: '', selected_coachingType: ''
                         })}
                       />
                       <Text style={{
@@ -765,7 +847,7 @@ class TellUsMoreIntro extends Component {
                       onPress={() => this.setState({
                         isHighSchool: false, coachTeam: '',
                         classof: '', selected_state: '', city: '', ageGroup: '',
-                        coachingType: '',
+                        coachingType: '', selected_coachingType: ''
                       })}
                     >
 
@@ -788,7 +870,7 @@ class TellUsMoreIntro extends Component {
                         onPress={() => this.setState({
                           isHighSchool: false, coachTeam: '',
                           classof: '', selected_state: '', city: '', ageGroup: '',
-                          coachingType: '',
+                          coachingType: '', selected_coachingType: ''
                         })}
 
                       />
@@ -812,21 +894,24 @@ class TellUsMoreIntro extends Component {
                     justifyContent: 'space-between',
                     marginTop: wide * 0.05,
                   }}>
-                    <TouchableOpacity onPress={() => Navigation.navigate("School")}>
+                    <TouchableOpacity
+                      onPress={() => Navigation.navigate("School")}
+                      style={{ marginTop: wide * 0.05, }}
+                    >
                       <DropDownSelect
                         containerStyle={{
                           width: wide * 0.8,
-                          height: 60,
                           borderBottomWidth: 1,
                           borderBottomColor: Colors.borderColor,
                           alignItems: "center",
                           justifyContent: 'center',
+
                         }}
                         placeHolderContainerStyl={{
                           flexDirection: 'row', width: '98%',
                           justifyContent: 'space-between',
                           alignItems: 'center',
-                          marginTop: wide * 0.015
+                          marginBottom: school == '' || school == undefined ? wide * 0.025 : wide * 0.008
                         }}
                         placeHolderLabelStyl={{
                           fontFamily: Fonts.Bold,
@@ -842,9 +927,10 @@ class TellUsMoreIntro extends Component {
                           width: '98%',
                           fontFamily: Fonts.Bold,
                           color: Colors.light,
-                          fontSize: 16, lineHeight: 18, fontWeight: '600',
-                          marginTop: wide * 0.03,
-                          marginBottom: wide * 0.015,
+                          fontSize: 16, lineHeight: 18,
+                          fontWeight: '600',
+                          marginTop: wide * 0.02,
+                          marginBottom: wide * 0.03,
                           alignSelf: 'center',
 
                         }}
@@ -858,12 +944,12 @@ class TellUsMoreIntro extends Component {
                     {/* Add picker here */}
 
                     <TouchableOpacity onPress={() => Navigation.navigate("Year")}
-                      style={{ marginTop: wide * 0.06, }}
+                      style={{ marginTop: wide * 0.09, }}
                     >
                       <DropDownSelect
                         containerStyle={{
                           width: wide * 0.44,
-                          height: 60,
+                          // height: 60,
                           borderBottomWidth: 1,
                           borderBottomColor: Colors.borderColor,
                           alignItems: "center",
@@ -874,7 +960,8 @@ class TellUsMoreIntro extends Component {
                           flexDirection: 'row', width: '98%',
                           justifyContent: 'space-between',
                           alignItems: 'center',
-                          marginTop: wide * 0.015,
+                          marginBottom: classof == '' || classof == undefined ? wide * 0.025 : wide * 0.008
+
 
                         }}
                         placeHolderLabelStyl={{
@@ -895,8 +982,8 @@ class TellUsMoreIntro extends Component {
                           fontSize: 16,
                           lineHeight: 18,
                           fontWeight: '600',
-                          marginTop: wide * 0.03,
-                          marginBottom: wide * 0.015,
+                          marginTop: wide * 0.02,
+                          marginBottom: wide * 0.03,
                           alignSelf: 'center'
                         }}
                         placeHolder={'CLASS OF'}
@@ -907,9 +994,9 @@ class TellUsMoreIntro extends Component {
                     </TouchableOpacity>
                   </View>
                   :
-                  isHighSchool == false ?
+                  isHighSchool == true ?
                     <View style={{
-                      marginTop: wide * 0.06,
+                      marginTop: wide * 0.04,
                       justifyContent: 'space-between',
                       // alignItems: 'center',
                       // backgroundColor: 'green'
@@ -919,12 +1006,13 @@ class TellUsMoreIntro extends Component {
 
                       <TouchableOpacity
                         onPress={() => Navigation.navigate("TeamList")}
+                        style={{ marginTop: wide * 0.06 }}
                       >
 
                         <DropDownSelect
                           containerStyle={{
                             width: wide * 0.8,
-                            height: 60,
+                            // height: 60,
                             borderBottomWidth: 1,
                             borderBottomColor: Colors.borderColor,
                             // backgroundColor: 'red',
@@ -935,7 +1023,8 @@ class TellUsMoreIntro extends Component {
                             flexDirection: 'row', width: '98%',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            marginTop: wide * 0.015,
+                            // marginTop: wide * 0.015,
+                            marginBottom: coachTeam == '' || coachTeam == undefined ? wide * 0.025 : wide * 0.008
 
                           }}
                           placeHolderLabelStyl={{
@@ -953,8 +1042,10 @@ class TellUsMoreIntro extends Component {
                             fontFamily: Fonts.Bold,
                             color: Colors.light,
                             fontSize: 16, lineHeight: 18, fontWeight: '600',
-                            marginTop: wide * 0.03,
-                            marginBottom: wide * 0.015,
+                            // marginTop: wide * 0.03,
+                            // marginBottom: wide * 0.015,
+                            marginTop: wide * 0.02,
+                            marginBottom: wide * 0.03,
                             alignSelf: 'center'
                           }}
                           placeHolder={'SELECT TEAM'}
@@ -966,13 +1057,13 @@ class TellUsMoreIntro extends Component {
 
                       <TouchableOpacity
                         onPress={() => this.onClickCoaching()}
-                        style={{ marginTop: wide * 0.06, }}
+                        style={{ marginTop: wide * 0.1, }}
 
                       >
                         <DropDownSelect
                           containerStyle={{
                             width: wide * 0.44,
-                            height: 60,
+                            // height: 60,
                             borderBottomWidth: 1,
                             borderBottomColor: Colors.borderColor,
                             alignItems: "center",
@@ -983,7 +1074,8 @@ class TellUsMoreIntro extends Component {
                             flexDirection: 'row', width: '98%',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            marginTop: wide * 0.015,
+                            marginBottom: selected_coachingType == '' || selected_coachingType == undefined ? wide * 0.025 : wide * 0.008
+
                           }}
                           placeHolderLabelStyl={{
                             fontFamily: Fonts.Bold,
@@ -1001,8 +1093,8 @@ class TellUsMoreIntro extends Component {
                             color: Colors.light,
                             fontSize: 16, lineHeight: 18,
                             fontWeight: '600',
-                            marginTop: wide * 0.03,
-                            marginBottom: wide * 0.015,
+                            marginTop: wide * 0.02,
+                            marginBottom: wide * 0.03,
                             alignSelf: 'center'
                           }}
                           placeHolder={'SELECT'}
@@ -1040,16 +1132,17 @@ class TellUsMoreIntro extends Component {
                       <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        marginTop: wide * 0.05,
+                        marginTop: wide * 0.07,
                         width: '100%',
                         // alignSelf: 'center',
-                        // backgroundColor: "red"
                       }}>
-                        <TouchableOpacity onPress={() => this.setState({ openStateModal: true })} activeOpacity={1}>
+                        <TouchableOpacity onPress={() => this.setState({ openStateModal: true })}
+                          activeOpacity={1}
+                        >
                           <DropDownSelect
                             containerStyle={{
                               width: wide * 0.4,
-                              height: 60,
+                              // height: 60,
                               borderBottomWidth: 1,
                               borderBottomColor: Colors.borderColor,
                               alignItems: "center",
@@ -1060,8 +1153,9 @@ class TellUsMoreIntro extends Component {
                               flexDirection: 'row', width: '98%',
                               justifyContent: 'space-between',
                               alignItems: 'center',
-                              marginTop: wide * 0.015,
-                              // backgroundColor: 'green'
+                              // marginTop: wide * 0.015,
+                              marginBottom: selected_state == '' || selected_state == undefined ? wide * 0.025 : wide * 0.008
+
                             }}
                             placeHolderLabelStyl={{
                               fontFamily: Fonts.Bold,
@@ -1079,8 +1173,8 @@ class TellUsMoreIntro extends Component {
                               color: Colors.light,
                               fontSize: 16, lineHeight: 18,
                               fontWeight: '600',
-                              marginTop: wide * 0.03,
-                              marginBottom: wide * 0.015,
+                              marginTop: wide * 0.02,
+                              marginBottom: wide * 0.03,
                               alignSelf: 'center'
                             }}
                             placeHolder={'STATE'}
@@ -1097,7 +1191,7 @@ class TellUsMoreIntro extends Component {
                           <DropDownSelect
                             containerStyle={{
                               width: wide * 0.4,
-                              height: 60,
+                              // height: 60,
                               borderBottomWidth: 1,
                               borderBottomColor: Colors.borderColor,
                               alignItems: "center",
@@ -1108,7 +1202,8 @@ class TellUsMoreIntro extends Component {
                               flexDirection: 'row', width: '98%',
                               justifyContent: 'space-between',
                               alignItems: 'center',
-                              marginTop: wide * 0.015,
+                              marginBottom: city == '' || city == undefined ? wide * 0.025 : wide * 0.008
+
                             }}
                             placeHolderLabelStyl={{
                               fontFamily: Fonts.Bold,
@@ -1126,8 +1221,8 @@ class TellUsMoreIntro extends Component {
                               color: Colors.light,
                               fontSize: 16, lineHeight: 18,
                               fontWeight: '600',
-                              marginTop: wide * 0.03,
-                              marginBottom: wide * 0.015,
+                              marginTop: wide * 0.02,
+                              marginBottom: wide * 0.03,
                               alignSelf: 'center'
                             }}
                             placeHolder={'CITY'}
@@ -1138,14 +1233,14 @@ class TellUsMoreIntro extends Component {
                       </View>
 
 
-                      <TouchableOpacity style={{ alignItems: 'center', marginTop: wide * 0.08, }}
+                      <TouchableOpacity style={{ alignItems: 'center', marginTop: wide * 0.1, }}
                         onPress={() => this.onClickAgeGroup()}
                       >
 
                         <DropDownSelect
                           containerStyle={{
                             width: wide * 0.4,
-                            height: 60,
+                            // height: 60,
                             borderBottomWidth: 1,
                             borderBottomColor: Colors.borderColor,
                             alignItems: "center",
@@ -1156,7 +1251,9 @@ class TellUsMoreIntro extends Component {
                             flexDirection: 'row', width: '98%',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            marginTop: wide * 0.015,
+                            // marginTop: wide * 0.015,
+                            marginBottom: ageGroup == '' || ageGroup == undefined ? wide * 0.025 : wide * 0.008
+
                           }}
                           placeHolderLabelStyl={{
                             fontFamily: Fonts.Bold,
@@ -1174,8 +1271,8 @@ class TellUsMoreIntro extends Component {
                             color: Colors.light,
                             fontSize: 16, lineHeight: 18,
                             fontWeight: '600',
-                            marginTop: wide * 0.03,
-                            marginBottom: wide * 0.015,
+                            marginTop: wide * 0.02,
+                            marginBottom: wide * 0.03,
                             alignSelf: 'center'
                           }}
                           placeHolder={'AGE'}

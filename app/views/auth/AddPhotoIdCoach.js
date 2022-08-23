@@ -272,7 +272,8 @@ class AddPhotoIdCoach extends Component {
                     avatar === ''
                       ?
 
-                      <Image source={require('../../Images/Placeholder_PhotoId.png')} resizeMode='cover' />
+                      <Image source={require('../../Images/Placeholder_PhotoId.png')} resizeMode='cover'
+                        style={{ tintColor: Colors.photIdRactangle }} />
 
                       :
 
@@ -288,34 +289,59 @@ class AddPhotoIdCoach extends Component {
                         }} source={{ uri: avatar }} resizeMode='cover' />
 
                         <Image source={require('../../Images/placeHolder_photoid_border.png')}
-                          style={{ position: 'absolute' }} />
+                          style={{ position: 'absolute', tintColor: Colors.photIdRactangle }} />
                       </View>
 
                   }
-                  <Text style={{
-                    paddingTop: 10,
-                    color: Colors.newGrayFontColor, fontSize: 12,
-                    fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
-                    textAlign: 'center', alignSelf: 'center'
-                  }}>
-                    For profile verification, try not to skip the process
+                  {avatar == '' ?
+                    <Text style={{
+                      paddingTop: 10,
+                      color: Colors.photIdRactangle, fontSize: 12,
+                      fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                      textAlign: 'center', alignSelf: 'center'
+                    }}>
+                      For profile verification, try not to skip the process
 
-                  </Text>
+                    </Text>
+                    :
+                    <View style={{
+                      flexDirection: 'row', alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <Image source={require('../../Images/info_icon.png')}
+                        style={{
+                          width: 15, height: 15,
+                          tintColor: Colors.photIdRactangle
+                        }} />
+                      <Text style={{
+                        marginTop: 16,
+                        color: Colors.photIdRactangle, fontSize: 12,
+                        fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                        textAlign: 'center', marginHorizontal: wide * 0.01
+                      }}>
+                        Your document is under verification, We will notify once verified.
+                      </Text>
+
+                    </View>
+                  }
+
                 </TouchableOpacity>
                 <View style={{ position: 'absolute', top: wide * 0.18, bottom: wide * 0.18, left: wide * 0.04, alignItems: 'center', justifyContent: 'center' }}>
 
                   <Image style={{
-                    width: 40, height: 40
+                    width: 40, height: 40,
+                    // tintColor: Colors.photIdRactangle
 
-                  }} source={avatar === '' ? require('../../Images/tick_unselected.png') : require('../../Images/tick_selected.png')} />
+                  }} source={avatar === '' ? require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')} />
                   <Image style={{
-                    flex: 1
-
+                    flex: 1,
+                    tintColor: Colors.photIdRactangle
                   }} source={require('../../Images/seperator_dash.png')} resizeMode='stretch' />
                   <Image style={{
-                    width: 40, height: 40
+                    width: 40, height: 40,
+                    tintColor: Colors.photIdRactangle
 
-                  }} source={avatarCerti === '' ? require('../../Images/tick_unselected.png') : require('../../Images/tick_selected.png')} />
+                  }} source={avatarCerti === '' ? require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')} />
                 </View>
                 <TouchableOpacity style={{ marginTop: 30 }} onPress={() => this.pickSingle(true, false, 'certi')}>
                   {
@@ -323,14 +349,15 @@ class AddPhotoIdCoach extends Component {
                       ?
 
                       <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 10 }}>
-                        <Image source={require('../../Images/CochingCerti.png')} resizeMode='cover' />
+                        <Image source={require('../../Images/CochingCerti.png')} resizeMode='cover'
+                          style={{ tintColor: Colors.photIdRactangle }} />
                         <View style={{ position: 'absolute', alignItems: 'center', paddingVertical: 10 }}>
                           <Text style={{
-                            color: Colors.borderColor, fontSize: 14,
+                            color: Colors.photIdRactangle, fontSize: 14,
                             fontFamily: Fonts.Bold, lineHeight: 18
                           }}>COACHING</Text>
                           <Text style={{
-                            color: Colors.borderColor, fontSize: 14,
+                            color: Colors.photIdRactangle, fontSize: 14,
                             fontFamily: Fonts.Bold, lineHeight: 18
                           }}>CERTIFICATE</Text>
                         </View>
@@ -349,7 +376,7 @@ class AddPhotoIdCoach extends Component {
                         }} source={{ uri: avatarCerti }} resizeMode='cover' />
 
                         <Image source={require('../../Images/placeHolder_photoid_border.png')}
-                          style={{ position: 'absolute' }} />
+                          style={{ position: 'absolute', tintColor: Colors.photIdRactangle }} />
                       </View>
 
                   }

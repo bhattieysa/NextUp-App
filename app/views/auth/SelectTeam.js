@@ -105,10 +105,22 @@ function TeamList(props) {
       dispatch(getCities(stat, (res, city_dt) => {
         if (res) {
           setCity(city_dt);
+          setSelectedCity(city_dt[0])
           setCityList(city_dt);
+          getTeamDataFromCity(city_dt[0], stat);
         }
       }))
     }
+  }
+
+  const getTeamDataFromCity = (city, stat) => {
+    dispatch(getSchoolOrTeamList(city, stat, "TEAM", (res, team_dt) => {
+      if (res) {
+        // setLoading(false)
+        setTeam(team_dt)
+        setTeamList(team_dt)
+      }
+    }))
   }
 
   const getTeamData = (city) => {
@@ -213,7 +225,6 @@ function TeamList(props) {
               <DropDownSelect
                 containerStyle={{
                   width: wide * 0.4,
-                  height: 60,
                   borderBottomWidth: 1,
                   borderBottomColor: Colors.borderColor,
                   alignItems: "center",
@@ -225,7 +236,8 @@ function TeamList(props) {
                   flexDirection: 'row', width: '98%',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginTop: wide * 0.015,
+                  marginBottom: state_selected == '' || state_selected == undefined ? wide * 0.025 : wide * 0.008
+
                   // backgroundColor: 'green'
                 }}
                 placeHolderLabelStyl={{
@@ -244,8 +256,8 @@ function TeamList(props) {
                   color: Colors.light,
                   fontSize: 16, lineHeight: 18,
                   fontWeight: '600',
-                  marginTop: wide * 0.04,
-                  marginBottom: wide * 0.02,
+                  marginTop: wide * 0.02,
+                  marginBottom: wide * 0.03,
                   alignSelf: 'center'
                 }}
                 placeHolder={'STATE'}
@@ -258,7 +270,6 @@ function TeamList(props) {
               <DropDownSelect
                 containerStyle={{
                   width: wide * 0.4,
-                  height: 60,
                   borderBottomWidth: 1,
                   borderBottomColor: Colors.borderColor,
                   alignItems: "center",
@@ -269,7 +280,8 @@ function TeamList(props) {
                   flexDirection: 'row', width: '98%',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginTop: wide * 0.015,
+                  marginBottom: city_selected == '' || city_selected == undefined ? wide * 0.025 : wide * 0.008
+
                 }}
                 placeHolderLabelStyl={{
                   fontFamily: Fonts.Bold,
@@ -287,8 +299,8 @@ function TeamList(props) {
                   color: Colors.light,
                   fontSize: 16, lineHeight: 18,
                   fontWeight: '600',
-                  marginTop: wide * 0.04,
-                  marginBottom: wide * 0.02,
+                  marginTop: wide * 0.02,
+                  marginBottom: wide * 0.03,
                   alignSelf: 'center'
                 }}
                 placeHolder={'CITY'}
@@ -309,7 +321,7 @@ function TeamList(props) {
               {
                 teamList.map((st, index) => (
                   <TouchableOpacity key={`state-${index}`} style={{ marginTop: 15 }} onPress={() => {
-                    Navigation.navigate("TellUsMoreIntro", { team: st, selected_state: state_selected, city: city_selected })
+                    Navigation.navigate("TellUsMoreIntro", { fromRoute: 'teamList', team: st, selected_state: state_selected, city: city_selected })
                   }}>
                     <Text style={{ color: Colors.lightshade, fontSize: 16 }}>{st.name}</Text>
                   </TouchableOpacity>
@@ -391,9 +403,9 @@ function TeamList(props) {
                 >
                   {stateList.map(el => (
                     <TouchableOpacity onPress={() => {
-                      setSelectedState(el)
                       setTeamList([])
-                      setSelectedCity('')
+                      setSelectedState(el)
+                      // setSelectedCity('')
                       getCityData(el)
                       setStateModal(false)
                     }}>
@@ -487,6 +499,7 @@ function TeamList(props) {
                 >
                   {cityList.map(el => (
                     <TouchableOpacity onPress={() => {
+                      setTeamList([])
                       setSelectedCity(el)
                       getTeamData(el)
                       setCityModal(false)

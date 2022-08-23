@@ -252,7 +252,10 @@ class AddPhotoId extends Component {
                   avatar === ''
                     ?
 
-                    <Image source={require('../../Images/Placeholder_PhotoId.png')} resizeMode='cover' />
+                    <Image source={require('../../Images/Placeholder_PhotoId.png')}
+                      resizeMode='cover'
+                      style={{ tintColor: Colors.photIdRactangle }}
+                    />
 
                     :
 
@@ -267,19 +270,41 @@ class AddPhotoId extends Component {
                       }} source={{ uri: avatar }} resizeMode='cover' />
 
                       <Image source={require('../../Images/placeHolder_photoid_border.png')}
-                        style={{ position: 'absolute' }} />
+                        style={{ position: 'absolute', tintColor: Colors.photIdRactangle }} />
                     </View>
 
                 }
 
               </TouchableOpacity>
-              <Text style={{
-                marginTop: 16,
-                color: Colors.newGrayFontColor, fontSize: 12,
-                fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5, textAlign: 'center'
-              }}>
-                For profile verification, try not to skip the process
-              </Text>
+              {avatar == '' ?
+                <Text style={{
+                  marginTop: 16,
+                  color: Colors.photIdRactangle, fontSize: 12,
+                  fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5, textAlign: 'center'
+                }}>
+                  For profile verification, try not to skip the process
+                </Text>
+                :
+                <View style={{
+                  flexDirection: 'row', alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Image source={require('../../Images/info_icon.png')}
+                    style={{
+                      width: 15, height: 15,
+                      tintColor: Colors.photIdRactangle
+                    }} />
+                  <Text style={{
+                    marginTop: 16,
+                    color: Colors.photIdRactangle, fontSize: 12,
+                    fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                    textAlign: 'center', marginHorizontal: wide * 0.01
+                  }}>
+                    Your document is under verification, We will notify once verified.
+                  </Text>
+
+                </View>
+              }
             </View>
 
 

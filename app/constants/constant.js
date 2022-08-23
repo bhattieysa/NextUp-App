@@ -132,7 +132,9 @@ export class UserModel {
       ageGroup,
       coachingType,
       selected_coachingTyp,
-      coachTeam
+      coachTeam,
+      selected_height,
+      weight
   }
 
 }

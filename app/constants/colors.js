@@ -60,5 +60,6 @@ export const Colors = {
   greyTxtColor: '#9598A1',
   txtFieldPlaceHolder: '#75777D',
   radioBtnBorder: '#373C47',
+  photIdRactangle: '#70768A',
 
 };

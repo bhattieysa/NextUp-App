@@ -12,10 +12,12 @@ import TrainerHomeStack from './TrainerHomeStack';
 import TrainerCalenderStack from './TrainerCalenderStack';
 import MessageStack from './MessageStack';
 import CoachChallengeStack from './CoachChallengeStack';
+import AccountStack from './AccountStack';
 
 
 export {
     HomeStack, LoginStack, ExploreStack, CalenderStack, MyStandingStack,
     ProStack, CoachHomeStack, CoachManageStack, CoachMyTeamStack, TrainerManageStack,
-    TrainerHomeStack, TrainerCalenderStack, MessageStack, CoachChallengeStack
+    TrainerHomeStack, TrainerCalenderStack, MessageStack, CoachChallengeStack,
+    AccountStack
 };
