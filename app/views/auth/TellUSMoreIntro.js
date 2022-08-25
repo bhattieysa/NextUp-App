@@ -121,7 +121,7 @@ class TellUsMoreIntro extends Component {
       else if (this.props?.navigation?.state?.params?.fromRoute == "school") {
         if (this.props?.navigation?.state?.params?.school) {
           this.setState({
-            school: this.props.navigation.state.params.school,
+            school: this.props.navigation.state.params.school.name,
             selected_state: this.props.navigation.state.params.selected_state,
             city: this.props.navigation.state.params.city,
           }, () => {
@@ -133,7 +133,7 @@ class TellUsMoreIntro extends Component {
         if (this.props?.navigation?.state?.params?.team) {
           debugger
           this.setState({
-            coachTeam: this.props.navigation.state.params.team,
+            coachTeam: this.props.navigation.state.params.team?.name,
             selected_state: this.props.navigation.state.params.selected_state,
             city: this.props.navigation.state.params.city,
           }, () => {
@@ -141,10 +141,6 @@ class TellUsMoreIntro extends Component {
           })
         }
       }
-
-
-
-
 
     }
   }
@@ -243,10 +239,10 @@ class TellUsMoreIntro extends Component {
       UserModel.selectedUserType = strSelectedMode
       UserModel.isGirl = isGirl
       UserModel.classof = classof
-      UserModel.school = school.name
+      UserModel.school = school
       UserModel.city = city
       UserModel.state = selected_state
-      UserModel.coachTeam = coachTeam.name
+      UserModel.coachTeam = coachTeam
       UserModel.isHighSchool = isHighSchool
       UserModel.ageGroup = ageGroup
       UserModel.coachingType = coachingType
@@ -379,7 +375,7 @@ class TellUsMoreIntro extends Component {
     const { cityDt } = this.state;
     if (txt !== '' && txt !== null) {
       let input = txt.toUpperCase();
-      let resultCity = cityDt.filter(i => i.includes(input));
+      let resultCity = cityDt.filter(i => i.toUpperCase().startsWith(input));
       this.setState({ cityList: resultCity });
     }
     else {
@@ -899,6 +895,7 @@ class TellUsMoreIntro extends Component {
                       style={{ marginTop: wide * 0.05, }}
                     >
                       <DropDownSelect
+                        isIcon
                         containerStyle={{
                           width: wide * 0.8,
                           borderBottomWidth: 1,
@@ -935,7 +932,7 @@ class TellUsMoreIntro extends Component {
 
                         }}
                         placeHolder={'SCHOOL'}
-                        selectedValue={school.name}
+                        selectedValue={school}
                         onPress={() => Navigation.navigate("School")}
                       />
 
@@ -947,6 +944,7 @@ class TellUsMoreIntro extends Component {
                       style={{ marginTop: wide * 0.09, }}
                     >
                       <DropDownSelect
+                        isIcon
                         containerStyle={{
                           width: wide * 0.44,
                           // height: 60,
@@ -1010,6 +1008,7 @@ class TellUsMoreIntro extends Component {
                       >
 
                         <DropDownSelect
+                          isIcon
                           containerStyle={{
                             width: wide * 0.8,
                             // height: 60,
@@ -1049,7 +1048,7 @@ class TellUsMoreIntro extends Component {
                             alignSelf: 'center'
                           }}
                           placeHolder={'SELECT TEAM'}
-                          selectedValue={coachTeam.name}
+                          selectedValue={coachTeam}
                           onPress={() => Navigation.navigate("TeamList")}
                         />
 
@@ -1061,6 +1060,7 @@ class TellUsMoreIntro extends Component {
 
                       >
                         <DropDownSelect
+                          isIcon
                           containerStyle={{
                             width: wide * 0.44,
                             // height: 60,
@@ -1112,7 +1112,7 @@ class TellUsMoreIntro extends Component {
 
                       <AnimatedInput
                         placeholder="NAME"
-                        onChangeText={(e) => this.setState({ coachTeam: { "name": e } })}
+                        onChangeText={(e) => this.setState({ coachTeam: e })}
                         value={coachTeam}
                         styleInput={{
                           fontFamily: Fonts.Bold,
@@ -1140,6 +1140,7 @@ class TellUsMoreIntro extends Component {
                           activeOpacity={1}
                         >
                           <DropDownSelect
+                            isIcon
                             containerStyle={{
                               width: wide * 0.4,
                               // height: 60,
@@ -1189,6 +1190,7 @@ class TellUsMoreIntro extends Component {
                           activeOpacity={1}
                         >
                           <DropDownSelect
+                            isIcon
                             containerStyle={{
                               width: wide * 0.4,
                               // height: 60,
@@ -1238,6 +1240,7 @@ class TellUsMoreIntro extends Component {
                       >
 
                         <DropDownSelect
+                          isIcon
                           containerStyle={{
                             width: wide * 0.4,
                             // height: 60,

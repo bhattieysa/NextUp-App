@@ -18,6 +18,7 @@ const AnimatedInput = ({
   styleBodyContent,
   keyboardType,
   showSoftInputOnFocus,
+  maxLength,
   // isAutoFocus,
   ...others
 }) => {
@@ -155,8 +156,7 @@ const AnimatedInput = ({
                 textAlignVertical={'top'}
                 keyboardType={keyboardType}
                 showSoftInputOnFocus={showSoftInputOnFocus}
-
-
+                maxLength={maxLength}
               />
             </View>
           )}

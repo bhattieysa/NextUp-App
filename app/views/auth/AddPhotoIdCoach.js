@@ -298,7 +298,7 @@ class AddPhotoIdCoach extends Component {
                       paddingTop: 10,
                       color: Colors.photIdRactangle, fontSize: 12,
                       fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
-                      textAlign: 'center', alignSelf: 'center'
+                      textAlign: 'center', alignSelf: 'center', marginTop: wide * 0.015,
                     }}>
                       For profile verification, try not to skip the process
 
@@ -306,7 +306,7 @@ class AddPhotoIdCoach extends Component {
                     :
                     <View style={{
                       flexDirection: 'row', alignItems: 'center',
-                      justifyContent: 'center'
+                      justifyContent: 'center', marginTop: wide * 0.015,
                     }}>
                       <Image source={require('../../Images/info_icon.png')}
                         style={{
@@ -330,7 +330,6 @@ class AddPhotoIdCoach extends Component {
 
                   <Image style={{
                     width: 40, height: 40,
-                    // tintColor: Colors.photIdRactangle
 
                   }} source={avatar === '' ? require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')} />
                   <Image style={{
@@ -339,7 +338,6 @@ class AddPhotoIdCoach extends Component {
                   }} source={require('../../Images/seperator_dash.png')} resizeMode='stretch' />
                   <Image style={{
                     width: 40, height: 40,
-                    tintColor: Colors.photIdRactangle
 
                   }} source={avatarCerti === '' ? require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')} />
                 </View>
@@ -379,6 +377,31 @@ class AddPhotoIdCoach extends Component {
                           style={{ position: 'absolute', tintColor: Colors.photIdRactangle }} />
                       </View>
 
+                  }
+
+                  {this.state.avatarCerti == '' || this.state.avatarCerti == undefined ?
+                    <></>
+                    :
+
+                    <View style={{
+                      flexDirection: 'row', alignItems: 'center',
+                      justifyContent: 'center', marginTop: wide * 0.015,
+                    }}>
+                      <Image source={require('../../Images/info_icon.png')}
+                        style={{
+                          width: 15, height: 15,
+                          tintColor: Colors.photIdRactangle
+                        }} />
+
+                      <Text style={{
+                        marginTop: 16,
+                        color: Colors.photIdRactangle, fontSize: 12,
+                        fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                        textAlign: 'center', marginHorizontal: wide * 0.01
+                      }}>
+                        Your document is under verification, We will notify once verified.
+                      </Text>
+                    </View>
                   }
 
                 </TouchableOpacity>

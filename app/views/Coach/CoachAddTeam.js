@@ -26,6 +26,8 @@ import { Permission, PERMISSION_TYPE } from '../../utils/permissionCheck';
 import { TextInput } from 'react-native-gesture-handler';
 import SwitchToggle from 'react-native-switch-toggle';
 import { ActionSheet } from 'react-native-cross-actionsheet';
+import { RadioButton } from '../../components/common/radioButton';
+import { DropDownSelect } from '../../components/common/customDropDown';
 
 let wide = Layout.width;
 
@@ -54,7 +56,7 @@ class CoachAddTeam extends Component {
       coachingType: '',
       selected_coachingType: '',
       ageGroup: '',
-      isHighSchool: false,
+      isHighSchool: true,
     };
   }
   componentDidMount() {
@@ -68,7 +70,7 @@ class CoachAddTeam extends Component {
       if (this.props?.navigation?.state?.params?.team) {
         debugger
         this.setState({
-          coachTeam: this.props.navigation.state.params.team,
+          coachTeam: this.props.navigation.state.params.team.name,
           teamName: this.props.navigation.state.params.team.name,
           selected_state: this.props.navigation.state.params.selected_state,
           city: this.props.navigation.state.params.city,
@@ -101,7 +103,7 @@ class CoachAddTeam extends Component {
     debugger
     this.props.dispatch(getCities(st, (res, city_dt) => {
       if (res) {
-        this.setState({ cityList: city_dt, cityDt: city_dt, }, () => {
+        this.setState({ cityList: city_dt, cityDt: city_dt, city: city_dt[0] }, () => {
           this.handleBtnEnable();
         })
       }
@@ -216,15 +218,13 @@ class CoachAddTeam extends Component {
               "typeOfTeam": "League",
               "coachingType": {
                 "typeOfCoaching": coachingType,
-                "schoolName": coachTeam.name,
+                "schoolName": coachTeam,
                 "ageGroup": ageGroup,
                 "state": selected_state,
                 "city": city
               }
             }, (res) => {
-
               console.log("res2 ", res);
-
               if (res) {
                 debugger
                 this.setState({ loading: false }, () => {
@@ -433,419 +433,480 @@ class CoachAddTeam extends Component {
           <KeyBoardDismissHandler st>
             <View style={[CommonStyles.headerBottomLine]}>
               <ScreenHeader
-                title={'Add Team'}
+                title={'Add New Team'}
                 backButtonAction={() => Navigation.back()}
               />
             </View>
-            <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-              <View >
-                <View style={{
-                  marginTop: 50,
-                  flexDirection: 'row', alignItems: 'center',
-                  marginHorizontal: wide * 0.02,
-                  justifyContent: 'center'
-                }}>
-
-                  {/* <View style={{  }}> */}
-                  <TouchableOpacity onPress={() => this.pickSingle(true, false, 'ava')}
-                    style={{
-                      width: 160, height: 160,
-                      borderRadius: wide * 0.01, borderWidth: 2,
-                      borderColor: Colors.newGrayFontColor,
-                      justifyContent: 'center', alignItems: 'center',
-                    }}>
-                    {
-                      avatar !== ''
-                        ?
-                        <FastImage
-                          source={{ uri: avatar }}
-                          style={{ width: '95%', height: '95%', borderRadius: 5 }}
-                        />
-                        :
-                        <>
-                          <Image
-                            style={{ width: 20, height: 20 }}
-                            source={require('../../Images/AddTeamIcon.png')}
-                          />
-
-                          <Text numberOfLines={1} style={{
-                            color: Colors.newGrayFontColor, fontSize: 16,
-                            lineHeight: 24,
-                            fontFamily: Fonts.Bold,
-                            marginTop: 14,
-                          }}>Add Logo</Text>
-                        </>
-
-                    }
-
-                  </TouchableOpacity>
-
-                  {/* </View> */}
-                </View>
+            <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }}
+              behavior={Platform.OS === 'ios' ? "padding" : null}>
+              <View>
 
                 <View style={{
-                  flexDirection: 'row', marginTop: wide * 0.08, alignItems: 'center',
+                  width: '90%',
+                  alignSelf: 'center',
+                  // flexDirection: 'row',
                   justifyContent: 'center',
-
+                  alignItems: "center",
+                  marginTop: wide * 0.1
                 }}>
-                  <Text style={{
-                    color: Colors.light, alignSelf: 'center',
-                    fontFamily: Fonts.Medium, fontSize: 16,
-                    lineHeight: 24,
-                  }}>High School</Text>
-                  <SwitchToggle
-                    switchOn={isHighSchool}
-                    onPress={() => this.setState({ isHighSchool: !isHighSchool, selected_state: '', city: '' }, () => {
-                      this.handleBtnEnable()
-                    })}
-                    circleColorOff={Colors.togelCircleColor}
-                    circleColorOn={Colors.togelCircleColor}
-                    backgroundColorOn={Colors.togelBackground}
-                    backgroundColorOff={Colors.togelBackground}
-                    containerStyle={{
-                      width: 60,
-                      height: 30,
-                      borderRadius: 20,
-                      padding: 5,
-                      marginHorizontal: wide * 0.07
+                  <TouchableOpacity
+                    style={{
+                      width: wide * 0.25, height: wide * 0.25,
+                      borderRadius: wide * 0.25 / 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderColor: Colors.light,
+                      borderWidth: 2
                     }}
-                    circleStyle={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 12,
-                    }}
-                  />
-                  <Text style={{
-                    color: Colors.light, alignSelf: 'center',
-                    fontFamily: Fonts.Medium,
-                    fontSize: 16,
-                    lineHeight: 24,
-                  }}>Travel Team</Text>
+                    onPress={() => this.pickSingle(true, false, 'ava')}
+                  >
+                    {avatar !== '' ?
+                      <FastImage style={{
+                        width: wide * 0.24, height: wide * 0.24,
+                        borderRadius: wide * 0.24 / 2,
+                      }}
+
+                        source={{ uri: avatar }}
+                        resizeMode={'cover'}
+                      />
+                      :
+                      <></>
+                    }
+                    <View style={{
+                      width: wide * 0.23, height: wide * 0.2,
+                      bottom: 0, position: 'absolute', alignItems: 'center'
+                    }}>
+
+                      <Image source={require('../../Images/camera_icon2.png')}
+                        resizeMode={'contain'}
+                        style={{
+                          position: 'absolute',
+                          bottom: 8, width: 25, height: 25,
+                          tintColor: Colors.shade
+                        }} />
+                    </View>
+                  </TouchableOpacity>
                 </View>
 
+                <View style={{
+                  width: '90%',
+                  alignSelf: 'center',
+                  marginTop: wide * 0.09,
+                  justifyContent: 'center',
+                  // backgroundColor: 'red'
 
-                {/* <View style={{
-                  // backgroundColor: 'green',
-                  marginHorizontal: 35,
-                  marginTop: 50,
 
-                  marginBottom: wide * 0.03,
                 }}>
-                  <AnimatedInput
-                    placeholder="TEAM NAME"
-                    onChangeText={(e) => this.setState({ teamName: e }, () => {
-                      this.handleBtnEnable();
-                    })}
-                    value={teamName}
-                    styleInput={{
-                      fontFamily: Fonts.Bold,
-                      color: Colors.light,
-                      fontSize: 16, lineHeight: 18
-                    }}
-                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
-                    styleBodyContent={{
-                      borderBottomWidth: 1.5,
-                      borderBottomColor: Colors.borderColor,
-                      width: wide * 0.8
-                    }}
-                  // multiline
-                  />
 
-                </View> */}
+                  <Text style={{
+                    color: Colors.txtFieldPlaceHolder,
+                    fontFamily: Fonts.Bold, fontSize: 14,
+                    lineHeight: 22, fontWeight: '700'
+                  }}>OPTION</Text>
+                  <View style={{
+                    flexDirection: 'row',
+                    marginTop: wide * 0.025,
+                  }}>
+                    <TouchableOpacity style={{
+                      flexDirection: 'row', justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                      activeOpacity={1}
+                      onPress={() => this.setState({
+                        isHighSchool: true, coachTeam: '', coachingType: '',
+                        selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
+                      })}
+                    >
+                      <RadioButton
+                        containerStyle={{
+                          width: wide * 0.07, height: wide * 0.07,
+                          borderRadius: wide * 0.07 / 2,
+                          borderColor: isHighSchool == true ? Colors.btnBg : Colors.radioBtnBorder,
+                          borderWidth: 1,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginHorizontal: wide * 0.006,
+                        }}
+                        centerStyle={{
+                          width: '50%', height: '50%',
+                          borderRadius: wide * 0.07 / 4,
+                          backgroundColor: Colors.btnBg
+                        }}
+                        isSelected={isHighSchool == true ? true : false}
+                        onPress={() => this.setState({
+                          isHighSchool: true, coachTeam: '', coachingType: '',
+                          selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
+                        })}
+                      />
+                      <Text style={{
+                        color: isHighSchool == true ? Colors.light : Colors.txtFieldPlaceHolder, alignSelf: 'center',
+                        fontFamily: Fonts.SemiBold, fontSize: 16,
+                        lineHeight: 18, marginHorizontal: wide * 0.025,
+                        fontWeight: '600'
+                      }}>High School</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginHorizontal: wide * 0.07,
+                    }}
+                      activeOpacity={1}
+                      onPress={() => this.setState({
+                        isHighSchool: false, coachTeam: '', coachingType: '',
+                        selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
+                      })}
+                    >
+
+                      <RadioButton
+                        containerStyle={{
+                          width: wide * 0.07, height: wide * 0.07,
+                          borderRadius: wide * 0.07 / 2,
+                          borderColor: isHighSchool == false ? Colors.btnBg : Colors.radioBtnBorder,
+                          borderWidth: 1,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginHorizontal: wide * 0.006,
+                        }}
+                        centerStyle={{
+                          width: '50%', height: '50%',
+                          borderRadius: wide * 0.07 / 4,
+                          backgroundColor: Colors.btnBg
+                        }}
+                        isSelected={isHighSchool == false ? true : false}
+                        onPress={() => this.setState({
+                          isHighSchool: false, coachTeam: '', coachingType: '',
+                          selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
+                        })}
+
+                      />
+                      <Text style={{
+                        color: isHighSchool == false ? Colors.light : Colors.txtFieldPlaceHolder,
+                        alignSelf: 'center',
+                        fontFamily: Fonts.SemiBold, fontSize: 16,
+                        lineHeight: 18, marginHorizontal: wide * 0.025,
+                        fontWeight: '600',
+                      }}>Travel Team</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
 
               </View>
 
-
-
               {
-                isHighSchool == false ?
+                isHighSchool == true ?
                   <View style={{
                     marginTop: wide * 0.1,
-                    width: '85%',
+                    width: '90%',
                     alignSelf: 'center',
-                    // justifyContent: '',
-                    // backgroundColor: 'red',
                     alignItems: 'flex-start',
-                    // flexDirection: 'row'
                   }}>
 
-                    <TouchableOpacity style={{ alignItems: 'center', marginHorizontal: 10 }}
+                    <TouchableOpacity style={{
+                      alignItems: 'center',
+                      marginTop: wide * 0.02
+                    }}
+                      onPress={() => Navigation.navigate("CoachTeamList")}>
+
+                      <DropDownSelect
+                        isIcon
+                        containerStyle={{
+                          width: wide * 0.8,
+                          // height: 60,
+                          borderBottomWidth: 1,
+                          borderBottomColor: Colors.borderColor,
+                          // backgroundColor: 'red',
+                          alignItems: "center",
+                          justifyContent: 'center'
+                        }}
+                        placeHolderContainerStyl={{
+                          flexDirection: 'row', width: '98%',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          // marginTop: wide * 0.015,
+                          marginBottom: coachTeam == '' || coachTeam == undefined ? wide * 0.025 : wide * 0.008
+
+                        }}
+                        placeHolderLabelStyl={{
+                          fontFamily: Fonts.Bold,
+                          color: Colors.txtFieldPlaceHolder,
+                          fontSize: 16, lineHeight: 18,
+                          fontWeight: '700'
+                        }}
+                        iconStyl={{
+                          width: 8,
+                          height: 8,
+                        }}
+                        textStyle={{
+                          width: '98%',
+                          fontFamily: Fonts.Bold,
+                          color: Colors.light,
+                          fontSize: 16, lineHeight: 18, fontWeight: '600',
+                          // marginTop: wide * 0.03,
+                          // marginBottom: wide * 0.015,
+                          marginTop: wide * 0.02,
+                          marginBottom: wide * 0.03,
+                          alignSelf: 'center'
+                        }}
+                        placeHolder={'SELECT TEAM'}
+                        selectedValue={coachTeam}
+                        onPress={() => Navigation.navigate("CoachTeamList")}
+                      />
+
+
+
+
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{
+                      alignItems: 'center',
+                      marginTop: wide * 0.1
+                    }}
                       onPress={() => this.onClickCoaching()}
                     >
-                      <AnimatedInput
-                        placeholder="SELECT COACHING"
-                        // onChangeText={(e) => this.setState({coachingType: e})}
-                        value={selected_coachingType}
-                        onFocus={() => this.onClickCoaching()}
-                        showSoftInputOnFocus={false}
-                        disabled={selected_coachingType !== "" && selected_coachingType != undefined ? true : false}
-                        sufix={
-                          <Image
-                            style={{
-                              width: 7,
-                              height: 7,
-                              position: 'absolute',
-                              top:
-                                Platform.OS === "android"
-                                  ? 5
-                                  : selected_coachingType != ""
-                                    ? 30
-                                    : 5,
-                              right: 7
-                            }}
-                            source={require('../../Images/dropDownIconNew.png')}
-                          />
-                        }
-                        styleInput={{
+
+                      <DropDownSelect
+                        isIcon
+                        containerStyle={{
+                          width: wide * 0.44,
+                          // height: 60,
+                          borderBottomWidth: 1,
+                          borderBottomColor: Colors.borderColor,
+                          alignItems: "center",
+                          justifyContent: 'center',
+
+                        }}
+                        placeHolderContainerStyl={{
+                          flexDirection: 'row', width: '98%',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: selected_coachingType == '' || selected_coachingType == undefined ? wide * 0.025 : wide * 0.008
+
+                        }}
+                        placeHolderLabelStyl={{
+                          fontFamily: Fonts.Bold,
+                          color: Colors.txtFieldPlaceHolder,
+                          fontSize: 16, lineHeight: 18,
+                          fontWeight: '700'
+                        }}
+                        iconStyl={{
+                          width: 8,
+                          height: 8,
+                        }}
+                        textStyle={{
+                          width: '98%',
                           fontFamily: Fonts.Bold,
                           color: Colors.light,
                           fontSize: 16, lineHeight: 18,
+                          fontWeight: '600',
+                          marginTop: wide * 0.02,
+                          marginBottom: wide * 0.03,
+                          alignSelf: 'center'
                         }}
-                        styleLabel={{
-                          fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                          fontSize: 12,
-                        }}
-                        styleBodyContent={{
-                          borderBottomWidth: 1.5,
-                          borderBottomColor: Colors.borderColor,
-                          width: wide * 0.6
-                        }}
-                      // isAutoFocus={true}
+                        placeHolder={'SELECT'}
+                        selectedValue={selected_coachingType}
+                        onPress={() => this.onClickCoaching()}
                       />
                     </TouchableOpacity>
-
-                    <TouchableOpacity style={{ alignItems: 'center', marginHorizontal: 10, marginTop: wide * 0.06 }}
-                      onPress={() => Navigation.navigate("CoachTeamList")}>
-                      <AnimatedInput
-                        placeholder="SELECT TEAM"
-                        onChangeText={(e) => this.setTextofFields('team', e)}
-                        value={coachTeam.name}
-                        onFocus={() => Navigation.navigate("CoachTeamList")}
-                        disabled={coachTeam !== "" && coachTeam != undefined ? true : false}
-                        showSoftInputOnFocus={false}
-                        sufix={
-                          <Image
-                            style={{
-                              width: 7,
-                              height: 7,
-                              position: 'absolute',
-                              top:
-                                Platform.OS === "android"
-                                  ? 5
-                                  : coachTeam != ""
-                                    ? 30
-                                    : 5,
-                              right: 7
-                            }}
-                            source={require('../../Images/dropDownIconNew.png')}
-                          />
-                        }
-                        styleInput={{
-                          fontFamily: Fonts.Bold,
-                          color: Colors.light,
-                          fontSize: 16, lineHeight: 18,
-                        }}
-                        styleLabel={{
-                          fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                          fontSize: 12,
-                        }}
-                        styleBodyContent={{
-                          borderBottomWidth: 1.5,
-                          borderBottomColor: Colors.borderColor,
-                          width: wide * 0.6
-                        }}
-                      // isAutoFocus={true}
-                      />
-                    </TouchableOpacity>
-
                   </View>
+
                   :
+
                   <View style={{
                     marginTop: wide * 0.1,
-                    width: '85%',
+                    width: '90%',
                     alignSelf: 'center',
                     // alignItems: 'flex-start'
                   }}>
-                    <View style={{
-                      flexDirection: 'row', justifyContent: 'space-between',
-                      alignItems: 'center',
-                      // marginTop: wide * 0.08,
-                      width: '100%',
-                    }}>
-                      <AnimatedInput
-                        placeholder="TEAM NAME"
-                        onChangeText={(e) => this.setState({ coachTeam: { "name": e }, teamName: e }, () => {
-                          this.handleBtnEnable()
-                        })}
-                        value={coachTeam}
-                        styleInput={{
-                          fontFamily: Fonts.Bold,
-                          color: Colors.light,
-                          fontSize: 16, lineHeight: 18
-                        }}
-                        styleLabel={{
-                          fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                          fontSize: 12,
-                        }}
-                        styleBodyContent={{
-                          borderBottomWidth: 1.5,
-                          borderBottomColor: Colors.borderColor,
-                          width: wide * 0.4
-                        }}
-                      />
 
-                      <TouchableOpacity onPress={() => this.setState({ openStateModal: true })} activeOpacity={1}>
-                        <AnimatedInput
-                          placeholder="STATE"
-                          onChangeText={(e) => this.setTextofFields('school', e)}
-                          value={selected_state}
-                          disabled={selected_state !== "" && selected_state != undefined ? true : false}
-                          onFocus={() => this.setState({ openStateModal: true })}
-                          showSoftInputOnFocus={false}
-                          sufix={
-                            <Image
-                              style={{
-                                width: 7,
-                                height: 7,
-                                position: 'absolute',
-                                top:
-                                  Platform.OS === "android"
-                                    ? 5
-                                    : selected_state != ""
-                                      ? 30
-                                      : 5,
-                                right: 7
-                              }}
-                              source={require('../../Images/dropDownIconNew.png')}
-                            />
-                          }
-                          styleInput={{
-                            fontFamily: Fonts.Bold,
-                            color: Colors.light,
-                            fontSize: 16, lineHeight: 18
-                          }}
-                          styleLabel={{
-                            fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                            fontSize: 12,
-                          }}
-                          styleBodyContent={{
-                            borderBottomWidth: 1.5,
-                            borderBottomColor: Colors.borderColor,
-                            width: wide * 0.4
-                          }}
-                        // isAutoFocus={true}
-                        />
-                      </TouchableOpacity>
-
-                    </View>
+                    <AnimatedInput
+                      placeholder="TEAM NAME"
+                      onChangeText={(e) => this.setState({ coachTeam: e, teamName: e }, () => {
+                        this.handleBtnEnable()
+                      })}
+                      value={coachTeam}
+                      styleInput={{
+                        fontFamily: Fonts.Bold,
+                        color: Colors.light,
+                        fontSize: 16, lineHeight: 18
+                      }}
+                      styleLabel={{
+                        fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                        fontSize: 12,
+                      }}
+                      styleBodyContent={{
+                        borderBottomWidth: 1.5,
+                        borderBottomColor: Colors.borderColor,
+                        width: wide * 0.8,
+                        marginTop: wide * 0.1,
+                      }}
+                    />
 
                     <View style={{
                       flexDirection: 'row',
-                      marginTop: wide * 0.08,
                       justifyContent: 'space-between',
                       alignItems: 'center',
+                      marginTop: wide * 0.08,
                       width: '100%',
-                      // alignSelf: 'center',
-                      // backgroundColor: "red"
                     }}>
-
-
-                      <TouchableOpacity onPress={() => this.setState({ openCityModal: true })}
+                      <TouchableOpacity onPress={() => this.setState({ openStateModal: true })}
                         activeOpacity={1}>
-                        <AnimatedInput
-                          placeholder="CITY"
-                          onChangeText={(e) => this.setTextofFields('city', e)}
-                          value={city}
-                          showSoftInputOnFocus={false}
-                          disabled={city !== "" && city != undefined ? true : false}
-                          onFocus={() => this.setState({ openCityModal: true })}
-
-                          sufix={
-                            <Image
-                              style={{
-                                width: 7,
-                                height: 7,
-                                position: 'absolute',
-                                top:
-                                  Platform.OS === "android"
-                                    ? 5
-                                    : city != ""
-                                      ? 30
-                                      : 5,
-                                right: 7
-                              }}
-                              source={require('../../Images/dropDownIconNew.png')}
-                            />
-                          }
-                          styleInput={{
-                            fontFamily: Fonts.Bold,
-                            color: Colors.light,
-                            fontSize: 16, lineHeight: 18
-                          }}
-                          styleLabel={{
-                            fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                            fontSize: 12,
-                          }}
-                          styleBodyContent={{
-                            borderBottomWidth: 1.5,
+                        <DropDownSelect
+                          isIcon
+                          containerStyle={{
+                            width: wide * 0.4,
+                            // height: 60,
+                            borderBottomWidth: 1,
                             borderBottomColor: Colors.borderColor,
-                            width: wide * 0.4
-                          }}
-                        // isAutoFocus={true}
-                        />
-                      </TouchableOpacity>
+                            alignItems: "center",
+                            justifyContent: 'center',
 
-                      <TouchableOpacity style={{ alignItems: 'center', }}
-                        onPress={() => this.onClickAgeGroup()}
-                      >
-                        <AnimatedInput
-                          placeholder="SELECT AGE"
-                          editable={false}
-                          onChangeText={(e) => this.setTextofFields('team', e)}
-                          value={ageGroup}
-                          onFocus={() => this.onClickAgeGroup()}
-                          // disabled
-                          disabled={ageGroup !== "" && ageGroup != undefined ? true : false}
-                          showSoftInputOnFocus={false}
-                          sufix={
-                            <Image
-                              style={{
-                                width: 7,
-                                height: 7,
-                                position: 'absolute',
-                                top:
-                                  Platform.OS === "android"
-                                    ? 5
-                                    : ageGroup != ""
-                                      ? 30
-                                      : 5,
-                                right: 7
-                              }}
-                              source={require('../../Images/dropDownIconNew.png')}
-                            />
-                          }
-                          styleInput={{
+                          }}
+                          placeHolderContainerStyl={{
+                            flexDirection: 'row', width: '98%',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            // marginTop: wide * 0.015,
+                            marginBottom: selected_state == '' || selected_state == undefined ? wide * 0.025 : wide * 0.008
+
+                          }}
+                          placeHolderLabelStyl={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.txtFieldPlaceHolder,
+                            fontSize: 16, lineHeight: 18,
+                            fontWeight: '700'
+                          }}
+                          iconStyl={{
+                            width: 8,
+                            height: 8,
+                          }}
+                          textStyle={{
+                            width: '98%',
                             fontFamily: Fonts.Bold,
                             color: Colors.light,
                             fontSize: 16, lineHeight: 18,
+                            fontWeight: '600',
+                            marginTop: wide * 0.02,
+                            marginBottom: wide * 0.03,
+                            alignSelf: 'center'
                           }}
-                          styleLabel={{
-                            fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                            fontSize: 12,
-                          }}
-                          styleBodyContent={{
-                            borderBottomWidth: 1.5,
+                          placeHolder={'STATE'}
+                          selectedValue={selected_state}
+                          onPress={() => this.setState({ openStateModal: true })}
+                        // onPress={() => setOpenStatModal(true)}
+                        />
+
+                      </TouchableOpacity>
+
+
+                      <TouchableOpacity
+                        onPress={() => this.setState({ openCityModal: true })}
+                        activeOpacity={1}
+                      >
+                        <DropDownSelect
+                          isIcon
+                          containerStyle={{
+                            width: wide * 0.4,
+                            // height: 60,
+                            borderBottomWidth: 1,
                             borderBottomColor: Colors.borderColor,
-                            width: wide * 0.4
+                            alignItems: "center",
+                            justifyContent: 'center',
+
                           }}
-                        // isAutoFocus={true}
+                          placeHolderContainerStyl={{
+                            flexDirection: 'row', width: '98%',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: city == '' || city == undefined ? wide * 0.025 : wide * 0.008
+
+                          }}
+                          placeHolderLabelStyl={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.txtFieldPlaceHolder,
+                            fontSize: 16, lineHeight: 18,
+                            fontWeight: '700'
+                          }}
+                          iconStyl={{
+                            width: 8,
+                            height: 8,
+                          }}
+                          textStyle={{
+                            width: '98%',
+                            fontFamily: Fonts.Bold,
+                            color: Colors.light,
+                            fontSize: 16, lineHeight: 18,
+                            fontWeight: '600',
+                            marginTop: wide * 0.02,
+                            marginBottom: wide * 0.03,
+                            alignSelf: 'center'
+                          }}
+                          placeHolder={'CITY'}
+                          selectedValue={city}
+                          onPress={() => this.setState({ openCityModal: true })}
                         />
                       </TouchableOpacity>
+
                     </View>
 
+                    <View style={{
+                      marginTop: wide * 0.1,
+                      width: '100%',
+                      alignSelf: 'center',
+                      // backgroundColor: "red"
+                    }}>
 
+                      <TouchableOpacity
+                        onPress={() => this.onClickAgeGroup()}
+                      >
 
+                        <DropDownSelect
+                          isIcon
+                          containerStyle={{
+                            width: wide * 0.4,
+                            // height: 60,
+                            borderBottomWidth: 1,
+                            borderBottomColor: Colors.borderColor,
+                            alignItems: "center",
+                            justifyContent: 'center',
 
+                          }}
+                          placeHolderContainerStyl={{
+                            flexDirection: 'row', width: '98%',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            // marginTop: wide * 0.015,
+                            marginBottom: ageGroup == '' || ageGroup == undefined ? wide * 0.025 : wide * 0.008
+
+                          }}
+                          placeHolderLabelStyl={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.txtFieldPlaceHolder,
+                            fontSize: 16, lineHeight: 18,
+                            fontWeight: '700'
+                          }}
+                          iconStyl={{
+                            width: 8,
+                            height: 8,
+                          }}
+                          textStyle={{
+                            width: '98%',
+                            fontFamily: Fonts.Bold,
+                            color: Colors.light,
+                            fontSize: 16, lineHeight: 18,
+                            fontWeight: '600',
+                            marginTop: wide * 0.02,
+                            marginBottom: wide * 0.03,
+                            alignSelf: 'center'
+                          }}
+                          placeHolder={'AGE'}
+                          selectedValue={ageGroup}
+                          onPress={() => this.onClickAgeGroup()}
+                        />
+
+                      </TouchableOpacity>
+                    </View>
                   </View>
               }
 

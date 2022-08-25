@@ -2,7 +2,10 @@ import React from 'react';
 import { View, Image } from 'react-native';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import Navigation from '../lib/Navigation';
-import { HomeStack, CalenderStack, ExploreStack, MyStandingStack, ProStack, MessageStack } from './index';
+import {
+  HomeStack, CalenderStack, ExploreStack, MyStandingStack, ProStack, MessageStack,
+  AccountStack
+} from './index';
 import { Colors, Layout, CommonStyles } from '../constants';
 import PlayerMyTeamStack from './PlayerMyTeamStack';
 import { connect } from 'react-redux';
@@ -60,7 +63,8 @@ const TabNavigator = createBottomTabNavigator(
     MyTeam: MyStandingStack,
     Inbox: MessageStack,
     // MyStanding: MyStandingStack,
-    Account: ProStack,
+    // Pro: ProStack,
+    Account: AccountStack,
     // MyTeam: PlayerMyTeamStack
   },
   {

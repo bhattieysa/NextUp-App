@@ -9,7 +9,7 @@ import {
 } from '../../constants';
 
 const DropDownSelect = ({ containerStyle, placeHolderContainerStyl, placeHolderLabelStyl,
-  placeHolder, iconStyl, textStyle, selectedValue, onPress
+  placeHolder, iconStyl, textStyle, selectedValue, onPress, isIcon
 }) => {
   return (
     <TouchableOpacity style={{ ...containerStyle }}
@@ -22,12 +22,16 @@ const DropDownSelect = ({ containerStyle, placeHolderContainerStyl, placeHolderL
         <Text style={{ ...placeHolderLabelStyl }}>
           {placeHolder}
         </Text>
-        <Image
-          style={{
-            ...iconStyl
-          }}
-          source={require('../../Images/dropDownIconNew.png')}
-        />
+        {isIcon ?
+          <Image
+            style={{
+              ...iconStyl
+            }}
+            source={require('../../Images/dropDownIconNew.png')}
+          />
+          :
+          <></>
+        }
       </View>
       {selectedValue != '' && selectedValue != undefined ?
         <Text style={{

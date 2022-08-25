@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {
   View, TouchableOpacity, Alert, Text, SafeAreaView,
-  Image, key, KeyboardAvoidingView, Keyboard, Platform
+  Image, key, KeyboardAvoidingView, Keyboard, Platform, Modal, StyleSheet,
 } from 'react-native';
 import {
   Layout,
@@ -26,7 +26,7 @@ import { isNotch } from '../../utils/deviceInfo';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment, { invalid, lang } from 'moment'
 import { getObject, setObject, removeAllLocalData, getUserToken } from '../../middleware';
-import { getSubscriptionInfoById, getUserInfo, updateUserInfo } from '../../actions/home';
+import { getCities, getStates, getSubscriptionInfoById, getUserInfo, updateUserInfo } from '../../actions/home';
 import { Logout } from '../../actions/auth';
 import ImagePicker from 'react-native-image-crop-picker';
 import { uploadPhoto } from '../../actions/auth';
@@ -36,6 +36,11 @@ import backend from '../../config/backend';
 import { showErrorAlert, showAppPermissionAlert } from '../../utils/info';
 import { Permission, PERMISSION_TYPE } from '../../utils/permissionCheck';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { DropDownSelect } from '../../components/common/customDropDown';
+import { ActionSheet } from 'react-native-cross-actionsheet';
+import { RadioButton } from '../../components/common/radioButton';
+import { CoachOtherInfo } from './EditHelperComponent/CoachOtherInfo';
+import { PlayerOtherInfo } from './EditHelperComponent/PlayerOtherInfo';
 
 let wide = Layout.width;
 class EditProfile extends Component {
@@ -48,7 +53,6 @@ class EditProfile extends Component {
       lname: '',
       dob: 'SELECT DATE',
       isbtnEnable: true,
-
       isDatePickerVisible: false,
       email: '',
       num: '',
@@ -65,7 +69,34 @@ class EditProfile extends Component {
       idProofUrl: '',
       isOldPassCorrect: false,
       userRole: '',
-      updateLoading: false
+      updateLoading: false,
+      playerGender: '',
+      isHighSchool: '',
+      isGirl: '',
+      isIdApproved: null,
+      isCoachCertiApproved: null,
+      isPlayerIdApproved: null,
+
+      classof: '',
+      school: '',
+      coachTeam: '',
+      coachingType: '',
+      selected_coachingType: '',
+      ageGroup: '',
+      // strSelectedMode: UserModel.selectedUserType !== undefined ? UserModel.selectedUserType : 'player',
+      selected_state: '',
+      city: '',
+      openStateModal: false,
+      openCityModal: false,
+      stateList: null,
+      stateDt: null,
+      cityList: null,
+      cityDt: null,
+      state_srch: '',
+      city_srch: '',
+      selected_height: '',
+      weight: '',
+      playerCategory: ''
     };
     this.inputs = {};
   }
@@ -93,7 +124,18 @@ class EditProfile extends Component {
                 certificateIdUrl: resData.coachInfo?.certificateUrl,
                 idProofUrl: resData.coachInfo?.idProofUrl,
                 userRole: 'ROLE_COACH',
-              })
+                isHighSchool: resData?.coachInfo?.coachingType?.typeOfCoaching == 'TRAVEL_TEAM' ? false : true,
+                coachTeam: resData?.coachInfo?.coachingType?.schoolName,
+                coachingType: resData?.coachInfo?.coachingType?.typeOfCoaching,
+                selected_coachingType: resData?.coachInfo?.coachingType?.typeOfCoaching == "JV" ? 'Jr Varsity'
+                  : resData?.coachInfo?.coachingType?.typeOfCoaching == "VARSITY" ? 'Varsity' : resData?.coachInfo?.coachingType?.typeOfCoaching == "BOTH" ? 'Both' : '',
+                ageGroup: resData?.coachInfo?.coachingType?.ageGroup,
+                selected_state: resData?.coachInfo?.coachingType?.state,
+                city: resData?.coachInfo?.coachingType?.city,
+                // isIdApproved: resData.coachInfo?
+                // isCoachCertiApproved: resData.coachInfo?
+
+              }, () => this.getStateData())
             } else {
               this.setState({
                 fname: resData.personalInfo?.firstName,
@@ -107,7 +149,17 @@ class EditProfile extends Component {
                 loginWith: resData.personalInfo?.loginWith,
                 userData: resData,
                 idProofUrl: resData.playerInfo?.idProofUrl,
+                playerGender: resData.personalInfo?.gender,
                 userRole: 'ROLE_PLAYER',
+                isGirl: resData?.personalInfo?.gender == 'MALE' ? false : true,
+                classof: resData?.personalInfo?.schoolInfo?.classOff,
+                school: resData?.personalInfo?.schoolInfo?.name,
+                selected_state: resData?.personalInfo?.schoolInfo?.state,
+                city: resData?.personalInfo?.schoolInfo?.city,
+                // selected_height: resData?.personalInfo?.schoolInfo?.height,
+                // selected_height: resData?.personalInfo?.schoolInfo?.weight,
+                playerCategory: resData?.personalInfo?.schoolInfo?.typeOfPlayer,
+                isIdApproved: resData?.playerInfo?.idProofApproved
               })
             }
             console.log("SocialLogin", UserModel.isSocialLogin);
@@ -123,8 +175,70 @@ class EditProfile extends Component {
       })
 
     })
-
   }
+
+  componentDidUpdate(prevProps) {
+    console.log("Did focus called");
+    if (prevProps !== this.props) {
+      debugger
+      // if (this.props?.navigation?.state?.params?.state) {
+      console.log("Did focus called state found, ", this.props.navigation?.state?.params?.state);
+
+      //     this.setTextofFields('state', this.props.navigation?.state?.params?.state);
+
+      // }
+      if (this.props?.navigation?.state?.params?.fromRoute == "year") {
+        if (this.props?.navigation?.state?.params?.year) {
+          console.log("Did focus called year found");
+          this.setState({
+            classof: this.props.navigation.state.params.year
+          })
+        }
+      }
+      else if (this.props?.navigation?.state?.params?.fromRoute == "school") {
+        if (this.props?.navigation?.state?.params?.school) {
+          this.setState({
+            school: this.props.navigation.state.params.school?.name,
+            selected_state: this.props.navigation.state.params.selected_state,
+            city: this.props.navigation.state.params.city,
+          })
+        }
+      }
+      else if (this.props?.navigation?.state?.params?.fromRoute == "teamList") {
+        if (this.props?.navigation?.state?.params?.team) {
+          debugger
+          this.setState({
+            coachTeam: this.props.navigation.state.params.team?.name,
+            selected_state: this.props.navigation.state.params.selected_state,
+            city: this.props.navigation.state.params.city,
+          })
+        }
+      }
+
+    }
+  }
+
+  getStateData = () => {
+    debugger
+    this.props.dispatch(getStates((st, data) => {
+      if (st) {
+        debugger
+        this.setState({ stateList: data, stateDt: data }, () => {
+          this.getCityData(data[0]);
+        })
+      }
+    }));
+  }
+
+  getCityData = (st) => {
+    debugger
+    this.props.dispatch(getCities(st, (res, city_dt) => {
+      if (res) {
+        this.setState({ cityList: city_dt, cityDt: city_dt, city: city_dt[0] })
+      }
+    }))
+  }
+
   checkForButtonEnable = () => {
     const { fname,
       lname,
@@ -481,8 +595,11 @@ class EditProfile extends Component {
       dob, email, num, firebaseAuthTokenId,
       loginWith, avatar, password,
       nPass,
-      cPass, idProofUrl, certificateIdUrl, userRole, isOldPassCorrect } = this.state;
+      cPass, idProofUrl, certificateIdUrl, userRole, isOldPassCorrect,
+      coachingType, selected_state, city, coachTeam, classof, isHighSchool, ageGroup, school,
+      selected_height, weight, playerCategory, isGirl } = this.state;
     console.log("DOBBBB", dob); //dobbbbb 03/23/1995
+    let gender = '';
     if (nPass !== '') {
       debugger
       if (password.trim() == '') {
@@ -520,29 +637,76 @@ class EditProfile extends Component {
             fid: UserModel.fid,
             isSocialLogin: UserModel.isSocialLogin,
             isProfileUploaded: true
+
           }
           UserModel.profileUrl = avatar
           UserModel.isProfileUploaded = true
           setObject('authData', onBoardData).then(() => {
-
-            var obje = {
-              "idProofUrl": idProofUrl,
-              "certificateUrl": certificateIdUrl != '' ? certificateIdUrl : null,
-              "personalInfo": {
-                "firstName": fname,
-                "lastName": lname,
-                "dateOfBirth": dob != "SELECT DATE" ? dob : null,
-                "email": email,
-                "profilePictureURL": avatar,
-                "contactNumber": num,
-                "firebaseAuthTokenId": firebaseAuthTokenId,
-                "loginWith": loginWith,
-                "pushNotificationEnabled": false,
-                "password": password,
-                "roles": [
-                  userRole
-                ],
-                // "confirmPassword": nPass
+            var obje = {};
+            if (UserModel.selectedUserType == 'coach') {
+              obje = {
+                "idProofUrl": idProofUrl,
+                "certificateUrl": certificateIdUrl != '' ? certificateIdUrl : null,
+                "coachingType": {
+                  typeOfCoaching: coachingType,
+                  schoolName: coachTeam,
+                  ageGroup: ageGroup,
+                  state: selected_state,
+                  city: city,
+                  isHighSchool: isHighSchool,
+                },
+                "personalInfo": {
+                  "firstName": fname,
+                  "lastName": lname,
+                  "dateOfBirth": dob != "SELECT DATE" ? dob : null,
+                  "email": email,
+                  "profilePictureURL": avatar,
+                  "contactNumber": num,
+                  "firebaseAuthTokenId": firebaseAuthTokenId,
+                  "loginWith": loginWith,
+                  "pushNotificationEnabled": false,
+                  "password": password,
+                  "roles": [
+                    userRole
+                  ],
+                  // "confirmPassword": nPass
+                }
+              }
+            } else {
+              if (isGirl == false) {
+                gender = 'MALE'
+              } else {
+                gender = 'FEMALE'
+              }
+              obje = {
+                "idProofUrl": idProofUrl,
+                "certificateUrl": certificateIdUrl != '' ? certificateIdUrl : null,
+                "personalInfo": {
+                  "firstName": fname,
+                  "lastName": lname,
+                  "dateOfBirth": dob != "SELECT DATE" ? dob : null,
+                  "email": email,
+                  "profilePictureURL": avatar,
+                  "contactNumber": num,
+                  "firebaseAuthTokenId": firebaseAuthTokenId,
+                  "loginWith": loginWith,
+                  "pushNotificationEnabled": false,
+                  "height": selected_height,
+                  "weight": weight,
+                  "gender": gender,
+                  "schoolInfo": {
+                    city: city,
+                    state: selected_state,
+                    name: school,
+                    classOff: classof,
+                    typeOfPlayer: playerCategory,
+                  },
+                  "password": password,
+                  "roles": [
+                    userRole
+                  ],
+                  // "confirmPassword": nPass
+                }
               }
             }
             debugger
@@ -610,26 +774,90 @@ class EditProfile extends Component {
       UserModel.isProfileUploaded = true
       setObject('authData', onBoardData).then(() => {
 
-        var obje = {
-          "idProofUrl": idProofUrl,
-          "certificateUrl": certificateIdUrl != '' ? certificateIdUrl : null,
-          "personalInfo": {
-            "firstName": fname,
-            "lastName": lname,
-            "dateOfBirth": dob != "SELECT DATE" ? dob : null,
-            "email": email,
-            "profilePictureURL": avatar,
-            "contactNumber": num,
-            "firebaseAuthTokenId": firebaseAuthTokenId,
-            "loginWith": loginWith,
-            "pushNotificationEnabled": false,
-            "password": UserModel.password,
-            "roles": [
-              userRole
-            ],
-            // "confirmPassword": nPass
+        var obje = {}
+        if (UserModel.selectedUserType == 'coach') {
+          debugger
+          obje = {
+            "idProofUrl": idProofUrl,
+            "certificateUrl": certificateIdUrl != '' ? certificateIdUrl : null,
+            "coachingType": {
+              typeOfCoaching: coachingType,
+              schoolName: coachTeam,
+              ageGroup: ageGroup,
+              state: selected_state,
+              city: city,
+              isHighSchool: isHighSchool,
+            },
+            "personalInfo": {
+              "firstName": fname,
+              "lastName": lname,
+              "dateOfBirth": dob != "SELECT DATE" ? dob : null,
+              "email": email,
+              "profilePictureURL": avatar,
+              "contactNumber": num,
+              "firebaseAuthTokenId": firebaseAuthTokenId,
+              "loginWith": loginWith,
+              "pushNotificationEnabled": false,
+              "password": password,
+              "roles": [
+                userRole
+              ],
+              // "confirmPassword": nPass
+            }
+          }
+        } else {
+          obje = {
+            "idProofUrl": idProofUrl,
+            "certificateUrl": certificateIdUrl != '' ? certificateIdUrl : null,
+            "personalInfo": {
+              "firstName": fname,
+              "lastName": lname,
+              "dateOfBirth": dob != "SELECT DATE" ? dob : null,
+              "email": email,
+              "profilePictureURL": avatar,
+              "contactNumber": num,
+              "firebaseAuthTokenId": firebaseAuthTokenId,
+              "loginWith": loginWith,
+              "pushNotificationEnabled": false,
+              "height": selected_height,
+              "weight": weight,
+              "gender": gender,
+              "schoolInfo": {
+                city: city,
+                state: selected_state,
+                name: school,
+                classOff: classof,
+                typeOfPlayer: playerCategory,
+              },
+              "password": password,
+              "roles": [
+                userRole
+              ],
+              // "confirmPassword": nPass
+            }
           }
         }
+
+        // var obje = {
+        //   "idProofUrl": idProofUrl,
+        //   "certificateUrl": certificateIdUrl != '' ? certificateIdUrl : null,
+        //   "personalInfo": {
+        //     "firstName": fname,
+        //     "lastName": lname,
+        //     "dateOfBirth": dob != "SELECT DATE" ? dob : null,
+        //     "email": email,
+        //     "profilePictureURL": avatar,
+        //     "contactNumber": num,
+        //     "firebaseAuthTokenId": firebaseAuthTokenId,
+        //     "loginWith": loginWith,
+        //     "pushNotificationEnabled": false,
+        //     "password": UserModel.password,
+        //     "roles": [
+        //       userRole
+        //     ],
+        //     // "confirmPassword": nPass
+        //   }
+        // }
         console.log("Edit Obj--", obje);
         debugger
         this.setState({ loading: true, updateLoading: true, }, () => {
@@ -731,15 +959,41 @@ class EditProfile extends Component {
       })
 
     })
-
   }
+
+
+  handleStateSrch = (txt) => {
+    const { stateDt } = this.state;
+    if (txt !== '' && txt !== null) {
+      let input = txt.toUpperCase();
+      let resultStates = stateDt.filter(i => i.includes(input));
+      this.setState({ stateList: resultStates });
+    }
+    else {
+      this.setState({ stateList: stateDt })
+    }
+  }
+
+  handleCitySrch = (txt) => {
+    const { cityDt } = this.state;
+    if (txt !== '' && txt !== null) {
+      let input = txt.toUpperCase();
+      let resultCity = cityDt.filter(i => i.toUpperCase().startsWith(input));
+      this.setState({ cityList: resultCity });
+    }
+    else {
+      this.setState({ cityList: cityDt });
+    }
+  }
+
 
   render() {
     const { isbtnEnable, fname,
       lname,
       dob,
       isDatePickerVisible, avatar, password, nPass,
-      cPass, loading, isResetPassword, selectedTabIndex, isOldPassCorrect } = this.state;
+      cPass, loading, isResetPassword, selectedTabIndex, isOldPassCorrect,
+      coachingTypInfo } = this.state;
     // console.log("dobbbbb", moment(dob, 'MM/DD/YYYY').format("DD/MM/YYYY"));
     console.log("dobbbbb", dob);
     return (
@@ -875,159 +1129,161 @@ class EditProfile extends Component {
                     paddingBottom: isNotch ? 0 : 10
                   }}>
                   <View style={{
-                    width: '90%', alignSelf: 'center',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: wide * 0.05
+                    width: '90%',
+                    alignSelf: 'center',
+                    // flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: "center",
+                    marginTop: wide * 0.06
                   }}>
                     <TouchableOpacity
                       style={{
-                        width: wide * 0.25, height: wide * 0.36,
-                        borderRadius: wide * 0.03,
-                        borderWidth: 3,
-                        borderColor: Colors.newGrayFontColor,
+                        width: wide * 0.25, height: wide * 0.25,
+                        borderRadius: wide * 0.25 / 2,
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        borderColor: Colors.light,
+                        borderWidth: 2
                       }}
                       onPress={() => this.pickSingle(true, true)}
                     >
                       {avatar !== '' ?
                         <FastImage style={{
-                          width: wide * 0.23, height: wide * 0.34,
-                          borderRadius: wide * 0.025,
+                          width: wide * 0.24, height: wide * 0.24,
+                          borderRadius: wide * 0.24 / 2,
                         }}
 
                           source={{ uri: avatar }}
-                        // resizeMode={'contain'}
+                          // source={require('../../Images/male_onboard_Icon.png')}
+                          resizeMode={'cover'}
                         />
                         :
                         <></>
-
-                        // <Image style={{
-                        //     width: wide * 0.23, height: wide * 0.34,
-                        //     borderRadius: wide * 0.03,
-                        // }} resizeMode={'cover'} source={require('../../Images/placeHolderProf.png')} />
                       }
                       <View style={{
-                        width: wide * 0.23, height: wide * 0.19,
+                        width: wide * 0.23, height: wide * 0.2,
                         bottom: 0, position: 'absolute', alignItems: 'center'
                       }}>
-                        <Image style={{
+                        {/* <Image style={{
                           width: '100%', height: '100%',
-                        }} resizeMode={'stretch'}
+                          borderRadius: wide * 0.24 / 2,
+                        }} resizeMode={'contain'}
                           source={require('../../Images/edit_profile_gradiant.png')}
-                        />
+                        /> */}
                         <Image source={require('../../Images/camera_icon2.png')}
                           resizeMode={'contain'}
-                          style={{ position: 'absolute', bottom: 10, width: 25, height: 25, tintColor: Colors.shade }} />
+                          style={{
+                            position: 'absolute',
+                            bottom: 8, width: 25, height: 25,
+                            tintColor: Colors.shade
+                          }} />
                       </View>
 
                     </TouchableOpacity>
-                    <View style={{
-                      justifyContent: 'space-between',
-                      marginRight: wide * 0.02,
-                      marginTop: wide * 0.04,
-                    }}>
-                      <View>
-                        {fname !== null || fname.length != 0 ?
-                          <EditAnimatedInput
-                            placeholder="FIRST NAME"
-                            onChangeText={(e) => this.setTextofFields('fname', e)}
-                            value={fname}
-                            styleInput={{
-                              fontFamily: Fonts.Bold,
-                              color: Colors.light,
-                              fontSize: 16, lineHeight: 18,
-                            }}
-                            styleLabel={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor }}
-                            styleBodyContent={{
-                              borderBottomWidth: 1.5,
-                              borderBottomColor: Colors.newGrayFontColor,
-                              width: wide * 0.55
-                            }}
-                          />
-                          :
-                          <AnimatedInput
-                            placeholder="FIRST NAME"
-                            onChangeText={(e) => this.setTextofFields('fname', e)}
-                            value={fname}
-                            styleInput={{
-                              fontFamily: Fonts.Bold,
-                              color: Colors.light,
-                              fontSize: 16, lineHeight: 18,
-                            }}
-                            styleLabel={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor }}
-                            styleBodyContent={{
-                              borderBottomWidth: 1.5,
-                              borderBottomColor: Colors.newGrayFontColor,
-                              width: wide * 0.55
-                            }}
-                          />
-                        }
 
-                      </View>
-                      <View style={{ marginTop: wide * 0.05 }}>
-                        {lname !== null || lname.length != 0 ?
-                          <EditAnimatedInput
-                            placeholder="LAST NAME"
-                            onChangeText={(e) => {
-                              this.setTextofFields('lname', e)
-
-                            }
-                            }
-                            value={lname}
-                            styleInput={{
-                              fontFamily: Fonts.Bold,
-                              color: Colors.light,
-                              fontSize: 16, lineHeight: 18,
-
-                            }}
-                            styleLabel={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor }}
-                            styleBodyContent={{
-                              borderBottomWidth: 1.5,
-                              borderBottomColor: Colors.newGrayFontColor,
-                              width: wide * 0.55,
-                            }}
-
-                          // multiline
-                          />
-                          :
-                          <AnimatedInput
-                            placeholder="LAST NAME"
-                            onChangeText={(e) => {
-                              this.setTextofFields('lname', e)
-                            }
-                            }
-                            // onChangeText={(e) => this.setTextofFields('lname', e)}
-                            value={lname}
-                            styleInput={{
-                              fontFamily: Fonts.Bold,
-                              color: Colors.light,
-                              fontSize: 16, lineHeight: 18,
-
-                            }}
-                            styleLabel={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor }}
-                            styleBodyContent={{
-                              borderBottomWidth: 1.5,
-                              borderBottomColor: Colors.newGrayFontColor,
-                              width: wide * 0.55,
-                            }}
-
-                          // multiline
-                          />
-                        }
-
-                      </View>
+                  </View>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignSelf: 'center',
+                    width: '90%',
+                    // marginRight: wide * 0.02,
+                    marginTop: wide * 0.15,
+                  }}>
+                    <View>
+                      {fname !== null || fname.length != 0 ?
+                        <EditAnimatedInput
+                          placeholder="FIRST NAME"
+                          onChangeText={(e) => this.setTextofFields('fname', e)}
+                          value={fname}
+                          styleInput={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.light,
+                            fontSize: 16, lineHeight: 18,
+                          }}
+                          styleLabel={{ fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder }}
+                          styleBodyContent={{
+                            borderBottomWidth: 1.5,
+                            borderBottomColor: Colors.newGrayFontColor,
+                            width: wide * 0.4
+                          }}
+                        />
+                        :
+                        <AnimatedInput
+                          placeholder="FIRST NAME"
+                          onChangeText={(e) => this.setTextofFields('fname', e)}
+                          value={fname}
+                          styleInput={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.light,
+                            fontSize: 16, lineHeight: 18,
+                          }}
+                          styleLabel={{ fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder }}
+                          styleBodyContent={{
+                            borderBottomWidth: 1.5,
+                            borderBottomColor: Colors.newGrayFontColor,
+                            width: wide * 0.4
+                          }}
+                        />
+                      }
 
                     </View>
+                    <View >
+                      {lname !== null || lname.length != 0 ?
+                        <EditAnimatedInput
+                          placeholder="LAST NAME"
+                          onChangeText={(e) => {
+                            this.setTextofFields('lname', e)
+
+                          }
+                          }
+                          value={lname}
+                          styleInput={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.light,
+                            fontSize: 16, lineHeight: 18,
+
+                          }}
+                          styleLabel={{ fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder }}
+                          styleBodyContent={{
+                            borderBottomWidth: 1.5,
+                            borderBottomColor: Colors.newGrayFontColor,
+                            width: wide * 0.4,
+                          }}
+
+                        // multiline
+                        />
+                        :
+                        <AnimatedInput
+                          placeholder="LAST NAME"
+                          onChangeText={(e) => {
+                            this.setTextofFields('lname', e)
+                          }
+                          }
+                          // onChangeText={(e) => this.setTextofFields('lname', e)}
+                          value={lname}
+                          styleInput={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.light,
+                            fontSize: 16, lineHeight: 18,
+
+                          }}
+                          styleLabel={{ fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder }}
+                          styleBodyContent={{
+                            borderBottomWidth: 1.5,
+                            borderBottomColor: Colors.newGrayFontColor,
+                            width: wide * 0.4,
+                          }}
+
+                        // multiline
+                        />
+                      }
+
+                    </View>
+
                   </View>
 
-                  {/* <Text style={{
-                                        color: Colors.light, fontSize: 24, lineHeight: 26,
-                                        fontFamily: Fonts.Bold, marginTop: wide * 0.08
-                                    }}>
-                                        Account
-                                    </Text> */}
+
 
 
                   <View style={{
@@ -1035,7 +1291,7 @@ class EditProfile extends Component {
                     alignSelf: 'center'
                   }}>
                     <Text style={{
-                      fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
+                      fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder,
                       fontSize: 12
                     }}>DATE OF BIRTH</Text>
                     <TouchableOpacity style={{
@@ -1169,7 +1425,7 @@ class EditProfile extends Component {
                         isAutoFocus={password !== null && password.length > 0 ? false : true}
                         value={password}
                         styleInput={{ fontFamily: Fonts.Bold, color: Colors.light, fontSize: 14, lineHeight: 18 }}
-                        styleLabel={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor }}
+                        styleLabel={{ fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder }}
                         styleBodyContent={{
                           borderBottomWidth: 1.5,
                           borderBottomColor: Colors.newGrayFontColor,
@@ -1177,52 +1433,14 @@ class EditProfile extends Component {
                         }}
                         secureTextEntry={true}
                       />
-                      {/* :
-                                                    <AnimatedInput
-                                                        placeholder="OLD PASSWORD"
-                                                        //valid={() => isValidEmail(email)}
-                                                        // errorText="Error"
-                                                        onChangeText={(e) =>
-                                                            this.setState({ password: e }, () => {
-                                                                if (UserModel.password == e) {
-                                                                    this.setState({ isOldPassCorrect: true })
-                                                                } else {
-                                                                    this.setState({ isOldPassCorrect: false })
-                                                                }
-                                                            })
-                                                        }
-                                                        value={password}
-                                                        styleInput={{ fontFamily: Fonts.Bold, color: Colors.light, fontSize: 14, lineHeight: 18 }}
-                                                        styleLabel={{ fontFamily: Fonts.Bold, color: Colors.newGrayFontColor }}
-                                                        styleBodyContent={{
-                                                            borderBottomWidth: 1.5,
-                                                            borderBottomColor: Colors.newGrayFontColor,
-                                                            // width: wide * 0.8
-                                                        }}
-                                                        secureTextEntry={true}
-                                                    />
-                                                } */}
-                      {/* <TouchableOpacity style={{
-                                            // height: 20,
-                                            position: 'absolute',
-                                            right: 5, top: 10
-                                        }}
-                                            activeOpacity={1}
-                                            onPress={() => this.setState({ isResetPassword: !isResetPassword })}
-                                        >
-                                            <Text style={{
-                                                color: Colors.btnBg, fontSize: 12, lineHeight: 16,
-                                                fontFamily: Fonts.Bold,
-                                            }}>
-                                                CREATE NEW
-                                            </Text>
-                                        </TouchableOpacity> */}
+
                     </View>
                     : null
                   }
                   {isOldPassCorrect ?
                     <View style={{
-                      flexDirection: 'row', justifyContent: 'space-between', marginTop: wide * 0.1,
+                      // flexDirection: 'row', 
+                      justifyContent: 'space-between', marginTop: wide * 0.1,
                       width: '90%', alignSelf: 'center'
                     }}>
                       {/* {nPass !== null && nPass.length > 0 ? */}
@@ -1241,75 +1459,36 @@ class EditProfile extends Component {
                         styleBodyContent={{
                           borderBottomWidth: 1.5,
                           borderBottomColor: Colors.borderColor,
-                          width: wide * 0.4
+                          // width: wide * 0.4
                         }}
                         secureTextEntry={true}
 
                       />
-                      {/* :
-                                                    <AnimatedInput
 
-                                                        placeholder="NEW PASSWORD"
-                                                        onChangeText={(e) => this.setState({ nPass: e })}
-                                                        value={nPass}
-                                                        styleInput={{
-                                                            fontFamily: Fonts.Bold,
-                                                            color: Colors.light,
-                                                            fontSize: 14, lineHeight: 18
-                                                        }}
-                                                        styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
-                                                        styleBodyContent={{
-                                                            borderBottomWidth: 1.5,
-                                                            borderBottomColor: Colors.borderColor,
-                                                            width: wide * 0.4
-                                                        }}
-                                                        secureTextEntry={true}
-
-                                                    />
-
-                                                } */}
                       {/* {cPass !== null && cPass.length > 0 ? */}
-                      <EditAnimatedInput
-                        placeholder="CONFIRM PASSWORD"
-                        onChangeText={(e) => this.setState({ cPass: e })}
-                        value={cPass}
-                        styleInput={{
-                          fontFamily: Fonts.Bold,
-                          color: Colors.light,
-                          fontSize: 14, lineHeight: 18
-                        }}
-                        isAutoFocus={cPass !== null && cPass.length > 0 ? false : true}
-                        styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
-                        styleBodyContent={{
-                          borderBottomWidth: 1.5,
-                          borderBottomColor: Colors.borderColor,
-                          width: wide * 0.4
-                        }}
-                        secureTextEntry={true}
+                      <View style={{ marginTop: wide * 0.1 }}>
+                        <EditAnimatedInput
+                          placeholder="CONFIRM PASSWORD"
+                          onChangeText={(e) => this.setState({ cPass: e })}
+                          value={cPass}
+                          styleInput={{
+                            fontFamily: Fonts.Bold,
+                            color: Colors.light,
+                            fontSize: 14, lineHeight: 18
+                          }}
+                          isAutoFocus={cPass !== null && cPass.length > 0 ? false : true}
+                          styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                          styleBodyContent={{
+                            borderBottomWidth: 1.5,
+                            borderBottomColor: Colors.borderColor,
+                            // width: wide * 0.4
+                          }}
+                          secureTextEntry={true}
 
-                      // multiline
-                      />
-                      {/* :
-                                                    <AnimatedInput
-                                                        placeholder="CONFIRM PASSWORD"
-                                                        onChangeText={(e) => this.setState({ cPass: e })}
-                                                        value={cPass}
-                                                        styleInput={{
-                                                            fontFamily: Fonts.Bold,
-                                                            color: Colors.light,
-                                                            fontSize: 14, lineHeight: 18
-                                                        }}
-                                                        styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
-                                                        styleBodyContent={{
-                                                            borderBottomWidth: 1.5,
-                                                            borderBottomColor: Colors.borderColor,
-                                                            width: wide * 0.4
-                                                        }}
-                                                        secureTextEntry={true}
+                        // multiline
+                        />
+                      </View>
 
-                                                    // multiline
-                                                    />
-                                                } */}
                     </View>
                     : null
                   }
@@ -1354,24 +1533,104 @@ class EditProfile extends Component {
                             </View>
 
                         }
-                        <Text style={{
-                          paddingTop: 10,
-                          color: Colors.greyTxtColor, fontSize: 12,
-                          fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
-                          textAlign: 'center', alignSelf: 'center'
-                        }}>
-                          For profile verification, try not to skip the process
+                        {this.state.idProofUrl == '' || this.state.idProofUrl == null ?
+                          <Text style={{
+                            paddingTop: 10,
+                            color: Colors.greyTxtColor, fontSize: 12,
+                            fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                            textAlign: 'center', alignSelf: 'center',
+                          }}>
+                            For profile verification, try not to skip the process
 
-                        </Text>
+                          </Text>
+                          :
+
+                          <View style={{
+                            flexDirection: 'row', alignItems: 'center',
+                            justifyContent: 'center', marginTop: wide * 0.015,
+                          }}>
+                            {this.state.isIdApproved == null ?
+                              <Image source={require('../../Images/info_icon.png')}
+                                style={{
+                                  width: 15, height: 15,
+                                  tintColor: Colors.photIdRactangle
+                                }} />
+                              : <></>
+                            }
+                            {this.state.isIdApproved == null ?
+
+                              <Text style={{
+                                marginTop: 16,
+                                color: Colors.photIdRactangle, fontSize: 12,
+                                fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                                textAlign: 'center', marginHorizontal: wide * 0.01
+                              }}>
+                                Your document is under verification, We will notify once verified.
+                              </Text>
+                              :
+                              this.state.isIdApproved == false ?
+                                <View>
+                                  <Text style={{
+                                    marginTop: 16,
+                                    color: Colors.photIdRactangle, fontSize: 12,
+                                    fontFamily: Fonts.Regular, lineHeight: 14,
+                                    width: wide * 0.52,
+                                    textAlign: 'center', marginHorizontal: wide * 0.01
+                                  }}>
+                                    Your document is rejeted. Please upload right documents.
+                                  </Text>
+                                  <TouchableOpacity activeOpacity={1}
+                                    onPress={() => this.pickIdSingle(true, false, 'ava')}>
+                                    <Text style={{
+                                      color: Colors.btnBg, fontSize: 12,
+                                      fontFamily: Fonts.Regular, lineHeight: 16,
+                                      width: wide * 0.52,
+                                      textAlign: 'center',
+                                    }}> Upload New Documents</Text>
+                                  </TouchableOpacity>
+                                </View>
+                                :
+                                <></>
+                            }
+
+                          </View>
+
+
+
+
+                        }
                       </TouchableOpacity>
                       <View style={{ position: 'absolute', top: wide * 0.18, bottom: wide * 0.18, left: wide * 0.04, alignItems: 'center', justifyContent: 'center' }}>
 
-                        <Image style={{
-                          width: 40, height: 40
+                        {this.state.idProofUrl === '' || this.state.idProofUrl === null ?
+                          <Image style={{
+                            width: 40, height: 40
 
-                        }} source={this.state.idProofUrl === '' || this.state.idProofUrl === null ?
-                          require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')}
-                        />
+                          }}
+                            source={require('../../Images/new_uncheck_icon.png')}
+                          />
+                          :
+                          this.state.isIdApproved == null ?
+                            <Image style={{
+                              width: 40, height: 40
+
+                            }} source={require('../../Images/tick_selected.png')}
+                            />
+                            :
+                            this.state.isIdApproved == true ?
+                              <Image style={{
+                                width: 40, height: 40
+
+                              }} source={require('../../Images/tick_selected.png')}
+                              />
+                              :
+                              <Image style={{
+                                width: 40, height: 40
+
+                              }} source={require('../../Images/doc_reject_icon.png')}
+                              />
+                        }
+
 
                         {this.state.userData?.typeOfUser == 'COACH' ?
                           <Image style={{
@@ -1384,13 +1643,37 @@ class EditProfile extends Component {
                           : null
                         }
                         {this.state.userData?.typeOfUser == 'COACH' ?
-                          <Image style={{
-                            width: 40, height: 40
+                          this.state.certificateIdUrl === '' || this.state.certificateIdUrl === null ?
+                            <Image style={{
+                              width: 40, height: 40
 
-                          }}
-                            source={this.state.certificateIdUrl === '' || this.state.certificateIdUrl === null
-                              ? require('../../Images/new_uncheck_icon.png') : require('../../Images/tick_selected.png')}
-                          />
+                            }}
+                              source={require('../../Images/new_uncheck_icon.png')}
+                            />
+                            :
+                            this.state.isCoachCertiApproved == null ?
+                              <Image style={{
+                                width: 40, height: 40
+
+                              }}
+                                source={require('../../Images/tick_selected.png')}
+                              />
+                              :
+                              this.state.isCoachCertiApproved == true ?
+
+                                <Image style={{
+                                  width: 40, height: 40
+
+                                }}
+                                  source={require('../../Images/tick_selected.png')}
+                                />
+                                :
+                                <Image style={{
+                                  width: 40, height: 40
+                                }}
+                                  source={require('../../Images/doc_reject_icon.png')}
+                                />
+
                           : null
                         }
                       </View>
@@ -1437,6 +1720,61 @@ class EditProfile extends Component {
                               </View>
 
                           }
+                          {this.state.certificateIdUrl == '' || this.state.certificateIdUrl == undefined ?
+                            <></>
+                            :
+
+                            <View style={{
+                              flexDirection: 'row', alignItems: 'center',
+                              justifyContent: 'center', marginTop: wide * 0.015,
+                            }}>
+                              {this.state.isCoachCertiApproved == null ?
+                                <Image source={require('../../Images/info_icon.png')}
+                                  style={{
+                                    width: 15, height: 15,
+                                    tintColor: Colors.photIdRactangle
+                                  }} />
+                                : <></>
+                              }
+                              {this.state.isCoachCertiApproved == null ?
+                                <Text style={{
+                                  marginTop: 16,
+                                  color: Colors.photIdRactangle, fontSize: 12,
+                                  fontFamily: Fonts.Regular, lineHeight: 16, width: wide * 0.5,
+                                  textAlign: 'center', marginHorizontal: wide * 0.01
+                                }}>
+                                  Your document is under verification, We will notify once verified.
+                                </Text>
+                                :
+                                this.state.isPlayerIdApproved == false ?
+                                  <View>
+                                    <Text style={{
+                                      marginTop: 16,
+                                      color: Colors.photIdRactangle, fontSize: 12,
+                                      fontFamily: Fonts.Regular, lineHeight: 14,
+                                      width: wide * 0.52,
+                                      textAlign: 'center', marginHorizontal: wide * 0.01
+                                    }}>
+                                      Your document is rejeted. Please upload right documents.
+                                    </Text>
+                                    <TouchableOpacity activeOpacity={1}
+                                      onPress={() => this.pickIdSingle(true, false, 'certi')}
+                                    >
+                                      <Text style={{
+                                        color: Colors.btnBg, fontSize: 12,
+                                        fontFamily: Fonts.Regular, lineHeight: 16,
+                                        width: wide * 0.52,
+                                        textAlign: 'center',
+                                      }}> Upload New Documents</Text>
+                                    </TouchableOpacity>
+                                  </View>
+                                  :
+                                  <></>
+                              }
+
+                            </View>
+
+                          }
 
                         </TouchableOpacity>
                         : null
@@ -1445,7 +1783,82 @@ class EditProfile extends Component {
 
                   </View>
                   :
-                  <></>
+                  <View style={{
+                    alignItems: 'center',
+                    marginTop: wide * 0.1,
+                  }}>
+
+                    {UserModel?.selectedUserType == "coach" ?
+                      <View style={{ width: '90%' }}>
+                        <CoachOtherInfo
+                          isHighSchool={this.state.isHighSchool}
+                          selected_coachingType={this.state.selected_coachingType}
+                          ageGroup={this.state.ageGroup}
+                          coachTeam={this.state.coachTeam}
+                          city={this.state.city}
+                          selected_state={this.state.selected_state}
+                          stateList={this.state.stateList}
+                          cityList={this.state.cityList}
+                          onStateSearch={(txt) => this.handleStateSrch(txt)}
+                          onCitySearch={(txt) => this.handleCitySrch(txt)}
+                          onRadaioButtonPress={(val) => this.setState({
+                            isHighSchool: val,
+                            coachTeam: "", coachingType: '', selected_state: '',
+                            city: '', ageGroup: '', selected_coachingType: '',
+                            coachingType: ''
+                          })}
+                          onAgeGroupSelect={(ag) => this.setState({ ageGroup: ag })}
+                          onCoachingTypeSelect={(coachingTyp, selected_typ) => this.setState({
+                            coachingType: coachingTyp,
+                            selected_coachingType: selected_typ
+                          })}
+                          onStateSelect={(st) => this.setState({
+                            selected_state: st,
+                          }, () => this.getCityData(st))}
+                          onCitySelect={(ct) => this.setState({
+                            city: ct,
+                          })}
+                          onCoachTeamTextChange={(txt) => this.setState({ coachTeam: txt })}
+
+                        />
+
+
+
+                      </View>
+                      :
+                      <ScrollView showsVerticalScrollIndicator={false}
+                        bounces={false}
+                        contentContainerStyle={{
+                          paddingBottom: isNotch ? 0 : 10,
+                          alignItems: 'center'
+                        }}
+                        style={{ width: '100%' }}
+                      >
+                        <View style={{ width: '90%' }}>
+                          <PlayerOtherInfo
+                            isGirl={this.state.isGirl}
+                            classof={this.state.classof}
+                            school={this.state.school}
+                            city={this.state.city}
+                            selected_state={this.state.selected_state}
+                            selected_height={this.state.selected_height}
+                            weight={this.state.weight}
+                            onRadaioButtonPress={(val) => this.setState({
+                              isGirl: val,
+                              classof: "", school: '', selected_state: '', city: '',
+                            })}
+                            onHeightChange={(txt) => this.setState({
+                              selected_height: txt,
+                            })}
+                            onWeightChange={(txt) => this.setState({
+                              weight: txt,
+                            })}
+                          />
+                        </View>
+                      </ScrollView>
+                    }
+
+                  </View>
               }
 
 
@@ -1492,6 +1905,7 @@ class EditProfile extends Component {
     );
   }
 }
+
 
 function mapStateToProps(state) {
   const { entities } = state;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View, TouchableOpacity, Text, SafeAreaView, Image,
-  Platform, StyleSheet, ScrollView, Linking
+  Platform, StyleSheet, ScrollView, Linking, Share, Alert
 } from 'react-native';
 import {
   Layout,
@@ -55,6 +55,26 @@ class UserAccount extends Component {
 
   }
 
+  showLogOutAlert = () => {
+    Alert.alert(
+      "Alert",
+      "Are you sure you want to log out?",
+      [
+        {
+          text: "Yes",
+          onPress: () => this._handleLogOut()
+        },
+        {
+          text: "Cancel",
+          style: 'cancel',
+          onPress: () => { return }
+        },
+
+      ],
+      { cancelable: false },
+    );
+  }
+
   _handleLogOut = () => {
     debugger
     console.log("Logout call");
@@ -106,6 +126,31 @@ class UserAccount extends Component {
 
   }
 
+  onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native https://reactnative.dev/',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+          console.log("Shared with activity....!", result)
+
+        } else {
+          // shared
+          console.log("Shared ....!", result)
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+        console.log("Share action cancel....!", result)
+      }
+    } catch (error) {
+      console.log("Share action error....!")
+      alert(error.message);
+    }
+  };
+
 
 
 
@@ -127,16 +172,16 @@ class UserAccount extends Component {
             <View style={{ width: '92%', alignSelf: 'center', }}>
               <View style={{
                 width: '100%', height: wide * 0.12,
-                flexDirection: 'row', justifyContent: 'space-between',
+                flexDirection: 'row', justifyContent: 'flex-end',
                 alignItems: 'center'
               }}>
 
-                <Text style={{
+                {/* <Text style={{
                   marginHorizontal: 16,
                   color: Colors.light, fontSize: 18,
                   fontFamily: Fonts.Bold, lineHeight: 24,
 
-                }}>Account</Text>
+                }}>Account</Text> */}
                 <Image
                   source={require('../../Images/notif_bell_icon.png')}
                   style={{ width: 26, height: 26, }}
@@ -147,16 +192,17 @@ class UserAccount extends Component {
               <View style={{
                 width: '100%',
                 alignItems: 'center',
-                marginTop: wide * 0.08
+                marginTop: wide * 0.02
               }}>
                 <View style={{
                   width: wide * 0.25, height: wide * 0.25,
                   justifyContent: 'center', alignItems: 'center',
-                  borderRadius: wide * 0.25 / 2, borderWidth: 2, borderColor: Colors.light
+                  borderRadius: wide * 0.25 / 2, borderWidth: 2,
+                  borderColor: Colors.light
                 }}>
                   <Image
-                    source={require('../../Images/male_onboard_Icon.png')}
-                    // source={{ uri: UserModel.profileUrl }}
+                    // source={require('../../Images/male_onboard_Icon.png')}
+                    source={{ uri: UserModel.profileUrl }}
                     style={{
                       width: '98%', height: '98%',
                       borderRadius: wide * 0.25 / 2,
@@ -228,11 +274,11 @@ class UserAccount extends Component {
 
                 <TouchableOpacity
                   style={{ width: '100%', marginTop: wide * 0.035, }}
-                  onPress={() => Linking.openURL('https://reactnative.dev/')}
+                  onPress={() => this.onShare()}
                 >
                   <AccountItem title={'Share Application'}
                     icon={require('../../Images/share_app_icon.png')}
-                    onPress={() => Linking.openURL('https://reactnative.dev/')}
+                    onPress={() => this.onShare()}
                   />
                 </TouchableOpacity>
 
@@ -246,12 +292,12 @@ class UserAccount extends Component {
 
                 <TouchableOpacity
                   style={{ width: '100%', marginTop: wide * 0.035, }}
-                  onPress={() => this._handleLogOut()}
+                  onPress={() => this.showLogOutAlert()}
                 >
                   <AccountItem
                     title={'Logout'}
                     icon={require('../../Images/newLogOut_icon.png')}
-                    onPress={() => this._handleLogOut()}
+                    onPress={() => this.showLogOutAlert()}
                   />
                 </TouchableOpacity>
 

@@ -223,6 +223,7 @@ function TeamList(props) {
           }}>
             <TouchableOpacity onPress={() => setStateModal(true)} activeOpacity={1}>
               <DropDownSelect
+                isIcon
                 containerStyle={{
                   width: wide * 0.4,
                   borderBottomWidth: 1,
@@ -268,6 +269,7 @@ function TeamList(props) {
 
             <TouchableOpacity onPress={() => setCityModal(true)} activeOpacity={1}>
               <DropDownSelect
+                isIcon
                 containerStyle={{
                   width: wide * 0.4,
                   borderBottomWidth: 1,

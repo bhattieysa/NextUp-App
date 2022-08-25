@@ -7,6 +7,7 @@ import { Colors, Fonts, Layout } from '../../constants';
 import Navigation from '../../lib/Navigation';
 import AppLoader from '../../utils/Apploader';
 import AnimatedInput from "../../Helpers/react-native-animated-input";
+import { DropDownSelect } from '../../components/common/customDropDown';
 
 let wide = Layout.width;
 
@@ -104,10 +105,22 @@ function CoachTeamList(props) {
       dispatch(getCities(stat, (res, city_dt) => {
         if (res) {
           setCity(city_dt);
+          setSelectedCity(city_dt[0])
           setCityList(city_dt);
+          getTeamDataFromCity(city_dt[0], stat);
         }
       }))
     }
+  }
+
+  const getTeamDataFromCity = (city, stat) => {
+    dispatch(getSchoolOrTeamList(city, stat, "TEAM", (res, team_dt) => {
+      if (res) {
+        // setLoading(false)
+        setTeam(team_dt)
+        setTeamList(team_dt)
+      }
+    }))
   }
 
   const getTeamData = (city) => {
@@ -209,91 +222,96 @@ function CoachTeamList(props) {
             // backgroundColor: "red"
           }}>
             <TouchableOpacity onPress={() => setStateModal(true)} activeOpacity={1}>
-              <AnimatedInput
-                placeholder="STATE"
-                onChangeText={(e) => this.setTextofFields('school', e)}
-                value={state_selected}
-                disabled
-                // editable={false}
-                // onFocus={() => setStateModal(true)}
-                sufix={
-                  <Image
-                    style={{
-                      width: 7,
-                      height: 7,
-                      position: 'absolute',
-                      top:
-                        Platform.OS === "android"
-                          ? 5
-                          : state_selected != ""
-                            ? 30
-                            : 5,
-                      right: 7
-                    }}
-                    source={require('../../Images/dropDownIconNew.png')}
-                  />
-                }
-                styleInput={{
+              <DropDownSelect
+                isIcon
+                containerStyle={{
+                  width: wide * 0.4,
+                  borderBottomWidth: 1,
+                  borderBottomColor: Colors.borderColor,
+                  alignItems: "center",
+                  justifyContent: 'center',
+                  // backgroundColor: 'green'
+
+                }}
+                placeHolderContainerStyl={{
+                  flexDirection: 'row', width: '98%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: state_selected == '' || state_selected == undefined ? wide * 0.025 : wide * 0.008
+
+                  // backgroundColor: 'green'
+                }}
+                placeHolderLabelStyl={{
+                  fontFamily: Fonts.Bold,
+                  color: Colors.txtFieldPlaceHolder,
+                  fontSize: 16, lineHeight: 18,
+                  fontWeight: '700'
+                }}
+                iconStyl={{
+                  width: 8,
+                  height: 8,
+                }}
+                textStyle={{
+                  width: '98%',
                   fontFamily: Fonts.Bold,
                   color: Colors.light,
-                  fontSize: 16, lineHeight: 18
+                  fontSize: 16, lineHeight: 18,
+                  fontWeight: '600',
+                  marginTop: wide * 0.02,
+                  marginBottom: wide * 0.03,
+                  alignSelf: 'center'
                 }}
-                styleLabel={{
-                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                  fontSize: 12,
-                }}
-                styleBodyContent={{
-                  borderBottomWidth: 1.5,
-                  borderBottomColor: Colors.borderColor,
-                  width: wide * 0.3
-                }}
-              // isAutoFocus={true}
+                placeHolder={'STATE'}
+                selectedValue={state_selected}
+                onPress={() => setStateModal(true)}
               />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => setCityModal(true)} activeOpacity={1}>
-              <AnimatedInput
-                placeholder="CITY"
-                onChangeText={(e) => this.setTextofFields('city', e)}
-                value={city_selected}
-                disabled
-                // onFocus={() => setCityModal(true)}
+              <DropDownSelect
+                isIcon
+                containerStyle={{
+                  width: wide * 0.4,
+                  borderBottomWidth: 1,
+                  borderBottomColor: Colors.borderColor,
+                  alignItems: "center",
+                  justifyContent: 'center',
 
-                sufix={
-                  <Image
-                    style={{
-                      width: 7,
-                      height: 7,
-                      position: 'absolute',
-                      top:
-                        Platform.OS === "android"
-                          ? 5
-                          : city_selected != ""
-                            ? 30
-                            : 5,
-                      right: 7
-                    }}
-                    source={require('../../Images/dropDownIconNew.png')}
-                  />
-                }
-                styleInput={{
+                }}
+                placeHolderContainerStyl={{
+                  flexDirection: 'row', width: '98%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: city_selected == '' || city_selected == undefined ? wide * 0.025 : wide * 0.008
+
+                }}
+                placeHolderLabelStyl={{
+                  fontFamily: Fonts.Bold,
+                  color: Colors.txtFieldPlaceHolder,
+                  fontSize: 16, lineHeight: 18,
+                  fontWeight: '700'
+                }}
+                iconStyl={{
+                  width: 8,
+                  height: 8,
+                }}
+                textStyle={{
+                  width: '98%',
                   fontFamily: Fonts.Bold,
                   color: Colors.light,
-                  fontSize: 16, lineHeight: 18
+                  fontSize: 16, lineHeight: 18,
+                  fontWeight: '600',
+                  marginTop: wide * 0.02,
+                  marginBottom: wide * 0.03,
+                  alignSelf: 'center'
                 }}
-                styleLabel={{
-                  fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                  fontSize: 12,
-                }}
-                styleBodyContent={{
-                  borderBottomWidth: 1.5,
-                  borderBottomColor: Colors.borderColor,
-                  width: wide * 0.4
-                }}
-              // isAutoFocus={true}
+                placeHolder={'CITY'}
+                selectedValue={city_selected}
+                onPress={() => setCityModal(true)}
               />
             </TouchableOpacity>
           </View>
+
 
           <Text style={{ color: Colors.lightshade }}>{JSON.stringify(navParams)}</Text>
 
@@ -388,9 +406,9 @@ function CoachTeamList(props) {
                 >
                   {stateList.map(el => (
                     <TouchableOpacity onPress={() => {
-                      setSelectedState(el)
                       setTeamList([])
-                      setSelectedCity('')
+                      setSelectedState(el)
+                      // setSelectedCity('')
                       getCityData(el)
                       setStateModal(false)
                     }}>
@@ -484,6 +502,7 @@ function CoachTeamList(props) {
                 >
                   {cityList.map(el => (
                     <TouchableOpacity onPress={() => {
+                      setTeamList([])
                       setSelectedCity(el)
                       getTeamData(el)
                       setCityModal(false)

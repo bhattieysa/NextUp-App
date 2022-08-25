@@ -12,6 +12,15 @@ const AccountStack = createStackNavigator(
     AppReload: {
       getScreen: () => require('../views/loadingView/index').default,
     },
+    School: {
+      getScreen: () => require('../views/home/EditHelperComponent/SchoolList').default,
+    },
+    Year: {
+      getScreen: () => require('../views/home/EditHelperComponent/Year').default,
+    },
+    TeamList: {
+      getScreen: () => require('../views/home/EditHelperComponent/SelectTeam').default,
+    },
 
   },
   {
@@ -26,7 +35,9 @@ AccountStack.navigationOptions = ({ navigation }) => {
   for (let i = 0; i < navigation.state.routes.length; i++) {
     if (navigation.state.routes[i].routeName == "EditProfile" ||
       navigation.state.routes[i].routeName == "AppReload" ||
-      navigation.state.routes[i].routeName == "CoachChallengeAction") {
+      navigation.state.routes[i].routeName == "School" ||
+      navigation.state.routes[i].routeName == "Year" ||
+      navigation.state.routes[i].routeName == "TeamList") {
       tabBarVisible = false;
     } else {
       defaultNavigationOptions

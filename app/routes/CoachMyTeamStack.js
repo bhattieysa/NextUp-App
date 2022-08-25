@@ -4,7 +4,8 @@ import { defaultNavigationOptions } from '../utils/navigation';
 const CoachMyTeamStack = createStackNavigator(
   {
     MyTeam: {
-      getScreen: () => require('../views/Coach/CoachMyTeams').default,
+      // getScreen: () => require('../views/Coach/CoachMyTeams').default,
+      getScreen: () => require('../views/Coach/CoachMyTeamsNew').default,
       // getScreen: () => require('../views/auth/RoadToPro').default,
     },
     CoachAddPlayer: {

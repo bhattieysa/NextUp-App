@@ -82,9 +82,14 @@ class PlayerCategoryStyle extends Component {
   actionContinue = () => {
     const { selectedPlayerCategory } = this.state
     // if (isbtnEnable) {
+    let gender = ''
+    if (UserModel.isGirl == false) {
+      gender = 'MALE'
+    } else {
+      gender = 'FEMALE'
+    }
     debugger
     getObject('UserId').then((obj) => {
-
       let params = {
         "typeOfUser": UserModel.selectedUserType.toUpperCase(),
         "firstName": UserModel.fname,
@@ -92,10 +97,11 @@ class PlayerCategoryStyle extends Component {
         "aboutMe": UserModel.aboutMe,
         "email": UserModel.email,
         "dob": moment(UserModel.dob).format('MM/DD/YYYY'),
-        "onBoardingTeamName": UserModel.coachTeam, //when coach selected
+        "onBoardingTeamName": UserModel.school, //when coach selected
         "typeOfPlayer": selectedPlayerCategory.name,
         "height": UserModel.selected_height,
         "weight": UserModel.weight,
+        "gender": gender,
         "schoolInfo": {
           city: UserModel.city,
           state: UserModel.state,

@@ -290,11 +290,12 @@ class TellUsMore extends Component {
     } = this.state;
     getObject('UserId').then((obj) => {
       let coaching_typ;
-      if (UserModel.isHighSchool == false) {
+      if (UserModel.coachingType != '' && UserModel.coachingType != undefined) {
         coaching_typ = UserModel.coachingType
       } else {
         coaching_typ = 'TRAVEL_TEAM'
       }
+      debugger
       let params = {
         "typeOfUser": strSelectedMode.toUpperCase(),
         "firstName": fname,
@@ -304,19 +305,20 @@ class TellUsMore extends Component {
         "dob": dob,
         "onBoardingTeamName": UserModel.coachTeam,
         //when coach selected
-        "schoolInfo": {
-          city: city,
-          state: state,
-          name: school,
-          classOff: classof,
-          // typeOfPlayer: positions[strSelectedPosition]
-        },
+        // "schoolInfo": {
+        //   city: city,
+        //   state: state,
+        //   name: school,
+        //   classOff: classof,
+        //   // typeOfPlayer: positions[strSelectedPosition]
+        // },
         "coachingType": {
-          typeOfCoaching: 'TRAVEL_TEAM',
+          typeOfCoaching: coaching_typ,
           schoolName: UserModel.coachTeam,
           ageGroup: UserModel.ageGroup,
           state: state,
-          city: city
+          city: city,
+          // isHighSchool: UserModel.isHighSchool,
         },
         "roleList": [
           `ROLE_${strSelectedMode.toUpperCase()}`
@@ -325,8 +327,8 @@ class TellUsMore extends Component {
       }
 
       debugger
-
       console.log("onBoardDataCoach", params);
+
       debugger
       this.setState({ loading: true }, () => {
         this.props.dispatch(onBoardAPI(obj, params, (res, resData) => {
@@ -756,7 +758,7 @@ class TellUsMore extends Component {
                       width: wide * 0.4,
                     }}
                     keyboardType={'decimal-pad'}
-
+                    maxLength={3}
                   />
 
                   <AnimatedInput
@@ -778,6 +780,7 @@ class TellUsMore extends Component {
                       width: wide * 0.4,
                     }}
                     keyboardType={'decimal-pad'}
+                    maxLength={3}
                   />
 
                 </View>
