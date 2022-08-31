@@ -31,28 +31,21 @@ class CoachAddPlayer extends Component {
     super(props);
     this.state = {
       loading: false,
-      arrPlayers: [],
+      arrPlayers: null,
       selectedIndex: 0,
       starCount: 3.5,
       lastLat: 0,
       lastLong: 0,
       srchTxt: '',
-      showInviteButton: false
+      showInviteButton: false,
+      selectedPlyerIds: [],
+      selectedPlayerList: [],
     };
   }
   componentDidMount() {
     pageNum = 1
     this.onScreenFocus();
-    // getObject('userLoc').then((res) => {
-    //     if (res) {
-    //         this.setState({ cityName: res.name, lastLat: res.lat, lastLong: res.lng }, () => {
-    //             this.getPlayers('')
-    //         })
 
-    //     } else {
-    //         this.getUserCurrentLocation()
-    //     }
-    // })
   }
 
   onScreenFocus = async () => {
@@ -174,7 +167,7 @@ class CoachAddPlayer extends Component {
               this.setState({ loading: false, arrPlayers: resData, showInviteButton: false })
 
             } else {
-              this.setState({ loading: false, showInviteButton: true })
+              this.setState({ loading: false, arrPlayers: resData, showInviteButton: true })
 
             }
           }
@@ -187,61 +180,38 @@ class CoachAddPlayer extends Component {
     //}
   }
 
-
-  // getPlayers = (strSearch) => {
-  //     const {
-  //         lastLat
-  //         , lastLong } = this.state;
-  //     // if (!this.state.isDataAllFetched) {
-  //     getObject('UserId').then((obj) => {
-  //         // this.setState({ loading: true }, () => {
-  //         this.props.dispatch(getPlayerss(obj, strSearch, {
-  //             "name": "Loc",
-  //             "loc": {
-  //                 "type": "Point",
-  //                 "coordinates": [
-  //                     lastLong,
-  //                     lastLat
-  //                 ]
-  //             }
-  //         }, (res, resData) => {
-  //             //console.log(resData);
-  //             if (res) {
-  //                 //   this.setState({ isDataAllFetched: true })
-  //                 // }
-
-  //                 this.setState({ arrPlayers: resData })
-
-
-  //             }
-  //         }))
-  //     })
-
-  //     // })
-  //     //}
-  // }
-
-  addPlayerToPosition = (item) => {
+  addPlayerToPosition = () => {
     // console.log(item);
-    // console.log(this.props.navigation.state.params.teamDetails, this.props.navigation.state.params.playerDetails.index);
-    var objec = {
-      "playerId": item.playerId,
-      "playerName": item.firstName + ' ' + item.lastName,
-      // "playingPosition": this.props.navigation.state.params.playerDetails.playingPosition,
-      "playingPosition": this.props.navigation.state.params.playerDetails.name,
-      // "index": this.props.navigation.state.params.playerDetails.index,
-      "index": this.props.navigation.state.params.playerDetails.teamPlayersInfoList.length,
-      "acceptedAt": Date.now()
-    }
+    const { selectedPlyerIds, selectedPlayerList } = this.state;
+    var playetToAddList = []
+    selectedPlayerList.forEach((obj, index) => {
+      var objec = {
+        "playerId": obj.playerId,
+        "playerName": obj.firstName + ' ' + obj.lastName,
+        "playingPosition": this.props.navigation.state.params.playerDetails.name,
+        "index": this.props.navigation.state.params.playerDetails.teamPlayersInfoList.length,
+        "acceptedAt": Date.now()
+      }
+      playetToAddList.push(objec);
+    })
+    // console.log(this.props.navigation.state.params.playerDetails);
+    console.log("PlayerTobve adddddd", playetToAddList);
+    // var objec = {
+    //   "playerId": item.playerId,
+    //   "playerName": item.firstName + ' ' + item.lastName,
+    //   "playingPosition": this.props.navigation.state.params.playerDetails.name,
+    //   "index": this.props.navigation.state.params.playerDetails.teamPlayersInfoList.length,
+    //   "acceptedAt": Date.now()
+    // }
     var outerIndex = this.props.navigation.state.params.playerDetails?.teamPlayersInfoList[0]?.index;
     var teamId = this.props.navigation.state.params.teamDetails?.teamId;
     var season = this.props.navigation.state.params.teamDetails?.seasonType;
-    // getObject('UserId').then((obj) => {
+    console.log("Seasonn", season);
+    console.log("teamId", teamId);
+    console.log("oyuterIndx", outerIndex);
+
     this.setState({ loading: true }, () => {
-      this.props.dispatch(addPlayerToTeam(teamId, objec, outerIndex, "2020-21", (res, resData) => {
-        // console.log(resData); // Need to change here showing alert on api fail also
-        // this.setState({ loading: false }, () => {
-        // setTimeout(() => {
+      this.props.dispatch(addPlayerToTeam(teamId, playetToAddList, outerIndex, "2020-21", (res, resData) => {
         if (res) {
           this.setState({ loading: false }, () => {
             setTimeout(() => {
@@ -249,14 +219,7 @@ class CoachAddPlayer extends Component {
             }, 200);
 
           })
-          // Alert.alert(
-          //     'Alert',
-          //     'Player added to the position',
-          //     [
-          //         { text: 'OK', onPress: () => { Navigation.back() } },
-          //     ],
-          //     { cancelable: false },
-          // );
+
         } else {
           Alert.alert(
             'Alert',
@@ -273,14 +236,8 @@ class CoachAddPlayer extends Component {
           );
         }
 
-
-        // }, 1000)
-        // })
-
-
       }))
     })
-    // })
 
   }
   onStarRatingPress(rating) {
@@ -311,139 +268,93 @@ class CoachAddPlayer extends Component {
       </TouchableOpacity>
     );
   };
+
+  handlePlayerSelection = (item) => {
+    const { selectedPlyerIds, selectedPlayerList } = this.state;
+    if (selectedPlyerIds.length > 0) {
+      if (selectedPlyerIds.includes(item.playerId)) {
+        var id_arr = selectedPlyerIds.filter((obj, index) => {
+          return obj != item.playerId
+        })
+
+        var playerList_arr = selectedPlayerList.filter((play_obj, index) => {
+          return play_obj.playerId != item.playerId
+        })
+
+        this.setState({ selectedPlyerIds: id_arr, selectedPlayerList: playerList_arr })
+      } else {
+        var id_arr = selectedPlyerIds;
+        id_arr.push(item.playerId)
+
+        var playerList_arr = selectedPlayerList
+        playerList_arr.push(item)
+
+        this.setState({ selectedPlyerIds: id_arr, selectedPlayerList: playerList_arr })
+      }
+    } else {
+      var id_arr = []
+      var playerList_arr = []
+      id_arr.push(item?.playerId)
+      playerList_arr.push(item)
+      this.setState({ selectedPlyerIds: id_arr, selectedPlayerList: playerList_arr })
+
+    }
+  }
+
   _renderTrainer = ({ item }) => {
-
     return (
-      // <View  >
-      //     <View style={{ marginTop: wide * 0.03 }}>
-      //         <Image style={{
-      //             position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%'
-      //         }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} />
-
-      //         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
-      //             <Text style={{
-      //                 color: Colors.light, fontSize: 16, fontFamily: Fonts.SemiBold,
-      //                 marginHorizontal: 15
-      //             }}>{item.rank}</Text>
-      //             <View style={{
-      //                 width: wide * 0.15, height: wide * 0.15,
-      //                 borderRadius: wide * 0.15 / 2, borderWidth: 3,
-      //                 borderColor: Colors.borderColor,
-      //                 justifyContent: 'center', alignItems: 'center'
-      //             }}>
-      //                 <FastImage style={{
-      //                     width: '80%', height: '80%',
-      //                     borderRadius: wide * 0.15 / 2,
-      //                 }}
-      //                     resizeMode={'contain'}
-      //                     source={{ uri: item.imageUrl }} />
-      //             </View>
-
-      //             <View style={{ paddingLeft: 15 }}>
-      //                 <Text style={{
-      //                     color: Colors.light, fontSize: 26, fontFamily: Fonts.Bold,
-      //                     marginLeft: 5
-      //                 }}>{item.name}</Text>
-
-      //                 {/* <Text style={{
-      //                     color: Colors.fontColorGray, fontSize: 12, fontFamily: Fonts.Bold,
-      //                     marginLeft: 5, marginVertical: 6
-      //                 }}>
-      //                     EXP - 3 YEARS
-      //                 </Text> */}
-
-      //             </View>
-      //             <View style={{ flex: 1 }} />
-      //             {/* <View style={{ paddingHorizontal: 20 }}>
-      //                 <Image style={{
-      //                     width: wide * 0.07, height: wide * 0.07,
-
-      //                 }} resizeMode={'stretch'} source={item.index % 2 == 0 ? require('../../Images/sort_tick_selected.png') : require('../../Images/tick_unselected.png')} />
-
-      //             </View> */}
-      //         </View>
-      //     </View>
-
-      // </View>
       <TouchableOpacity style={{
         marginTop: wide * 0.03,
-        // backgroundColor: 'red'
-      }} onPress={() =>
-        this.addPlayerToPosition(item)
-      }>
-
-        <Image style={{
-          position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '90%'
-        }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} />
-
-        <View style={{ marginTop: wide * 0.02, marginHorizontal: 8, }}>
-          {/* <Image style={{
-                                        position: 'absolute', top: 0, bottom: 0, left: 0,
-                                         right: 0, width: '100%', height: '100%'
-                                    }} resizeMode={'stretch'} source={require('../../Images/Rectangle.png')} /> */}
+        backgroundColor: Colors.lightDark,
+        borderRadius: wide * 0.025,
+        height: wide * 0.24,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+        activeOpacity={1}
+      // onPress={() =>
+      //   this.addPlayerToPosition(item)
+      // }
+      >
+        <View style={{
+          marginTop: wide * 0.02,
+          // marginHorizontal: 8,
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          width: '90%',
+          // backgroundColor: "green"
+        }}>
           <View style={{ flexDirection: 'row', }}>
             <View style={{
-              // backgroundColor: 'green',
-              width: wide * 0.22, height: wide * 0.28
+              width: wide * 0.14, height: wide * 0.14,
+              borderRadius: wide * 0.14 / 2,
+              borderWidth: item.profilePictureUrl == null ? 1.5 : 0,
+              borderColor: item.profilePictureUrl == null ? Colors.newGrayFontColor : null,
+
+
             }}>
-              {item.profilePictureUrl === null || item.profilePictureUrl === '500 Error' ?
-                <Image
-                  style={{
-                    width: wide * 0.2, height: wide * 0.25,
-                    borderRadius: wide * 0.02, borderWidth: 4,
-                    borderColor: Colors.newGrayFontColor,
-                    // marginBottom: item.pgs !== null ? 10 : null,
-                  }}
-                  resizeMode={'cover'}
-                  source={require('../../Images/placeHolderProf.png')}
-                />
-                :
+              {item.profilePictureUrl !== null ?
                 <FastImage style={{
-                  width: wide * 0.2, height: wide * 0.25,
-                  borderRadius: wide * 0.03, borderWidth: 4,
-                  borderColor: Colors.newGrayFontColor,
-                  // marginBottom: item.pgs !== null ? 10 : null,
+                  width: '98%', height: '98%',
+                  borderRadius: wide * 0.14 / 2,
                 }}
                   resizeMode={'cover'}
                   source={{ uri: item.profilePictureUrl }}
                 />
+                :
+                <></>
               }
-              {/* <TouchableOpacity style={{
-                                width: wide * 0.2, height: wide * 0.18,
-                                bottom: 0,
-                                // bottom: item?.firstName !== null ? 0 : 10,
-                                position: 'absolute',
-                                alignItems: 'center',
-                                // backgroundColor: 'green'
-                            }}>
-                                <Image style={{
-                                    width: wide * 0.2, height: wide * 0.16,
-                                    borderRadius: wide * 0.03,
-
-                                }}
-                                    resizeMode={'stretch'}
-                                    source={require('../../Images/edit_profile_gradiant.png')}
-                                />
-                                <View style={{ marginTop: -wide * 0.03 }}>
-                                    <Text
-                                        style={{ bottom: 10, color: Colors.light, fontFamily: Fonts.Bold, fontSize: 12 }} >
-                                        #{item.ranking} | {item.position}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity> */}
-
             </View>
-
 
             <View style={{
               marginHorizontal: wide * 0.05,
-              flex: 1,
             }}>
               <View >
                 <View style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  width: '100%'
+                  // width: '100%'
                 }}>
 
                   <View>
@@ -455,35 +366,18 @@ class CoachAddPlayer extends Component {
                       {item.firstName} {item.lastName}
 
                     </Text>
-                    {/* <Text style={{
-                                            color: Colors.light, fontSize: 20, fontFamily: Fonts.Bold
-                                        }}>
-                                            {item.lastName}
-                                        </Text> */}
-                  </View>
-                  {/* <View style={{ flex: 1 }} /> */}
-                  {/* <Image
-                                        source={require("../../Images/Los_Angeles_Lakers_logo.png")}
-                                        resizeMode="contain"
-                                        style={{
-                                            width: wide * 0.12,
-                                            height: wide * 0.12,
 
-                                        }} {Object.keys(item.pgs)[0]?.toUpperCase()}
-                                            {Object.values(item.pgs)[0]}
-                                            {Object.keys(item.pgs)[1]?.toUpperCase()}
-                                            {Object.values(item.pgs)[1]}
-                                            {Object.keys(item.pgs)[2]?.toUpperCase()}
-                                            {Object.values(item.pgs)[2]}
-                                    ></Image> */}
+                  </View>
+
 
                 </View>
                 {/* kpiValues key changes to pgs */}
                 {item.pgs !== null ?
                   <View style={{
                     flexDirection: 'row',
-                    width: '100%', marginTop: wide * 0.03,
-                    justifyContent: 'space-between'
+                    // width: '6-%',
+                    marginTop: wide * 0.03,
+                    // justifyContent: 'space-between',
                   }}>
                     <View >
                       <Text style={styles.textPointHeading}>{Object.keys(item.pgs)[0]?.toUpperCase()}</Text>
@@ -507,40 +401,41 @@ class CoachAddPlayer extends Component {
                   :
                   <View style={{
                     flexDirection: 'row',
-                    width: '100%', marginTop: wide * 0.02,
-                    justifyContent: 'space-between'
+                    // width: '100%', 
+                    marginTop: wide * 0.02,
+                    // justifyContent: 'space-between'
                   }}>
-                    <View >
+                    <View>
                       <Text style={styles.textPointHeading}>PPG</Text>
                       <Text style={{
-                        color: Colors.light, fontSize: 28,
-                        lineHeight: 40,
+                        color: Colors.light, fontSize: 18,
+                        lineHeight: 22,
                         fontFamily: Fonts.Bold,
-                        marginTop: 6,
+                        // marginTop: 4,
                         marginHorizontal: 8,
                       }}>
                         -
                       </Text>
                     </View>
-                    <View >
+                    <View style={{ marginLeft: wide * 0.1 }}>
                       <Text style={styles.textPointHeading}>RPG</Text>
                       <Text style={{
-                        color: Colors.light, fontSize: 28,
-                        lineHeight: 40,
+                        color: Colors.light, fontSize: 18,
+                        lineHeight: 22,
                         fontFamily: Fonts.Bold,
-                        marginTop: 6,
+                        // marginTop: 4,
                         marginHorizontal: 8,
                       }}>
                         -
                       </Text>
                     </View>
-                    <View >
+                    <View style={{ marginLeft: wide * 0.1 }}>
                       <Text style={styles.textPointHeading}>APG</Text>
                       <Text style={{
-                        color: Colors.light, fontSize: 28,
-                        lineHeight: 40,
+                        color: Colors.light, fontSize: 18,
+                        lineHeight: 22,
                         fontFamily: Fonts.Bold,
-                        marginTop: 6,
+                        // marginTop: 4,
                         marginHorizontal: 8,
                       }}>
                         -
@@ -549,104 +444,111 @@ class CoachAddPlayer extends Component {
                   </View>
                 }
 
-                {/* <View style={{
-                                    flexDirection: 'row',
-                                    width: '100%', marginTop: wide * 0.06,
-                                    justifyContent: 'space-between'
-                                }}>
 
-                                    <View >
-                                        <Text style={{
-                                            color: Colors.fontColorGray, fontSize: 13, fontFamily: Fonts.Bold,
-
-                                        }}>PPG</Text>
-                                        <Text style={{
-                                            color: Colors.light, fontSize: 22, fontFamily: Fonts.Bold,
-                                            marginTop: 6,
-                                        }}>
-                                            35
-                                        </Text>
-                                    </View>
-                                    <View >
-                                        <Text style={{
-                                            color: Colors.fontColorGray, fontSize: 13, fontFamily: Fonts.Bold,
-
-                                        }}>RPG</Text>
-                                        <Text style={{
-                                            color: Colors.light, fontSize: 22, fontFamily: Fonts.Bold,
-                                            marginTop: 6,
-                                        }}>
-                                            6
-                                        </Text>
-                                    </View>
-                                    <View >
-                                        <Text style={{
-                                            color: Colors.fontColorGray, fontSize: 13,
-                                            fontFamily: Fonts.Bold,
-
-                                        }}>APG</Text>
-                                        <Text style={{
-                                            color: Colors.light, fontSize: 22,
-                                            fontFamily: Fonts.Bold,
-                                            marginTop: 6,
-                                        }}>
-                                            4
-                                        </Text>
-                                    </View>
-                                </View> */}
               </View>
             </View>
-            {/* <AppLoader visible={this.state.loading} /> */}
-
-
           </View>
+          <TouchableOpacity style={{
+            width: wide * 0.06, height: wide * 0.06,
+            borderRadius: wide * 0.015,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: this.state.selectedPlyerIds.includes(item.playerId) ? Colors.btnBg : null,
+            borderWidth: this.state.selectedPlyerIds.includes(item.playerId) ? 0 : 1.5,
+            borderColor: this.state.selectedPlyerIds.includes(item.playerId) ? null : Colors.newGrayFontColor,
+
+          }}
+            onPress={() => this.handlePlayerSelection(item)}
+          // activeOpacity={1}
+          >
+            {this.state.selectedPlyerIds.includes(item.playerId) ?
+              <Image
+                style={{ width: 12, height: 12 }}
+                source={require('../../Images/check_Icon.png')}
+                resizeMode={'contain'}
+              />
+              : <></>
+            }
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     )
   }
-  render() {
 
+  handleSendInvitation = () => {
+    const { selectedPlyerIds } = this.state;
+    if (selectedPlyerIds.length > 0) {
+      this.addPlayerToPosition();
+
+    } else {
+      Navigation.navigate('InvitePlayerToTeam', {
+        playerDetails: this.props.navigation.state.params.playerDetails,
+        teamDetails: this.props.navigation.state.params.teamDetails,
+        selectedSeason: this.props.navigation.state.params.selectedSeason
+      })
+
+    }
+  }
+
+
+  render() {
     const { arrPlayers } = this.state
     console.log("Dattaaaa", this.props.navigation.state.params);
     return (
       <View style={{ flex: 1, backgroundColor: Colors.base, }}>
-        <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
-          <View style={{ marginHorizontal: 15, backgroundColor: Colors.base, }}>
-            <TouchableOpacity style={{ marginHorizontal: 15, width: wide * 0.1, }}
+        <SafeAreaView style={{
+          flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0,
+          backgroundColor: Colors.base
+        }}>
+          <View style={{
+            width: '90%',
+            alignSelf: 'center',
+
+          }}>
+            <TouchableOpacity style={{ width: wide * 0.08, }}
               onPress={() => Navigation.back()}>
               <Image style={{
-                width: wide * 0.1, height: wide * 0.1,
-                marginTop: 24, borderRadius: wide * 0.03, borderWidth: 1, borderColor: Colors.borderColor
+                width: wide * 0.08, height: wide * 0.08,
+                marginTop: wide * 0.01,
+                borderRadius: wide * 0.02,
+                borderWidth: 1, borderColor: Colors.borderColor
               }} source={require('../../Images/back_ico.png')} />
             </TouchableOpacity>
-            <Text numberOfLines={1} style={{
+            {/* <Text numberOfLines={1} style={{
               color: Colors.light, fontSize: 18,
               lineHeight: 28,
               fontFamily: Fonts.Bold, textAlign: 'left', position: 'absolute', alignSelf: 'center', marginTop: wide * 0.08,
-            }}>{this.props.navigation.state.params.playerDetails.playingPosition}</Text>
+            }}>{this.props.navigation.state.params.playerDetails.playingPosition}</Text> */}
           </View>
-          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
+          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }}
+            behavior={Platform.OS === 'ios' ? "padding" : null}>
 
-            <View style={{ flex: 1, backgroundColor: Colors.base, marginHorizontal: 15 }} >
+            <View style={{
+              flex: 1, backgroundColor: Colors.base,
+              width: '88%', alignSelf: 'center'
+            }} >
 
-              <View style={{ marginTop: wide * 0.05, marginHorizontal: 15, flexDirection: 'row' }}>
-                {/* <Text numberOfLines={1} style={{
-                                color: Colors.light, fontSize: 18,
-                                lineHeight: 28,
-                                fontFamily: Fonts.Regular, textAlign: 'left'
-                            }}>{this.props.navigation.state.params.teamDetails.name}</Text>
-                            <View style={{ flex: 1 }} /> */}
-
+              <View style={{
+                marginTop: wide * 0.05,
+                flexDirection: 'row'
+              }}>
                 <TextInput style={{
-                  borderWidth: 3, borderColor: Colors.borderColor,
-                  fontFamily: Fonts.Bold, height: 60, paddingHorizontal: 10,
-                  borderRadius: 5, color: Colors.light, fontSize: 16, width: '100%'
+                  borderWidth: 1.5,
+                  borderColor: Colors.borderColor,
+                  fontFamily: Fonts.Bold, height: 50,
+                  paddingHorizontal: 10,
+                  borderRadius: 5, color: Colors.light,
+                  fontSize: 12,
+                  lineHeight: 16, fontWeight: '600',
+                  width: '100%'
                 }}
                   value={this.state.srchTxt}
                   autoCorrect={false}
                   autoCapitalize='none'
-                  placeholder={"SEARCH"}
-                  placeholderTextColor={Colors.borderColor}
+                  placeholder={"Search"}
+
+                  placeholderTextColor={Colors.newGrayFontColor}
+
                   onChangeText={(e) => {
                     this.setState({ srchTxt: e }, () => {
                       if (e.length == 0) {
@@ -655,9 +557,7 @@ class CoachAddPlayer extends Component {
                       this.getPlayers(e)
                     })
                   }}
-
                 />
-
                 {this.state.srchTxt == '' ?
                   <TouchableOpacity style={{
                     position: 'absolute',
@@ -699,65 +599,74 @@ class CoachAddPlayer extends Component {
                     }}>X</Text>
                   </TouchableOpacity>
                 }
-
-                {/* <Image style={{
-                                position: 'absolute',
-                                width: 20, height: 20, right: wide * 0.05, top: wide * 0.05
-                            }} source={require('../../Images/search_ico.png')} /> */}
               </View>
-              {this.state.showInviteButton == true ?
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={{
-                    width: wide * 0.8, height: 48,
-                    backgroundColor: Colors.btnBg,
-                    alignSelf: 'center', borderRadius: 24,
-                    justifyContent: 'center',
-                    marginTop: wide * 0.08,
-                    // marginTop: 20,
-                  }} onPress={() => {
-                    Navigation.navigate('InvitePlayerToTeam', {
-                      playerDetails: this.props.navigation.state.params.playerDetails,
-                      teamDetails: this.props.navigation.state.params.teamDetails,
-                      selectedSeason: this.props.navigation.state.params.selectedSeason
-                    })
-                  }}>
-                  <Text style={{
-                    alignSelf: 'center', color: Colors.light,
-                    fontFamily: Fonts.Bold,
-                  }}>Invite</Text>
-                </TouchableOpacity>
-                : <></>
+
+              {arrPlayers != null && arrPlayers.length > 0 ?
+                <View style={{ flex: 1, }}>
+                  <FlatList
+                    data={arrPlayers}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    initialNumToRender={20}
+                    // onEndReachedThreshold={0.1}
+                    // onEndReached={() => {
+                    //     pageNum = pageNum + 1
+                    //     this.getPlayers()
+                    // }}
+
+
+                    style={{
+                      marginTop: wide * 0.02,
+                      marginBottom: wide * 0.02,
+                    }}
+                    bounces={false}
+                    renderItem={(item, index) => this._renderTrainer(item, index)}
+                  />
+                </View>
+                :
+
+                <View style={{
+                  width: '90%', alignSelf: 'center',
+                  justifyContent: 'center', alignItems: 'center',
+                  height: wide * 0.2,
+                }}>
+                  {arrPlayers != null ?
+                    <Text style={{
+                      alignSelf: 'center', color: Colors.noDataLabelColor,
+                      fontFamily: Fonts.Medium, fontSize: 13, lineHeight: 16,
+                      fontWeight: '500',
+                    }}>No data found</Text>
+                    : <></>
+                  }
+
+                </View>
               }
+              <TouchableOpacity
+                activeOpacity={1}
+                style={{
+                  width: wide * 0.8,
+                  height: 48,
+                  backgroundColor: Colors.btnBg,
+                  alignSelf: 'center', borderRadius: 24,
+                  justifyContent: 'center',
+                  // marginTop: wide * 0.01,
+                  // position: 'absolute',
+                  // bottom: wide * 0.1,
 
-
-
-              <View style={{ flex: 1, marginHorizontal: 15 }}>
-
-                <FlatList
-                  data={arrPlayers}
-                  showsHorizontalScrollIndicator={false}
-                  showsVerticalScrollIndicator={false}
-                  initialNumToRender={20}
-                  // onEndReachedThreshold={0.1}
-                  // onEndReached={() => {
-                  //     pageNum = pageNum + 1
-                  //     this.getPlayers()
-                  // }}
-
-
-                  style={{
-                    marginTop: wide * 0.03, marginBottom: wide * 0.03,
-                    // backgroundColor: 'green'
-                  }}
-
-                  renderItem={(item, index) => this._renderTrainer(item, index)}
-                />
-              </View>
-
+                }} onPress={() => this.handleSendInvitation()}
+                >
+                <Text style={{
+                  alignSelf: 'center', color: Colors.light,
+                  fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16,
+                  fontWeight: '700',
+                }}>Invite</Text>
+              </TouchableOpacity>
             </View>
+
             <AppLoader visible={this.state.loading} />
           </KeyboardAvoidingView>
+
 
         </SafeAreaView >
       </View>
@@ -793,14 +702,19 @@ const styles = StyleSheet.create({
 
   },
   textPoint: {
-    color: Colors.light, fontSize: 24, fontFamily: Fonts.Bold,
+    color: Colors.light,
+    fontSize: 14, lineHeight: 18,
+    fontFamily: Fonts.Medium,
     marginTop: 6,
   },
   textPointHeading: {
-    color: Colors.fontColorGray, fontSize: 17, fontFamily: Fonts.SemiBold,
+    color: Colors.light, opacity: 0.6,
+    fontSize: 12, lineHeight: 16, fontWeight: '400',
+    fontFamily: Fonts.Regular,
   },
   textPointCenter: {
-    color: Colors.light, fontSize: 18, fontFamily: Fonts.Bold,
+    color: Colors.light, fontSize: 18,
+    fontFamily: Fonts.Bold,
     marginTop: 6, textAlign: 'center'
   },
 });

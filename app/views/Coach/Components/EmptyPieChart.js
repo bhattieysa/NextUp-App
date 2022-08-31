@@ -27,16 +27,22 @@ function EmptyPieChart({ }) {
       <>
         <View style={{
           position: 'absolute', top: 80,
-          alignItems: 'center', justifyContent: 'center', width: wide * 0.25, height: wide * 0.15,
+          alignItems: 'center', justifyContent: 'center',
+          width: wide * 0.18, height: wide * 0.15,
         }}>
           <Text style={{
             color: Colors.light,
-            fontFamily: Fonts.Bold, fontSize: 24, lineHeight: 24,
+            fontFamily: Fonts.Light, fontSize: 24, lineHeight: 24,
+            fontWeight: '400',
+            textAlign: 'center',
 
           }}>0</Text>
           <Text style={{
             color: Colors.light,
-            fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 14
+            fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 14,
+            fontWeight: '700',
+            textAlign: 'center',
+
           }}>Total Games</Text>
         </View>
 
@@ -48,7 +54,7 @@ function EmptyPieChart({ }) {
             <VictoryPie
               colorScale={["#246BFD"]}
               standalone={false}
-              width={200} height={200}
+              width={180} height={180}
               innerRadius={60}
               data={[10]}
               style={{
@@ -88,9 +94,10 @@ function EmptyPieChart({ }) {
             alignItems: "center", justifyContent: 'space-between'
           }}>
             <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 12, lineHeight: 16,
+              color: Colors.compareRankColor, fontSize: 12, lineHeight: 16,
+              fontWeight: '700',
               fontFamily: Fonts.Bold,
-            }}>Streak</Text>
+            }}>W/L Streak </Text>
             <Text style={{
               color: Colors.light, fontSize: 16, lineHeight: 18,
               fontFamily: Fonts.Bold,
@@ -101,8 +108,10 @@ function EmptyPieChart({ }) {
             alignItems: "center", justifyContent: 'space-between'
           }}>
             <Text style={{
-              color: Colors.newGrayFontColor, fontSize: 12, lineHeight: 16,
+              color: Colors.compareRankColor, fontSize: 12, lineHeight: 16,
+              fontWeight: '700',
               fontFamily: Fonts.Bold,
+
             }}>Last 10</Text>
             <Text style={{
               color: Colors.light, fontSize: 16, lineHeight: 18,
@@ -117,6 +126,7 @@ function EmptyPieChart({ }) {
                 <View style={{ width: 28, height: 2, backgroundColor: '#246BFD' }}></View>
                 <Text style={{
                   color: '#246BFD', fontSize: 16, lineHeight: 16,
+                  fontWeight: '700',
                   fontFamily: Fonts.Bold, marginHorizontal: 10
                 }}>0 Wins</Text>
               </>
@@ -127,12 +137,13 @@ function EmptyPieChart({ }) {
                 <View style={{ width: 28, height: 2, backgroundColor: '#CE1141' }}></View>
                 <Text style={{
                   color: '#CE1141', fontSize: 16, lineHeight: 16,
-                  fontFamily: Fonts.Bold, marginHorizontal: 10
+                  fontWeight: '700',
+                  fontFamily: Fonts.Bold, marginHorizontal: 10,
                 }}>0 Losses</Text>
               </>
 
             </View>
-            <View style={{ width: '75%', flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+            {/* <View style={{ width: '75%', flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
 
               <>
                 <View style={{ width: 28, height: 2, backgroundColor: '#FDB927' }}></View>
@@ -145,7 +156,7 @@ function EmptyPieChart({ }) {
               </>
 
 
-            </View>
+            </View> */}
 
           </>
 

@@ -1,26 +1,47 @@
 import React from 'react'
-import { View, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { Title } from '../../../components/common/titleLabel';
-import { Colors } from '../../../constants';
+import { Colors, Fonts } from '../../../constants';
 import moment from 'moment';
 import { getFontScaleSync } from 'react-native-device-info';
 
-function TeamStats({ data, onPress }) {
+function TeamStats({ data, onPress, premium }) {
   console.log("RecentGameDatat---", data)
   return (
 
     <TouchableOpacity
-      style={{ marginTop: 30, }}
+      style={{ marginTop: 30, width: "95%", alignSelf: 'center', }}
       onPress={onPress}
     >
 
       {/* <Title data={"Saturday, 1st July 2020"} /> */}
-      <Title data={moment.unix(data.playedDate).format("dddd, Do MMMM YYYY")} />
+      {/* <Title data={moment.unix(data.playedDate).format("dddd, Do MMMM YYYY")} /> */}
+      <View style={{
+        width: "95%", alignSelf: 'center',
+        flexDirection: 'row'
+        // marginTop: wide * 0.09
+      }}>
+        <Text style={{
+          color: Colors.light,
+          fontFamily: Fonts.Bold, fontSize: 16,
+          lineHeight: 22, fontWeight: '700'
+        }}
+        >
+          {moment.unix(data.playedDate).format("dddd, Do MMMM YYYY")}
+        </Text>
+        {premium == true ?
+          <Image
+            style={{ width: 20, height: 20, marginLeft: 10 }}
+            source={require('../../../Images/premiumPurchased.png')}
+          />
+          : <></>
+        }
+      </View>
 
       <View style={{
         flex: 1,
         //  backgroundColor: 'red',
-        width: '94%',
+        width: '100%',
         alignSelf: 'center'
       }}>
         <View style={{
@@ -28,7 +49,7 @@ function TeamStats({ data, onPress }) {
           marginHorizontal: 10,
           paddingVertical: 15,
           paddingHorizontal: 10,
-          backgroundColor: '#23262F',
+          // backgroundColor: '#23262F',
           borderRadius: 10,
           justifyContent: 'space-between',
           flexDirection: 'row',
@@ -45,14 +66,20 @@ function TeamStats({ data, onPress }) {
               }}>
                 <Text style={{
                   alignSelf: 'center',
-                  fontWeight: 'bold',
+                  fontWeight: '400',
                   color: '#ffffff',
-                  fontSize: 15,
+                  fontSize: 16,
+                  lineHeight: 16,
+                  fontFamily: Fonts.Regular
                 }}>{Array.from(data.defenderName)[0].toUpperCase()}</Text>
 
               </View>
               <View style={{ marginLeft: 10, marginTop: 12, color: '#ffffff', }}>
-                <Text style={{ fontSize: 12, fontWeight: "bold", color: Colors.lightshade, }}>
+                <Text style={{
+                  fontSize: 13, lineHeight: 13,
+                  fontFamily: Fonts.SemiBold,
+                  fontWeight: "600", color: Colors.lightBlue,
+                }}>
                   {data.defenderName}
                 </Text>
                 {/* <Text style={{ fontSize: 10, color: '#85ADFF', }}>
@@ -64,9 +91,14 @@ function TeamStats({ data, onPress }) {
 
           <View>
             <View style={{ flex: 1, flexDirection: 'row' }}>
-
-              <View style={{ marginLeft: 20, color: '#ffffff', marginTop: 8 }}>
-                <Text style={{ fontSize: 15, color: '#ffffff', }}>
+              <View style={{ marginLeft: 20, color: '#ffffff', marginTop: 10, }}>
+                <Text style={{
+                  fontSize: 14,
+                  lineHeight: 22,
+                  fontWeight: '400',
+                  fontFamily: Fonts.Regular, color: '#ffffff',
+                  opacity: 0.6
+                }}>
                   VS
                 </Text>
 
@@ -76,9 +108,12 @@ function TeamStats({ data, onPress }) {
 
           <View>
             <View style={{ flex: 3, flexDirection: 'row' }}>
-
               <View style={{ marginLeft: 5, marginTop: 12, color: '#ffffff', marginRight: 10 }}>
-                <Text style={{ fontSize: 12, fontWeight: "bold", color: Colors.lightshade, }}>
+                <Text style={{
+                  fontSize: 13, lineHeight: 13,
+                  fontFamily: Fonts.SemiBold,
+                  fontWeight: "600", color: Colors.lightRed,
+                }}>
                   {data.challengerName}
                 </Text>
                 {/* <Text style={{ fontSize: 10, color: '#FF5E5E', }}>
@@ -94,9 +129,11 @@ function TeamStats({ data, onPress }) {
               }}>
                 <Text style={{
                   alignSelf: 'center',
-                  fontWeight: 'bold',
+                  fontWeight: '400',
                   color: '#ffffff',
-                  fontSize: 15,
+                  fontSize: 16,
+                  lineHeight: 16,
+                  fontFamily: Fonts.Regular
                 }}>{Array.from(data.challengerName)[0].toUpperCase()}</Text>
 
               </View>
@@ -111,9 +148,14 @@ function TeamStats({ data, onPress }) {
               width: Dimensions.get("screen").width * 0.15,
               marginHorizontal: Dimensions.get("screen").width * 0.015
             }}>
-              <Text style={{ color: '#ffffff', }}>Team</Text>
+              <Text style={{
+                fontWeight: '500',
+                color: Colors.light,
+                fontSize: 12,
+                lineHeight: 14,
+                fontFamily: Fonts.Regular,
+              }}>Team</Text>
             </View>
-
             <ScrollView scrollEnabled={true} horizontal={true} showsHorizontalScrollIndicator={false}>
 
               {Object.keys(data?.defenderQuarterInfo).map((key) => {
@@ -122,7 +164,13 @@ function TeamStats({ data, onPress }) {
                     width: Dimensions.get("screen").width * 0.12,
                     marginHorizontal: Dimensions.get("screen").width * 0.015,
                   }}>
-                    <Text style={{ color: "#ffffff" }}>{key}</Text>
+                    <Text style={{
+                      fontWeight: '500',
+                      color: Colors.light,
+                      fontSize: 12,
+                      lineHeight: 14,
+                      fontFamily: Fonts.Medium,
+                    }}>{key}</Text>
                   </View>
                 )
               })}
@@ -137,7 +185,12 @@ function TeamStats({ data, onPress }) {
               width: Dimensions.get("screen").width * 0.15,
               marginHorizontal: Dimensions.get("screen").width * 0.015
             }}>
-              <Text style={{ color: '#85ADFF', fontWeight: "bold" }}>{data.defenderName}</Text>
+              <Text style={{
+                color: '#85ADFF', fontWeight: '600',
+                fontSize: 12,
+                lineHeight: 14,
+                fontFamily: Fonts.Regular,
+              }}>{data.defenderName}</Text>
             </View>
 
             <ScrollView scrollEnabled={true} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -147,7 +200,12 @@ function TeamStats({ data, onPress }) {
                     width: Dimensions.get("screen").width * 0.12,
                     marginHorizontal: Dimensions.get("screen").width * 0.015,
                   }}>
-                    <Text style={{ color: "#85ADFF", fontWeight: "bold" }}>{data?.defenderQuarterInfo[key]} </Text>
+                    <Text style={{
+                      color: "#85ADFF", fontWeight: '600',
+                      fontSize: 12,
+                      lineHeight: 14,
+                      fontFamily: Fonts.SemiBold,
+                    }}>{data?.defenderQuarterInfo[key]} </Text>
                   </View>
                 )
               })}
@@ -165,7 +223,13 @@ function TeamStats({ data, onPress }) {
               width: Dimensions.get("screen").width * 0.15,
               marginHorizontal: Dimensions.get("screen").width * 0.015
             }}>
-              <Text style={{ color: '#ffffff', }}>{data?.challengerName}</Text>
+              <Text style={{
+                color: '#ffffff',
+                fontWeight: '600',
+                fontSize: 12,
+                lineHeight: 14,
+                fontFamily: Fonts.Regular,
+              }}>{data?.challengerName}</Text>
             </View>
 
 
@@ -178,7 +242,12 @@ function TeamStats({ data, onPress }) {
                     width: Dimensions.get("screen").width * 0.12,
                     marginHorizontal: Dimensions.get("screen").width * 0.015,
                   }}>
-                    <Text style={{ color: "#ffffff", fontWeight: "bold" }}>{data?.challengerQuarterInfo[key]} </Text>
+                    <Text style={{
+                      color: "#ffffff", fontWeight: '600',
+                      fontSize: 12,
+                      lineHeight: 14,
+                      fontFamily: Fonts.SemiBold,
+                    }}>{data?.challengerQuarterInfo[key]} </Text>
                   </View>
                 )
               })}

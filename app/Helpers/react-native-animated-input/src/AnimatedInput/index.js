@@ -157,6 +157,7 @@ const AnimatedInput = ({
                 keyboardType={keyboardType}
                 showSoftInputOnFocus={showSoftInputOnFocus}
                 maxLength={maxLength}
+
               />
             </View>
           )}

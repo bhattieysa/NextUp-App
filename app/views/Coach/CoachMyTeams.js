@@ -3225,9 +3225,9 @@ class MyTeams extends Component {
                               {/* Old code */}
                               {/* <StatPlanCard bannerInfo={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.bannerInfo} premium={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.premiumPurchased} /> */}
                               {coachTeamStats != '' && coachTeamStats != undefined ?
-                                <StatPlanCard 
-                                bannerInfo={coachTeamStats?.bannerInfo} 
-                                premium={coachTeamStats?.premiumPurchased} 
+                                <StatPlanCard
+                                  bannerInfo={coachTeamStats?.bannerInfo}
+                                  premium={coachTeamStats?.premiumPurchased}
                                 />
                                 : <></>
                               }

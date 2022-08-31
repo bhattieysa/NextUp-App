@@ -1,6 +1,6 @@
 export const Colors = {
   dark: '#000',
-  light: '#fff',
+  light: '#FFFFFF',
   effect: '#f8f9fb',
   base: '#181A20',
   overlay: 'rgba(0,0,0,0.3)',
@@ -61,5 +61,8 @@ export const Colors = {
   txtFieldPlaceHolder: '#75777D',
   radioBtnBorder: '#373C47',
   photIdRactangle: '#70768A',
+  playerCategoryBg: '#22252E',
+  srchPlaceHolderColor: ' #75777D',
+  noDataLabelColor: '#A3A6AF',
 
 };

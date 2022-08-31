@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View, TouchableOpacity, Text, SafeAreaView, Image, KeyboardAvoidingView,
-  Alert, Platform,
+  Alert, Platform, Share,
 } from 'react-native';
 import { Layout, Colors, Fonts, CommonStyles } from '../../constants';
 
@@ -90,6 +90,32 @@ class InvitePlayer extends Component {
     })
   }
 
+  onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native https://reactnative.dev/',
+
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+          console.log("Shared with activity....!", result)
+
+        } else {
+          // shared
+          console.log("Shared ....!", result)
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+        console.log("Share action cancel....!", result)
+      }
+    } catch (error) {
+      console.log("Share action error....!")
+      alert(error.message);
+    }
+  };
+
 
 
 
@@ -110,19 +136,22 @@ class InvitePlayer extends Component {
         <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
           <AppLoader visible={this.state.loading} />
           <KeyBoardDismissHandler>
-            <View style={[CommonStyles.headerBottomLine]}>
+            <View style={{ width: '90%', }}>
               <ScreenHeader
                 title={'Invite Player'}
                 backButtonAction={() => Navigation.back()}
               />
             </View>
-            <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
-
-              <View>
+            <KeyboardAvoidingView
+              keyboardVerticalOffset={45}
+              style={{ flex: 1, }}
+              behavior={Platform.OS === 'ios' ? "padding" : null}
+            >
+              <View style={{ width: '88%', alignSelf: 'center' }}>
                 <View style={{
                   // backgroundColor: 'green',
-                  marginHorizontal: 35,
-                  marginTop: 40,
+                  // marginHorizontal: 35,
+                  marginTop: wide * 0.1,
                   marginBottom: wide * 0.03,
                 }}>
                   <AnimatedInput
@@ -134,9 +163,10 @@ class InvitePlayer extends Component {
                     styleInput={{
                       fontFamily: Fonts.Bold,
                       color: Colors.light,
-                      fontSize: 16, lineHeight: 18
+                      fontSize: 16, lineHeight: 18,
+                      fontWeight: '600'
                     }}
-                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder }}
                     styleBodyContent={{
                       borderBottomWidth: 1.5,
                       borderBottomColor: Colors.borderColor,
@@ -148,12 +178,12 @@ class InvitePlayer extends Component {
 
                 <View style={{
                   // backgroundColor: 'green',
-                  marginHorizontal: 35,
-                  marginTop: 20,
+                  // marginHorizontal: 35,
+                  marginTop: wide * 0.08,
                   marginBottom: wide * 0.03,
                 }}>
                   <AnimatedInput
-                    placeholder="EMAIL"
+                    placeholder="EMAIL ID"
                     onChangeText={(e) => this.setState({ email: e }, () => {
                       this.handleBtnEnable();
                     })}
@@ -161,9 +191,10 @@ class InvitePlayer extends Component {
                     styleInput={{
                       fontFamily: Fonts.Bold,
                       color: Colors.light,
-                      fontSize: 16, lineHeight: 18
+                      fontSize: 16, lineHeight: 18,
+                      fontWeight: '600'
                     }}
-                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder, }}
                     styleBodyContent={{
                       borderBottomWidth: 1.5,
                       borderBottomColor: Colors.borderColor,
@@ -175,12 +206,12 @@ class InvitePlayer extends Component {
 
                 <View style={{
                   // backgroundColor: 'green',
-                  marginHorizontal: 35,
-                  marginTop: 20,
+                  // marginHorizontal: 35,
+                  marginTop: wide * 0.1,
                   marginBottom: wide * 0.03,
                 }}>
                   <AnimatedInput
-                    placeholder="CONTACT NUMBER"
+                    placeholder="PHONE NUMBER"
                     onChangeText={(e) => this.setState({ contactNumber: e }, () => {
                       this.handleBtnEnable();
                     })}
@@ -188,9 +219,14 @@ class InvitePlayer extends Component {
                     styleInput={{
                       fontFamily: Fonts.Bold,
                       color: Colors.light,
-                      fontSize: 16, lineHeight: 18
+                      fontSize: 16, lineHeight: 18,
+                      fontWeight: '600'
                     }}
-                    styleLabel={{ fontFamily: Fonts.Bold, color: Colors.borderColor }}
+                    styleLabel={{
+                      fontFamily: Fonts.Bold,
+
+                      color: Colors.txtFieldPlaceHolder
+                    }}
                     styleBodyContent={{
                       borderBottomWidth: 1.5,
                       borderBottomColor: Colors.borderColor,
@@ -216,7 +252,8 @@ class InvitePlayer extends Component {
                   marginTop: 20,
                 }} onPress={() => {
                   if (isbtnEnable) {
-                    this.actionInvite()
+                    this.onShare()
+                    // this.actionInvite()
                   }
                 }}>
                 <Text style={{

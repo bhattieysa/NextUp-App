@@ -57,6 +57,7 @@ class CoachAddTeam extends Component {
       selected_coachingType: '',
       ageGroup: '',
       isHighSchool: true,
+      textFieldTopMargin: wide * 0.1,
     };
   }
   componentDidMount() {
@@ -191,24 +192,18 @@ class CoachAddTeam extends Component {
     debugger
     this.setState({ loading: true }, () => {
       getObject('UserId').then((obj) => {
-
-        console.log("res0 ", obj);
-
         this.props.dispatch(uploadPhoto(avatar, obj, 'team', 'TEAM_LOGO', (res, uploadedUrl) => {
           debugger
-
-          console.log("res1 ", res);
-
           if (res) {
             let coaching_typ = '';
-            if (this.state.isHighSchool == false) {
+            if (this.state.isHighSchool == true) {
               coaching_typ = coachingType
             } else {
               coaching_typ = 'TRAVEL_TEAM'
             }
             debugger
             console.log("creating new team");
-            this.props.dispatch(createNewTeam({
+            let params = {
               "name": teamName,
               "coachId": obj,
               "teamLogo": uploadedUrl,
@@ -217,14 +212,15 @@ class CoachAddTeam extends Component {
               "ownerId": obj,
               "typeOfTeam": "League",
               "coachingType": {
-                "typeOfCoaching": coachingType,
+                "typeOfCoaching": coaching_typ,
                 "schoolName": coachTeam,
                 "ageGroup": ageGroup,
                 "state": selected_state,
                 "city": city
               }
-            }, (res) => {
-              console.log("res2 ", res);
+            }
+            this.props.dispatch(createNewTeam(params, (res) => {
+              // console.log("res2 ", res);
               if (res) {
                 debugger
                 this.setState({ loading: false }, () => {
@@ -232,16 +228,6 @@ class CoachAddTeam extends Component {
                     Navigation.back();
                   }, 200);
                 })
-
-                // Alert.alert(
-                //     '',
-                //     'Team added successfully',
-                //     [
-                //         {
-                //             text: 'OK', onPress: () => this.setState({ loading: false }, Navigation.back())
-                //         },
-                //     ],
-                // )
               }
             }))
           }
@@ -346,7 +332,7 @@ class CoachAddTeam extends Component {
   handleBtnEnable = () => {
     const { avatar, teamName, isHighSchool, coachTeam, coachingType, ageGroup, selected_state, city } = this.state
     if (avatar.length !== 0 && teamName.length !== 0) {
-      if (isHighSchool == true) {
+      if (isHighSchool == false) {
         if (coachTeam !== '' && selected_state != '' && city != '' && ageGroup != '') {
           this.setState({ isbtnEnable: true })
         } else {
@@ -425,13 +411,13 @@ class CoachAddTeam extends Component {
       selected_state,
       city,
       openCityModal,
-      openStateModal } = this.state;
+      openStateModal, textFieldTopMargin } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: Colors.base, }}>
         <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
           <AppLoader visible={this.state.loading} />
-          <KeyBoardDismissHandler st>
-            <View style={[CommonStyles.headerBottomLine]}>
+          <KeyBoardDismissHandler >
+            <View>
               <ScreenHeader
                 title={'Add New Team'}
                 backButtonAction={() => Navigation.back()}
@@ -440,7 +426,6 @@ class CoachAddTeam extends Component {
             <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }}
               behavior={Platform.OS === 'ios' ? "padding" : null}>
               <View>
-
                 <View style={{
                   width: '90%',
                   alignSelf: 'center',
@@ -455,8 +440,8 @@ class CoachAddTeam extends Component {
                       borderRadius: wide * 0.25 / 2,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      borderColor: Colors.light,
-                      borderWidth: 2
+                      borderColor: avatar == '' ? Colors.newGrayFontColor : null,
+                      borderWidth: avatar == '' ? 1.5 : 0,
                     }}
                     onPress={() => this.pickSingle(true, false, 'ava')}
                   >
@@ -491,10 +476,8 @@ class CoachAddTeam extends Component {
                 <View style={{
                   width: '90%',
                   alignSelf: 'center',
-                  marginTop: wide * 0.09,
+                  marginTop: wide * 0.095,
                   justifyContent: 'center',
-                  // backgroundColor: 'red'
-
 
                 }}>
 
@@ -515,7 +498,7 @@ class CoachAddTeam extends Component {
                       onPress={() => this.setState({
                         isHighSchool: true, coachTeam: '', coachingType: '',
                         selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
-                      })}
+                      }, () => this.handleBtnEnable())}
                     >
                       <RadioButton
                         containerStyle={{
@@ -536,7 +519,7 @@ class CoachAddTeam extends Component {
                         onPress={() => this.setState({
                           isHighSchool: true, coachTeam: '', coachingType: '',
                           selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
-                        })}
+                        }, () => this.handleBtnEnable())}
                       />
                       <Text style={{
                         color: isHighSchool == true ? Colors.light : Colors.txtFieldPlaceHolder, alignSelf: 'center',
@@ -556,7 +539,7 @@ class CoachAddTeam extends Component {
                       onPress={() => this.setState({
                         isHighSchool: false, coachTeam: '', coachingType: '',
                         selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
-                      })}
+                      }, () => this.handleBtnEnable())}
                     >
 
                       <RadioButton
@@ -578,7 +561,7 @@ class CoachAddTeam extends Component {
                         onPress={() => this.setState({
                           isHighSchool: false, coachTeam: '', coachingType: '',
                           selected_coachingType: '', selected_state: '', city: '', ageGroup: ''
-                        })}
+                        }, () => this.handleBtnEnable())}
 
                       />
                       <Text style={{
@@ -719,35 +702,38 @@ class CoachAddTeam extends Component {
                     alignSelf: 'center',
                     // alignItems: 'flex-start'
                   }}>
+                    <View style={{ marginTop: wide * 0.03 }}>
+                      <AnimatedInput
+                        placeholder="NAME"
+                        onChangeText={(e) => this.setState({ coachTeam: e, teamName: e }, () => {
+                          this.handleBtnEnable()
+                        })}
 
-                    <AnimatedInput
-                      placeholder="TEAM NAME"
-                      onChangeText={(e) => this.setState({ coachTeam: e, teamName: e }, () => {
-                        this.handleBtnEnable()
-                      })}
-                      value={coachTeam}
-                      styleInput={{
-                        fontFamily: Fonts.Bold,
-                        color: Colors.light,
-                        fontSize: 16, lineHeight: 18
-                      }}
-                      styleLabel={{
-                        fontFamily: Fonts.Bold, color: Colors.newGrayFontColor,
-                        fontSize: 12,
-                      }}
-                      styleBodyContent={{
-                        borderBottomWidth: 1.5,
-                        borderBottomColor: Colors.borderColor,
-                        width: wide * 0.8,
-                        marginTop: wide * 0.1,
-                      }}
-                    />
+                        value={coachTeam}
+                        styleInput={{
+                          fontFamily: Fonts.Bold,
+                          color: Colors.light,
+                          fontSize: 16, lineHeight: 18,
+
+                        }}
+                        styleLabel={{
+                          fontFamily: Fonts.Bold, color: Colors.txtFieldPlaceHolder,
+                          fontSize: 12,
+                        }}
+                        styleBodyContent={{
+                          borderBottomWidth: 1.5,
+                          borderBottomColor: Colors.borderColor,
+                          width: wide * 0.8,
+
+                        }}
+                      />
+                    </View>
 
                     <View style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      marginTop: wide * 0.08,
+                      marginTop: wide * 0.07,
                       width: '100%',
                     }}>
                       <TouchableOpacity onPress={() => this.setState({ openStateModal: true })}

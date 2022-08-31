@@ -1730,8 +1730,6 @@ export function createNewTeam(obj, cb) {
       .then((response) => {
         debugger
         if (response.status == 200 && response.data?.data !== null) {
-          // let data = response.data.data
-
           dispatch(myStandingSuccess()), cb(true);
         } else {
           cb(false, response.data.message);
