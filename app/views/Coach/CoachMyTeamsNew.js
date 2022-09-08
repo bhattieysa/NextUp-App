@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View, TouchableOpacity, Text, SafeAreaView, Image, key, KeyboardAvoidingView, FlatList,
-  StyleSheet, Alert, Platform, Modal, Touchable, ImageBackground, Dimensions
+  StyleSheet, Alert, Platform, Modal, Touchable, ImageBackground, Dimensions,
 } from 'react-native';
 
 // import { TouchableOpacity as TouchableOp } from 'react-native-gesture-handler';
@@ -70,6 +70,8 @@ let wide = Layout.width;
 let high = Layout.height;
 let isSelectShow = false;
 
+let playerStatData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
 class MyTeams extends Component {
   static navigationOptions = { header: null };
 
@@ -88,7 +90,7 @@ class MyTeams extends Component {
       tabs: [{ id: 1, tab_nm: 'Players' }, { id: 2, tab_nm: 'Games' },
       { id: 3, tab_nm: 'Stats' }, { id: 4, tab_nm: 'Roles' }, { id: 5, tab_nm: 'Line Up' },
       { id: 6, tab_nm: 'Schedule' }, { id: 7, tab_nm: 'Challenges' }],
-      selectedTab: "Players",
+      selectedTab: "Schedule",
       selectedTabIndex: 0,
       selectedPlayer: [],
       selectedPlayerIndex: [],
@@ -125,6 +127,7 @@ class MyTeams extends Component {
       showRoleEdit: false,
       coachTeamStats: null,
       isGamePremiumCardneedtoShow: true,
+      lineUpData: null
 
 
     };
@@ -773,14 +776,14 @@ class MyTeams extends Component {
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: wide * 0.15 / 2,
-          borderWidth: item.teamLogoUrl == null ? 1.5 : 0,
-          borderColor: item.teamLogoUrl == null ? Colors.newGrayFontColor : null,
+          borderWidth: item.teamLogoUrl == null ? 1.5 : this.state.selectedIndex == index ? 1.5 : 0,
+          borderColor: item.teamLogoUrl == null ? Colors.newGrayFontColor : this.state.selectedIndex == index ? Colors.light : null,
 
         }}>
 
           <FastImage
             style={{
-              width: '95%', height: '95%',
+              width: '92%', height: '92%',
               borderRadius: wide * 0.14 / 2,
               // opacity: this.state.selectedIndex == index ? 1 : 0.4,
             }}
@@ -1023,25 +1026,30 @@ class MyTeams extends Component {
   };
 
   _renderUserRole = ({ item, index }) => {
-
     return (
-      <View style={{ marginBottom: wide * 0.03 }}>
+      <View style={{
+        marginBottom: wide * 0.03,
+        width: '94%',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: wide * 0.04
+      }}>
+        <View style={{
+          flexDirection: 'row', alignItems: 'center',
 
-
-
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-
+        }}>
           <View style={{
-            borderWidth: 3,
-            borderColor: Colors.borderColor,
-            width: wide * 0.2, height: wide * 0.2,
-            borderRadius: (wide * 0.2) / 2, marginLeft: wide * 0.05, marginTop: 15,
+            borderWidth: item.profilePictureUrl == null ? 1.5 : 0,
+            borderColor: item.profilePictureUrl == null ? Colors.newGrayFontColor : null,
+            width: wide * 0.15, height: wide * 0.15,
+            borderRadius: (wide * 0.2) / 2,
             justifyContent: 'center', alignItems: 'center',
 
           }} onPress={() => console.log("navigate player 1")}>
             <FastImage style={{
               width: '96%', height: '96%',
-              borderRadius: (wide * 0.2) / 2,
+              borderRadius: (wide * 0.15) / 2,
               alignSelf: 'center'
             }}
               // resizeMode={'contain'}
@@ -1050,38 +1058,40 @@ class MyTeams extends Component {
 
           <View style={{
             marginHorizontal: wide * 0.04,
-            flex: 1, marginTop: 0,
-          }} onPress={() => console.log("navigate player")}>
-            {/* <View > */}
+            flex: 1,
+          }}
+          >
             <View style={{
               flexDirection: 'column',
               width: '90%'
             }}>
+              {item.name != null ?
+                <Text style={{
+                  color: Colors.light, fontSize: 16,
+                  lineHeight: 22, fontFamily: Fonts.SemiBold,
+                  fontWeight: '600'
+                }}>{item.name}</Text>
+                :
+                <></>
+              }
 
               <Text style={{
-                color: Colors.light, fontSize: 20,
-                lineHeight: 26, fontFamily: Fonts.Bold, marginTop: 5,
-              }}>{item.name}</Text>
-
-
-              <Text style={{
-                color: Colors.lightshade,
-                fontSize: 14,
-                fontFamily: Fonts.Medium,
-                fontStyle: "italic",
+                color: Colors.light,
+                fontSize: 12,
+                lineHeight: 16,
+                fontFamily: Fonts.Regular,
                 marginBottom: 2,
-                fontWeight: "bold",
+                fontWeight: "400",
               }}>{item.email}</Text>
             </View>
-            {/* </View> */}
           </View>
 
           <TouchableOpacity onPress={() => this.showRoleMenuModal(item.coachId)}>
             <Image
               source={require("../../Images/ellipses-v.png")}
               style={{
-                marginTop: 10,
-                marginRight: 20
+                // marginTop: 10,
+                marginRight: wide * 0.01
               }}
 
               resizeMode={'contain'}
@@ -1675,6 +1685,384 @@ class MyTeams extends Component {
     )
   }
 
+  _renderPlayerStat = ({ item, index }) => {
+    var isEnd = false;
+    if (index == (playerStatData.length - 1)) {
+      isEnd = true;
+    }
+    debugger
+
+    return (
+      <View style={{
+        width: '100%', flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: index == 0 ? Colors.playerStatRowSecondClr : index == 1 ? Colors.playerStatRowFirstClr :
+          (index % 2) == 0 ? Colors.playerStatRowSecondClr : Colors.playerStatRowFirstClr,
+        height: wide * 0.075,
+        borderBottomLeftRadius: isEnd == true ? wide * 0.025 : 0,
+        borderBottomRightRadius: isEnd == true ? wide * 0.025 : 0,
+      }}>
+        <View style={{
+          width: '30%', alignSelf: 'center',
+
+        }}>
+          <Text style={{
+            color: Colors.light,
+            fontFamily: Fonts.Regular, fontSize: 12,
+            lineHeight: 16,
+            fontWeight: '400',
+            marginLeft: wide * 0.03
+          }}>D.Green</Text>
+        </View>
+
+        <View style={{
+          width: '70%',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          alignSelf: "center",
+
+        }}>
+          <Text style={{
+            color: Colors.light,
+            fontFamily: Fonts.SemiBold,
+            fontSize: 12,
+            lineHeight: 14,
+            fontWeight: '600',
+            width: '15%',
+
+          }}>42</Text>
+          <Text style={{
+            color: Colors.light,
+            fontFamily: Fonts.SemiBold, fontSize: 12,
+            lineHeight: 14,
+            fontWeight: '600',
+            width: '15%',
+
+          }}>5-10</Text>
+          <Text style={{
+            color: Colors.light,
+            fontFamily: Fonts.SemiBold, fontSize: 12,
+            lineHeight: 14,
+            fontWeight: '600',
+            width: '15%',
+
+          }}>2-5</Text>
+          <Text style={{
+            color: Colors.light,
+            fontFamily: Fonts.SemiBold, fontSize: 12,
+            lineHeight: 14,
+            fontWeight: '600',
+            width: '15%',
+
+          }}>8</Text>
+          <Text style={{
+            color: Colors.light,
+            fontFamily: Fonts.SemiBold, fontSize: 12,
+            lineHeight: 14,
+            fontWeight: '600',
+            width: '15%',
+
+          }}>1</Text>
+          <Text style={{
+            color: Colors.light,
+            fontFamily: Fonts.SemiBold, fontSize: 12,
+            lineHeight: 14,
+            fontWeight: '600',
+            width: '15%',
+
+          }}>12</Text>
+        </View>
+      </View>
+
+    )
+  }
+
+  renderCoachLineUp = (item, index) => {
+    return (
+      <TouchableOpacity style={{
+        flex: 1, backgroundColor: Colors.playerCategoryBg,
+        borderRadius: wide * 0.03, marginTop: wide * 0.035,
+      }}
+        onPress={() => Navigation.navigate('ViewCoachLineUp')}
+        activeOpacity={1}
+      >
+        <View style={{
+          width: '90%', flexDirection: 'row',
+          // alignItems: 'center',
+          justifyContent: 'space-between',
+          alignSelf: 'center',
+          marginTop: wide * 0.05,
+          marginBottom: wide * 0.05
+        }}>
+          <View>
+            <Text style={{
+              color: Colors.light,
+              fontFamily: Fonts.SemiBold, fontSize: 18,
+              lineHeight: 18,
+              fontWeight: '600'
+            }}>ABC School</Text>
+            <View style={{
+              flexDirection: 'row',
+              marginTop: wide * 0.025,
+            }}>
+              {
+                [1, 2, 3, 4, 5].map((obj, ind) => {
+                  return (
+                    <View style={{
+                      width: wide * 0.08, height: wide * 0.08,
+                      borderRadius: wide * 0.08 / 2,
+                      position: 'absolute',
+                      marginHorizontal: ind * (wide * 0.058),
+                    }}>
+                      <FastImage
+                        source={require('../../Images/male_onboard_Icon.png')}
+                        style={{
+                          width: '95%', height: '95%',
+                          borderRadius: wide * 0.08 / 2
+                        }}
+                        resizeMode={'cover'}
+                      />
+                      {ind == 4 ?
+                        <View style={{
+                          position: "absolute", alignSelf: 'center',
+                          width: '95%', height: '95%', backgroundColor: Colors.overlay,
+                          borderRadius: wide * 0.08 / 2,
+                          alignItems: 'center',
+                          justifyContent: 'center'
+
+                        }}>
+                          <Text style={{
+                            color: Colors.light,
+                            fontFamily: Fonts.SemiBold, fontSize: 14,
+                            lineHeight: 14,
+                            fontWeight: '600'
+                          }}>
+                            +5
+                          </Text>
+                        </View>
+                        : <></>}
+
+                    </View>
+                  )
+                })
+              }
+            </View>
+          </View>
+
+          <View>
+            <View style={{
+              width: wide * 0.07, height: wide * 0.07,
+              flexDirection: 'row',
+              alignSelf: 'flex-end'
+            }}>
+              <Image
+                source={require('../../Images/lineUpPremiumCheck.png')}
+                style={{ width: '95%', height: '95%' }}
+                resizeMode={'cover'}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => Navigation.navigate('ViewCoachLineUp')}
+              activeOpacity={1}
+              style={{ marginTop: wide * 0.04 }}
+            >
+              <Text style={{
+                color: Colors.btnBg,
+                fontFamily: Fonts.SemiBold, fontSize: 16, lineHeight: 22,
+                fontWeight: '700'
+              }}>View</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+      </TouchableOpacity>
+    )
+  }
+
+  renderAILineUp = (item, index) => {
+    return (
+      <TouchableOpacity style={{
+        flex: 1, backgroundColor: Colors.btnBg,
+        borderRadius: wide * 0.03, marginTop: wide * 0.035,
+
+      }}>
+        <View style={{
+          width: '90%', flexDirection: 'row',
+          // alignItems: 'center',
+          justifyContent: 'space-between',
+          alignSelf: 'center',
+          marginTop: wide * 0.05,
+          marginBottom: wide * 0.05
+        }}>
+          <View>
+            <Text style={{
+              color: Colors.light,
+              fontFamily: Fonts.SemiBold, fontSize: 18,
+              lineHeight: 18,
+              fontWeight: '600'
+            }}>ABC School</Text>
+            <View style={{
+              flexDirection: 'row',
+              marginTop: wide * 0.025,
+            }}>
+              {
+                [1, 2, 3, 4, 5].map((obj, ind) => {
+                  return (
+                    <View style={{
+                      width: wide * 0.08, height: wide * 0.08,
+                      borderRadius: wide * 0.08 / 2,
+                      position: 'absolute',
+                      marginHorizontal: ind * (wide * 0.058),
+                    }}>
+                      <FastImage
+                        source={require('../../Images/male_onboard_Icon.png')}
+                        style={{
+                          width: '95%', height: '95%',
+                          borderRadius: wide * 0.08 / 2
+                        }}
+                        resizeMode={'cover'}
+                      />
+                      {ind == 4 ?
+                        <View style={{
+                          position: "absolute", alignSelf: 'center',
+                          width: '95%', height: '95%', backgroundColor: Colors.overlay,
+                          borderRadius: wide * 0.08 / 2,
+                          alignItems: 'center',
+                          justifyContent: 'center'
+
+                        }}>
+                          <Text style={{
+                            color: Colors.light,
+                            fontFamily: Fonts.SemiBold, fontSize: 14,
+                            lineHeight: 14,
+                            fontWeight: '600'
+                          }}>
+                            +5
+                          </Text>
+                        </View>
+                        : <></>}
+
+                    </View>
+                  )
+                })
+              }
+            </View>
+          </View>
+
+          <View>
+            <View style={{
+              width: wide * 0.07, height: wide * 0.07,
+              flexDirection: 'row',
+              alignSelf: 'flex-end'
+            }}>
+              <Image
+                source={require('../../Images/crown.png')}
+                style={{ width: '95%', height: '95%' }}
+                resizeMode={'cover'}
+              />
+            </View>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{ marginTop: wide * 0.04 }}
+            >
+              <Text style={{
+                color: Colors.light,
+                fontFamily: Fonts.SemiBold, fontSize: 16, lineHeight: 22,
+                fontWeight: '700'
+              }}>View</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+      </TouchableOpacity>
+    )
+  }
+
+  _renderUpcommingGame = (item, index) => {
+    return (
+      <>
+        <TouchableOpacity style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: wide * 0.05,
+          borderRadius: 10,
+          width: wide * 0.64,
+          height: wide * 0.3
+        }}
+          activeOpacity={1}
+        // onPress={() => Navigation.navigate('GamesRecentTab', { 'gameId': item.id })}
+        >
+          <Image
+            source={require('../../Images/upcomming_gameCard.png')}
+            style={{
+              width: "100%",
+              height: '100%',
+
+              borderRadius: 10,
+              position: 'absolute'
+            }}
+          />
+
+          <View style={{
+            marginTop: wide * 0.14,
+            flexDirection: 'row', alignItems: 'center',
+            // backgroundColor: "green",
+            width: '80%',
+            // justifyContent: 'space-between',
+
+          }}>
+            {/* edit by keshav */}
+            <View style={{
+              width: wide * 0.18, height: wide * 0.18,
+              backgroundColor: Colors.light,
+              borderRadius: wide * 0.18 / 2,
+              justifyContent: 'center', alignItems: 'center',
+              borderWidth: 6,
+              borderColor: '#565B68',
+              marginLeft: wide * 0.006,
+
+            }}>
+              <FastImage style={{ width: wide * 0.13, height: wide * 0.13, }}
+                resizeMode={'contain'}
+                source={require('../../Images/dummy1.png')} />
+
+            </View>
+
+            <View style={{
+              width: wide * 0.18, height: wide * 0.18,
+              backgroundColor: Colors.light, borderRadius: wide * 0.18 / 2,
+              justifyContent: 'center', alignItems: 'center',
+              marginHorizontal: wide * 0.139,
+              borderWidth: 6,
+              borderColor: '#565B68'
+            }}>
+              <FastImage style={{ width: wide * 0.13, height: wide * 0.13, }}
+                resizeMode={'contain'}
+                source={require('../../Images/dummy1.png')}
+              />
+            </View>
+
+          </View>
+
+          <Text style={{
+            color: Colors.light, fontSize: 12,
+            fontFamily: Fonts.Medium, fontWeight: '500',
+            lineHeight: 16,
+            marginBottom: wide * 0.08,
+
+
+          }}>
+            12:39
+            {/* {moment((new Date(item.scheduledAt))).format('DD')}  {moment((new Date(item.scheduledAt))).format('MMM')} */}
+          </Text>
+        </TouchableOpacity>
+      </>
+    );
+  }
+
   render() {
 
     const { coachTeam, coachTeamPlayer, teamRoles } = this.props.Home
@@ -1687,12 +2075,7 @@ class MyTeams extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: Colors.base }}>
         <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 20 : 0, backgroundColor: Colors.base }}>
-
-
-
-
-          <AppLoader visible={loading} />
-
+          {/* <AppLoader visible={loading} /> */}
           {isAddTeam == true ?
             <View style={{
               flex: 1, alignItems: 'center',
@@ -1716,7 +2099,6 @@ class MyTeams extends Component {
                   fontFamily: Fonts.Bold,
                 }}>Create Your Team</Text>
               </TouchableOpacity>
-
             </View>
             :
             <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }} behavior={Platform.OS === 'ios' ? "padding" : null}>
@@ -1741,15 +2123,12 @@ class MyTeams extends Component {
                   }
                 </View>
 
-
-
                 <View style={{
                   flexDirection: 'row',
                   width: '40%',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
                 }}>
-
 
                   <TouchableOpacity
                     style={{
@@ -1778,712 +2157,978 @@ class MyTeams extends Component {
 
               </View>
 
-              <ScrollView contentContainerStyle={{
-                // paddingBottom: 15,
+              {/* <ScrollView contentContainerStyle={{
+                paddingBottom: 15,
               }}
                 onScrollBeginDrag={() => this.setState({ isGamePremiumCardneedtoShow: false })}
+                onScrollEndDrag={() => this.setState({ isGamePremiumCardneedtoShow: true })}
 
                 bounces={false}
-
-              >
-                <View>
-                  <View style={{
-                    marginTop: wide * 0.04,
-                    flexDirection: 'row',
-                    alignSelf: "center",
-                    alignItems: 'center',
-                    width: '90%',
-                  }}>
-                    {this.state.isAddTeam === false && this.state.teamDetailsArr.length > 0 ?
-                      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity style={{
-                          width: wide * 0.15,
-                          height: wide * 0.15,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          borderRadius: wide * 0.15 / 2,
-                          borderWidth: 1.5, borderColor: Colors.btnBg,
-                        }}
-                          onPress={() => Navigation.navigate('CoachAddTeam')}
-                        >
-                          <View style={{
-                            width: wide * 0.07, height: wide * 0.07,
-                            borderRadius: wide * 0.02, borderWidth: 1.5, borderColor: Colors.btnBg,
-                            alignSelf: 'center', alignItems: 'center', justifyContent: 'center'
-                          }}>
-                            <Image
-                              style={{ width: '50%', height: '50%' }}
-                              source={require('../../Images/newAddTeamIcon.png')}
-                              resizeMode={'contain'}
-                            />
-                          </View>
-
-                        </TouchableOpacity >
-                        <Text numberOfLines={1}
-                          style={{
-                            color: Colors.btnBg, fontSize: 14,
-                            lineHeight: 18,
-                            fontFamily: Fonts.SemiBold,
-                            marginTop: wide * 0.015,
-                          }}>Add</Text>
+                scrollEnabled={false}
+              > */}
+              {/* <View> */}
+              <View style={{
+                marginTop: wide * 0.04,
+                flexDirection: 'row',
+                alignSelf: "center",
+                alignItems: 'center',
+                width: '90%',
+              }}>
+                {this.state.isAddTeam === false && this.state.teamDetailsArr.length > 0 ?
+                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity style={{
+                      width: wide * 0.15,
+                      height: wide * 0.15,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: wide * 0.15 / 2,
+                      borderWidth: 1.5, borderColor: Colors.btnBg,
+                    }}
+                      onPress={() => Navigation.navigate('CoachAddTeam')}
+                    >
+                      <View style={{
+                        width: wide * 0.07, height: wide * 0.07,
+                        borderRadius: wide * 0.02, borderWidth: 1.5, borderColor: Colors.btnBg,
+                        alignSelf: 'center', alignItems: 'center', justifyContent: 'center'
+                      }}>
+                        <Image
+                          style={{ width: '50%', height: '50%' }}
+                          source={require('../../Images/newAddTeamIcon.png')}
+                          resizeMode={'contain'}
+                        />
                       </View>
-                      : null
-                    }
-                    <View style={{
-                      width: this.state.teamDetailsArr.length > 3 ? '90%' : null,
-                      marginHorizontal: wide * 0.05,
-                      // backgroundColor: 'green'
-                    }} >
-                      {this.state.teamDetailsArr !== null ?
+
+                    </TouchableOpacity >
+                    <Text numberOfLines={1}
+                      style={{
+                        color: Colors.btnBg, fontSize: 14,
+                        lineHeight: 18,
+                        fontFamily: Fonts.SemiBold,
+                        marginTop: wide * 0.015,
+                      }}>Add</Text>
+                  </View>
+                  : null
+                }
+                <View style={{
+                  width: this.state.teamDetailsArr.length > 3 ? '90%' : null,
+                  marginHorizontal: wide * 0.05,
+                  // backgroundColor: 'green'
+                }} >
+                  {this.state.teamDetailsArr !== null ?
+                    <FlatList
+                      // style={{ overflow: '' }}
+                      data={this.state.teamDetailsArr}
+                      renderItem={(item, index) => this._renderMessageUserCat(item, index)}
+                      showsHorizontalScrollIndicator={false}
+                      horizontal
+                    />
+                    : null
+                  }
+                </View>
+
+              </View>
+
+              {
+                this.state.isAddTeam == false ?
+                  coachTeam.length === 0 ?
+                    <View style={{ flex: 1, backgroundColor: Colors.base }}>
+                    </View>
+                    :
+                    <>
+                      <View style={{
+                        alignItems: 'center',
+                        marginTop: wide * 0.06,
+                        marginBottom: wide * 0.01
+                        // backgroundColor: 'red'
+                      }}>
                         <FlatList
-                          // style={{ overflow: '' }}
-                          data={this.state.teamDetailsArr}
-                          renderItem={(item, index) => this._renderMessageUserCat(item, index)}
+                          // style={{ overflow: 'scroll', }}
+                          // contentContainerStyle={{ flex: 1, justifyContent: 'space-around', }}
+                          data={this.state.tabs}
+                          renderItem={(item, index) => this._renderTabs(item, index)}
                           showsHorizontalScrollIndicator={false}
                           horizontal
                         />
-                        : null
-                      }
-                    </View>
+                      </View>
 
-                  </View>
+                      <ScrollView contentContainerStyle={{
+                        paddingBottom: 15,
+                      }}
+                        onScrollBeginDrag={() => this.setState({ isGamePremiumCardneedtoShow: false })}
+                        onScrollEndDrag={() => this.setState({ isGamePremiumCardneedtoShow: true })}
 
-                  {
-                    this.state.isAddTeam == false ?
-                      coachTeam.length === 0 ?
-                        <View style={{ flex: 1, backgroundColor: Colors.base }}>
-                        </View>
-                        :
-                        <>
-                          <View style={{
-                            alignItems: 'center',
-                            marginTop: wide * 0.06,
-                            marginBottom: wide * 0.01
-                            // backgroundColor: 'red'
-                          }}>
-                            <FlatList
-                              // style={{ overflow: 'scroll', }}
-                              // contentContainerStyle={{ flex: 1, justifyContent: 'space-around', }}
-                              data={this.state.tabs}
-                              renderItem={(item, index) => this._renderTabs(item, index)}
-                              showsHorizontalScrollIndicator={false}
-                              horizontal
-                            />
-                          </View>
+                        bounces={false}
+                      >
 
-                          {this.state.selectedTab === 'Stats' ?
-                            <>
-                              {/* Old code */}
-                              {/* <StatPlanCard bannerInfo={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.bannerInfo} premium={this.props?.Home?.coachTeam?.teamTabInfoDtoList[this.state.selectedIndex]?.premiumPurchased} /> */}
-                              {coachTeamStats != '' && coachTeamStats != undefined ?
-                                <StatPlanCard
-                                  bannerInfo={coachTeamStats?.bannerInfo}
-                                  premium={coachTeamStats?.premiumPurchased}
-                                />
-                                : <></>
-                              }
-                              {this.state.isPlayerStatShow ?
-                                <>
-                                  {this.state.bar1_Data.length > 0 || this.state.bar2_Data.length > 0 ?
-                                    <>
-                                      <View style={{ marginTop: 20 }}>
-                                        <Title data={'Player Stats'} />
-                                      </View>
-                                      {this.state.selectedKpi.length > 0 ?
-                                        <View
-                                          style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginTop: 25,
-                                            width: '75%',
-                                            marginHorizontal: wide * 0.055
+                        {this.state.selectedTab === 'Stats' ?
 
-                                          }}
+                          <View style={{ flex: 1 }}>
+                            <View style={{
+                              marginTop: wide * 0.045,
+                              width: '90%',
+                              alignSelf: 'center',
+                            }}>
+                              <Text style={{
+                                color: Colors.light,
+                                fontFamily: Fonts.SemiBold, fontSize: 22,
+                                lineHeight: 28,
+                                fontWeight: '600'
+                              }}
+                              >
+                                Player stats
+                              </Text>
 
-                                        >
-                                          <TouchableOpacity
-                                            style={{
-                                              height: wide * 0.07, width: wide * 0.15,
-                                              backgroundColor: Colors.statDropColor,
-                                              borderRadius: 5, flexDirection: 'row',
-                                              justifyContent: 'center',
-                                              marginHorizontal: 10,
-
-                                            }}
-                                            onPress={() => this._handleModelShow()}
-                                            activeOpacity={0.2}
-                                          >
-                                            {/* {this.state.defaultKpi !== null && this.state.defaultKpi !== '' ? */}
-                                            {/* this.state.selectedKpi.includes(this.state.defaultKpi) ? */}
-
-                                            {/* <Text style={{ color: Colors.dark, fontFamily: Fonts.Medium, fontSize: 14, alignSelf: 'center' }}>{this.state.defaultKpi}</Text> */}
-                                            {/* : */}
-                                            {/* <Text style={{ color: Colors.dark, fontFamily: Fonts.Medium, fontSize: 14, alignSelf: 'center' }}>{this.state.selectedKpi[0]}</Text> */}
-
-
-                                            {/* : */}
-                                            <Text style={{ color: Colors.dark, fontFamily: Fonts.Medium, fontSize: 14, alignSelf: 'center' }}>{this.state.selectedKpi[0]}</Text>
-                                            {/* } */}
-                                            <Image
-                                              style={{
-                                                width: wide * 0.03, height: wide * 0.02, left: 5, tintColor: Colors.dark, top: 10
-                                              }} source={require('../../Images/dropDownIconNew.png')}
-                                            />
-                                          </TouchableOpacity>
-                                          {this.state.selectedKpi.length > 1 ?
-                                            <TouchableOpacity
-                                              style={{
-                                                height: wide * 0.07, width: wide * 0.15,
-                                                backgroundColor: Colors.statDropColor2,
-                                                borderRadius: 5, flexDirection: 'row',
-                                                justifyContent: 'center',
-                                                marginHorizontal: 10,
-                                                // position: 'absolute'
-                                              }}
-                                              onPress={() => this._handleModelShow()}
-                                            >
-                                              <Text style={{ color: Colors.dark, fontFamily: Fonts.Medium, fontSize: 14, alignSelf: 'center' }}>{this.state.selectedKpi[1]}</Text>
-                                              <Image
-                                                style={{
-                                                  width: wide * 0.03, height: wide * 0.02, left: 5, tintColor: Colors.dark, top: 10
-                                                }} source={require('../../Images/dropDownIconNew.png')}
-                                              />
-                                            </TouchableOpacity>
-                                            : null
-                                          }
-
-                                          {!this.state.selectedKpi.length === 2 ?
-                                            <TouchableOpacity
-                                              style={{ marginHorizontal: 10, }}
-                                              // onPress={() => console.log("bskjbdkajhbdsjklas")}
-                                              onPress={() => this._handleClearStatShort()}
-                                              activeOpacity={1}
-                                            >
-                                              <Text style={{ color: Colors.light, fontFamily: Fonts.Medium, fontSize: 14, }}>Clear Comparison</Text>
-                                            </TouchableOpacity>
-                                            :
-                                            <TouchableOpacity
-                                              style={{ marginHorizontal: 10, }}
-                                              onPress={() => this._handleModelShow()}
-                                              activeOpacity={1}
-                                            >
-
-                                              <Text style={{ color: Colors.light, fontFamily: Fonts.Medium, fontSize: 14, }}>Add to Compare</Text>
-                                            </TouchableOpacity>
-                                          }
-                                        </View>
-                                        : null
-                                      }
-                                    </>
-                                    : <></>
-                                  }
-
-
-                                  {this.state.bar1_Data.length > 0 || this.state.bar2_Data.length > 0 ?
-                                    <View style={{
-                                      // height: wide * 0.8,
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
-                                      marginTop: 20,
-                                      marginHorizontal: 24,
-                                      // backgroundColor: 'green',
-                                      // flex: 1,
-                                      // display: 'flex'
-
-                                    }}>
-                                      <MyTeamTabStats barData1={this.state.bar1_Data} barData2={this.state.bar2_Data}
-                                        selectedKpiLength={this.state.selectedKpi.length}
-                                      />
-
-                                    </View> : null
-                                  }
-
-
-                                  {this.state.gameStatBarData.length > 0 ?
-                                    <View style={{ marginTop: 25, }}>
-                                      <Title data={'Team Stats'} />
-                                      <View style={{
-                                        // height: wide * 0.8,
-                                        // justifyContent: 'center',
-                                        // alignItems: 'center',
-                                        marginTop: 10,
-                                        marginHorizontal: 24,
-                                        // backgroundColor: 'green',
-                                        // flex: 1,
-                                        // display: 'flex'
-
-                                      }}>
-                                        <GameStats barData1={this.state.gameStatBarData} />
-                                      </View>
-                                    </View>
-                                    :
-                                    <View style={{ marginTop: 20, marginBottom: 10 }}>
-                                      <Title data={'Team Stats'} />
-                                      <View style={{
-                                        // height: wide * 0.8,
-                                        // justifyContent: 'center',
-                                        // alignItems: 'center',
-
-                                        marginHorizontal: 24,
-                                        // backgroundColor: 'green',
-                                        // flex: 1,
-                                        // display: 'flex'
-
-                                      }}>
-                                        {/* <EmptyBarChart kpi={coachTeam?.teamTabInfoDtoList[0]?.kpi} /> */}
-                                        <EmptyBarChart kpi={coachTeamStats?.kpi} />
-                                      </View>
-                                    </View>
-                                  }
-
-
-                                </>
-
-                                :
-
-                                <></>
-
-                              }
-
-
-                            </>
-                            : null
-
-                          }
-
-                          {this.state.selectedTab == 'Players' && coachTeamPlayer?.teamPlayersInfoList !== undefined ?
-                            <View style={{ flex: 1, }}>
                               <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                marginTop: wide * 0.045,
-                                width: '90%',
-                                alignSelf: 'center',
+                                marginTop: wide * 0.04, flexDirection: 'row',
+                                alignItems: 'center'
                               }}>
+                                <View style={{
+                                  width: wide * 0.12, height: wide * 0.12, borderRadius: wide * 0.12 / 2,
+                                  justifyContent: 'center', alignItems: "center"
+                                }}>
+                                  <Image
+                                    source={require('../../Images/avatar.png')}
+                                    style={{
+                                      width: wide * 0.1, height: wide * 0.1,
+                                      borderRadius: wide * 0.11 / 2
+                                    }}
+                                    resizeMode={'cover'}
+                                  />
 
-                                <FlatList
-                                  style={{
-                                    flex: 1
-                                  }}
-                                  data={coachTeamPlayer?.teamPlayerInfoWithCategoryList}
-                                  renderItem={(item, index) => this._renderNewTeam(item, index)}
-                                />
+                                </View>
+                                <Text style={{
+                                  color: Colors.light,
+                                  fontFamily: Fonts.SemiBold, fontSize: 14,
+                                  lineHeight: 18,
+                                  fontWeight: '600',
+                                  marginLeft: wide * 0.03
+                                }}
+                                >
+                                  Chicago Bulls
+                                </Text>
                               </View>
-                            </View>
 
-                            : null
-                          }
-
-
-                          {/* Roles tab content*/}
-
-                          {this.state.selectedTab === 'Roles' ?
-                            <View style={{ flex: 1, }}>
-
-                              <RoleMenuModal show={this.state.showRoleMenuModal} hideModal={() => this.hideRoleMenuModal()} id={this.state.role_id} removeCoach={(id) => this.removeCoachFromRole(id)} />
-
-                              <EditAccessRole showModalProps={this.state.showRoleEdit} onHideModalProps={() => this.onHideRoleEdit()} />
-
-                              {teamRoles?.adminRoleList != null && teamRoles?.adminRoleList.length > 0 ?
-
-                                <>
+                              <View style={{ marginTop: wide * 0.06, }}>
+                                <View style={{
+                                  width: '100%', flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  backgroundColor: Colors.playerStatRowFirstClr,
+                                  height: wide * 0.075,
+                                  borderTopLeftRadius: wide * 0.025,
+                                  borderTopRightRadius: wide * 0.025,
+                                }}>
                                   <View style={{
-                                    flexDirection: 'row',
-                                    height: 24,
-                                    marginTop: 15, justifyContent: 'space-between',
-                                    backgroundColor: Colors.myTeamPlayerListLabel,
-                                    alignItems: 'center',
-                                    zIndex: 1
+                                    width: '30%', alignSelf: 'center',
 
                                   }}>
                                     <Text style={{
-                                      color: Colors.light, fontSize: 14, lineHeight: 16,
-                                      fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
-                                      marginTop: 1.5
-                                    }}> {"Admin"}</Text>
-                                    {/* <Text style={{
-                                                          color: Colors.pendingInviteTxtColor, fontSize: 10,
-                                                          fontFamily: Fonts.SemiBoldItalic,
-                                                          lineHeight: 12,
-                                                          paddingTop: 3, paddingRight: 10,
-                                                          paddingBottom: 3, paddingLeft: 3,
-                                                      }} >Pending Invitation</Text> */}
+                                      color: Colors.btnBg,
+                                      fontFamily: Fonts.SemiBold, fontSize: 14,
+                                      lineHeight: 18,
+                                      fontWeight: '600',
+                                      marginLeft: wide * 0.03
+                                    }}>Starters</Text>
                                   </View>
 
-
-                                  <FlatList
-                                    style={{
-                                      marginTop: 10,
-                                      flex: 1
-                                    }}
-                                    data={teamRoles.adminRoleList}
-                                    renderItem={(item, index) => this._renderUserRole(item, index)}
-                                  />
-                                </>
-                                : <></>
-                              }
-
-
-                              {/* For the game support */}
-
-                              {teamRoles?.stackLoggers != null && teamRoles?.stackLoggers.length > 0 ?
-                                <>
                                   <View style={{
-                                    flexDirection: 'row',
-                                    height: 24,
-                                    marginTop: 15, justifyContent: 'space-between',
-                                    backgroundColor: Colors.myTeamPlayerListLabel,
+                                    width: '70%',
                                     alignItems: 'center',
-                                    zIndex: 1
-
+                                    justifyContent: 'space-around',
+                                    flexDirection: 'row',
+                                    alignSelf: "center",
                                   }}>
                                     <Text style={{
-                                      color: Colors.light, fontSize: 14, lineHeight: 16,
-                                      fontFamily: Fonts.Bold, marginHorizontal: wide * 0.04,
-                                      marginTop: 1.5
-                                    }}> {"Game Support"}</Text>
-                                    {/* <Text style={{
-                                                          color: Colors.pendingInviteTxtColor, fontSize: 10,
-                                                          fontFamily: Fonts.SemiBoldItalic,
-                                                          lineHeight: 12,
-                                                          paddingTop: 3, paddingRight: 10,
-                                                          paddingBottom: 3, paddingLeft: 3,
-                                                      }} >Pending Invitation</Text> */}
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Regular, fontSize: 14,
+                                      lineHeight: 18,
+                                      fontWeight: '400',
+                                      width: '15%'
+                                    }}>Min</Text>
+                                    <Text style={{
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Regular, fontSize: 14,
+                                      lineHeight: 18,
+                                      fontWeight: '400',
+                                      width: '15%'
+
+                                    }}>FG</Text>
+                                    <Text style={{
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Regular, fontSize: 14,
+                                      lineHeight: 18,
+                                      fontWeight: '400',
+                                      width: '15%'
+                                    }}>3PT</Text>
+                                    <Text style={{
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Regular, fontSize: 14,
+                                      lineHeight: 18,
+                                      fontWeight: '400',
+                                      width: '15%'
+                                    }}>AST</Text>
+                                    <Text style={{
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Regular, fontSize: 14,
+                                      lineHeight: 18,
+                                      fontWeight: '400',
+                                      width: '15%'
+                                    }}>PF</Text>
+                                    <Text style={{
+                                      color: Colors.light,
+                                      fontFamily: Fonts.Regular, fontSize: 14,
+                                      lineHeight: 18,
+                                      fontWeight: '400',
+                                      width: '15%',
+
+                                    }}>PTS</Text>
                                   </View>
+                                </View>
+                                <FlatList
+                                  keyExtractor={(item, index) => index.toString()}
+                                  style={{ flex: 1 }}
+                                  data={playerStatData}
+                                  renderItem={(item, index) => this._renderPlayerStat(item, index)}
+                                  scrollEnabled={false}
+                                />
 
-
-                                  <FlatList
-                                    style={{
-                                      marginTop: 10,
-                                      // backgroundColor: 'red',
-                                      flex: 1
-                                    }}
-                                    data={teamRoles.stackLoggers}
-                                    renderItem={(item, index) => this._renderUserRole(item, index)}
-                                  />
-                                </>
-                                :
-                                <></>
-                              }
-
-                              {/* End Game Support */}
-
-
+                              </View>
                               <View style={{
-                                // marginHorizontal: 20,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                marginTop: teamRoles?.adminRoleList != null && teamRoles?.adminRoleList.length > 0 ? 20 : wide * 0.6,
-                                justifyContent: 'center',
-                                // backgroundColor: 'red',
+                                width: '90%', alignSelf: 'center',
+                                alignItems: "center",
+                                marginTop: wide * 0.09
                               }}>
-
-                                <TouchableOpacity
-
-                                  style={{
-                                    width: wide * 0.8, height: 48,
-                                    backgroundColor: Colors.btnBg,
-                                    alignSelf: 'center',
-                                    borderRadius: 24,
-                                    opacity: 1.0,
-                                    justifyContent: 'center', marginTop: 20,
-
-                                  }} onPress={() => {
-                                    console.log("Working")
-                                    Navigation.navigate("CoachInviteNew", { ownerId: "1", teamId: coachTeam && coachTeam.teamTabInfoDtoList ? coachTeam.teamTabInfoDtoList[0].teamId : "" })
+                                <TouchableOpacity style={{
+                                  width: '32%',
+                                  height: 25,
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-evenly',
+                                }}
+                                // onPress={() => Navigation.navigate('PlayerMore')}
+                                >
+                                  <TouchableOpacity style={{
+                                    borderBottomColor: Colors.greyTxtColor,
+                                    borderBottomWidth: 1.5,
                                   }}>
-                                  <Text style={{
-                                    alignSelf: 'center', color: Colors.light,
-                                    fontFamily: Fonts.Bold,
-                                  }}>Invite New</Text>
+                                    <Text style={{
+                                      color: Colors.light, fontSize: 14, fontFamily: Fonts.Regular,
+                                      lineHeight: 16, opacity: 0.7,
+
+                                    }}>View More</Text>
+                                  </TouchableOpacity>
+                                  <Image
+                                    style={{
+                                      width: wide * 0.025, height: wide * 0.02,
+                                      marginHorizontal: wide * 0.01, opacity: 0.7
+                                    }} source={require('../../Images/dropDownIconNew.png')} />
                                 </TouchableOpacity>
 
 
                               </View>
 
                             </View>
+                          </View>
+
+                          : null
+                        }
+
+                        {this.state.selectedTab == 'Players' && coachTeamPlayer?.teamPlayersInfoList !== undefined ?
 
 
-                            : null
-                          }
+                          <View style={{ flex: 1, }}>
+                            <View style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              // marginTop: wide * 0.04,
+                              width: '90%',
+                              alignSelf: 'center',
+                            }}>
+                              <FlatList
+                                style={{
+                                  flex: 1
+                                }}
+                                data={coachTeamPlayer?.teamPlayerInfoWithCategoryList}
+                                renderItem={(item, index) => this._renderNewTeam(item, index)}
+                                scrollEnabled={false}
+                              // bounces={false}
+                              />
+                            </View>
+                          </View>
 
 
-                          {/* End Roles tab conent */}
+
+                          : null
+                        }
 
 
+                        {/* Roles tab content*/}
 
-                          {this.state.selectedTab === 'Games' ?
-                            this.state.gameTabData === undefined ?
-                              <></>
+                        {this.state.selectedTab === 'Roles' ?
+                          <View style={{ flex: 1, }}>
 
-                              :
-                              <>
-                                {/* Statistical Overview */}
+                            <RoleMenuModal show={this.state.showRoleMenuModal} hideModal={() => this.hideRoleMenuModal()} id={this.state.role_id} removeCoach={(id) => this.removeCoachFromRole(id)} />
+
+                            <EditAccessRole showModalProps={this.state.showRoleEdit} onHideModalProps={() => this.onHideRoleEdit()} />
+
+
+                            <View style={{ width: '95%', alignSelf: 'center' }}>
+                              <View style={{
+                                flexDirection: 'row',
+                                height: wide * 0.1,
+                                width: '98%',
+                                alignSelf: 'center',
+                                borderRadius: wide * 0.025,
+                                backgroundColor: Colors.playerCategoryBg,
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: wide * 0.05,
+
+                              }}>
+                                <Text style={{
+                                  color: Colors.light, fontSize: 16, lineHeight: 24,
+                                  fontFamily: Fonts.Medium,
+                                  marginHorizontal: wide * 0.04,
+                                  marginTop: wide * 0.004
+                                }}>Admin</Text>
+                                <TouchableOpacity
+                                  style={{
+                                    width: '25%',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginRight: wide * 0.02,
+                                  }}
+                                  onPress={() => {
+                                    Navigation.navigate("CoachInviteNew", { ownerId: "1", isAdmin: true, teamId: coachTeam && coachTeam.teamTabInfoDtoList ? coachTeam.teamTabInfoDtoList[0].teamId : "" })
+                                  }}
+                                  activeOpacity={1}
+                                >
+
+                                  <TouchableOpacity style={{
+                                    width: wide * 0.06, height: wide * 0.06,
+                                    borderColor: Colors.btnBg, borderWidth: 1.5,
+                                    borderRadius: wide * 0.06 / 2, alignItems: 'center',
+                                    justifyContent: 'center', marginHorizontal: wide * 0.015
+                                  }}
+                                    onPress={() => {
+                                      Navigation.navigate("CoachInviteNew", { ownerId: "1", isAdmin: true, teamId: coachTeam && coachTeam.teamTabInfoDtoList ? coachTeam.teamTabInfoDtoList[0].teamId : "" })
+                                    }}
+                                    activeOpacity={1}
+                                  >
+                                    <Image
+                                      style={{ width: '60%', height: '60%', }}
+                                      source={require('../../Images/newAddTeamIcon.png')}
+                                      resizeMode={'cover'}
+                                    />
+
+                                  </TouchableOpacity>
+                                  <Text style={{
+                                    color: Colors.btnBg, fontSize: 16, lineHeight: 22,
+                                    fontFamily: Fonts.Medium, marginHorizontal: wide * 0.006
+                                  }}>Add</Text>
+
+                                </TouchableOpacity>
+                              </View>
+
+                              {teamRoles?.adminRoleList != null && teamRoles?.adminRoleList.length > 0 ?
+
+                                <FlatList
+                                  style={{
+                                    marginTop: wide * 0.02,
+                                    flex: 1
+                                  }}
+                                  data={teamRoles.adminRoleList}
+                                  renderItem={(item, index) => this._renderUserRole(item, index)}
+                                />
+                                :
+                                <></>
+                              }
+                            </View>
+
+                            {/* For the game support */}
+
+                            <View style={{ width: '95%', alignSelf: 'center' }}>
+
+
+                              <View style={{
+                                flexDirection: 'row',
+                                height: wide * 0.1,
+                                width: '98%',
+                                alignSelf: 'center',
+                                borderRadius: wide * 0.025,
+                                backgroundColor: Colors.playerCategoryBg,
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: wide * 0.05,
+
+                              }}>
+                                <Text style={{
+                                  color: Colors.light, fontSize: 16, lineHeight: 24,
+                                  fontFamily: Fonts.Medium,
+                                  marginHorizontal: wide * 0.04,
+                                  marginTop: wide * 0.004
+                                }}>Game Support</Text>
+                                <TouchableOpacity
+                                  style={{
+                                    width: '25%',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginRight: wide * 0.02,
+                                  }}
+                                  activeOpacity={1}
+                                  onPress={() => {
+                                    Navigation.navigate("CoachInviteNew", { ownerId: "1", isAdmin: false, teamId: coachTeam && coachTeam.teamTabInfoDtoList ? coachTeam.teamTabInfoDtoList[0].teamId : "" })
+                                  }}
+                                >
+
+                                  <TouchableOpacity style={{
+                                    width: wide * 0.06, height: wide * 0.06,
+                                    borderColor: Colors.btnBg, borderWidth: 1.5,
+                                    borderRadius: wide * 0.06 / 2, alignItems: 'center',
+                                    justifyContent: 'center', marginHorizontal: wide * 0.015
+                                  }}
+                                    onPress={() => {
+                                      Navigation.navigate("CoachInviteNew", { ownerId: "1", isAdmin: false, teamId: coachTeam && coachTeam.teamTabInfoDtoList ? coachTeam.teamTabInfoDtoList[0].teamId : "" })
+                                    }}
+
+                                    activeOpacity={1}
+                                  >
+                                    <Image
+                                      style={{ width: '60%', height: '60%', }}
+                                      source={require('../../Images/newAddTeamIcon.png')}
+                                      resizeMode={'cover'}
+                                    />
+
+                                  </TouchableOpacity>
+                                  <Text style={{
+                                    color: Colors.btnBg, fontSize: 16, lineHeight: 22,
+                                    fontFamily: Fonts.Medium, marginHorizontal: wide * 0.006
+                                  }}>Add</Text>
+
+                                </TouchableOpacity>
+                              </View>
+                              {teamRoles?.stackLoggers != null && teamRoles?.stackLoggers.length > 0 ?
+                                <FlatList
+                                  style={{
+                                    marginTop: wide * 0.02,
+                                    flex: 1
+                                  }}
+                                  data={teamRoles.stackLoggers}
+                                  renderItem={(item, index) => this._renderUserRole(item, index)}
+                                />
+                                :
+                                <></>
+                              }
+                            </View>
+
+                          </View>
+
+
+                          : null
+                        }
+
+
+                        {/* End Roles tab conent */}
+
+
+                        {this.state.selectedTab === 'Games' ?
+                          this.state.gameTabData === undefined ?
+                            <></>
+
+                            :
+                            <View style={{ flex: 1 }}>
+                              {/* Statistical Overview */}
+                              <View style={{
+                                width: "90%", alignSelf: 'center',
+                                marginTop: wide * 0.09
+                              }}>
+                                <Text style={{
+                                  color: Colors.light,
+                                  fontFamily: Fonts.SemiBold, fontSize: 20,
+                                  lineHeight: 22, fontWeight: '600'
+                                }}
+                                >
+                                  Statistical Overview
+                                </Text>
+                              </View>
+
+                              <StatisticalOverview
+                                homeRecord={this.state.gameTabData && this.state.gameTabData.gameStatisticalView && this.state.gameTabData.gameStatisticalView.homeRecord}
+                                awayRecord={this.state.gameTabData && this.state.gameTabData.gameStatisticalView && this.state.gameTabData.gameStatisticalView.awayRecord}
+                              />
+
+                              {this.state.pieChartGameData !== null && this.state.pieChartGameData.length > 0 ?
                                 <View style={{
-                                  width: "90%", alignSelf: 'center',
-                                  marginTop: wide * 0.09
+                                  width: '90%', height: wide * 0.7,
+                                  marginTop: wide * 0.01,
+                                  marginHorizontal: wide * 0.05,
+                                  // flexDirection: 'row', 
+                                  justifyContent: "space-between",
+                                  alignItems: 'center',
+                                  // backgroundColor: 'green'
+
+
+                                }}>
+                                  <>
+                                    {this.state.totalGameMatches !== null && this.state.totalGameMatches > 0 ?
+                                      <View style={{
+                                        position: 'absolute', top: 80,
+                                        alignItems: 'center', justifyContent: 'center',
+                                        width: wide * 0.18, height: wide * 0.15,
+                                      }}>
+                                        <Text style={{
+                                          color: Colors.light,
+                                          fontFamily: Fonts.Light, fontSize: 24, lineHeight: 24,
+                                          fontWeight: '400',
+                                          textAlign: 'center',
+
+                                        }}>{this.state.totalGameMatches}</Text>
+                                        <Text style={{
+                                          color: Colors.light,
+                                          fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 14,
+                                          fontWeight: '700',
+                                          textAlign: 'center',
+                                        }}>Total Games</Text>
+                                      </View>
+                                      : null
+                                    }
+                                    {this.state.pieChartGameData !== null ?
+                                      <View style={{ height: '70%', bottom: 30 }}>
+                                        <VictoryChart
+                                          width={300}
+                                          height={280}
+                                        >
+                                          <VictoryPie
+                                            colorScale={["#246BFD", "#CE1141", "#FDB927",]}
+                                            standalone={false}
+                                            width={200} height={200}
+                                            innerRadius={60}
+                                            data={this.state.pieChartGameData}
+                                            style={{
+                                              labels: { display: "none" }
+                                            }}
+                                          />
+                                          <VictoryAxis style={{
+                                            axis: { stroke: "transparent" },
+                                            ticks: { stroke: "transparent" },
+                                            tickLabels: { fill: "transparent" }
+                                          }} />
+                                          <VictoryAxis dependentAxis style={{
+                                            axis: { stroke: "transparent" },
+                                            ticks: { stroke: "transparent" },
+                                            tickLabels: { fill: "transparent" }
+                                          }} />
+                                        </VictoryChart>
+
+                                      </View>
+                                      : null
+                                    }
+                                  </>
+
+                                  <View style={{
+                                    justifyContent: 'space-between',
+                                    width: '100%', height: '25%', flexDirection: 'row',
+                                    // backgroundColor: 'blue',
+                                    bottom: 10
+                                  }}>
+                                    <View style={{
+                                      flexDirection: 'row',
+                                      //backgroundColor: 'green',
+                                      width: '55%',
+                                      justifyContent: 'space-around',
+                                      alignItems: 'center'
+                                    }}>
+                                      <View style={{
+                                        height: '60%',
+                                        alignItems: "center", justifyContent: 'space-between'
+                                      }}>
+                                        <Text style={{
+                                          color: Colors.compareRankColor, fontSize: 12, lineHeight: 16,
+                                          fontWeight: '700',
+                                          fontFamily: Fonts.Bold,
+                                        }}>W/L Streak </Text>
+                                        <Text style={{
+                                          color: Colors.light, fontSize: 16, lineHeight: 18,
+                                          fontFamily: Fonts.Bold,
+                                        }}>{this.state.gameTabData.leaderBoardTeamInfo.streak}</Text>
+                                      </View>
+                                      <View style={{
+                                        height: '60%',
+                                        alignItems: "center", justifyContent: 'space-between'
+                                      }}>
+                                        <Text style={{
+                                          color: Colors.compareRankColor, fontSize: 12, lineHeight: 16,
+                                          fontWeight: '700',
+                                          fontFamily: Fonts.Bold,
+                                        }}>Last 10</Text>
+                                        <Text style={{
+                                          color: Colors.light, fontSize: 16, lineHeight: 18,
+                                          fontFamily: Fonts.Bold,
+                                        }}>{this.state.gameTabData.leaderBoardTeamInfo.last10}</Text>
+                                      </View>
+                                    </View>
+                                    <View style={{ width: '40%', justifyContent: 'center' }}>
+                                      {this.state.pieChartGameData !== undefined && this.state.pieChartGameData.length > 0 ?
+                                        <>
+                                          <View style={{ width: '75%', flexDirection: 'row', alignItems: 'center', }}>
+                                            <>
+                                              <View style={{ width: 28, height: 2, backgroundColor: '#246BFD' }}></View>
+                                              <Text style={{
+                                                color: '#246BFD', fontSize: 16, lineHeight: 16,
+                                                fontFamily: Fonts.Bold, marginHorizontal: 10
+                                              }}>{this.state.pieChartGameData[0]} Wins</Text>
+                                            </>
+
+                                          </View>
+                                          <View style={{ width: '75%', flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+                                            <>
+                                              <View style={{ width: 28, height: 2, backgroundColor: '#CE1141' }}></View>
+                                              <Text style={{
+                                                color: '#CE1141', fontSize: 16, lineHeight: 16,
+                                                fontFamily: Fonts.Bold, marginHorizontal: 10
+                                              }}>{this.state.pieChartGameData[1]} Losses</Text>
+                                            </>
+
+                                          </View>
+
+                                        </>
+                                        : null
+                                      }
+                                    </View>
+                                  </View>
+
+                                </View>
+                                :
+                                <EmptyPieChart />
+                              }
+
+                              {/* End show piechart data */}
+
+                              {
+                                this.state.gameTabData && this.state.gameTabData.recentGamesInfoList && this.state.gameTabData.recentGamesInfoList.map((game, index) => (
+                                  <TeamStats
+                                    key={`game-${index}`} data={game}
+                                    onPress={() => Navigation.navigate('MyTeamRecentGamesDetails')}
+                                    premium={this.state.gameTabData && this.state.gameTabData.premiumPurchased}
+                                  />
+                                ))
+                              }
+
+
+
+
+
+
+                              {this.state.gameTabData !== undefined && this.state.gameTabData?.recentMatches?.length > 0 ?
+                                <View style={{ marginTop: 25, }}>
+                                  <Title data={'Recent Games'} />
+                                  <View style={{ marginHorizontal: 20 }}>
+
+                                    <FlatList
+                                      style={{ flex: 1, overflow: 'visible' }}
+                                      data={this.state.gameTabData?.recentMatches}
+                                      renderItem={(item, index) => this._renderListOfRecentMatches(item, index)}
+                                      horizontal
+                                      showsHorizontalScrollIndicator={false}
+                                    // stickyHeaderIndices={[0]}
+                                    />
+                                  </View>
+                                </View>
+
+                                : null
+                              }
+                              {this.state.gameTabData !== undefined && this.state.gameTabData?.upcomingMatches?.length > 0 ?
+                                <View style={{ marginTop: 25, }}>
+                                  <Title data={'Upcoming Games'} />
+                                  <View style={{ marginHorizontal: 20 }}>
+                                    <FlatList
+                                      style={{ flex: 1, overflow: 'visible' }}
+                                      data={this.state.gameTabData?.upcomingMatches}
+                                      renderItem={(item, index) => this._renderListOfRecentMatches(item, index)}
+                                      horizontal
+                                      showsHorizontalScrollIndicator={false}
+                                    />
+                                  </View>
+                                </View>
+
+                                : null
+                              }
+
+
+
+                            </View>
+
+
+                          : null
+                        }
+
+                        {this.state.selectedTab == 'Line Up' ?
+                          // this.state.lineUpData == null  ?
+                          // <></>
+                          // :
+                          <>
+                            {/* Coach LineUp */}
+                            <View style={{
+                              width: "90%", alignSelf: 'center',
+                              marginTop: wide * 0.08,
+                            }}>
+                              <Text style={{
+                                color: Colors.light,
+                                fontFamily: Fonts.SemiBold, fontSize: 22,
+                                lineHeight: 22, fontWeight: '600'
+                              }}
+                              >
+                                Coach Lineup
+                              </Text>
+                            </View>
+
+                            <View style={{
+                              width: '90%', alignSelf: 'center',
+                            }}>
+                              <FlatList
+                                style={{ flex: 1, overflow: 'visible' }}
+                                data={[1, 2]}
+                                renderItem={(item, index) => this.renderCoachLineUp(item, index)}
+                                showsVerticalScrollIndicator={false}
+                                scrollEnabled={false}
+                              />
+                            </View>
+
+                            {/* AI Based lineup */}
+
+                            <View style={{
+                              width: "90%", alignSelf: 'center',
+                              marginTop: wide * 0.09,
+                            }}>
+                              <Text style={{
+                                color: Colors.light,
+                                fontFamily: Fonts.SemiBold, fontSize: 22,
+                                lineHeight: 22, fontWeight: '600'
+                              }}
+                              >
+                                AI Base Lineup
+                              </Text>
+                            </View>
+
+                            <View style={{
+                              width: '90%', alignSelf: 'center',
+                            }}>
+                              <FlatList
+                                style={{ flex: 1, overflow: 'visible' }}
+                                data={[1]}
+                                renderItem={(item, index) => this.renderAILineUp(item, index)}
+                                showsVerticalScrollIndicator={false}
+                                scrollEnabled={false}
+                              />
+                            </View>
+
+                            <View style={{ width: '90%', alignSelf: 'center', }}>
+                              <TouchableOpacity
+                                activeOpacity={1}
+                                style={{
+                                  width: wide * 0.8,
+                                  height: 48,
+                                  backgroundColor: Colors.btnBg,
+                                  alignSelf: 'center', borderRadius: 24,
+                                  justifyContent: 'center',
+                                  marginTop: wide * 0.08,
+
+                                }}
+                                onPress={() => Navigation.navigate('CreateLineUp')}
+                              >
+                                <Text style={{
+                                  alignSelf: 'center', color: Colors.light,
+                                  fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16,
+                                  fontWeight: '700',
+                                }}>Create Lineup</Text>
+                              </TouchableOpacity>
+                            </View>
+                          </>
+
+                          : null
+                        }
+
+                        {this.state.selectedTab == 'Schedule' ?
+
+                          <>
+                            {/* Upcomming Game */}
+                            <View style={{
+                              width: "90%", alignSelf: 'center',
+                              marginTop: wide * 0.08,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: "center"
+                            }}>
+                              <Text style={{
+                                color: Colors.light,
+                                fontFamily: Fonts.SemiBold, fontSize: 22,
+                                lineHeight: 22, fontWeight: '600'
+                              }}
+                              >
+                                Upcoming Games
+                              </Text>
+                              <TouchableOpacity style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: wide * 0.01
+
+                              }}>
+                                <Text style={{
+                                  color: Colors.btnBg,
+                                  fontFamily: Fonts.Medium, fontSize: 14,
+                                  lineHeight: 16, fontWeight: '500'
+                                }}
+                                >
+                                  See All
+                                </Text>
+                                <Image
+                                  source={require('../../Images/seeAll_Icon.png')}
+                                  style={{ width: 14, height: 14 }}
+                                />
+                              </TouchableOpacity>
+                            </View>
+
+                            <View style={{
+                              width: '90%', alignSelf: 'center',
+                              marginTop: wide * 0.035
+                            }}>
+                              <FlatList
+                                style={{ flex: 1, overflow: 'visible' }}
+                                data={[1, 2]}
+                                renderItem={(item, index) => this._renderUpcommingGame(item, index)}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                              />
+                            </View>
+
+                            {/* Practice Schedule */}
+
+                            <View style={{
+                              width: "90%", alignSelf: 'center',
+                              marginTop: wide * 0.09,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: "center"
+                            }}>
+                              <Text style={{
+                                color: Colors.light,
+                                fontFamily: Fonts.SemiBold, fontSize: 22,
+                                lineHeight: 22, fontWeight: '600'
+                              }}
+                              >
+                                Practice Schedule
+                              </Text>
+                              <TouchableOpacity style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: wide * 0.01
+
+                              }}>
+                                <Text style={{
+                                  color: Colors.btnBg,
+                                  fontFamily: Fonts.Medium, fontSize: 14,
+                                  lineHeight: 16, fontWeight: '500'
+                                }}
+                                >
+                                  See All
+                                </Text>
+                                <Image
+                                  source={require('../../Images/seeAll_Icon.png')}
+                                  style={{ width: 14, height: 14 }}
+                                />
+                              </TouchableOpacity>
+                            </View>
+
+                            <View style={{
+                              width: '90%', alignSelf: 'center',
+                              alignItems: "center",
+                              marginTop: wide * 0.03
+
+                            }}>
+                              <View style={{
+                                width: '100%', backgroundColor: Colors.playerCategoryBg,
+                                height: wide * 0.45,
+                                borderRadius: wide * 0.03,
+                              }}>
+                                <Image style={{
+                                  width: '95%', height: wide * 0.25,
+                                  borderRadius: 12,
+                                  marginTop: wide * 0.025,
+                                  alignSelf: 'center'
+                                }}
+                                  source={require('../../Images/schedule_ground.png')}
+                                />
+                                <View style={{
+                                  width: '92%', alignSelf: 'center',
+                                  marginTop: wide * 0.05
                                 }}>
                                   <Text style={{
                                     color: Colors.light,
-                                    fontFamily: Fonts.SemiBold, fontSize: 20,
-                                    lineHeight: 22, fontWeight: '600'
+                                    fontFamily: Fonts.SemiBold, fontSize: 16,
+                                    lineHeight: 18, fontWeight: '600'
                                   }}
                                   >
-                                    Statistical Overview
+                                    21 August 2022, 13:13
+                                  </Text>
+                                  <Text style={{
+                                    color: Colors.light,
+                                    fontFamily: Fonts.Medium, fontSize: 13,
+                                    lineHeight: 16, fontWeight: '500',
+                                    opacity: 0.5,
+                                    marginTop: wide * 0.01
+                                  }}
+                                  >
+                                    #practice #mupractice #basketballpractice
                                   </Text>
                                 </View>
 
-                                <StatisticalOverview
-                                  homeRecord={this.state.gameTabData && this.state.gameTabData.gameStatisticalView && this.state.gameTabData.gameStatisticalView.homeRecord}
-                                  awayRecord={this.state.gameTabData && this.state.gameTabData.gameStatisticalView && this.state.gameTabData.gameStatisticalView.awayRecord}
-                                />
+                              </View>
+                            </View>
 
-                                {this.state.pieChartGameData !== null && this.state.pieChartGameData.length > 0 ?
-                                  <View style={{
-                                    width: '90%', height: wide * 0.7,
-                                    marginTop: wide * 0.01,
-                                    marginHorizontal: wide * 0.05,
-                                    // flexDirection: 'row', 
-                                    justifyContent: "space-between",
-                                    alignItems: 'center',
-                                    // backgroundColor: 'green'
+                            <View style={{ width: '90%', alignSelf: 'center', }}>
+                              <TouchableOpacity
+                                activeOpacity={1}
+                                style={{
+                                  width: wide * 0.8,
+                                  height: 48,
+                                  backgroundColor: Colors.btnBg,
+                                  alignSelf: 'center', borderRadius: 24,
+                                  justifyContent: 'center',
+                                  marginTop: wide * 0.2,
 
+                                }}
+                                onPress={() => Navigation.navigate('CreatePractice')}
+                              >
+                                <Text style={{
+                                  alignSelf: 'center', color: Colors.light,
+                                  fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16,
+                                  fontWeight: '700',
+                                }}>Create Practice</Text>
+                              </TouchableOpacity>
+                            </View>
+                          </>
 
-                                  }}>
-                                    <>
-                                      {this.state.totalGameMatches !== null && this.state.totalGameMatches > 0 ?
-                                        <View style={{
-                                          position: 'absolute', top: 80,
-                                          alignItems: 'center', justifyContent: 'center',
-                                          width: wide * 0.18, height: wide * 0.15,
-                                        }}>
-                                          <Text style={{
-                                            color: Colors.light,
-                                            fontFamily: Fonts.Light, fontSize: 24, lineHeight: 24,
-                                            fontWeight: '400',
-                                            textAlign: 'center',
-
-                                          }}>{this.state.totalGameMatches}</Text>
-                                          <Text style={{
-                                            color: Colors.light,
-                                            fontFamily: Fonts.Bold, fontSize: 12, lineHeight: 14,
-                                            fontWeight: '700',
-                                            textAlign: 'center',
-                                          }}>Total Games</Text>
-                                        </View>
-                                        : null
-                                      }
-                                      {this.state.pieChartGameData !== null ?
-                                        <View style={{ height: '70%', bottom: 30 }}>
-                                          <VictoryChart
-                                            width={300}
-                                            height={280}
-                                          >
-                                            <VictoryPie
-                                              colorScale={["#246BFD", "#CE1141", "#FDB927",]}
-                                              standalone={false}
-                                              width={200} height={200}
-                                              innerRadius={60}
-                                              data={this.state.pieChartGameData}
-                                              style={{
-                                                labels: { display: "none" }
-                                              }}
-                                            />
-                                            <VictoryAxis style={{
-                                              axis: { stroke: "transparent" },
-                                              ticks: { stroke: "transparent" },
-                                              tickLabels: { fill: "transparent" }
-                                            }} />
-                                            <VictoryAxis dependentAxis style={{
-                                              axis: { stroke: "transparent" },
-                                              ticks: { stroke: "transparent" },
-                                              tickLabels: { fill: "transparent" }
-                                            }} />
-                                          </VictoryChart>
-
-                                        </View>
-                                        : null
-                                      }
-                                    </>
-
-                                    <View style={{
-                                      justifyContent: 'space-between',
-                                      width: '100%', height: '25%', flexDirection: 'row',
-                                      // backgroundColor: 'blue',
-                                      bottom: 10
-                                    }}>
-                                      <View style={{
-                                        flexDirection: 'row',
-                                        //backgroundColor: 'green',
-                                        width: '55%',
-                                        justifyContent: 'space-around',
-                                        alignItems: 'center'
-                                      }}>
-                                        <View style={{
-                                          height: '60%',
-                                          alignItems: "center", justifyContent: 'space-between'
-                                        }}>
-                                          <Text style={{
-                                            color: Colors.compareRankColor, fontSize: 12, lineHeight: 16,
-                                            fontWeight: '700',
-                                            fontFamily: Fonts.Bold,
-                                          }}>W/L Streak </Text>
-                                          <Text style={{
-                                            color: Colors.light, fontSize: 16, lineHeight: 18,
-                                            fontFamily: Fonts.Bold,
-                                          }}>{this.state.gameTabData.leaderBoardTeamInfo.streak}</Text>
-                                        </View>
-                                        <View style={{
-                                          height: '60%',
-                                          alignItems: "center", justifyContent: 'space-between'
-                                        }}>
-                                          <Text style={{
-                                            color: Colors.compareRankColor, fontSize: 12, lineHeight: 16,
-                                            fontWeight: '700',
-                                            fontFamily: Fonts.Bold,
-                                          }}>Last 10</Text>
-                                          <Text style={{
-                                            color: Colors.light, fontSize: 16, lineHeight: 18,
-                                            fontFamily: Fonts.Bold,
-                                          }}>{this.state.gameTabData.leaderBoardTeamInfo.last10}</Text>
-                                        </View>
-                                      </View>
-                                      <View style={{ width: '40%', justifyContent: 'center' }}>
-                                        {this.state.pieChartGameData !== undefined && this.state.pieChartGameData.length > 0 ?
-                                          <>
-                                            <View style={{ width: '75%', flexDirection: 'row', alignItems: 'center', }}>
-                                              <>
-                                                <View style={{ width: 28, height: 2, backgroundColor: '#246BFD' }}></View>
-                                                <Text style={{
-                                                  color: '#246BFD', fontSize: 16, lineHeight: 16,
-                                                  fontFamily: Fonts.Bold, marginHorizontal: 10
-                                                }}>{this.state.pieChartGameData[0]} Wins</Text>
-                                              </>
-
-                                            </View>
-                                            <View style={{ width: '75%', flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                                              <>
-                                                <View style={{ width: 28, height: 2, backgroundColor: '#CE1141' }}></View>
-                                                <Text style={{
-                                                  color: '#CE1141', fontSize: 16, lineHeight: 16,
-                                                  fontFamily: Fonts.Bold, marginHorizontal: 10
-                                                }}>{this.state.pieChartGameData[1]} Losses</Text>
-                                              </>
-
-                                            </View>
-
-                                          </>
-                                          : null
-                                        }
-                                      </View>
-                                    </View>
-
-                                  </View>
-                                  :
-                                  <EmptyPieChart />
-                                }
-
-                                {/* End show piechart data */}
+                          : null
+                        }
 
 
 
 
+                        {/* </View> */}
 
-                                {/* Team Stats */}
-
-                                {
-                                  this.state.gameTabData && this.state.gameTabData.recentGamesInfoList && this.state.gameTabData.recentGamesInfoList.map((game, index) => (
-                                    <TeamStats
-                                      key={`game-${index}`} data={game}
-                                      onPress={() => Navigation.navigate('MyTeamRecentGamesDetails')}
-                                      premium={this.state.gameTabData && this.state.gameTabData.premiumPurchased}
-                                    />
-                                  ))
-                                }
-
-                                {/* <Modal
-                                  animationType="fade"
-                                  transparent={true}
-                                  visible={true}
-                                >
-                                  <View style={{
-                                    width: wide, height: high, backgroundColor: 'red'
-                                  }}> */}
-                                {/* <View style={{
-                                  position: "absolute", width: '100%',
-                                  top: wide * 1.5,
-                                }}>
-                                  <GamePlanCard premium={this.state.gameTabData && this.state.gameTabData.premiumPurchased} bannerInfo={this.state.gameTabData && this.state.gameTabData.bannerInfo} />
-                                </View> */}
-                                {/* </View>
-                                </Modal> */}
-                                {/* End Game Plan Card */}
-
-                                {/* End Team Stats */}
-
-
-
-
-                                {this.state.gameTabData !== undefined && this.state.gameTabData?.recentMatches?.length > 0 ?
-                                  <View style={{ marginTop: 25, }}>
-                                    <Title data={'Recent Games'} />
-                                    <View style={{ marginHorizontal: 20 }}>
-                                      {/* <Text style={{
-                                                                color: Colors.light, fontSize: 24, fontFamily: Fonts.Bold,
-                                                                lineHeight: 24, marginHorizontal: wide * 0.05
-                                                            }}>Recent</Text> */}
-                                      <FlatList
-                                        style={{ flex: 1, overflow: 'visible' }}
-                                        data={this.state.gameTabData?.recentMatches}
-                                        renderItem={(item, index) => this._renderListOfRecentMatches(item, index)}
-                                        horizontal
-                                        showsHorizontalScrollIndicator={false}
-                                      // stickyHeaderIndices={[0]}
-                                      />
-                                    </View>
-                                  </View>
-
-                                  : null
-                                }
-                                {this.state.gameTabData !== undefined && this.state.gameTabData?.upcomingMatches?.length > 0 ?
-                                  <View style={{ marginTop: 25, }}>
-                                    <Title data={'Upcoming Games'} />
-                                    <View style={{ marginHorizontal: 20 }}>
-                                      <FlatList
-                                        style={{ flex: 1, overflow: 'visible' }}
-                                        data={this.state.gameTabData?.upcomingMatches}
-                                        renderItem={(item, index) => this._renderListOfRecentMatches(item, index)}
-                                        horizontal
-                                        showsHorizontalScrollIndicator={false}
-                                      />
-                                    </View>
-                                  </View>
-
-                                  : null
-                                }
-
-
-
-                              </>
-
-                            : null
-                          }
-
-
-
-
-                          {/* </View> */}
-
-
-                        </>
-                      :
-                      <View style={{
-                        flex: 1, alignItems: 'center',
-                        justifyContent: 'center',
-                        // backgroundColor: 'green',
-                        marginTop: wide / 2
-                      }}>
-                        {/* <Text style={{
+                      </ScrollView>
+                    </>
+                  :
+                  <View style={{
+                    flex: 1, alignItems: 'center',
+                    justifyContent: 'center',
+                    // backgroundColor: 'green',
+                    marginTop: wide / 2
+                  }}>
+                    {/* <Text style={{
                                                 color: Colors.light,
                                                 fontSize: 16, lineHeight: 24,
                                                 fontFamily: Fonts.Bold,
@@ -2504,16 +3149,16 @@ class MyTeams extends Component {
                                                     alignSelf: 'center', color: Colors.light,
                                                     fontFamily: Fonts.Bold,
                                                 }}>Create Your Team</Text> */}
-                        {/* </TouchableOpacity> */}
+                    {/* </TouchableOpacity> */}
 
-                      </View>
+                  </View>
 
-                  }
+              }
 
 
-                </View>
-                <AppLoader visible={this.state.removeLoading} />
-              </ScrollView>
+              {/* </View> */}
+              {/* <AppLoader visible={this.state.removeLoading} /> */}
+              {/* </ScrollView> */}
 
               {this.state.selectedTab === 'Players' &&
                 this.state.showMsgModal === false && this.state.selectedPlayer.length > 0 ?
@@ -2998,16 +3643,23 @@ class MyTeams extends Component {
 
 
           {/* </TouchableOpacity > */}
-          {this.state.selectedTab == 'Games' && this.state.gameTabData?.premiumPurchased != undefined ?
-            <View style={{
-              position: "absolute", width: '100%',
-              bottom: 0
-            }}>
-              <GamePlanCard premium={this.state.gameTabData && this.state.gameTabData.premiumPurchased} bannerInfo={this.state.gameTabData && this.state.gameTabData.bannerInfo} />
-            </View>
-            :
-            <></>
+          {this.state.isGamePremiumCardneedtoShow == true ?
+            this.state.selectedTab == 'Games' &&
+              this.state.gameTabData?.premiumPurchased != undefined ?
+              <View style={{
+                position: "absolute", width: '100%',
+                bottom: 0
+              }}>
+                {/* <GamePlanCard premium={this.state.gameTabData && this.state.gameTabData.premiumPurchased}
+                  bannerInfo={this.state.gameTabData && this.state.gameTabData.bannerInfo}
+                  onPurchasePress={() => Navigation.navigate('CoachPremiumCard')}
+                /> */}
+              </View>
+              :
+              <></>
+            : <></>
           }
+
 
         </SafeAreaView>
       </View>

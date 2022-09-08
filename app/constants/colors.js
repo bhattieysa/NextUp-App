@@ -64,5 +64,8 @@ export const Colors = {
   playerCategoryBg: '#22252E',
   srchPlaceHolderColor: ' #75777D',
   noDataLabelColor: '#A3A6AF',
+  premiumPriceColor: '#FFB920',
+  playerStatRowFirstClr: '#373A45',
+  playerStatRowSecondClr: '#22252E',
 
 };
