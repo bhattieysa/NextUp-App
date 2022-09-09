@@ -23,6 +23,8 @@ import { Title } from '../../components/common/titleLabel';
 import { showErrorAlert, showAppPermissionAlert } from '../../utils/info';
 import { Permission, PERMISSION_TYPE } from '../../utils/permissionCheck';
 import { DropDownSelect } from '../../components/common/customDropDown';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from 'moment';
 
 let wide = Layout.width;
 
@@ -36,6 +38,8 @@ class CreatePractice extends Component {
       selected_location: '',
       date: '',
       time: false,
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
       isbtnEnable: false
     };
   }
@@ -89,7 +93,8 @@ class CreatePractice extends Component {
   }
 
   render() {
-    const { selected_location, date, time, isbtnEnable } = this.state;
+    const { selected_location, date, time, isbtnEnable,
+      isDatePickerVisible, isTimePickerVisible } = this.state;
     return (
 
       <View style={{ flex: 1, backgroundColor: Colors.base }}>
@@ -173,7 +178,7 @@ class CreatePractice extends Component {
                   width: '100%',
                 }}>
                   <TouchableOpacity
-                    // onPress={() => this.setState({ openStateModal: true })}
+                    onPress={() => this.setState({ isDatePickerVisible: true })}
                     activeOpacity={1}>
                     <DropDownSelect
                       isIcon
@@ -216,14 +221,14 @@ class CreatePractice extends Component {
                       }}
                       placeHolder={'DATE'}
                       selectedValue={date}
-                    // onPress={() => this.setState({ openStateModal: true })}
+                      onPress={() => this.setState({ isDatePickerVisible: true })}
                     />
 
                   </TouchableOpacity>
 
 
                   <TouchableOpacity
-                    // onPress={() => this.setState({ openCityModal: true })}
+                    onPress={() => this.setState({ isTimePickerVisible: true })}
                     activeOpacity={1}
                   >
                     <DropDownSelect
@@ -266,12 +271,38 @@ class CreatePractice extends Component {
                       }}
                       placeHolder={'TIME'}
                       selectedValue={time}
-                    // onPress={() => this.setState({ openCityModal: true })}
+                      onPress={() => this.setState({ isTimePickerVisible: true })}
                     />
                   </TouchableOpacity>
 
                 </View>
               </View>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={(date) => {
+                  let select_dt = moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")
+                  this.setState({ date: select_dt.toString(), isDatePickerVisible: false })
+                  console.log("Selected_dateee:-", moment(date, "DD-MM-YYYY").format("YYYY-MM-DD"))
+                }}
+                onCancel={() => this.setState({ isDatePickerVisible: false })}
+              // maximumDate={moment.now()}
+
+              />
+
+              <DateTimePickerModal
+                isVisible={isTimePickerVisible}
+                mode="time"
+                onConfirm={(time) => {
+                  let select_tm = moment(time, "HH:MM").format("HH:MM")
+                  this.setState({ time: select_tm.toString(), isTimePickerVisible: false })
+                  // console.log("Selected_time:-", moment(time, "HH:MM").format("HH:MM"))
+                  // console.log("Selected_time:-", moment(time).format('X'))
+                }}
+                locale="en_GB"
+                onCancel={() => this.setState({ isTimePickerVisible: false })}
+              // maximumDate={moment.now()}
+              />
               <TouchableOpacity
                 key={isbtnEnable}
                 activeOpacity={0.3}
