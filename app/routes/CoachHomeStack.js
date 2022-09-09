@@ -56,6 +56,39 @@ const CoachHomeStack = createStackNavigator(
 
         },
 
+        //Eysa screens 
+        CoachAiDrivenChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenChallenge').default,
+
+        },
+        CoachAiDrivenAllChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenAllChallenge').default,
+
+        },
+        CoachAiDrivenStatsChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenStatsChallenge').default,
+
+        },
+        CoachAiDrivenVideoChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenVideoChallenge').default,
+
+        },
+   
+        CoachAiDrivenQuestionChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenQuestionChallenge').default,
+
+        },
+        CoachAiDrivenPlayerDetails: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenPlayerDetails').default,
+
+        },
+        VideoPlayer: {
+            getScreen: () => require('../views/Coach/VideoPlayer').default,
+
+        },
+   
+        // },
+
         // notification nav
         // MyTeam: {
         //     getScreen: () => require('../views/Coach/CoachMyTeams').default,
@@ -75,6 +108,8 @@ CoachHomeStack.navigationOptions = ({ navigation }) => {
             || navigation.state.routes[i].routeName == "EditProfile"
             || navigation.state.routes[i].routeName == "Chat"
             || navigation.state.routes[i].routeName == "CoachChallengeAction"
+            || navigation.state.routes[i].routeName == "CoachAiDrivenChallenge"
+            || navigation.state.routes[i].routeName == "CoachAiDrivenAllChallenge"
             || navigation.state.routes[i].routeName == "Calender"
             || navigation.state.routes[i].routeName == "GamesRecentTab"
             || navigation.state.routes[i].routeName == "ShareScreen"

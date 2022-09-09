@@ -87,7 +87,14 @@ export const AppURLs = {
   getTeamAdvanceStats: 'team/get/advance/analytics/',
   logEventData: 'log/event/',
   logPlayerScore: 'log/player/',
-  getCurrentLineUp: 'log/lineup/'
+  getCurrentLineUp: 'log/lineup/',
+//Eysa coach APIS
+getListOFChallenges:'coach/challenge/',
+getListOFALLChallenges:'coach/challenge/all/',
+
+
+getListOFChallengesPlayerDetails:'coach/challenge/',
+getListOFChallengesSuggested:'premium/plan/challenge/'
 
 };
 

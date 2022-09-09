@@ -1,13 +1,10 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import { defaultNavigationOptions } from '../utils/navigation';
 
-const CalenderStack = createStackNavigator(
+const CoachAiDrivenChallenge = createStackNavigator(
     {
-        Calender: {
+        Calender1: {
             getScreen: () => require('../views/home/Calender').default,
-        },
-        CoachAiDrivenChallenge: {
-            getScreen: () => require('../views/Coach/CoachAiDrivenChallenge').default,
         },
         Chat: {
             getScreen: () => require('../views/home/ChatModule/Chat').default,
@@ -80,20 +77,18 @@ const CalenderStack = createStackNavigator(
         },
         UploadVideoOfChallenge: {
             getScreen: () => require('../views/home/UploadVideoOfChallenge').default,
-        },
-       
+        }
     },
     {
         defaultNavigationOptions,
     },
 );
-CalenderStack.navigationOptions = ({ navigation }) => {
+CoachAiDrivenChallenge.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     for (let i = 0; i < navigation.state.routes.length; i++) {
         if (navigation.state.routes[i].routeName == "TrainerPlan" ||
             navigation.state.routes[i].routeName == "TrainerSeeMore" ||
             navigation.state.routes[i].routeName == "MessageList" ||
-            navigation.state.routes[i].routeName == "CoachAiDrivenChallenge" ||
             navigation.state.routes[i].routeName == "PlayerMore" ||
             navigation.state.routes[i].routeName == "ExploreMap" ||
             navigation.state.routes[i].routeName == "PlayerSidePlan" ||
@@ -112,4 +107,4 @@ CalenderStack.navigationOptions = ({ navigation }) => {
         tabBarVisible
     };
 };
-export default CalenderStack;
+export default CoachAiDrivenChallenge;

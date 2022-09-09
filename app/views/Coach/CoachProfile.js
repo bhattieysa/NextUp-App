@@ -2182,7 +2182,7 @@ class CoachProfile extends Component {
                     // tintColor: Colors.light
                   }}
                   // onPress={() => { Navigation.navigate('MessageList') }} 
-                  onPress={() => { Navigation.navigate('Calender') }}
+                  onPress={() => { Navigation.navigate('CoachAiDrivenChallenge') }}
                 >
                   <Image style={{
                     width: 20, height: 20,

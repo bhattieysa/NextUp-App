@@ -2365,4 +2365,117 @@ export function getTeamCurrentLineUp(eventId, teamId, gameId, cb) {
   };
 }
 
+// Eysa Work APIS
+export function getListOFChallenges(teamID, tab, cb) {
+  debugger
+
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.getListOFChallenges+teamID+"?tab="+tab)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getListOFALLChallenges(teamID, name, cb) {
+  debugger
+
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.getListOFALLChallenges+name+"/"+teamID)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getListOFChallengesPlayerDetails(teamID, challengeId, cb) {
+  debugger
+
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.getListOFChallengesPlayerDetails+"detail?teamId="+teamID+"&&challengeId="+challengeId)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getListOFChallengesSuggested(teamID, challengeId, cb) {
+  debugger
+
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.getListOFChallengesSuggested+"detail?teamId="+teamID+"&&challengeId="+challengeId)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
+
+
+
 
