@@ -55,45 +55,6 @@ const CoachHomeStack = createStackNavigator(
             getScreen: () => require('../views/home/ViewFullScreenBoxScore').default,
 
         },
-
-        //Eysa screens 
-        CoachAiDrivenChallenge: {
-            getScreen: () => require('../views/Coach/CoachAiDrivenChallenge').default,
-
-        },
-        CoachAiDrivenAllChallenge: {
-            getScreen: () => require('../views/Coach/CoachAiDrivenAllChallenge').default,
-
-        },
-        CoachAiDrivenStatsChallenge: {
-            getScreen: () => require('../views/Coach/CoachAiDrivenStatsChallenge').default,
-
-        },
-        CoachAiDrivenVideoChallenge: {
-            getScreen: () => require('../views/Coach/CoachAiDrivenVideoChallenge').default,
-
-        },
-   
-        CoachAiDrivenQuestionChallenge: {
-            getScreen: () => require('../views/Coach/CoachAiDrivenQuestionChallenge').default,
-
-        },
-        CoachAiDrivenPlayerDetails: {
-            getScreen: () => require('../views/Coach/CoachAiDrivenPlayerDetails').default,
-
-        },
-        VideoPlayer: {
-            getScreen: () => require('../views/Coach/VideoPlayer').default,
-
-        },
-   
-        // },
-
-        // notification nav
-        // MyTeam: {
-        //     getScreen: () => require('../views/Coach/CoachMyTeams').default,
-        // },
-
     },
     {
         defaultNavigationOptions,
@@ -115,7 +76,8 @@ CoachHomeStack.navigationOptions = ({ navigation }) => {
             || navigation.state.routes[i].routeName == "ShareScreen"
             || navigation.state.routes[i].routeName == "Compare"
             || navigation.state.routes[i].routeName == "AppReload"
-            || navigation.state.routes[i].routeName == "ViewFullScreenBoxScore") {
+            || navigation.state.routes[i].routeName == "ViewFullScreenBoxScore"
+        ) {
             tabBarVisible = false;
         } else {
             defaultNavigationOptions

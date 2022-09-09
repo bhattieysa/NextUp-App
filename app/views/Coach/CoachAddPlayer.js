@@ -520,7 +520,8 @@ class CoachAddPlayer extends Component {
               fontFamily: Fonts.Bold, textAlign: 'left', position: 'absolute', alignSelf: 'center', marginTop: wide * 0.08,
             }}>{this.props.navigation.state.params.playerDetails.playingPosition}</Text> */}
           </View>
-          <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }}
+          <KeyboardAvoidingView keyboardVerticalOffset={25}
+            style={{ flex: 1, }}
             behavior={Platform.OS === 'ios' ? "padding" : null}>
 
             <View style={{
@@ -651,11 +652,11 @@ class CoachAddPlayer extends Component {
                   alignSelf: 'center', borderRadius: 24,
                   justifyContent: 'center',
                   // marginTop: wide * 0.01,
-                  // position: 'absolute',
-                  // bottom: wide * 0.1,
+                  position: 'absolute',
+                  bottom: arrPlayers != null && arrPlayers.length > 0 ? wide * 0.06 : wide * 1.3,
 
                 }} onPress={() => this.handleSendInvitation()}
-                >
+              >
                 <Text style={{
                   alignSelf: 'center', color: Colors.light,
                   fontFamily: Fonts.Bold, fontSize: 14, lineHeight: 16,
@@ -664,7 +665,7 @@ class CoachAddPlayer extends Component {
               </TouchableOpacity>
             </View>
 
-            <AppLoader visible={this.state.loading} />
+            {/* <AppLoader visible={this.state.loading} /> */}
           </KeyboardAvoidingView>
 
 

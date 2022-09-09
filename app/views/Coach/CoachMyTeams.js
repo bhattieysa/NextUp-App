@@ -2995,7 +2995,7 @@ class MyTeams extends Component {
 
           {/* <Text style={{ color: Colors.lightshade }}>{JSON.stringify(this.props.Home)}</Text> */}
 
-          <AppLoader visible={loading} />
+          {/* <AppLoader visible={loading} /> */}
 
           {/* <Text style={{ color: Colors.lightshade }}>{JSON.stringify(coachTeam.teamTabInfoDtoList[0].teamId)}</Text> */}
 
@@ -3955,7 +3955,7 @@ class MyTeams extends Component {
 
 
                 </View>
-                <AppLoader visible={this.state.removeLoading} />
+                {/* <AppLoader visible={this.state.removeLoading} /> */}
               </ScrollView>
 
               {this.state.selectedTab === 'Players' &&

@@ -66,6 +66,18 @@ const CoachMyTeamStack = createStackNavigator(
     MyTeamAdvanceStats: {
       getScreen: () => require('../views/Coach/TeamAdvanceStatics').default,
     },
+    CreateLineUp: {
+      getScreen: () => require('../views/Coach/CreateLineUp').default,
+    },
+    ViewCoachLineUp: {
+      getScreen: () => require('../views/Coach/ViewCoachLineUp').default,
+    },
+    CoachPremiumCard: {
+      getScreen: () => require('../views/Coach/Components/MyTeamComponents/PremiumSubscription').default,
+    },
+    CreatePractice: {
+      getScreen: () => require('../views/Coach/CreatePractice').default,
+    },
   },
   {
     defaultNavigationOptions,
@@ -88,7 +100,10 @@ CoachMyTeamStack.navigationOptions = ({ navigation }) => {
       || navigation.state.routes[i].routeName == "ViewFullScreenBoxScore"
       || navigation.state.routes[i].routeName == "MyTeamRecentGamesDetails"
       || navigation.state.routes[i].routeName == "MyTeamAdvanceStats"
-
+      || navigation.state.routes[i].routeName == "CreateLineUp"
+      || navigation.state.routes[i].routeName == "ViewCoachLineUp"
+      || navigation.state.routes[i].routeName == "CoachPremiumCard"
+      || navigation.state.routes[i].routeName == "CreatePractice"
     ) {
       console.log("Tab bar invisible here");
       tabBarVisible = false;

@@ -6,7 +6,7 @@ import Navigation from '../../../lib/Navigation';
 let wide = Layout.width;
 
 
-function GamePlanCard({ premium = false, bannerInfo = null }) {
+function GamePlanCard({ premium = false, bannerInfo = null, onPurchasePress }) {
 
   if (premium) {
     return (
@@ -172,7 +172,9 @@ function GamePlanCard({ premium = false, bannerInfo = null }) {
           width: 80, height: 32, backgroundColor: Colors.base,
           borderRadius: wide * 0.015,
           alignItems: 'center', justifyContent: 'center'
-        }}>
+        }}
+          onPress={onPurchasePress}
+        >
           <Text style={{
             fontWeight: "500",
             fontSize: 14,
