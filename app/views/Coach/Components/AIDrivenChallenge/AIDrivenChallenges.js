@@ -10,51 +10,33 @@ import {
 } from '../../../../actions/home';
 import AppLoader from '../../../../utils/Apploader';
 const AIDrivenChallenges = (props) => {
-
-
     const [loading, setLoading] = useState(false)
     const [teamId, setTeamId] = useState()
     let [assignedChallenge, setAssignedChallenge] = useState()
     const [suggestedChallenge, setSuggestedChallenge] = useState()
     const [playerData, setPlayerData] = useState()
-
     useEffect(() => {
-
         setLoading(true)
         props.dispatch(getListOFChallenges(props.teamId, '1', (result, response) => {
-
             if (result) {
                 setLoading(false)
            
                 setAssignedChallenge(response.assignedChallenge);
                 setSuggestedChallenge(response.suggestedChallenge)
                 setPlayerData(response.assignedChallenge.subscriptionPlayerBasicInfoList)
-
-                
-
             } else {
                 //console.log("eysadata",props.teamId)
             }
         }))
     }, [props.teamId])
-
-
     let wide = Layout.width;
     return (
-
         <View style={{ marginLeft: wide * 0.04, marginRight: wide * 0.04, marginTop: wide * 0.05 }}>
-
             <AppLoader visible={loading} />
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
             {assignedChallenge?.length > 0 || suggestedChallenge?.length > 0 ?
-
                 <View>
-
-
                     {assignedChallenge.length == 0 ? null :
-
                         <View>
-
                             <View style={{ flexDirection: 'row', marginTop: wide * 0.03 }}>
                                 <View style={{
                                     flex: 3
@@ -64,7 +46,6 @@ const AIDrivenChallenges = (props) => {
                                         color: Colors.light,
                                         fontSize: 16,
                                         fontFamily: 'Metropolis',
-
                                     }}>
                                         Assigned challenges
                                     </Text>
@@ -72,10 +53,8 @@ const AIDrivenChallenges = (props) => {
                                 <View style={{
                                     flex: 1,
                                     alignItems: 'flex-end',
-
-
                                 }}>
-                                    <TouchableOpacity onPress={() => Navigation.navigate('CoachAiDrivenAllChallenge', { name: "assigned", teamId: props.teamId })}>
+                                    <TouchableOpacity onPress={() => Navigation.navigate('CoachAiDrivenAllChallenge', { name: "assigned", teamId: props.teamId,   typeOfSubscription:"CHALLENGE", })}>
                                         <Text style={{
                                             color: Colors.btnBg,
                                             fontWeight: '700',
@@ -91,14 +70,14 @@ const AIDrivenChallenges = (props) => {
 
                             <FlatList
                                 data={assignedChallenge}
-                                nestedScrollEnabled
-
+                      bounces={false}
+showsVerticalScrollIndicator={false}
 
                                 keyExtractor={item => item.index}
                                 renderItem={(item) =>
                                     <TouchableOpacity onPress={() => {
 
-                                        playerData == null || playerData == "" ?
+                                        item.item.subscriptionPlayerBasicInfoList == null || item.item.subscriptionPlayerBasicInfoList == "" ?
 
                                             item.item.typeOfChallenge == "STATS" ?
                                                 Navigation.navigate('CoachAiDrivenStatsChallenge',
@@ -106,7 +85,8 @@ const AIDrivenChallenges = (props) => {
                                                         name: "assigned",
                                                         teamId: props.teamId,
                                                         challengeId: item.item.challengeId,
-                                                        typeOfChallenge: item.item.typeOfChallenge
+                                                        typeOfChallenge: item.item.typeOfChallenge,
+                                                        typeOfSubscription:"CHALLENGE",
                                                     })
 
                                                 : item.item.typeOfChallenge == "QUESTION" ?
@@ -115,7 +95,8 @@ const AIDrivenChallenges = (props) => {
                                                             name: "assigned",
                                                             teamId: props.teamId,
                                                             challengeId: item.item.challengeId,
-                                                            typeOfChallenge: item.item.typeOfChallenge
+                                                            typeOfChallenge: item.item.typeOfChallenge,
+                                                            typeOfSubscription:"CHALLENGE",
                                                         })
                                                     :
                                                     Navigation.navigate('CoachAiDrivenVideoChallenge',
@@ -123,7 +104,8 @@ const AIDrivenChallenges = (props) => {
                                                             name: "assigned",
                                                             teamId: props.teamId,
                                                             challengeId: item.item.challengeId,
-                                                            typeOfChallenge: item.item.typeOfChallenge
+                                                            typeOfChallenge: item.item.typeOfChallenge,
+                                                            typeOfSubscription:"CHALLENGE",
                                                         })
 
                                             :
@@ -132,7 +114,8 @@ const AIDrivenChallenges = (props) => {
                                                     name: "assigned",
                                                     teamId: props.teamId,
                                                     challengeId: item.item.challengeId,
-                                                    typeOfChallenge: item.item.typeOfChallenge
+                                                    typeOfChallenge: item.item.typeOfChallenge,
+                                                    typeOfSubscription:"CHALLENGE",
                                                 })
                                                
                                     }}>
@@ -192,7 +175,7 @@ const AIDrivenChallenges = (props) => {
                                                     <View style={{ marginTop: wide * 0.03 }}>
 
 
-                                                        {playerData != null || playerData != "" ?
+                                                        {item.item.subscriptionPlayerBasicInfoList != null || item.item.subscriptionPlayerBasicInfoList != "" ?
 
                                                             <FlatList
 
@@ -268,7 +251,7 @@ const AIDrivenChallenges = (props) => {
 
 
                                 }}>
-                                    <TouchableOpacity onPress={() => Navigation.navigate('CoachAiDrivenAllChallenge', { name: 'suggested', teamId: props.teamId })}>
+                                    <TouchableOpacity onPress={() => Navigation.navigate('CoachAiDrivenAllChallenge', { name: 'suggested', teamId: props.teamId,   typeOfSubscription:"CHALLENGE", })}>
                                         <Text style={{
                                             color: Colors.btnBg,
                                             fontWeight: '700',
@@ -288,7 +271,8 @@ const AIDrivenChallenges = (props) => {
                             <FlatList
                                 data={suggestedChallenge}
 
-                                nestedScrollEnabled
+                                bounces={false}
+                                showsVerticalScrollIndicator={false}
 
                                 keyExtractor={item => item.index}
                                 renderItem={(item) =>
@@ -302,7 +286,8 @@ const AIDrivenChallenges = (props) => {
                                                         name: "suggested",
                                                         teamId: props.teamId,
                                                         challengeId: item.item.challengeId,
-                                                        typeOfChallenge: item.item.typeOfChallenge
+                                                        typeOfChallenge: item.item.typeOfChallenge,
+                                                        typeOfSubscription:"CHALLENGE",
                                                     })
 
                                                 : item.item.typeOfChallenge == "QUESTION" ?
@@ -311,7 +296,8 @@ const AIDrivenChallenges = (props) => {
                                                             name: "suggested",
                                                             teamId: props.teamId,
                                                             challengeId: item.item.challengeId,
-                                                            typeOfChallenge: item.item.typeOfChallenge
+                                                            typeOfChallenge: item.item.typeOfChallenge,
+                                                            typeOfSubscription:"CHALLENGE",
                                                         })
                                                     :
                                                     Navigation.navigate('CoachAiDrivenVideoChallenge',
@@ -319,7 +305,8 @@ const AIDrivenChallenges = (props) => {
                                                             name: "suggested",
                                                             teamId: props.teamId,
                                                             challengeId: item.item.challengeId,
-                                                            typeOfChallenge: item.item.typeOfChallenge
+                                                            typeOfChallenge: item.item.typeOfChallenge,
+                                                            typeOfSubscription:"CHALLENGE",
                                                         })
 
                                            
@@ -400,10 +387,8 @@ const AIDrivenChallenges = (props) => {
                 :
                 <View style={{
                     justifyContent: 'center',
-
                     alignItems: 'center',
                     marginTop: wide * 0.07,
-
                 }}>
                     <Image
                         style={{
@@ -413,22 +398,15 @@ const AIDrivenChallenges = (props) => {
                         source={require('../../../../Images/datablank.png')}
                     />
                     <Text style={{
-
                         fontFamily: 'Metropolis',
                         fontSize: 15,
                         fontWeight: '400',
                         color: Colors.light,
                         marginTop: wide * 0.04
-
-
-
-
-
-
                     }}>No AI Driven challenges found yet</Text>
                 </View>
             }
-            </ScrollView>
+           
 
 
         </View>

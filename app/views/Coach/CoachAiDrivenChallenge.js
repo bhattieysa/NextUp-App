@@ -20,21 +20,22 @@ const CoachAiDrivenChallenge = (props) => {
     const [teamData, setTeamData] = useState()
     const [teamId, setTeamID] = useState()
     const [selectTeam, setSelectTeam] = useState(0)
+    
 
 
     useEffect(() => {
         setLoading(true)
-    
+
         getObject('UserId').then((obj) => {
-         
+
             props.dispatch(getNewCoachTeam(obj, (res, data) => {
                 if (res) {
                     setLoading(false)
-                  console.log("data",data.teamTabInfoDtoList[0].teamId)
+                   
                     setTeamData(data.teamTabInfoDtoList)
                     setTeamID(data.teamTabInfoDtoList[0].teamId)
 
-                   
+
                 }
             }))
         })
@@ -45,11 +46,23 @@ const CoachAiDrivenChallenge = (props) => {
             <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
                 <AppLoader visible={loading} />
 
-                <View>
-                    <ScreenHeader
-                        title={'Ai driven challenge'}
-                        backButtonAction={() => Navigation.back()}
-                    />
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 2 }}>
+                        <ScreenHeader
+                            title={'Ai driven challenge'}
+                            backButtonAction={() => Navigation.back()}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        style={{
+                            height: 50, flexDirection: 'row', alignItems: 'center',
+                            marginHorizontal: 24, marginBottom: 8,
+
+                        }}
+                        onPress={() => Navigation.navigate('CoachAiDrivenSearchChallenge')}>
+
+                                      <Image source={require("../../Images/search.png")} />
+                    </TouchableOpacity>
                 </View>
                 <KeyboardAvoidingView keyboardVerticalOffset={45} style={{ flex: 1, }}
                     behavior={Platform.OS === 'ios' ? "padding" : null}>
@@ -69,7 +82,7 @@ const CoachAiDrivenChallenge = (props) => {
 
                                 keyExtractor={item => item.index}
                                 renderItem={(item) =>
-                                    <TouchableOpacity onPress={() => { setTeamID(item.item.teamId), setSelectTeam(item.index),console.log("sec",item.item.teamId) }}>
+                                    <TouchableOpacity onPress={() => { setTeamID(item.item.teamId), setSelectTeam(item.index), console.log("sec", item.item.teamId) }}>
                                         {/* {selectTeam == 0 ?
                                             setTeamID(item.item.teamId) : null
 
@@ -124,172 +137,172 @@ const CoachAiDrivenChallenge = (props) => {
 
 
                         </View>
-    {loading == false ?
-                        <View style={{
-                            flexDirection: 'row',
-                            marginTop: wide * 0.05,
-                            justifyContent: 'center',
-                            alignSelf: 'center'
+                        {loading == false ?
+                            <View style={{
+                                flexDirection: 'row',
+                                marginTop: wide * 0.05,
+                                justifyContent: 'center',
+                                alignSelf: 'center'
 
-                        }}>
+                            }}>
 
-                            {selectedTab == "first" ?
+                                {selectedTab == "first" ?
 
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        marginLeft: wide * 0.023,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-
-
-                                    }}
-
-                                >
-
-                                    <Text style={{
-
-                                        borderBottomColor: Colors.light,
-                                        borderBottomWidth: 2,
-                                        color: Colors.light,
-                                        fontWeight: '600',
-                                        fontSize: 14,
-                                        fontFamily: 'Metropolis',
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            marginLeft: wide * 0.023,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
 
 
+                                        }}
 
+                                    >
 
-                                    }}>
-                                        Road to pro
-                                    </Text>
-                                    <View style={{
-
-                                        borderBottomColor: Colors.light,
-                                        borderBottomWidth: 2,
-                                        width: wide * 0.25,
-
-
-                                    }}
-                                    />
-
-                                </View>
-
-                                :
-
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        marginLeft: wide * 0.023,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-
-
-                                    }}
-                                >
-                                    <TouchableOpacity onPress={() => { setSelectedtab("first") }}>
                                         <Text style={{
 
-
-                                            color: Colors.titleLabelColor,
-                                            fontWeight: '400',
+                                            borderBottomColor: Colors.light,
+                                            borderBottomWidth: 2,
+                                            color: Colors.light,
+                                            fontWeight: '600',
                                             fontSize: 14,
                                             fontFamily: 'Metropolis',
+
+
 
 
                                         }}>
                                             Road to pro
                                         </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            }
+                                        <View style={{
+
+                                            borderBottomColor: Colors.light,
+                                            borderBottomWidth: 2,
+                                            width: wide * 0.25,
 
 
-                            {selectedTab == "secound" ?
+                                        }}
+                                        />
 
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        marginRight: wide * 0.023,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                    </View>
 
+                                    :
 
-
-                                    }}
-                                >
-                                    <Text style={{
-
-                                        borderBottomColor: Colors.light,
-                                        borderBottomWidth: 2,
-                                        color: Colors.light,
-                                        fontWeight: '600',
-                                        fontSize: 14,
-                                        fontFamily: 'Metropolis',
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            marginLeft: wide * 0.023,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
 
 
+                                        }}
+                                    >
+                                        <TouchableOpacity onPress={() => { setSelectedtab("first") }}>
+                                            <Text style={{
 
 
-                                    }}>
-                                        AI Driven challenges
-                                    </Text>
-                                    <View style={{
-
-                                        borderBottomColor: Colors.light,
-                                        borderBottomWidth: 2,
-                                        width: wide * 0.43,
+                                                color: Colors.titleLabelColor,
+                                                fontWeight: '400',
+                                                fontSize: 14,
+                                                fontFamily: 'Metropolis',
 
 
-                                    }}
-                                    />
-
-                                </View>
-                                :
-
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        marginRight: wide * 0.023,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                            }}>
+                                                Road to pro
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
 
 
-                                    }}
-                                >
-                                    <TouchableOpacity onPress={() => { setSelectedtab("secound") }}>
+                                {selectedTab == "secound" ?
+
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            marginRight: wide * 0.023,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+
+
+
+                                        }}
+                                    >
                                         <Text style={{
 
-
-                                            color: Colors.titleLabelColor,
-                                            fontWeight: '400',
+                                            borderBottomColor: Colors.light,
+                                            borderBottomWidth: 2,
+                                            color: Colors.light,
+                                            fontWeight: '600',
                                             fontSize: 14,
                                             fontFamily: 'Metropolis',
+
+
 
 
                                         }}>
                                             AI Driven challenges
                                         </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            }
+                                        <View style={{
+
+                                            borderBottomColor: Colors.light,
+                                            borderBottomWidth: 2,
+                                            width: wide * 0.43,
+
+
+                                        }}
+                                        />
+
+                                    </View>
+                                    :
+
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            marginRight: wide * 0.023,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+
+
+                                        }}
+                                    >
+                                        <TouchableOpacity onPress={() => { setSelectedtab("secound") }}>
+                                            <Text style={{
+
+
+                                                color: Colors.titleLabelColor,
+                                                fontWeight: '400',
+                                                fontSize: 14,
+                                                fontFamily: 'Metropolis',
+
+
+                                            }}>
+                                                AI Driven challenges
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
 
 
 
-                        </View>
-:null}
-                        {loading == false &&teamId!=undefined?
+                            </View>
+                            : null}
+                        {loading == false && teamId != undefined ?
                             <View>
 
                                 {selectedTab == "first" ?
-                                    <RoadToPro 
-                                    teamId={teamId} 
-                                 
-                                  
+                                    <RoadToPro
+                                        teamId={teamId}
+
+
 
                                     />
                                     :
-                                    <AIDrivenChallenges 
-                                    teamId={teamId}
-                                  
+                                    <AIDrivenChallenges
+                                        teamId={teamId}
+
                                     />
 
                                 }

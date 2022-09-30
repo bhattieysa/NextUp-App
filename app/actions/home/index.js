@@ -1219,7 +1219,7 @@ export function getNewCoachTeam(obj, cb) {
           debugger
           //data.currentLevelState = 1//line to comment
 
-          console.log("Coach team data is ", getState().entities.homePlayer.coachTeam);
+         
           debugger
           // bind stats
           // if (data.teamTabInfoDtoList && Array.isArray(data.teamTabInfoDtoList)) {
@@ -1251,7 +1251,7 @@ export function getNewCoachTeam(obj, cb) {
           //   }
           // }
 
-          console.log("Team data is ", JSON.stringify(data));
+         
 
           getState().entities.homePlayer.coachTeam = data;
 
@@ -2475,7 +2475,479 @@ export function getListOFChallengesSuggested(teamID, challengeId, cb) {
   };
 }
 
+export function getAIDrivenSearch(search1, cb) {
+  debugger
 
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    //162367717958303 //162330894799504 //162643359596706
+    return axios
+      .get(AppURLs.getAIDrivenSearch+"?search="+search1)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
+export function getAIDrivenPlayerSearch(teamID, challengeId, search,cb) {
+  
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+      .get(AppURLs.getAIDrivenPlayerSearch+"detail?teamId="+teamID+"&&challengeId="+challengeId+"&&search="+search)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getListOfPlayers(teamID, season,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+      .get(AppURLs.getListOfPlayers+teamID+"?season="+season)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
+export function assignPlayersChallenge(postData,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .post(AppURLs.assignPlayersChallenge, postData)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function assignPlayersRoadToPro(postData,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .post(AppURLs.assignPlayersRoadToPro, postData)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
+
+//eysa Player APIS
+
+export function listOfPlayers(id,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.listOfPlayers+id)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
+
+
+export function listRoadToPro(teamid,playerid,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.listRoadToPro+teamid+"/"+playerid+"?tab=0")
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function listAIDrivenChallenges(teamid,playerid,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.listRoadToPro+teamid+"/"+playerid+"?tab=1")
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
+export function assignedSeeAllChallenges(teamid,playerid,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.assignedSeeAllChallenges+teamid+"/"+playerid)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function suggestedSeeAllChallenges(teamid,playerid,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.suggestedSeeAllChallenges+teamid+"/"+playerid)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getDetailsForplayerSubmission(id,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.getDetailsForplayerSubmission+id)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function verifyAnswer(id,ans,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.verifyAnswer+id+"?answer="+ans)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function uploadVideo(userId, strVideoUrl, cb) {
+  let data = new FormData();
+  data.append('file', {
+    uri: strVideoUrl,
+    name: `file${Math.random()}.mp4`,
+    type: `video/mp4`,
+  });
+  console.log(data);
+  debugger
+  return (dispatch, getState) => {
+    dispatch(myStandingRequest());
+    //162367717958303 //162330894799504
+    return axios
+      .post(AppURLs.uploadVideo, data)
+      .then((response) => {
+        debugger
+        if (response.status == 200 && response.data?.data !== null) {
+          let data = response.data.data
+          dispatch(myStandingSuccess()), cb(true, data);
+        } else {
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        debugger
+        cb(false)
+        return dispatch(myStandingFailure(error));
+      });
+  };
+}
+
+
+
+
+export function submitPlayerData(id,postData,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .post(AppURLs.submitPlayerData+id, postData)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+
+export function getProfileData(id,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.getProfileData+id)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getGameDetails(id,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.getGameDetails+id)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getCollectEvents(start_date,end_date,id,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.getCollectEvents+start_date+"/"+end_date+"?coachId="+id)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
+export function getCalendarDetails(date,id,cb) {
+  debugger
+    return (dispatch, getState) => {
+    debugger
+    dispatch(gamesRequest());
+    return axios
+    .get(AppURLs.getCollectEvents+date+"?coachId="+id)
+      .then((response) => {
+        console.log("API DATA",response.data)
+        debugger
+        if (response.status == 200 ) {
+          debugger
+           let data = response.data.data
+          dispatch(gamesSuccess()), cb(true, data);
+        } else {
+          dispatch(gamesFailure(response.data.message));
+          cb(false, response.data.message);
+        }
+      })
+      .catch((error) => {
+        cb(false)
+        return dispatch(gamesFailure(error));
+      });
+  };
+}
 
 
 

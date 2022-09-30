@@ -145,11 +145,12 @@ class TeamAdvanceStatics extends Component {
           <FlatList
             keyExtractor={(item, index) => index.toString()}
             data={arr}
-            renderItem={(item, index) => this.renderStatsOfFocus(item, index)}
             showsVerticalScrollIndicator={false}
             bounces={false}
             numColumns={4}
             scrollEnabled={false}
+            renderItem={(item, index) => this.renderStatsOfFocus(item, index)}
+           
           />
         </View>
       </View>

@@ -94,7 +94,38 @@ getListOFALLChallenges:'coach/challenge/all/',
 
 
 getListOFChallengesPlayerDetails:'coach/challenge/',
-getListOFChallengesSuggested:'premium/plan/challenge/'
+getListOFChallengesSuggested:'premium/plan/challenge/',
+
+getAIDrivenSearch:'premium/plan/list/challenge/',
+getAIDrivenPlayerSearch:'coach/challenge/',
+
+getListOfPlayers:'team/player/',
+assignPlayersChallenge:"subscription/create",
+
+assignPlayersRoadToPro:"subscription/pro/create",
+
+
+//Eysa Player APIS
+
+listOfPlayers:'player/team/',
+listRoadToPro:'player/challenge/',
+
+assignedSeeAllChallenges:'player/challenge/all/assigned/',
+suggestedSeeAllChallenges:'player/challenge/all/suggested/',
+getDetailsForplayerSubmission:'submission/detail/',
+verifyAnswer:'premium/challenge/verify/',
+uploadVideo:"storage/upload/video",
+
+submitPlayerData:'submission/submit/',
+getProfileData:'player/public/profile/',
+
+//  Eysa Game Screen API's
+
+getGameDetails:'game/detail/',
+
+//eysa calendar screen
+getCollectEvents:'search/',
+
 
 };
 

@@ -25,7 +25,8 @@ const CoachAiDrivenQuestionChallenge = (props) => {
     const teamId = props.navigation.state?.params?.teamId
     const challengeId = props.navigation.state?.params?.challengeId
     const typeOfChallenge = props.navigation.state?.params?.typeOfChallenge
-
+    const typeOfSubscription = props.navigation.state?.params?.typeOfSubscription
+    
 
 
     useEffect(() => {
@@ -61,11 +62,6 @@ props.dispatch(getListOFChallengesSuggested(teamId, challengeId, (result, respon
 }))
 }
     },[])
-    
-
-
-    
-
     let wide = Layout.width;
     return (
         <View style={{ flex: 1, backgroundColor: Colors.base, }}>
@@ -129,20 +125,14 @@ props.dispatch(getListOFChallengesSuggested(teamId, challengeId, (result, respon
                                <FlatList
                                        data={challengeDetails.questionnaireChallenge.options}
                                        nestedScrollEnabled
-
-
                                        keyExtractor={item => item.index}
                                        renderItem={(item) =>
-                                        <TouchableOpacity style={{
+                                        <View style={{
                                             flexDirection: 'row',
-                                            marginBottom:wide*0.04,
-                                           
-        
-                                        }}
-                                            activeOpacity={1}
-                                            onPress={() => { setAnswer(item.index)}}
+                                            marginBottom:wide*0.04,                                                   
+                                        }}                                                                               
                                         >
-        
+        {setAnswer(challengeDetails.questionnaireChallenge.correctAnswer)}
                                             <RadioButton
                                                 containerStyle={{
                                                     width: wide * 0.07, height: wide * 0.07,
@@ -162,7 +152,7 @@ props.dispatch(getListOFChallengesSuggested(teamId, challengeId, (result, respon
                                                     
                                                 }}
                                                 isSelected={answer == item.index ? true : false}
-                                                onPress={() => { setAnswer(item.index) }}
+                                              
                                                 iconCheck={true}
         
                                             />
@@ -173,13 +163,10 @@ props.dispatch(getListOFChallengesSuggested(teamId, challengeId, (result, respon
                                                 lineHeight: 18, marginHorizontal: wide * 0.025,
                                                 fontWeight: '600',
                                             }}>{item.item}</Text>
-                                        </TouchableOpacity>
-                                       }
-                               
+                                        </View>
+                                       }                               
                                />
-                     
-
-
+                                                   
                                 {/* <TouchableOpacity style={{
                                     flexDirection: 'row',
                                     marginBottom:wide*0.04,
@@ -381,7 +368,14 @@ props.dispatch(getListOFChallengesSuggested(teamId, challengeId, (result, respon
     height:wide*0.15,
     borderRadius:wide*0.1,
     marginTop:wide*0.1
-}}>
+}}
+onPress={() => {
+    player==true?
+    Navigation.navigate('CoachAssignPlayer', { notes:notes,typeOfSubscription:typeOfSubscription,assignTo:'Player',challengeId:challengeId })
+    :
+    Navigation.navigate('CoachAssignPlayer', { notes:notes,typeOfSubscription:typeOfSubscription,assignTo:'Team',challengeId:challengeId })
+    
+ } }>
    <Text style={{
 color:Colors.light,
 fontFamily: 'Metropolis',

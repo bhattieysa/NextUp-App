@@ -2160,7 +2160,9 @@ class CoachProfile extends Component {
               // backgroundColor: 'red'
 
             }}>
-              <View>
+              <TouchableOpacity
+                onPress={() => { Navigation.navigate('PlayerProfile') }}
+              >
                 <Text style={{
                   color: Colors.light, fontSize: 30,
                   lineHeight: 36, fontFamily: Fonts.Bold,
@@ -2168,7 +2170,7 @@ class CoachProfile extends Component {
                   {coachDash.firstName} {coachDash.lastName}
                 </Text>
 
-              </View>
+              </TouchableOpacity>
 
               <View style={{ flex: 1 }} />
 
@@ -2179,6 +2181,7 @@ class CoachProfile extends Component {
                 <TouchableOpacity
                   style={{
                     width: 30, height: 30,
+                
                     // tintColor: Colors.light
                   }}
                   // onPress={() => { Navigation.navigate('MessageList') }} 

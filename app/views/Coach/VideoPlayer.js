@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView,StatusBar, Image, ImageBackground, TouchableOpacity, TextInput, Button, SafeAreaView } from 'react-native'
 import React, { useState,useEffect,useRef } from 'react'
-import VideoPlayer1 from'react-native-video-player'
+
 import Video from 'react-native-video'
 import
   MediaControls, {PLAYER_STATES}
@@ -15,6 +15,10 @@ const VideoPlayer = (props) => {
 
 
   const videoUrl = props.navigation.state?.params?.videoUrl
+
+
+console.log(videoUrl)
+
   useEffect(() => {
     StatusBar.setHidden(true)
     Orientation.lockToLandscapeRight()

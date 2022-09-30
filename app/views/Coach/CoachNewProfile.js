@@ -834,7 +834,7 @@ class CoachNewProfile extends Component {
         }
         {coachDash.recentGames !== null && coachDash?.recentGames?.length > 0 ?
           <>
-            <Title data={'Upcoming Games'} />
+            <Title data={'Upcoming Gamess'} />
             <View style={{
               backgroundColor: Colors.base, marginLeft: 15, marginTop: coachDash.teamDetailInfo !== null &&
                 coachDash?.teamDetailInfo?.length > 0 ? wide * 0.08 : wide * 0.18,

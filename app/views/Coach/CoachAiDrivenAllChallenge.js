@@ -21,6 +21,7 @@ const CoachAiDrivenAllChallenge = (props) => {
 
     const name = props.navigation.state?.params?.name
     const teamId = props.navigation.state?.params?.teamId
+    const typeOfSubscription = props.navigation.state?.params?.typeOfSubscription
 
     let wide = Layout.width;
 
@@ -61,7 +62,7 @@ setLoading(true)
                             data={allData}
 
 
-
+bounces={false}
                             keyExtractor={item => item.index}
                             renderItem={(item) =>
 
@@ -70,7 +71,7 @@ setLoading(true)
                                     <TouchableOpacity
                                     onPress={()=>{
 
-                                        playerData != null || playerData != "" ?
+                                      
 
                                         item.item.typeOfChallenge == "STATS" ?
                                             Navigation.navigate('CoachAiDrivenStatsChallenge',
@@ -78,7 +79,9 @@ setLoading(true)
                                                     name: "assigned",
                                                     teamId:teamId,
                                                     challengeId: item.item.challengeId,
-                                                    typeOfChallenge: item.item.typeOfChallenge
+                                                    typeOfChallenge: item.item.typeOfChallenge,
+                                                    typeOfSubscription:typeOfSubscription,
+                                                    submissionId:item.item.submissionId
                                                 })
 
                                             : item.item.typeOfChallenge == "QUESTION" ?
@@ -87,7 +90,9 @@ setLoading(true)
                                                         name: "assigned",
                                                         teamId: teamId,
                                                         challengeId: item.item.challengeId,
-                                                        typeOfChallenge: item.item.typeOfChallenge
+                                                        typeOfChallenge: item.item.typeOfChallenge,
+                                                        typeOfSubscription:typeOfSubscription,
+                                                        submissionId:item.item.submissionId
                                                     })
                                                 :
                                                 Navigation.navigate('CoachAiDrivenVideoChallenge',
@@ -95,18 +100,13 @@ setLoading(true)
                                                         name: "assigned",
                                                         teamId: teamId,
                                                         challengeId: item.item.challengeId,
-                                                        typeOfChallenge: item.item.typeOfChallenge
+                                                        typeOfChallenge: item.item.typeOfChallenge,
+                                                        typeOfSubscription:typeOfSubscription,
+                                                        submissionId:item.item.submissionId
                                                     })
 
-                                        :
-                                        Navigation.navigate('CoachAiDrivenPlayerDetails',
-                                            {
-                                                name: "assigned",
-                                                teamId: teamId,
-                                                challengeId: item.item.challengeId,
-                                                typeOfChallenge: item.item.typeOfChallenge
-                                            })
-
+                                        
+                                      
 
 
                                     }}
@@ -135,9 +135,6 @@ setLoading(true)
                                                             fontSize: 17,
                                                             fontFamily: 'Metropolis',
                                                             fontSize: 17,
-
-
-
                                                         }}>
                                                             {item.item.challengeName}
                                                         </Text>
@@ -167,15 +164,15 @@ setLoading(true)
 
                                                         }}
                                                     >08 Days Left</Text>
-                                                    {setPlayerData(item.item.subscriptionPlayerBasicInfoList)}
+                                                
                                                     <View style={{ marginTop: wide * 0.03 }}>
 
 
-                                                        {playerData != null || playerData != "" ?
+                                                        {item.item.subscriptionPlayerBasicInfoList != null || item.item.subscriptionPlayerBasicInfoList != "" ?
 
                                                             <FlatList
 
-                                                                data={playerData}
+                                                                data={item.item.subscriptionPlayerBasicInfoList}
 
                                                                 showsHorizontalScrollIndicator={false}
                                                                 horizontal
@@ -224,7 +221,8 @@ setLoading(true)
                                                         name: "suggested",
                                                         teamId:teamId,
                                                         challengeId: item.item.id,
-                                                        typeOfChallenge: item.item.typeOfChallenge
+                                                        typeOfChallenge: item.item.typeOfChallenge,
+                                                        submissionId:item.item.submissionId
                                                     })
     
                                                 : item.item.typeOfChallenge == "QUESTION" ?
@@ -233,7 +231,8 @@ setLoading(true)
                                                             name: "suggested",
                                                             teamId: teamId,
                                                             challengeId: item.item.id,
-                                                            typeOfChallenge: item.item.typeOfChallenge
+                                                            typeOfChallenge: item.item.typeOfChallenge,
+                                                            submissionId:item.item.submissionId
                                                         })
                                                     :
                                                     Navigation.navigate('CoachAiDrivenVideoChallenge',
@@ -241,7 +240,8 @@ setLoading(true)
                                                             name: "suggested",
                                                             teamId: teamId,
                                                             challengeId: item.item.id,
-                                                            typeOfChallenge: item.item.typeOfChallenge
+                                                            typeOfChallenge: item.item.typeOfChallenge,
+                                                            submissionId:item.item.submissionId
                                                         })
     
                 

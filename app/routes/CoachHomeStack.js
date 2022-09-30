@@ -18,9 +18,9 @@ const CoachHomeStack = createStackNavigator(
         // PlayerProfile: {
         //     getScreen: () => require('../views/home/home').default,
         // },
-        PlayerProfile: {
-            getScreen: () => require('../views/Coach/CoachPlayerProfileView').default,
-        },
+        // PlayerProfile: {
+        //     getScreen: () => require('../views/Coach/CoachPlayerProfileView').default,
+        // },
         CoachChallengeAction: {
             getScreen: () => require('../views/Coach/CoachChallengesAction').default,
         },
@@ -55,6 +55,73 @@ const CoachHomeStack = createStackNavigator(
             getScreen: () => require('../views/home/ViewFullScreenBoxScore').default,
 
         },
+        //eysa screens
+        CoachAiDrivenChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenChallenge').default,
+
+        },
+        CoachAiDrivenAllChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenAllChallenge').default,
+
+        },
+        CoachAiDrivenStatsChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenStatsChallenge').default,
+
+        },
+        CoachAiDrivenVideoChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenVideoChallenge').default,
+
+        },
+   
+        CoachAiDrivenQuestionChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenQuestionChallenge').default,
+
+        },
+        CoachAiDrivenPlayerDetails: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenPlayerDetails').default,
+
+        },
+        VideoPlayer: {
+            getScreen: () => require('../views/Coach/VideoPlayer').default,
+
+        },
+        CoachAiDrivenSearchChallenge: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenSearchChallenge').default,
+
+        },
+        CoachAiDrivenPlayerSearch: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenPlayerSearch').default,
+
+        },
+
+        CoachAssignPlayer: {
+            getScreen: () => require('../views/Coach/CoachAssignPlayer').default,
+
+        },
+        CoachAssignPlayerTeam: {
+            getScreen: () => require('../views/Coach/CoachAssignPlayerTeam').default,
+
+        },
+        CoachAiDrivenPlayerDetailsVideoSubmission: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenPlayerDetailsVideoSubmission').default,
+
+        },
+        CoachAiDrivenPlayerDetailsStatSubmission: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenPlayerDetailsStatSubmission').default,
+
+        },
+        CoachAiDrivenPlayerDetailsQuestionSubmission: {
+            getScreen: () => require('../views/Coach/CoachAiDrivenPlayerDetailsQuestionSubmission').default,
+
+        },
+
+
+        
+
+        
+
+
+        
     },
     {
         defaultNavigationOptions,

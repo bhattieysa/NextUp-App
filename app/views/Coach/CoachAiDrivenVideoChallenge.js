@@ -27,7 +27,8 @@ const CoachAiDrivenVideoChallenge = (props) => {
     const teamId = props.navigation.state?.params?.teamId
     const challengeId = props.navigation.state?.params?.challengeId
     const typeOfChallenge = props.navigation.state?.params?.typeOfChallenge
-
+    const typeOfSubscription = props.navigation.state?.params?.typeOfSubscription
+    
 
     useEffect(() => {
 
@@ -281,7 +282,16 @@ const CoachAiDrivenVideoChallenge = (props) => {
                                     height: wide * 0.15,
                                     borderRadius: wide * 0.1,
                                     marginTop: wide * 0.1
-                                }}>
+                                }}
+                                onPress={() => {
+                                    player==true?
+                                    Navigation.navigate('CoachAssignPlayer', { notes:notes,typeOfSubscription:typeOfSubscription,assignTo:'Player',challengeId:challengeId  })
+                                    :
+                                    Navigation.navigate('CoachAssignPlayer', { notes:notes,typeOfSubscription:typeOfSubscription,assignTo:'Team',challengeId:challengeId  })
+                                    
+                                 } }
+                                
+                                >
                                     <Text style={{
                                         color: Colors.light,
                                         fontFamily: 'Metropolis',

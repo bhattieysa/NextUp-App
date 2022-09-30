@@ -238,8 +238,11 @@ class UserAccount extends Component {
                 marginTop: wide * 0.1,
                 marginBottom: wide * 0.02
               }}>
-                <TouchableOpacity style={{ width: '100%' }}>
-                  <AccountItem title={'My Profile'} icon={require('../../Images/bottomAccount_icon.png')} />
+                <TouchableOpacity style={{ width: '100%' }   }>
+                  <AccountItem title={'My Profile'} icon={require('../../Images/bottomAccount_icon.png')} 
+                   onPress={() => {Navigation.navigate('MyProfile')}}
+                  
+                  />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={{ width: '100%', marginTop: wide * 0.035, }}>

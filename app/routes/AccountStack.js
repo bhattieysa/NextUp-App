@@ -22,6 +22,10 @@ const AccountStack = createStackNavigator(
       getScreen: () => require('../views/home/EditHelperComponent/SelectTeam').default,
     },
 
+    MyProfile: {
+      getScreen: () => require('../views/home/PlayerProfile').default,
+    },
+
   },
   {
     initialRouteName: 'UserAccount',

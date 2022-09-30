@@ -89,6 +89,60 @@ const HomeStack = createStackNavigator(
     AppReload: {
       getScreen: () => require('../views/loadingView/index').default,
     },
+
+
+    AppReload: {
+      getScreen: () => require('../views/loadingView/index').default,
+    },
+
+
+      PlayerAIDrivenChallenges:{
+        getScreen: () => require('../views/home/PlayerAIDrivenChallenges').default,
+      },
+      PlayerAIDrivenAllChallenge: {
+        getScreen: () => require('../views/home/PlayerAiDrivenAllChallenge').default,
+    
+    },
+    PlayerAiDrivenStatsChallenge: {
+      getScreen: () => require('../views/home/PlayerAiDrivenStatsChallenge').default,
+  
+  },
+  PlayerAiDrivenQuestionChallenge: {
+    getScreen: () => require('../views/home/PlayerAiDrivenQuestionChallenge').default,
+
+},
+PlayerAiDrivenVideoChallenge: {
+  getScreen: () => require('../views/home/PlayerAiDrivenVideoChallenge').default,
+
+},
+
+
+PlayerAiDrivenStatsChallengeSuggested: {
+  getScreen: () => require('../views/home/CoachAiDrivenStatsChallenge').default,
+
+},
+PlayerAiDrivenVideoChallengeSuggested: {
+  getScreen: () => require('../views/home/CoachAiDrivenVideoChallenge').default,
+
+},
+
+PlayerAiDrivenQuestionChallengeSuggested: {
+  getScreen: () => require('../views/home/CoachAiDrivenQuestionChallenge').default,
+
+},
+VideoPlayer: {
+  getScreen: () => require('../views/Coach/VideoPlayer').default,
+
+},
+
+GameDetails:{
+  getScreen: () => require('../views/home/GameDetails').default,
+},
+CalendarCoach:{
+  getScreen: () => require('../views/home/CalendarCoach').default,
+},
+
+
   },
   {
     defaultNavigationOptions,

@@ -726,7 +726,8 @@ class Home extends Component {
     pageNum = 1
     ShareMenu.getInitialShare(this.handleShare);
     const listener = ShareMenu.addNewShareListener(this.handleShare);
-    this.props.navigation.addListener('didFocus', this.onScreenFocus)
+    //this.props.navigation.addListener('didFocus', this.onScreenFocus)
+  Navigation.navigate('CalendarCoach') 
     return () => {
       listener.remove();
     };
@@ -1519,7 +1520,7 @@ class Home extends Component {
 
                           <TouchableOpacity
                             // onPress={() => { Navigation.navigate("MyTeam", { 'teamId': 1239101010101 }) }}
-                            onPress={() => { Navigation.navigate('Calender') }}
+                            onPress={() => { Navigation.navigate('PlayerAIDrivenChallenges') }}
                           >
                             <Image style={{
                               width: 20, height: 20,
@@ -1529,7 +1530,10 @@ class Home extends Component {
                           : null
                         }
                         {UserModel.selectedUserType.toUpperCase() === 'COACH' ?
-                          <TouchableOpacity onPress={this.handleChatRender} >
+                          <TouchableOpacity 
+                          onPress={() => { Navigation.navigate('GameDetails') }}
+                          
+                          >
                             <Image style={{
                               width: 30, height: 30
                             }} source={require('../../Images/chat_icon.png')} />
@@ -1540,7 +1544,7 @@ class Home extends Component {
                         {/* {this.state.playerId === null ?
                       <TouchableOpacity onPress={() => { Navigation.navigate('EditProfile') }}>
                         <Image style={{
-                          width: 25, height: 25,
+                          width: 25, height: 25
                           tintColor: Colors.light
                         }} source={require('../../Images/edit.png')} />
                       </TouchableOpacity>
@@ -1564,6 +1568,7 @@ class Home extends Component {
                     }}>
                       {
                         dashboardData?.profilePictureUrl != null ?
+                        <TouchableOpacity onPress={() => { Navigation.navigate('GameDetails') }}>
                           <FastImage
                             key={this.state.randNum}
                             style={{
@@ -1579,6 +1584,7 @@ class Home extends Component {
                             // onLoadEnd={() => this.setState({ randNum: Math.random() })}
                             resizeMode={FastImage.resizeMode.cover}
                           />
+                          </TouchableOpacity>
                           // <Image
                           //   key={dashboardData.profilePictureUrl}
                           //   style={{
@@ -1620,7 +1626,7 @@ class Home extends Component {
                       }}>
 
                         {this.state.playerId === null ?
-                          <TouchableOpacity onPress={() => { Navigation.navigate('EditProfile') }}
+                          <TouchableOpacity onPress={() => { Navigation.navigate('CalendarCoach') }}
                             style={{
                               height: '15%',
                               width: '90%',

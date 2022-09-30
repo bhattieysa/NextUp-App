@@ -20,6 +20,7 @@ target 'NextUp' do
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
   pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
+  pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
   # pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders"
   # pod 'Permission-Siri', :path => "#{permissions_path}/Siri"
   # pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition"
