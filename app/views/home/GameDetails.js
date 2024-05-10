@@ -275,7 +275,6 @@ const GameDetails = (props) => {
         <View style={{ flex: 1, backgroundColor: Colors.base, }}>
             <SafeAreaView style={{ flex: 1, marginTop: Platform.OS == 'android' ? 30 : 0, backgroundColor: Colors.base }}>
                 <AppLoader visible={loading} />
-
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 2 }}>
                         <ScreenHeader
@@ -283,7 +282,6 @@ const GameDetails = (props) => {
                             backButtonAction={() => Navigation.back()}
                         />
                     </View>
-
                 </View>
                 {loading == false && APIData != undefined ?
                     <ScrollView bounces={false} style={{ marginBottom: wide * 0.03 }}

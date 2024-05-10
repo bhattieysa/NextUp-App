@@ -56,6 +56,8 @@ const CoachHomeStack = createStackNavigator(
 
         },
         //eysa screens
+
+        
         CoachAiDrivenChallenge: {
             getScreen: () => require('../views/Coach/CoachAiDrivenChallenge').default,
 
